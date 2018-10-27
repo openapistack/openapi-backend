@@ -44,12 +44,16 @@ const api = new OpenAPIBackend({
           responses: {
             200: { description: 'ok' },
           },
-        },
-        get: {
-          operationId: 'deletePetById',
-          responses: {
-            200: { description: 'ok' },
-          },
+          parameters: [
+            {
+              name: 'id',
+              in: 'path',
+              required: true,
+              schema: {
+                type: 'string',
+              },
+            },
+          ],
         },
       },
     },
