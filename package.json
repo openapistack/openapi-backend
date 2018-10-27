@@ -42,5 +42,9 @@
     "lint": "tslint --format prose --project .",
     "prettier": "prettier --write src/** __tests__/**",
     "test": "NODE_ENV=test jest"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.117",
+    "lodash": "^4.17.11"
   }
 }
