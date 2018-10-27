@@ -1,5 +1,5 @@
 import 'source-map-support/register';
-import { APIGatewayProxyEvent } from 'aws-lambda';
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import OpenAPIBackend from 'openapi-backend';
 
 const dummyHandler = (operationId: string) => async (event: APIGatewayProxyEvent) => ({
@@ -51,8 +51,16 @@ const api = new OpenAPIBackend({
   },
 });
 
-export async function handler(event: APIGatewayProxyEvent) {
-  const { httpMethod: method, path, queryStringParameters: query, body, headers } = event;
-  const apiRequest = { method, path, query, body, headers };
-  return api.handleRequest(apiRequest, event);
+export async function handler(event: APIGatewayProxyEvent, context: Context) {
+  return api.handleRequest(
+    {
+      method: event.httpMethod,
+      path: event.path,
+      query: event.queryStringParameters,
+      body: event.body,
+      headers: event.headers,
+    },
+    event,
+    context,
+  );
 }

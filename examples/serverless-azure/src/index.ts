@@ -53,6 +53,15 @@ const api = new OpenAPIBackend({
 
 export async function handler(context: Context, req: HttpRequest) {
   const { method, params, query, body, headers } = req;
-  const apiRequest = { method, path: params.path, query, body, headers };
-  context.res = await api.handleRequest(apiRequest, context, req);
+  context.res = await api.handleRequest(
+    {
+      method,
+      path: params.pathm,
+      query,
+      body,
+      headers,
+    },
+    context,
+    req,
+  );
 }
