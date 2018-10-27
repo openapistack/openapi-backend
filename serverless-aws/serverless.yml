@@ -10,7 +10,7 @@ provider:
 
 functions:
   api:
-    handler: dist/handler.api
+    handler: dist/index.handler
     events:
       - http:
           path: /
