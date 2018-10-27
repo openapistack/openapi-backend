@@ -1,12 +1,21 @@
 import OpenAPIBackend from '../src/index';
 import { OpenAPIV3 } from 'openapi-types';
 
-const responses = {
+const headers = {
+  accept: 'application/json',
+};
+
+const responses: OpenAPIV3.ResponsesObject = {
   200: { description: 'ok' },
 };
 
-const headers = {
-  accept: 'application/json',
+const pathId: OpenAPIV3.ParameterObject = {
+  name: 'id',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'string',
+  },
 };
 
 const document: OpenAPIV3.Document = {
@@ -29,24 +38,29 @@ const document: OpenAPIV3.Document = {
     '/pets/{id}': {
       get: {
         operationId: 'getPetById',
+        parameters: [pathId],
         responses,
       },
       put: {
         operationId: 'replacePetById',
+        parameters: [pathId],
         responses,
       },
       patch: {
         operationId: 'updatePetById',
+        parameters: [pathId],
         responses,
       },
       delete: {
         operationId: 'deletePetById',
+        parameters: [pathId],
         responses,
       },
     },
     '/pets/{id}/owner': {
       get: {
         operationId: 'getOwnerByPetId',
+        parameters: [pathId],
         responses,
       },
     },
