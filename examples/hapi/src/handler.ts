@@ -1,10 +1,14 @@
 import Hapi from 'hapi';
 import OpenAPIBackend from 'openapi-backend';
+import { ErrorObject } from 'ajv';
 
 const dummyHandler = (operationId: string) => async (req: Hapi.Request) => ({ operationId });
 
 const notFoundHandler = async (req: Hapi.Request, h: Hapi.ResponseToolkit) =>
-  h.response({ status: 404, error: 'Not found' }).code(201);
+  h.response({ status: 404, error: 'Not found' }).code(404);
+
+const validationFailHandler = async (errors: ErrorObject[], req: Hapi.Request, h: Hapi.ResponseToolkit) =>
+  h.response({ status: 400, errors }).code(400);
 
 const api = new OpenAPIBackend({
   document: {
@@ -25,6 +29,16 @@ const api = new OpenAPIBackend({
       '/pets/{id}': {
         get: {
           operationId: 'getPetById',
+          parameters: [
+            {
+              name: 'id',
+              in: 'path',
+              required: true,
+              schema: {
+                type: 'string',
+              },
+            },
+          ],
           responses: {
             200: { description: 'ok' },
           },
@@ -36,6 +50,7 @@ const api = new OpenAPIBackend({
     getPets: dummyHandler('getPets'),
     getPetById: dummyHandler('getPetById'),
     notFound: notFoundHandler,
+    validationFail: validationFailHandler,
   },
 });
 

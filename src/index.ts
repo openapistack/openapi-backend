@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
 import { validate } from 'openapi-schema-validation';
-import { normalize } from 'path';
+import Ajv from 'ajv';
 
 type Handler = (...args: any[]) => Promise<any>;
 
@@ -19,6 +19,21 @@ export interface RequestObject {
   body?: any;
 }
 
+interface InputValidationSchema {
+  title: string;
+  type: string;
+  additionalProperties?: boolean;
+  properties: {
+    [target: string]: OpenAPIV3.SchemaObject | OpenAPIV3.ArraySchemaObject | OpenAPIV3.NonArraySchemaObject;
+  };
+  required?: string[];
+}
+
+// normalises request
+// - http method is lowercase
+// - path leading slash 👍
+// - path trailing slash 👎
+// - path query string 👎
 export function normalizeRequest(req: RequestObject) {
   return {
     ...req,
@@ -28,6 +43,43 @@ export function normalizeRequest(req: RequestObject) {
       .replace(/^\/*/, '/') // add leading slash
       .replace(/\/+$/, ''), // remove trailing slash
     method: req.method.trim().toLowerCase(),
+  };
+}
+
+// parses request
+// - parse json body
+// - parse path params based on uri template
+// - parse query string
+// - parse cookies from headers
+export function parseRequest(req: RequestObject, path?: string) {
+  let requestBody;
+  try {
+    requestBody = JSON.parse(req.body);
+  } catch {
+    // suppress json parsing errors
+  }
+
+  // @TODO: parse query string from req.path + req.query
+  // @TODO: parse cookie from headers
+  const cookies = {};
+
+  // normalize
+  req = normalizeRequest(req);
+
+  // parse path
+  const paramPlaceholder = '{[^\\/]*}';
+  const pathPattern = `^${path.replace(new RegExp(paramPlaceholder, 'g'), '([^\\/]+)').replace(/\//g, '\\/')}$`;
+  const paramValueArray = new RegExp(pathPattern).exec(req.path).splice(1);
+  const paramNameArray = (path.match(new RegExp(paramPlaceholder, 'g')) || []).map((param) =>
+    param.replace(/[{}]/g, ''),
+  );
+  const params = _.zipObject(paramNameArray, paramValueArray);
+
+  return {
+    ...req,
+    params,
+    cookies,
+    requestBody,
   };
 }
 
@@ -43,19 +95,22 @@ export function validateDefinition(definition: OpenAPIV3.Document) {
 interface ConstructorOpts {
   document: OpenAPIV3.Document;
   strict?: boolean;
+  validate?: boolean;
   handlers?: { [operationId: string]: Handler };
 }
 
 export default class OpenAPIBackend {
   public definition: OpenAPIV3.Document;
   public strict: boolean;
+  public validate: boolean;
   public handlers: { [operationId: string]: Handler };
 
-  private internalHandlers = ['404', 'notFound', '501', 'notImplemented'];
+  private internalHandlers = ['404', 'notFound', '501', 'notImplemented', '400', 'validationFail'];
 
   constructor(opts: ConstructorOpts) {
     this.definition = opts.document;
     this.strict = Boolean(opts.strict);
+    this.validate = _.isNil(opts.validate) ? true : opts.validate;
     this.handlers = {};
 
     // validate definition
@@ -77,13 +132,6 @@ export default class OpenAPIBackend {
     }
   }
 
-  public async validateRequest(req: RequestObject) {
-    const operation = this.matchOperation(req);
-
-    // @TODO: perform Ajv validation for input
-    return true;
-  }
-
   public async handleRequest(req: RequestObject, ...handlerArgs: any[]) {
     const operation = this.matchOperation(req);
 
@@ -91,46 +139,120 @@ export default class OpenAPIBackend {
       // 404, no route matches
       const notFoundHandler = this.handlers['404'] || this.handlers['notFound'];
       if (!notFoundHandler) {
-        throw Error(`operation not found for request and no 404|notFound handler was registered`);
+        throw Error(`404-notFound: no route matches request`);
       }
       return notFoundHandler(...handlerArgs);
     }
+    const { operationId } = operation;
+
+    if (this.validate) {
+      // validate route
+      const { ajv, valid } = this.validateRequest(req);
+      if (!valid) {
+        // 400 request validation error
+        const validationFailHandler = this.handlers['400'] || this.handlers['validationFail'];
+        if (!validationFailHandler) {
+          const prettyErrors = JSON.stringify(ajv.errors, null, 2);
+          throw Error(`400-validationFail: ${operationId}, errors: ${prettyErrors}`);
+        }
+        return validationFailHandler(ajv.errors, ...handlerArgs);
+      }
+    }
 
     // handle route
-    const { operationId } = operation;
-    if (!operationId || !this.handlers[operationId]) {
+    const routeHandler = this.handlers[operationId];
+    if (!routeHandler) {
       // @TODO: add mock option to mock response based on operation responses
       // 501 not implemented
       const notImplementedHandler = this.handlers['501'] || this.handlers['notImplemented'];
       if (!notImplementedHandler) {
-        throw Error(`no handler registered for ${operationId} and no 501|notImplemented handler was registered`);
+        throw Error(`501-notImplemented: ${operationId} no handler registered`);
       }
       return notImplementedHandler(...handlerArgs);
     }
 
     // handle route
-    const routeHandler = this.handlers[operationId];
     return routeHandler(...handlerArgs);
   }
 
-  public getOperation(operationId: string): OpenAPIV3.OperationObject {
-    return (
-      _.chain(this.definition.paths)
-        // flatten operations into an array
-        .values()
-        .flatMap(_.values)
-        // match operationId
-        .find({ operationId } as any)
-        .value()
+  public validateRequest(req: RequestObject) {
+    const ajv = new Ajv();
+    const operation = this.matchOperation(req);
+
+    const { params, query, headers, cookies, requestBody } = parseRequest(req, operation.path);
+
+    const parameters = _.omitBy(
+      {
+        path: params,
+        query,
+        header: headers,
+        cookie: cookies,
+        requestBody,
+      },
+      _.isNil,
     );
+
+    // build input validation schema for operation
+    // @TODO: pre-build this for each operation for performance
+    const schema: InputValidationSchema = {
+      title: 'Request',
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        path: {
+          type: 'object',
+          additionalProperties: false,
+          properties: {},
+          required: [],
+        },
+        query: {
+          type: 'object',
+          properties: {},
+          additionalProperties: false,
+          required: [],
+        },
+        header: {
+          type: 'object',
+          additionalProperties: true,
+          properties: {},
+          required: [],
+        },
+        cookie: {
+          type: 'object',
+          additionalProperties: true,
+          properties: {},
+          required: [],
+        },
+      },
+    };
+
+    // params are dereferenced here, no reference objects.
+    const operationParameters = operation.parameters || [];
+    operationParameters.map((param: OpenAPIV3.ParameterObject) => {
+      const target = schema.properties[param.in];
+      if (param.required) {
+        target.required.push(param.name);
+      }
+      target.properties[param.name] = param.schema as OpenAPIV3.SchemaObject;
+    });
+
+    if (operation.requestBody) {
+      // @TODO: infer most specific media type from headers
+      const mediaType = 'application/json';
+      const jsonbody = (operation.requestBody as OpenAPIV3.RequestBodyObject).content[mediaType];
+      if (jsonbody && jsonbody.schema) {
+        schema.properties.requestBody = jsonbody.schema as OpenAPIV3.SchemaObject;
+      }
+    }
+
+    console.info(schema.properties);
+
+    return { ajv, valid: ajv.validate(schema, parameters) };
   }
 
-  public matchOperation(req: RequestObject): OpenAPIV3.OperationObject {
-    // normalize request for matching
-    req = normalizeRequest(req);
-
-    const operations = _.chain(this.definition.paths)
-      // flatten operations into an array with path + method
+  // flatten operations into an array with path + method
+  public getOperations() {
+    return _.chain(this.definition.paths)
       .entries()
       .flatMap(([path, methods]) =>
         _.map(_.entries(methods), ([method, operation]) => ({
@@ -140,6 +262,17 @@ export default class OpenAPIBackend {
         })),
       )
       .value();
+  }
+
+  public getOperation(operationId: string) {
+    return _.find(this.getOperations(), { operationId });
+  }
+
+  public matchOperation(req: RequestObject) {
+    // normalize request for matching
+    req = normalizeRequest(req);
+
+    const operations = this.getOperations();
 
     // first check for an exact match
     const exactMatch = _.find(operations, ({ path, method }) => method === req.method && path === req.path);
@@ -153,7 +286,7 @@ export default class OpenAPIBackend {
         return false;
       }
       // convert openapi path template to a regex pattern. {id} becomes ([^/]+)
-      const pathPattern = `^${path.replace(/\{.*\}/g, '([^/]+)').replace(/\//g, '\\/')}\\/?$`;
+      const pathPattern = `^${path.replace(/\{.*\}/g, '([^/]+)').replace(/\//g, '\\/')}$`;
       return Boolean(req.path.match(new RegExp(pathPattern, 'g')));
     });
     return templateMatch;

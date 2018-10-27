@@ -23,6 +23,10 @@
     "*.js",
     "*.d.ts"
   ],
+  "dependencies": {
+    "@types/lodash": "^4.14.117",
+    "lodash": "^4.17.11"
+  },
   "devDependencies": {
     "@types/jest": "^23.3.7",
     "@types/node": "^10.12.0",
@@ -42,9 +46,5 @@
     "lint": "tslint --format prose --project .",
     "prettier": "prettier --write src/** __tests__/**",
     "test": "NODE_ENV=test jest"
-  },
-  "dependencies": {
-    "@types/lodash": "^4.14.117",
-    "lodash": "^4.17.11"
   }
 }

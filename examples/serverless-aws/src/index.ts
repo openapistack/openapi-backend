@@ -1,6 +1,7 @@
 import 'source-map-support/register';
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import OpenAPIBackend from 'openapi-backend';
+import { ErrorObject } from 'ajv';
 
 const dummyHandler = (operationId: string) => async (event: APIGatewayProxyEvent) => ({
   statusCode: 200,
@@ -13,6 +14,14 @@ const dummyHandler = (operationId: string) => async (event: APIGatewayProxyEvent
 const notFoundHandler = async (event: APIGatewayProxyEvent) => ({
   statusCode: 404,
   body: JSON.stringify({ status: 404, error: 'Not found' }),
+  headers: {
+    'content-type': 'application/json',
+  },
+});
+
+const validationFailHandler = async (errors: ErrorObject[], event: APIGatewayProxyEvent) => ({
+  statusCode: 400,
+  body: JSON.stringify({ status: 400, errors }),
   headers: {
     'content-type': 'application/json',
   },
@@ -37,6 +46,16 @@ const api = new OpenAPIBackend({
       '/pets/{id}': {
         get: {
           operationId: 'getPetById',
+          parameters: [
+            {
+              name: 'id',
+              in: 'path',
+              required: true,
+              schema: {
+                type: 'string',
+              },
+            },
+          ],
           responses: {
             200: { description: 'ok' },
           },
@@ -48,6 +67,7 @@ const api = new OpenAPIBackend({
     getPets: dummyHandler('getPets'),
     getPetById: dummyHandler('getPetById'),
     notFound: notFoundHandler,
+    validationFail: validationFailHandler,
   },
 });
 
