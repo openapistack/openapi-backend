@@ -61,6 +61,7 @@ const api = new OpenAPIBackend({
     getPetById: async () => { status: 200, body: 'ok' }) },
     deletePetById: async () => { status: 200, body: 'ok' }) },
     notFound: async () => { status: 404, body: 'not found' }) },
+    validationFail: async (err) => { status: 400, body: JSON.stringify({ err }) }) },
   },
 });
 ```
