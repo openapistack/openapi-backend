@@ -71,6 +71,7 @@ import express from 'express';
 
 const app = express();
 app.use((req, res) => api.handleRequest(req, req, res));
+app.listen(9000);
 ```
 
 ### AWS Serverless (Lambda)
