@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import OpenAPIBackend from 'openapi-backend';
+import { ErrorObject } from 'ajv';
 
 const dummyHandler = (operationId: string) => async (req: Request, res: Response) => {
   return res.status(200).json({ operationId });
@@ -7,6 +8,10 @@ const dummyHandler = (operationId: string) => async (req: Request, res: Response
 
 const notFoundHandler = async (req: Request, res: Response) => {
   return res.status(404).json({ status: 404, error: 'Not found' });
+};
+
+const validationFailHandler = async (errors: ErrorObject[], req: Request, res: Response) => {
+  return res.status(400).json({ status: 400, errors });
 };
 
 const api = new OpenAPIBackend({
@@ -28,6 +33,16 @@ const api = new OpenAPIBackend({
       '/pets/{id}': {
         get: {
           operationId: 'getPetById',
+          parameters: [
+            {
+              name: 'id',
+              in: 'path',
+              required: true,
+              schema: {
+                type: 'string',
+              },
+            },
+          ],
           responses: {
             200: { description: 'ok' },
           },
@@ -39,6 +54,7 @@ const api = new OpenAPIBackend({
     getPets: dummyHandler('getPets'),
     getPetById: dummyHandler('getPetById'),
     notFound: notFoundHandler,
+    validationFail: validationFailHandler,
   },
 });
 
