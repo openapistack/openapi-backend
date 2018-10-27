@@ -1,0 +1,14 @@
+# build
+*.js
+*.js.map
+*.d.ts
+
+# include types
+!src/types/*.d.ts
+
+# include jest config
+!jest.config.js
+
+# npm
+node_modules
+npm_debug.log*
