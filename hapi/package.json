@@ -1,0 +1,32 @@
+{
+  "name": "openapi-backend-hapi",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
+  "license": "MIT",
+  "keywords": [],
+  "scripts": {
+    "link": "npm link ../../",
+    "build": "tsc",
+    "watch-build": "tsc -w",
+    "start": "node dist/index.js",
+    "watch-start": "nodemon --delay 2 -w dist/ -x 'npm run start'",
+    "dev": "concurrently -k -p '[{name}]' -n 'typescript,api' -c 'yellow.bold,cyan.bold' npm:watch-build npm:watch-start",
+    "lint": "tslint --format prose --project ."
+  },
+  "dependencies": {
+    "good": "^8.1.1",
+    "good-console": "^7.1.0",
+    "good-squeeze": "^5.1.0",
+    "hapi": "^17.6.0",
+    "source-map-support": "^0.5.9"
+  },
+  "devDependencies": {
+    "@types/hapi": "^17.6.2",
+    "@types/node": "^10.12.0",
+    "concurrently": "^4.0.1",
+    "nodemon": "^1.18.5",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.3"
+  }
+}
