@@ -2,17 +2,11 @@ import { Request, Response } from 'express';
 import OpenAPIBackend from 'openapi-backend';
 
 const dummyHandler = (operationId: string) => async (req: Request, res: Response) => {
-  return res
-    .status(200)
-    .header('content-type', 'application/json')
-    .end(JSON.stringify({ operationId }));
+  return res.status(200).json({ operationId });
 };
 
 const notFoundHandler = async (req: Request, res: Response) => {
-  return res
-    .status(404)
-    .header('content-type', 'application/json')
-    .end(JSON.stringify({ status: 404, error: 'Not found' }));
+  return res.status(404).json({ status: 404, error: 'Not found' });
 };
 
 const api = new OpenAPIBackend({
