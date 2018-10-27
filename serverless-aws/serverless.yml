@@ -1,0 +1,43 @@
+service: openapi-backend-serverless-aws
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: eu-west-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    BASEURL: ${self:custom.env.${self:provider.stage}.BASEURL}
+
+functions:
+  api:
+    handler: dist/handler.api
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{path+}
+          method: ANY
+
+package:
+  exclude:
+    - './**' # exclude everything but dist and deps
+    - '!node_modules/**' # can't use include or otherwise dev deps will be bundled
+    - '!dist/**'
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    port: ${env:PORT, '9000'}
+  env:
+    local:
+      BASEURL: http://localhost:${env:PORT, '9000'}
+    dev:
+      BASEURL:
+        "Fn::Join": ["", [
+          "https://",
+          { "Ref" : "ApiGatewayRestApi" },
+          ".execute-api.${self:provider.region}.amazonaws.com/${self:provider.stage}"
+        ]]

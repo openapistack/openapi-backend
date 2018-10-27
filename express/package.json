@@ -1,0 +1,30 @@
+{
+  "name": "openapi-backend-express",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
+  "license": "MIT",
+  "keywords": [],
+  "scripts": {
+    "link": "npm link ../../",
+    "build": "tsc",
+    "watch-build": "tsc -w",
+    "start": "node dist/index.js",
+    "watch-start": "nodemon --delay 2 -w dist/ -x 'npm run start'",
+    "dev": "concurrently -k -p '[{name}]' -n 'typescript,api' -c 'yellow.bold,cyan.bold' npm:watch-build npm:watch-start",
+    "lint": "tslint --format prose --project ."
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "source-map-support": "^0.5.9"
+  },
+  "devDependencies": {
+    "@types/morgan": "^1.7.35",
+    "@types/node": "^10.12.0",
+    "concurrently": "^4.0.1",
+    "nodemon": "^1.18.5",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.3"
+  }
+}
