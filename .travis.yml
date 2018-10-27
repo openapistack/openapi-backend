@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - 10
+install:
+  - npm install --silent
+  - npm run build
+script:
+  - npm run lint
+  - npm run test
