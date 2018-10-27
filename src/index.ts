@@ -37,7 +37,7 @@ interface InputValidationSchema {
 export function normalizeRequest(req: RequestObject) {
   return {
     ...req,
-    path: req.path
+    path: (req.path || '')
       .trim()
       .split('?')[0] // remove query string
       .replace(/^\/*/, '/') // add leading slash
