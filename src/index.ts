@@ -11,9 +11,11 @@ export interface RequestObject {
   headers: {
     [key: string]: string | string[];
   };
-  query?: {
-    [key: string]: string | string[];
-  };
+  query?:
+    | {
+        [key: string]: string | string[];
+      }
+    | string;
   body?: any;
 }
 

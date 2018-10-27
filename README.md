@@ -74,6 +74,31 @@ app.use((req, res) => api.handleRequest(req, req, res));
 app.listen(9000);
 ```
 
+### Hapi
+
+```javascript
+import Hapi from 'hapi';
+
+const server = new Hapi.Server({ host: '0.0.0.0', port: 9000 });
+server.route({
+  method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  path: '/{path*}',
+  handler: (req, h) =>
+    api.handleRequest(
+      {
+        method: req.method,
+        path: req.path,
+        body: req.payload,
+        query: req.query,
+        headers: req.headers,
+      },
+      req,
+      h,
+    ),
+});
+server.start();
+```
+
 ### AWS Serverless (Lambda)
 
 ```javascript
