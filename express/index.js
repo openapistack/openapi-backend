@@ -40,8 +40,8 @@ const api = new OpenAPIBackend({
     },
   },
   handlers: {
-    getPets: async (req, res) => res.status(200).json({ ok: true }),
-    getPetById: async (req, res) => res.status(200).json({ ok: true }),
+    getPets: async (req, res) => res.status(200).json({ operationId: 'getPets' }),
+    getPetById: async (req, res) => res.status(200).json({ operationId: 'getPetsById' }),
     notFound: async (req, res) => res.status(200).json({ err: 'not found' }),
     validationFail: async (err, req, res) => res.status(200).json({ err }),
   },

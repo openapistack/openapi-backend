@@ -15,9 +15,6 @@
     "lint": "tslint --format prose --project ."
   },
   "dependencies": {
-    "good": "^8.1.1",
-    "good-console": "^7.1.0",
-    "good-squeeze": "^5.1.0",
     "hapi": "^17.6.0",
     "openapi-backend": "^0.2.1",
     "source-map-support": "^0.5.9"
