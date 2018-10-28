@@ -11,7 +11,7 @@ const validationFailHandler = async (errors: ErrorObject[], req: Hapi.Request, h
   h.response({ status: 400, errors }).code(400);
 
 const api = new OpenAPIBackend({
-  document: {
+  definition: {
     openapi: '3.0.0',
     info: {
       title: 'api',

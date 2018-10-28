@@ -28,7 +28,7 @@ const validationFailHandler = async (errors: ErrorObject[], event: APIGatewayPro
 });
 
 const api = new OpenAPIBackend({
-  document: {
+  definition: {
     openapi: '3.0.0',
     info: {
       title: 'api',
