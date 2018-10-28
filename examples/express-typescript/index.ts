@@ -4,7 +4,6 @@ import express from 'express';
 import morgan from 'morgan';
 
 import { Request, Response } from 'express';
-import { ErrorObject } from 'ajv';
 
 const app = express();
 
@@ -49,7 +48,7 @@ const api = new OpenAPIBackend({
     getPets: async (req: Request, res: Response) => res.status(200).json({ operationId: 'getPets' }),
     getPetById: async (req: Request, res: Response) => res.status(200).json({ operationId: 'getPetById' }),
     notFound: async (req: Request, res: Response) => res.status(200).json({ err: 'not found' }),
-    validationFail: async (err: ErrorObject[], req: Request, res: Response) => res.status(200).json({ err }),
+    validationFail: async (err, req: Request, res: Response) => res.status(200).json({ err }),
   },
 });
 
