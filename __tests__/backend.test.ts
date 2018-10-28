@@ -1,5 +1,9 @@
+import path from 'path';
 import OpenAPIBackend from '../src/index';
 import { OpenAPIV3 } from 'openapi-types';
+
+const examplePetAPIJSON = path.join(__dirname, 'resources', 'example-pet-api.openapi.json');
+const examplePetAPIYAML = path.join(__dirname, 'resources', 'example-pet-api.openapi.yml');
 
 const headers = {
   accept: 'application/json',
@@ -18,7 +22,7 @@ const pathId: OpenAPIV3.ParameterObject = {
   },
 };
 
-const document: OpenAPIV3.Document = {
+const definition: OpenAPIV3.Document = {
   openapi: '3.0.0',
   info: {
     title: 'api',
@@ -74,29 +78,46 @@ const document: OpenAPIV3.Document = {
 };
 
 describe('OpenAPIBackend', () => {
-  test('can be initalised with a valid OpenAPI document in strict mode', async () => {
+  test('can be initalised with a valid OpenAPI document', async () => {
     // @TODO: read a complex document with as many features as possible here
-    const opts = { document, strict: true };
-    expect(new OpenAPIBackend(opts)).toBeInstanceOf(OpenAPIBackend);
+    const api = new OpenAPIBackend({ definition, strict: true });
+    await api.init();
+    expect(api.initalized).toEqual(true);
+  });
+
+  test('can be initalised using a valid YAML file', async () => {
+    // @TODO: read a complex document with as many features as possible here
+    const api = new OpenAPIBackend({ definition: examplePetAPIYAML, strict: true });
+    await api.init();
+    expect(api.initalized).toEqual(true);
+  });
+
+  test('can be initalised using a valid JSON file', async () => {
+    // @TODO: read a complex document with as many features as possible here
+    const api = new OpenAPIBackend({ definition: examplePetAPIJSON, strict: true });
+    await api.init();
+    expect(api.initalized).toEqual(true);
   });
 
   test('throws an error when initalised with an invalid document in strict mode', async () => {
-    const opts: any = { document: { invalid: 'not openapi' }, strict: true };
-    expect(() => new OpenAPIBackend(opts)).toThrowError();
+    const invalid: any = { invalid: 'not openapi' };
+    const api = new OpenAPIBackend({ definition: invalid, strict: true });
+    await expect(api.init()).rejects.toThrowError();
   });
 
   test('emits a warning with an invalid OpenAPI document not in strict mode', async () => {
-    const opts: any = { document: { invalid: 'not openapi' } };
+    const invalid: any = { invalid: 'not openapi' };
     const warn = console.warn;
     console.warn = jest.fn();
-    expect(new OpenAPIBackend(opts)).toBeInstanceOf(OpenAPIBackend);
+    const api = new OpenAPIBackend({ definition: invalid, strict: false });
+    await api.init();
     expect(console.warn).toBeCalledTimes(1);
     console.warn = warn; // reset console.warn
   });
 
-  describe('.matchOperation', async () => {
-    const api = new OpenAPIBackend({ document });
-    await api.init();
+  describe('.matchOperation', () => {
+    const api = new OpenAPIBackend({ definition });
+    api.init();
 
     test('matches GET /pets', async () => {
       const { operationId } = api.matchOperation({ path: '/pets', method: 'get', headers });
@@ -139,9 +160,9 @@ describe('OpenAPIBackend', () => {
     });
   });
 
-  describe('.registerHandler', async () => {
-    const api = new OpenAPIBackend({ document });
-    await api.init();
+  describe('.registerHandler', () => {
+    const api = new OpenAPIBackend({ definition });
+    beforeAll(async () => await api.init());
 
     const dummyHandler = jest.fn();
 
@@ -178,11 +199,11 @@ describe('OpenAPIBackend', () => {
     });
   });
 
-  describe('.handleRequest', () => {
+  describe('.handleRequest', async () => {
     const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
     const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
     const api = new OpenAPIBackend({
-      document,
+      definition,
       handlers: {
         getPets: dummyHandler('getPets'),
         getPetById: dummyHandler('getPetById'),

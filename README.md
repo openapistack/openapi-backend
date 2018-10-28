@@ -41,19 +41,28 @@ const api = new OpenAPIBackend({
       '/pets/{id}': {
         get: {
           operationId: 'getPetById',
-          responses: {
-            200: { description: 'ok' },
-          },
           parameters: [
             {
               name: 'id',
               in: 'path',
               required: true,
               schema: {
-                type: 'string',
+                $ref: '#/components/schemas/PetId',
               },
             },
           ],
+          responses: {
+            200: { description: 'ok' },
+          },
+        },
+      },
+    },
+    components: {
+      schemas: {
+        PetId: {
+          title: 'PetId',
+          type: 'integer',
+          example: 1,
         },
       },
     },

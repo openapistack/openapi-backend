@@ -15,7 +15,7 @@ const validationFailHandler = async (errors: ErrorObject[], req: Request, res: R
 };
 
 const api = new OpenAPIBackend({
-  document: {
+  definition: {
     openapi: '3.0.0',
     info: {
       title: 'api',

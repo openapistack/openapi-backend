@@ -95,7 +95,7 @@ export function validateDefinition(definition: OpenAPIV3.Document) {
 }
 
 interface ConstructorOpts {
-  document: OpenAPIV3.Document | string;
+  definition: OpenAPIV3.Document | string;
   strict?: boolean;
   validate?: boolean;
   handlers?: {
@@ -104,40 +104,37 @@ interface ConstructorOpts {
 }
 
 export default class OpenAPIBackend {
-  public document: OpenAPIV3.Document | string;
   public definition: OpenAPIV3.Document;
   public strict: boolean;
   public validate: boolean;
   public handlers: { [operationId: string]: Handler };
   public initalized: boolean;
 
+  private document: OpenAPIV3.Document | string;
   private internalHandlers = ['404', 'notFound', '501', 'notImplemented', '400', 'validationFail'];
 
   constructor(opts: ConstructorOpts) {
-    this.document = opts.document;
-    this.handlers = opts.handlers;
+    this.document = opts.definition;
     this.strict = Boolean(opts.strict);
     this.validate = _.isNil(opts.validate) ? true : opts.validate;
-
-    try {
-      // validate document
-      if (typeof this.document === 'object') {
-        validateDefinition(this.document);
-      }
-    } catch (err) {
-      if (this.strict) {
-        // in strict-mode, fail hard and re-throw the error
-        throw err;
-      } else {
-        // just emit a warning about the validation errors
-        console.warn(err);
-      }
-    }
+    this.handlers = opts.handlers || {};
   }
 
   public async init() {
     if (!this.definition) {
-      this.definition = await SwaggerParser.dereference(this.document);
+      try {
+        // load, dereference and valdidate definition
+        this.definition = await SwaggerParser.dereference(this.document);
+        validateDefinition(this.definition);
+      } catch (err) {
+        if (this.strict) {
+          // in strict-mode, fail hard and re-throw the error
+          throw err;
+        } else {
+          // just emit a warning about the validation errors
+          console.warn(err);
+        }
+      }
     }
 
     // register handlers
@@ -146,6 +143,7 @@ export default class OpenAPIBackend {
     }
 
     this.initalized = true;
+    return this;
   }
 
   public async handleRequest(req: RequestObject, ...handlerArgs: any[]) {
@@ -268,8 +266,6 @@ export default class OpenAPIBackend {
         schema.properties.requestBody = jsonbody.schema as OpenAPIV3.SchemaObject;
       }
     }
-
-    console.info(schema.properties);
 
     return { ajv, valid: ajv.validate(schema, parameters) };
   }
