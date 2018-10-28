@@ -1,9 +1,18 @@
-# OpenAPI Backend Tools
+# OpenAPI Backend
 [![Build Status](https://travis-ci.org/anttiviljami/openapi-backend.svg?branch=master)](https://travis-ci.org/anttiviljami/openapi-backend)
 [![npm version](https://badge.fury.io/js/openapi-backend.svg)](https://badge.fury.io/js/openapi-backend)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://anttiviljami.mit-license.org)
 
-Tools for building API backends with the OpenAPI standard
+Tools for building API backends with the [OpenAPI standard](https://github.com/OAI/OpenAPI-Specification)
+
+## Features
+
+- Build APIs by describing them in [OpenAPI document specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
+and importing them via YAML, JSON or as a JavaScript object
+- Register handlers for API operations in your favourite Node.js backend like [Express](#express), [Hapi](#hapi),
+[AWS Lambda](#aws-serverless-lambda) or [Azure Functions](#azure-serverless-function)
+- Use [JSON Schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#data-types) to validate
+API requests. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
 
 ## Quick Start
 
@@ -17,8 +26,8 @@ npm install --save openapi-backend
 import OpenAPIBackend from 'openapi-backend';
 
 const api = new OpenAPIBackend({
-  document: {
-    openapi: '3.0.0',
+  definition: {
+    openapi: '3.0.2',
     info: {
       title: 'My API',
       version: '1.0.0',
@@ -31,12 +40,6 @@ const api = new OpenAPIBackend({
             200: { description: 'ok' },
           },
         },
-        post: {
-          operationId: 'createPet',
-          responses: {
-            201: { description: 'ok' },
-          },
-        },
       },
       '/pets/{id}': {
         get: {
@@ -47,7 +50,7 @@ const api = new OpenAPIBackend({
               in: 'path',
               required: true,
               schema: {
-                $ref: '#/components/schemas/PetId',
+                type: 'integer',
               },
             },
           ],
@@ -57,27 +60,17 @@ const api = new OpenAPIBackend({
         },
       },
     },
-    components: {
-      schemas: {
-        PetId: {
-          title: 'PetId',
-          type: 'integer',
-          example: 1,
-        },
-      },
-    },
   },
   handlers: {
     // your platform specific request handlers here
-    getPets: async () => { status: 200, body: 'ok' },
-    createPet: async () => { status: 201, body: 'ok' }) },
-    getPetById: async () => { status: 200, body: 'ok' }) },
-    deletePetById: async () => { status: 200, body: 'ok' }) },
-    notFound: async () => { status: 404, body: 'not found' }) },
-    validationFail: async (err) => { status: 400, body: JSON.stringify({ err }) }) },
+    getPets: async (req) => ({ status: 200, body: 'ok' }),
+    getPetById: async (req) => ({ status: 200, body: 'ok' }),
+    notFound: async (req) => ({ status: 404, body: 'not found' }),
+    validationFail: async (err, req) => ({ status: 400, body: JSON.stringify({ err }) }),
   },
 });
 
+// initalize the backend
 api.init();
 ```
 

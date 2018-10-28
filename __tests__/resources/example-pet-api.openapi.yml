@@ -1,10 +1,8 @@
 openapi: 3.0.0
 info:
-  title: Example CRUD Pet API
-  description: Example CRUD API to demonstrate auto-generated openapi docs with Joi
-  version: 0.1.0
-security:
-  - ApiKey: []
+  title: Example API
+  description: Example CRUD API for pets
+  version: 1.0.0
 tags:
   - name: pets
     description: Pet operations
@@ -34,7 +32,7 @@ paths:
             $ref: '#/components/schemas/QueryOffset'
     post:
       operationId: createPet
-      summary: Create pet
+      summary: Create a pet
       description: Crete a new pet into the database
       tags:
         - pets
@@ -43,11 +41,11 @@ paths:
           description: Pet created succesfully
       parameters: []
       requestBody:
-        $ref: '#/components/requestBodies/CreatePetPayload'
+        $ref: '#/components/requestBodies/PetPayload'
   '/pets/{id}':
     get:
       operationId: getPetById
-      summary: Get a pet by its id
+      summary: Get a pet
       description: Returns a pet by its id in database
       tags:
         - pets
@@ -63,6 +61,26 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/PetId'
+    put:
+      operationId: replacePetById
+      summary: Replace pet
+      description: Replace an existing pet in the database
+      tags:
+        - pets
+      responses:
+        '200':
+          description: Pet replaced succesfully
+        '404':
+          description: Pet not found
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier for pet in database
+          required: true
+          schema:
+            $ref: '#/components/schemas/PetId'
+      requestBody:
+        $ref: '#/components/requestBodies/PetPayload'
     patch:
       operationId: updatePetById
       summary: Update pet
@@ -82,10 +100,10 @@ paths:
           schema:
             $ref: '#/components/schemas/PetId'
       requestBody:
-        $ref: '#/components/requestBodies/UpdatePetByIdPayload'
+        $ref: '#/components/requestBodies/PetPayload'
     delete:
       operationId: deletePetById
-      summary: Delete a pet by its id
+      summary: Delete a pet
       description: Deletes a pet by its id in database
       tags:
         - pets
@@ -101,8 +119,53 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/PetId'
+  '/pets/{id}/human':
+    get:
+      operationId: getHumanByPetId
+      summary: Get a pet's human
+      description: Get the human for a pet
+      tags:
+        - pets
+      responses:
+        '200':
+          description: Human corresponding pet id
+        '404':
+          description: Human or pet not found
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier for pet in database
+          required: true
+          schema:
+            $ref: '#/components/schemas/PetId'
+  /pets/meta:
+    get:
+      operationId: getPetsMeta
+      summary: Get pet metadata
+      description: Returns a list of metadata about pets and their relations in the database
+      tags:
+        - pets
+      responses:
+        '200':
+          description: Metadata for pets
 components:
   schemas:
+    PetId:
+      description: Unique identifier for pet in database
+      example: 1
+      title: PetId
+      type: integer
+    PetPayload:
+      type: object
+      properties:
+        name:
+          description: Name of the pet
+          example: Garfield
+          title: PetName
+          type: string
+      additionalProperties: false
+      required:
+        - name
     QueryLimit:
       description: Number of items to return
       example: 25
@@ -114,46 +177,10 @@ components:
       title: QueryOffset
       type: integer
       minimum: 0
-    PetId:
-      description: Unique identifier for pet in database
-      example: 1
-      title: PetId
-      type: integer
-    CreatePetPayload:
-      type: object
-      properties:
-        name:
-          description: Name of the pet
-          example: Garfield
-          title: PetName
-          type: string
-      additionalProperties: false
-      required:
-        - name
-    UpdatePetByIdPayload:
-      type: object
-      properties:
-        name:
-          description: Name of the pet
-          example: Garfield
-          title: PetName
-          type: string
-      additionalProperties: false
   requestBodies:
-    CreatePetPayload:
-      description: 'Request payload: createPet'
+    PetPayload:
+      description: 'Request payload containing a pet object'
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreatePetPayload'
-    UpdatePetByIdPayload:
-      description: 'Request payload: updatePetById'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdatePetByIdPayload'
-  securitySchemes:
-    ApiKey:
-      type: apiKey
-      name: x-api-key
-      in: header
+            $ref: '#/components/schemas/PetPayload'
