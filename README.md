@@ -136,9 +136,9 @@ module.exports.handler = (event, context) =>
 module.exports = (context, req) =>
   api.handleRequest(
     {
-      method: req.httpMethod,
+      method: req.method,
       path: req.params.path,
-      query: req.queryStringParameters,
+      query: req.query,
       body: req.body,
       headers: req.headers,
     },
