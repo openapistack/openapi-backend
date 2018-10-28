@@ -1,13 +1,15 @@
 {
   "name": "openapi-backend",
-  "description": "Non-opinionated tools for building API backends with the OpenAPI standard",
-  "version": "1.0.1",
+  "description": "Non-opinionated middleware tools for building API backends with the OpenAPI standard",
+  "version": "1.0.2",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "license": "MIT",
   "keywords": [
     "openapi",
     "swagger",
-    "backend"
+    "backend",
+    "middleware",
+    "validation"
   ],
   "homepage": "https://github.com/anttiviljami/openapi-backend",
   "repository": {
