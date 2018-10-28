@@ -30,7 +30,7 @@ import OpenAPIBackend from 'openapi-backend';
 
 const api = new OpenAPIBackend({
   definition: {
-    openapi: '3.0.2',
+    openapi: '3.0.0',
     info: {
       title: 'My API',
       version: '1.0.0',
