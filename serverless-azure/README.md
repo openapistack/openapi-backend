@@ -10,6 +10,6 @@ Requirements:
 
 ```
 npm install
-npm run dev # API running at http://localhost:9000
+npm start # API running at http://localhost:9000
 ```
 
