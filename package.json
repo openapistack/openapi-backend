@@ -1,7 +1,7 @@
 {
   "name": "openapi-backend",
-  "description": "Tools for building API backends with the OpenAPI standard",
-  "version": "1.0.0",
+  "description": "Non-opinionated tools for building API backends with the OpenAPI standard",
+  "version": "1.0.1",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "license": "MIT",
   "keywords": [
