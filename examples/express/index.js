@@ -22,20 +22,20 @@ const api = new OpenAPIBackend({
       '/pets/{id}': {
         get: {
           operationId: 'getPetById',
-          parameters: [
-            {
-              name: 'id',
-              in: 'path',
-              required: true,
-              schema: {
-                type: 'integer',
-              },
-            },
-          ],
           responses: {
             200: { description: 'ok' },
           },
         },
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: {
+              type: 'integer',
+            },
+          },
+        ],
       },
     },
   },
@@ -54,4 +54,3 @@ app.use((req, res) => api.handleRequest(req, req, res));
 
 // start server
 app.listen(9000, () => console.info('api listening at http://localhost:9000'));
-

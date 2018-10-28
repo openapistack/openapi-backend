@@ -1,7 +1,7 @@
 {
   "name": "openapi-backend",
   "description": "Tools for building API backends with the OpenAPI standard",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "license": "MIT",
   "keywords": [
@@ -21,7 +21,13 @@
   "types": "index.d.ts",
   "files": [
     "*.js",
-    "*.d.ts"
+    "*.d.ts",
+    "**/*.js",
+    "**/*.d.ts",
+    "!node_modules",
+    "!examples",
+    "!src",
+    "!*.config.js"
   ],
   "dependencies": {
     "@types/lodash": "^4.14.117",
