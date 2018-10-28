@@ -9,7 +9,12 @@ import { normalizeRequest, parseRequest, RequestObject } from './util/request';
 type Handler = (...args: any[]) => Promise<any>;
 type ErrorHandler = (errors: any, ...args: any[]) => Promise<any>;
 
-// OAS Operation Object containing the path and method so it can be placed in a flat array of operations
+/**
+ * OAS Operation Object containing the path and method so it can be placed in a flat array of operations
+ *
+ * @interface FlatOperation
+ * @extends {OpenAPIV3.OperationObject}
+ */
 interface FlatOperation extends OpenAPIV3.OperationObject {
   path: string;
   method: string;
@@ -26,6 +31,12 @@ interface InputValidationSchema {
   required?: string[];
 }
 
+/**
+ * Main class and the default export of the 'openapi-backend' module
+ *
+ * @export
+ * @class OpenAPIBackend
+ */
 export class OpenAPIBackend {
   public document: OpenAPIV3.Document;
   public inputDocument: OpenAPIV3.Document | string;
@@ -41,6 +52,16 @@ export class OpenAPIBackend {
   public ajvOpts: Ajv.Options = { coerceTypes: true };
   public schemas: { [operationId: string]: Ajv.ValidateFunction };
 
+  /**
+   * Creates an instance of OpenAPIBackend.
+   *
+   * @param opts - constructor options
+   * @param {OpenAPIV3.Document | string} opts.definition - the OpenAPI definition, file path or Document object
+   * @param {boolean} opts.strict - strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
+   * @param {boolean} opts.validate - whether to validate requests with Ajv (default: true)
+   * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - list of operation handlers to register
+   * @memberof OpenAPIBackend
+   */
   constructor(opts: {
     definition: OpenAPIV3.Document | string;
     strict?: boolean;
@@ -65,13 +86,22 @@ export class OpenAPIBackend {
     this.schemas = {};
   }
 
+  /**
+   * Initalizes OpenAPIBackend. This includes parsing, dereferencing and validation the OpenAPI document, building
+   * validation schemas for all API operations and registering all handlers.
+   *
+   * The init() method should be called right after creating a new instance of OpenAPIBackend
+   *
+   * @returns parent instance of OpenAPIBackend
+   * @memberof OpenAPIBackend
+   */
   public async init() {
     try {
       // parse the document
       this.document = await SwaggerParser.parse(this.inputDocument);
 
       // validate the document
-      this.validateDefinition(this.document);
+      this.validateDefinition();
 
       // dereference the document into definition
       this.definition = await SwaggerParser.dereference(this.document);
@@ -101,15 +131,32 @@ export class OpenAPIBackend {
     return this;
   }
 
-  public validateDefinition(definition: OpenAPIV3.Document) {
-    const { valid, errors } = validateOpenAPI(definition, 3);
+  /**
+   * Validates this.document, which is the parsed OpenAPI document. Throws an error if validation fails.
+   *
+   * @returns {OpenAPIV3.Document} parsed document
+   * @memberof OpenAPIBackend
+   */
+  public validateDefinition() {
+    const { valid, errors } = validateOpenAPI(this.document, 3);
     if (!valid) {
       const prettyErrors = JSON.stringify(errors, null, 2);
       throw new Error(`Document is not valid OpenAPI. ${errors.length} validation errors:\n${prettyErrors}`);
     }
-    return definition;
+    return this.document;
   }
 
+  /**
+   * Handles a request
+   * - 1. Routing: Matches the request to an API operation
+   * - 2. Validation: Validates the request against the API operation schema
+   * - 3. Handling: Passes the request on to a registered handler
+   *
+   * @param {RequestObject} req
+   * @param {...any[]} handlerArgs
+   * @returns {Promise} handler return value
+   * @memberof OpenAPIBackend
+   */
   public async handleRequest(req: RequestObject, ...handlerArgs: any[]) {
     if (!this.initalized) {
       // auto-initalize if not yet initalized
@@ -159,7 +206,13 @@ export class OpenAPIBackend {
     return routeHandler(...handlerArgs);
   }
 
-  public buildSchemaForOperation(operation: FlatOperation) {
+  /**
+   * Builds an Ajv schema validation function for an operation and registers it
+   *
+   * @param {FlatOperation} operation
+   * @memberof OpenAPIBackend
+   */
+  public buildSchemaForOperation(operation: FlatOperation): void {
     const { operationId } = operation;
     const schema: InputValidationSchema = {
       title: 'Request',
@@ -220,7 +273,13 @@ export class OpenAPIBackend {
     this.schemas[operationId] = ajv.compile(schema);
   }
 
-  // validate a request
+  /**
+   * Validates a request using a pre-compiled Ajv validation function and returns the result
+   *
+   * @param {RequestObject} req
+   * @returns {Ajv.ValidateFunction}
+   * @memberof OpenAPIBackend
+   */
   public validateRequest(req: RequestObject): Ajv.ValidateFunction {
     const operation = this.matchOperation(req);
     const { operationId } = operation;
@@ -246,7 +305,12 @@ export class OpenAPIBackend {
     return validate;
   }
 
-  // register multiple handlers
+  /**
+   * Registers multiple operation handlers
+   *
+   * @param {{ [operationId: string]: Handler }} handlers
+   * @memberof OpenAPIBackend
+   */
   public register(handlers: { [operationId: string]: Handler }): void {
     for (const operationId in handlers) {
       if (handlers[operationId]) {
@@ -255,7 +319,13 @@ export class OpenAPIBackend {
     }
   }
 
-  // register a handler for an operationId
+  /**
+   * Register a handler for an operation
+   *
+   * @param {string} operationId
+   * @param {Handler} handler
+   * @memberof OpenAPIBackend
+   */
   public registerHandler(operationId: string, handler: Handler): void {
     // make sure we are registering a function and not anything else
     if (typeof handler !== 'function') {
@@ -280,7 +350,12 @@ export class OpenAPIBackend {
     this.handlers[operationId] = handler;
   }
 
-  // flatten operations into an array but including path + method as properties
+  /**
+   * Flattens operations into a simple array of FlatOperation objects easy to work with
+   *
+   * @returns {FlatOperation[]}
+   * @memberof OpenAPIBackend
+   */
   public getOperations(): FlatOperation[] {
     const paths = _.get(this.definition, 'paths', {});
     return _.chain(paths)
@@ -298,10 +373,24 @@ export class OpenAPIBackend {
       .value();
   }
 
+  /**
+   * Gets a single operation based on operationId
+   *
+   * @param {string} operationId
+   * @returns {FlatOperation}
+   * @memberof OpenAPIBackend
+   */
   public getOperation(operationId: string): FlatOperation {
     return _.find(this.getOperations(), { operationId });
   }
 
+  /**
+   * Matches a request to an API operation (router)
+   *
+   * @param {RequestObject} req
+   * @returns {FlatOperation}
+   * @memberof OpenAPIBackend
+   */
   public matchOperation(req: RequestObject): FlatOperation {
     // normalize request for matching
     req = normalizeRequest(req);

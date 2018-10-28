@@ -15,11 +15,17 @@ export interface RequestObject {
   body?: any;
 }
 
-// normalises request
-// - http method is lowercase
-// - path leading slash 👍
-// - path trailing slash 👎
-// - path query string 👎
+/**
+ * Normalises request:
+ * - http method to lowercase
+ * - path leading slash 👍
+ * - path trailing slash 👎
+ * - path query string 👎
+ *
+ * @export
+ * @param {RequestObject} req
+ * @returns {RequestObject}
+ */
 export function normalizeRequest(req: RequestObject): RequestObject {
   return {
     ...req,
@@ -42,11 +48,18 @@ export interface ParsedRequestObject extends RequestObject {
   requestBody?: any;
 }
 
-// parses request
-// - parse json body
-// - parse path params based on uri template
-// - parse query string
-// - parse cookies from headers
+/**
+ * Parses request
+ * - parse json body
+ * - parse path params based on uri template
+ * - parse query string
+ * - parse cookies from headers
+ *
+ * @export
+ * @param {RequestObject} req
+ * @param {string} [path]
+ * @returns {ParsedRequestObject}
+ */
 export function parseRequest(req: RequestObject, path?: string): ParsedRequestObject {
   let requestBody = typeof req.body === 'object' ? req.body : null;
   try {
