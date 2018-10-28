@@ -68,6 +68,8 @@ const api = new OpenAPIBackend({
     validationFail: async (err) => { status: 400, body: JSON.stringify({ err }) }) },
   },
 });
+
+api.init();
 ```
 
 ### Express

@@ -94,8 +94,10 @@ describe('OpenAPIBackend', () => {
     console.warn = warn; // reset console.warn
   });
 
-  describe('.matchOperation', () => {
+  describe('.matchOperation', async () => {
     const api = new OpenAPIBackend({ document });
+    await api.init();
+
     test('matches GET /pets', async () => {
       const { operationId } = api.matchOperation({ path: '/pets', method: 'get', headers });
       expect(operationId).toEqual('getPets');
@@ -137,8 +139,10 @@ describe('OpenAPIBackend', () => {
     });
   });
 
-  describe('.registerHandler', () => {
+  describe('.registerHandler', async () => {
     const api = new OpenAPIBackend({ document });
+    await api.init();
+
     const dummyHandler = jest.fn();
 
     test('registers a handler with .registerHandler', async () => {
@@ -188,6 +192,7 @@ describe('OpenAPIBackend', () => {
         notFound: dummyHandler('notFound'),
       },
     });
+    api.init();
 
     test('handles GET /pets', async () => {
       const res = await api.handleRequest({ method: 'GET', path: '/pets', headers }, 'param0', 'param1');

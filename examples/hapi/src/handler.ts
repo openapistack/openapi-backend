@@ -35,13 +35,22 @@ const api = new OpenAPIBackend({
               in: 'path',
               required: true,
               schema: {
-                type: 'string',
+                $ref: '#/components/schemas/PetId',
               },
             },
           ],
           responses: {
             200: { description: 'ok' },
           },
+        },
+      },
+    },
+    components: {
+      schemas: {
+        PetId: {
+          title: 'PetId',
+          type: 'integer',
+          example: 1,
         },
       },
     },
@@ -53,6 +62,8 @@ const api = new OpenAPIBackend({
     validationFail: validationFailHandler,
   },
 });
+
+api.init();
 
 export async function handler(req: Hapi.Request, h: Hapi.ResponseToolkit) {
   return api.handleRequest(

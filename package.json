@@ -25,7 +25,9 @@
   ],
   "dependencies": {
     "@types/lodash": "^4.14.117",
-    "lodash": "^4.17.11"
+    "@types/swagger-parser": "^4.0.2",
+    "lodash": "^4.17.11",
+    "swagger-parser": "^6.0.1"
   },
   "devDependencies": {
     "@types/jest": "^23.3.7",

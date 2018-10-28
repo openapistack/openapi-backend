@@ -1,7 +1,9 @@
 import _ from 'lodash';
-import { OpenAPIV3 } from 'openapi-types';
-import { validate } from 'openapi-schema-validation';
 import Ajv from 'ajv';
+import SwaggerParser from 'swagger-parser';
+import { validate } from 'openapi-schema-validation';
+
+import { OpenAPIV3 } from 'openapi-types';
 
 type Handler = (...args: any[]) => Promise<any>;
 
@@ -93,29 +95,35 @@ export function validateDefinition(definition: OpenAPIV3.Document) {
 }
 
 interface ConstructorOpts {
-  document: OpenAPIV3.Document;
+  document: OpenAPIV3.Document | string;
   strict?: boolean;
   validate?: boolean;
-  handlers?: { [operationId: string]: Handler };
+  handlers?: {
+    [handler: string]: Handler;
+  };
 }
 
 export default class OpenAPIBackend {
+  public document: OpenAPIV3.Document | string;
   public definition: OpenAPIV3.Document;
   public strict: boolean;
   public validate: boolean;
   public handlers: { [operationId: string]: Handler };
+  public initalized: boolean;
 
   private internalHandlers = ['404', 'notFound', '501', 'notImplemented', '400', 'validationFail'];
 
   constructor(opts: ConstructorOpts) {
-    this.definition = opts.document;
+    this.document = opts.document;
+    this.handlers = opts.handlers;
     this.strict = Boolean(opts.strict);
     this.validate = _.isNil(opts.validate) ? true : opts.validate;
-    this.handlers = {};
 
-    // validate definition
     try {
-      validateDefinition(this.definition);
+      // validate document
+      if (typeof this.document === 'object') {
+        validateDefinition(this.document);
+      }
     } catch (err) {
       if (this.strict) {
         // in strict-mode, fail hard and re-throw the error
@@ -125,14 +133,27 @@ export default class OpenAPIBackend {
         console.warn(err);
       }
     }
+  }
+
+  public async init() {
+    if (!this.definition) {
+      this.definition = await SwaggerParser.dereference(this.document);
+    }
 
     // register handlers
-    if (opts.handlers) {
-      this.register(opts.handlers);
+    if (this.handlers) {
+      this.register(this.handlers);
     }
+
+    this.initalized = true;
   }
 
   public async handleRequest(req: RequestObject, ...handlerArgs: any[]) {
+    if (!this.initalized) {
+      // api has not yet been initalised
+      await this.init();
+    }
+
     const operation = this.matchOperation(req);
 
     if (!operation || !operation.operationId) {
@@ -176,7 +197,10 @@ export default class OpenAPIBackend {
   }
 
   public validateRequest(req: RequestObject) {
-    const ajv = new Ajv();
+    const ajv = new Ajv({
+      coerceTypes: true,
+    });
+
     const operation = this.matchOperation(req);
 
     const { params, query, headers, cookies, requestBody } = parseRequest(req, operation.path);
