@@ -1,7 +1,7 @@
-# OpenAPI Backend Express Example
+# OpenAPI Backend Hapi Example
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://anttiviljami.mit-license.org)
 
-Example project using [openapi-backend](backend) on [Express](https://expressjs.com/)
+Example project using [openapi-backend](backend) on [Hapi](https://hapijs.com/)
 
 ## QuickStart
 
