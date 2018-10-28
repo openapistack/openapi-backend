@@ -5,10 +5,6 @@ import { OpenAPIV3 } from 'openapi-types';
 const examplePetAPIJSON = path.join(__dirname, 'resources', 'example-pet-api.openapi.json');
 const examplePetAPIYAML = path.join(__dirname, 'resources', 'example-pet-api.openapi.yml');
 
-const headers = {
-  accept: 'application/json',
-};
-
 const responses: OpenAPIV3.ResponsesObject = {
   200: { description: 'ok' },
 };
@@ -18,7 +14,7 @@ const pathId: OpenAPIV3.ParameterObject = {
   in: 'path',
   required: true,
   schema: {
-    type: 'string',
+    type: 'integer',
   },
 };
 
@@ -42,31 +38,28 @@ const definition: OpenAPIV3.Document = {
     '/pets/{id}': {
       get: {
         operationId: 'getPetById',
-        parameters: [pathId],
         responses,
       },
       put: {
         operationId: 'replacePetById',
-        parameters: [pathId],
         responses,
       },
       patch: {
         operationId: 'updatePetById',
-        parameters: [pathId],
         responses,
       },
       delete: {
         operationId: 'deletePetById',
-        parameters: [pathId],
         responses,
       },
+      parameters: [pathId],
     },
     '/pets/{id}/owner': {
       get: {
         operationId: 'getOwnerByPetId',
-        parameters: [pathId],
         responses,
       },
+      parameters: [pathId],
     },
     '/pets/meta': {
       get: {
@@ -78,7 +71,7 @@ const definition: OpenAPIV3.Document = {
 };
 
 describe('OpenAPIBackend', () => {
-  test('can be initalised with a valid OpenAPI document', async () => {
+  test('can be initalised with a valid OpenAPI document as JS Object', async () => {
     // @TODO: read a complex document with as many features as possible here
     const api = new OpenAPIBackend({ definition, strict: true });
     await api.init();
@@ -105,7 +98,7 @@ describe('OpenAPIBackend', () => {
     await expect(api.init()).rejects.toThrowError();
   });
 
-  test('emits a warning with an invalid OpenAPI document not in strict mode', async () => {
+  test('emits a warning when initalised with an invalid OpenAPI document not in strict mode', async () => {
     const invalid: any = { invalid: 'not openapi' };
     const warn = console.warn;
     console.warn = jest.fn();
@@ -115,54 +108,9 @@ describe('OpenAPIBackend', () => {
     console.warn = warn; // reset console.warn
   });
 
-  describe('.matchOperation', () => {
-    const api = new OpenAPIBackend({ definition });
-    api.init();
-
-    test('matches GET /pets', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets', method: 'get', headers });
-      expect(operationId).toEqual('getPets');
-    });
-
-    test('matches POST /pets', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets', method: 'post', headers });
-      expect(operationId).toEqual('createPet');
-    });
-
-    test('matches GET /pets/{id}', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'get', headers });
-      expect(operationId).toEqual('getPetById');
-    });
-
-    test('matches PUT /pets/{id}', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'put', headers });
-      expect(operationId).toEqual('replacePetById');
-    });
-
-    test('matches PATCH /pets/{id}', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'patch', headers });
-      expect(operationId).toEqual('updatePetById');
-    });
-
-    test('matches DELETE /pets/{id}', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'delete', headers });
-      expect(operationId).toEqual('deletePetById');
-    });
-
-    test('matches GET /pets/{id}/owner', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1/owner', method: 'get', headers });
-      expect(operationId).toEqual('getOwnerByPetId');
-    });
-
-    test('matches GET /pets/meta', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/meta', method: 'get', headers });
-      expect(operationId).toEqual('getPetsMeta');
-    });
-  });
-
   describe('.registerHandler', () => {
     const api = new OpenAPIBackend({ definition });
-    beforeAll(async () => await api.init());
+    beforeAll(() => api.init());
 
     const dummyHandler = jest.fn();
 
@@ -196,77 +144,6 @@ describe('OpenAPIBackend', () => {
       expect(api.handlers['getPetById']).toBe(dummyHandler);
       expect(api.handlers['createPet']).toBe(dummyHandler);
       expect(api.handlers['notFound']).toBe(dummyHandler);
-    });
-  });
-
-  describe('.handleRequest', async () => {
-    const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
-    const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
-    const api = new OpenAPIBackend({
-      definition,
-      handlers: {
-        getPets: dummyHandler('getPets'),
-        getPetById: dummyHandler('getPetById'),
-        createPet: dummyHandler('createPet'),
-        updatePetById: dummyHandler('updatePetById'),
-        notImplemented: dummyHandler('notImplemented'),
-        notFound: dummyHandler('notFound'),
-      },
-    });
-    api.init();
-
-    test('handles GET /pets', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/pets', headers }, 'param0', 'param1');
-      expect(res).toEqual({ operationId: 'getPets' });
-      expect(dummyHandlers['getPets']).toBeCalledWith('param0', 'param1');
-    });
-
-    test('handles POST /pets', async () => {
-      const res = await api.handleRequest({ method: 'POST', path: '/pets', headers }, 'param1', 'param2');
-      expect(res).toEqual({ operationId: 'createPet' });
-      expect(dummyHandlers['createPet']).toBeCalledWith('param1', 'param2');
-    });
-
-    test('handles GET /pets/1', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/pets/1', headers }, 'param2', 'param3');
-      expect(res).toEqual({ operationId: 'getPetById' });
-      expect(dummyHandlers['getPetById']).toBeCalledWith('param2', 'param3');
-    });
-
-    test('handles PATCH /pets/1', async () => {
-      const res = await api.handleRequest({ method: 'PATCH', path: '/pets/1', headers }, 'param3', 'param4');
-      expect(res).toEqual({ operationId: 'updatePetById' });
-      expect(dummyHandlers['updatePetById']).toBeCalledWith('param3', 'param4');
-    });
-
-    test('handles a 404 for unregistered endpoint GET /humans', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/humans', headers }, 'param4', 'param5');
-      expect(res).toEqual({ operationId: 'notFound' });
-      expect(dummyHandlers['notFound']).toBeCalledWith('param4', 'param5');
-    });
-
-    test('handles a 501 for not implemented endpoint DELETE /pets/1', async () => {
-      const res = await api.handleRequest({ method: 'DELETE', path: '/pets/1', headers }, 'param5', 'param6');
-      expect(res).toEqual({ operationId: 'notImplemented' });
-      expect(dummyHandlers['notImplemented']).toBeCalledWith('param5', 'param6');
-    });
-
-    test('handles GET /pets/ with trailing slash', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/pets/', headers }, 'param6', 'param7');
-      expect(res).toEqual({ operationId: 'getPets' });
-      expect(dummyHandlers['getPets']).toBeCalledWith('param6', 'param7');
-    });
-
-    test('handles GET /pets/?hello=1 with query string', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/pets/?hello=1', headers }, 'param7', 'param8');
-      expect(res).toEqual({ operationId: 'getPets' });
-      expect(dummyHandlers['getPets']).toBeCalledWith('param7', 'param8');
-    });
-
-    test('handles GET pets with no leading slash', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: 'pets', headers }, 'param8', 'param9');
-      expect(res).toEqual({ operationId: 'getPets' });
-      expect(dummyHandlers['getPets']).toBeCalledWith('param8', 'param9');
     });
   });
 });

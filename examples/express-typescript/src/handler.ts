@@ -31,18 +31,18 @@ const api = new OpenAPIBackend({
         },
       },
       '/pets/{id}': {
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: {
+              $ref: '#/components/schemas/PetId',
+            },
+          },
+        ],
         get: {
           operationId: 'getPetById',
-          parameters: [
-            {
-              name: 'id',
-              in: 'path',
-              required: true,
-              schema: {
-                $ref: '#/components/schemas/PetId',
-              },
-            },
-          ],
           responses: {
             200: { description: 'ok' },
           },
