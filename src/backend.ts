@@ -1,13 +1,16 @@
 import _ from 'lodash';
 import Ajv from 'ajv';
-import { OpenAPIV3, OpenAPI } from 'openapi-types';
+import { OpenAPIV3 } from 'openapi-types';
 import { validate as validateOpenAPI } from 'openapi-schema-validation';
 import SwaggerParser from 'swagger-parser';
 
 import { normalizeRequest, parseRequest, RequestObject } from './util/request';
 
-type Handler = (...args: any[]) => Promise<any>;
-type ErrorHandler = (errors: any, ...args: any[]) => Promise<any>;
+// export public interfaces
+export type Document = OpenAPIV3.Document;
+export type Handler = (...args: any[]) => Promise<any>;
+export type ErrorHandler = (errors: any, ...args: any[]) => Promise<any>;
+export { RequestObject } from './util/request';
 
 /**
  * OAS Operation Object containing the path and method so it can be placed in a flat array of operations
@@ -38,9 +41,9 @@ interface InputValidationSchema {
  * @class OpenAPIBackend
  */
 export class OpenAPIBackend {
-  public document: OpenAPIV3.Document;
-  public inputDocument: OpenAPIV3.Document | string;
-  public definition: OpenAPIV3.Document;
+  public document: Document;
+  public inputDocument: Document | string;
+  public definition: Document;
 
   public strict: boolean;
   public validate: boolean;
@@ -56,14 +59,14 @@ export class OpenAPIBackend {
    * Creates an instance of OpenAPIBackend.
    *
    * @param opts - constructor options
-   * @param {OpenAPIV3.Document | string} opts.definition - the OpenAPI definition, file path or Document object
+   * @param {Document | string} opts.definition - the OpenAPI definition, file path or Document object
    * @param {boolean} opts.strict - strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
    * @param {boolean} opts.validate - whether to validate requests with Ajv (default: true)
-   * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - list of operation handlers to register
+   * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
    * @memberof OpenAPIBackend
    */
   constructor(opts: {
-    definition: OpenAPIV3.Document | string;
+    definition: Document | string;
     strict?: boolean;
     validate?: boolean;
     handlers?: {
@@ -87,8 +90,13 @@ export class OpenAPIBackend {
   }
 
   /**
-   * Initalizes OpenAPIBackend. This includes parsing, dereferencing and validation the OpenAPI document, building
-   * validation schemas for all API operations and registering all handlers.
+   * Initalizes OpenAPIBackend.
+   *
+   * 1. Loads and parses the OpenAPI document passed in constructor options
+   * 2. Validates the OpenAPI document
+   * 3. Builds validation schemas for all API operations
+   * 4. Marks property `initalized` to true
+   * 5. Registers all [Operation Handlers](#operation-handlers) passed in constructor options
    *
    * The init() method should be called right after creating a new instance of OpenAPIBackend
    *
@@ -132,25 +140,10 @@ export class OpenAPIBackend {
   }
 
   /**
-   * Validates this.document, which is the parsed OpenAPI document. Throws an error if validation fails.
-   *
-   * @returns {OpenAPIV3.Document} parsed document
-   * @memberof OpenAPIBackend
-   */
-  public validateDefinition() {
-    const { valid, errors } = validateOpenAPI(this.document, 3);
-    if (!valid) {
-      const prettyErrors = JSON.stringify(errors, null, 2);
-      throw new Error(`Document is not valid OpenAPI. ${errors.length} validation errors:\n${prettyErrors}`);
-    }
-    return this.document;
-  }
-
-  /**
    * Handles a request
-   * - 1. Routing: Matches the request to an API operation
-   * - 2. Validation: Validates the request against the API operation schema
-   * - 3. Handling: Passes the request on to a registered handler
+   * 1. Routing: Matches the request to an API operation
+   * 2. Validation: Validates the request against the API operation schema
+   * 3. Handling: Passes the request on to a registered handler
    *
    * @param {RequestObject} req
    * @param {...any[]} handlerArgs
@@ -204,6 +197,101 @@ export class OpenAPIBackend {
 
     // handle route
     return routeHandler(...handlerArgs);
+  }
+
+  /**
+   * Validates a request and returns the result.
+   *
+   * The method will first match the request to an API operation and use the pre-compiled Ajv validation schema to
+   * validate it.
+   *
+   * @param {RequestObject} req - request to validate
+   * @returns {Ajv.ValidateFunction}
+   * @memberof OpenAPIBackend
+   */
+  public validateRequest(req: RequestObject): Ajv.ValidateFunction {
+    const operation = this.matchOperation(req);
+    const { operationId } = operation;
+
+    // get pre-compiled ajv schema for operation
+    const validate = this.schemas[operationId];
+
+    // build a parameter object to validate
+    const { params, query, headers, cookies, requestBody } = parseRequest(req, operation.path);
+    const parameters = _.omitBy(
+      {
+        path: params,
+        query,
+        header: headers,
+        cookie: cookies,
+        requestBody,
+      },
+      _.isNil,
+    );
+
+    // validate parameters against pre-compiled schema
+    validate(parameters);
+    return validate;
+  }
+
+  /**
+   * Registers multiple operation handlers
+   *
+   * @param {{ [operationId: string]: Handler }} handlers
+   * @memberof OpenAPIBackend
+   */
+  public register(handlers: { [operationId: string]: Handler }): void {
+    for (const operationId in handlers) {
+      if (handlers[operationId]) {
+        this.registerHandler(operationId, handlers[operationId]);
+      }
+    }
+  }
+
+  /**
+   * Registers a handler for an operation
+   *
+   * @param {string} operationId
+   * @param {Handler | ErrorHandler} handler
+   * @memberof OpenAPIBackend
+   */
+  public registerHandler(operationId: string, handler: Handler | ErrorHandler): void {
+    // make sure we are registering a function and not anything else
+    if (typeof handler !== 'function') {
+      throw new Error('Handler should be a function');
+    }
+
+    // if initalized, check that operation matches an operationId or is one of our allowed handlers
+    if (this.initalized) {
+      const operation = this.getOperation(operationId);
+      if (!operation && !_.includes(this.allowedHandlers, operationId)) {
+        const err = `Unknown operationId ${operationId}`;
+        // in strict mode, throw Error, otherwise just emit a warning
+        if (this.strict) {
+          throw new Error(`${err}. Refusing to register handler`);
+        } else {
+          console.warn(err);
+        }
+      }
+    }
+
+    // register the handler
+    this.handlers[operationId] = handler;
+  }
+
+  /**
+   * Validates this.document, which is the parsed OpenAPI document. Throws an error if validation fails.
+   *
+   * @returns {Document} parsed document
+   * @memberof OpenAPIBackend
+   */
+  public validateDefinition() {
+    const { valid, errors } = validateOpenAPI(this.document, 3);
+    if (!valid) {
+      const prettyErrors = JSON.stringify(errors, null, 2);
+      throw new Error(`Document is not valid OpenAPI. ${errors.length} validation errors:\n${prettyErrors}`);
+    }
+    return this.document;
   }
 
   /**
@@ -271,83 +359,6 @@ export class OpenAPIBackend {
     // build the schema and register it
     const ajv = new Ajv(this.ajvOpts);
     this.schemas[operationId] = ajv.compile(schema);
-  }
-
-  /**
-   * Validates a request using a pre-compiled Ajv validation function and returns the result
-   *
-   * @param {RequestObject} req
-   * @returns {Ajv.ValidateFunction}
-   * @memberof OpenAPIBackend
-   */
-  public validateRequest(req: RequestObject): Ajv.ValidateFunction {
-    const operation = this.matchOperation(req);
-    const { operationId } = operation;
-
-    // get pre-compiled ajv schema for operation
-    const validate = this.schemas[operationId];
-
-    // build a parameter object to validate
-    const { params, query, headers, cookies, requestBody } = parseRequest(req, operation.path);
-    const parameters = _.omitBy(
-      {
-        path: params,
-        query,
-        header: headers,
-        cookie: cookies,
-        requestBody,
-      },
-      _.isNil,
-    );
-
-    // validate parameters against pre-compiled schema
-    validate(parameters);
-    return validate;
-  }
-
-  /**
-   * Registers multiple operation handlers
-   *
-   * @param {{ [operationId: string]: Handler }} handlers
-   * @memberof OpenAPIBackend
-   */
-  public register(handlers: { [operationId: string]: Handler }): void {
-    for (const operationId in handlers) {
-      if (handlers[operationId]) {
-        this.registerHandler(operationId, handlers[operationId]);
-      }
-    }
-  }
-
-  /**
-   * Register a handler for an operation
-   *
-   * @param {string} operationId
-   * @param {Handler} handler
-   * @memberof OpenAPIBackend
-   */
-  public registerHandler(operationId: string, handler: Handler): void {
-    // make sure we are registering a function and not anything else
-    if (typeof handler !== 'function') {
-      throw new Error('Handler should be a function');
-    }
-
-    // if initalized, check that operation matches an operationId or is one of our allowed handlers
-    if (this.initalized) {
-      const operation = this.getOperation(operationId);
-      if (!operation && !_.includes(this.allowedHandlers, operationId)) {
-        const err = `Unknown operationId ${operationId}`;
-        // in strict mode, throw Error, otherwise just emit a warning
-        if (this.strict) {
-          throw new Error(`${err}. Refusing to register handler`);
-        } else {
-          console.warn(err);
-        }
-      }
-    }
-
-    // register the handler
-    this.handlers[operationId] = handler;
   }
 
   /**

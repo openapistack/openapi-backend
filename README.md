@@ -19,6 +19,10 @@ API requests. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under 
 
 (Currently only OpenAPI v3.0.0+ is supported)
 
+## Documentation
+
+See [DOCS.md](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md)
+
 ## Quick Start
 
 Full [example projects](https://github.com/anttiviljami/openapi-backend/tree/master/examples) included in the repo
