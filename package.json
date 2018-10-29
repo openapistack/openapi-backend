@@ -1,6 +1,6 @@
 {
   "name": "openapi-backend",
-  "description": "Non-opinionated middleware tools for building APIs with the OpenAPI standard in your favourite backend like Express, Hapi, Azure Functions or AWS Lambda. Includes routing, validation and mocking functionality.",
+  "description": "Non-opinionated middleware tools for building APIs with the OpenAPI standard in your favourite backend or framework like Express, Hapi, Azure Functions or AWS Lambda. Includes routing, validation and mocking functionality.",
   "version": "1.0.4",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "license": "MIT",
