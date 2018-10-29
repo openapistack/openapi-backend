@@ -4,24 +4,24 @@
 
 - [Installation](#installation)
 - [Class OpenAPIBackend](#class-openapibackend)
-  - [new OpenAPIBackend(opts): OpenAPIBackend](#new-openapibackendopts-openapibackend)
+  - [new OpenAPIBackend(opts)](#new-openapibackendopts)
     - [Parameter: opts](#parameter-opts)
     - [Parameter: opts.definition](#parameter-optsdefinition)
     - [Parameter: opts.strict](#parameter-optsstrict)
     - [Parameter: opts.validate](#parameter-optsvalidate)
     - [Parameter: opts.handlers](#parameter-optshandlers)
-  - [.init(): Promise&lt;OpenAPIBackend&gt;](#init-promiseltopenapibackendgt)
-  - [.handleRequest(req, ...handlerArgs): Promise&lt;any&gt;](#handlerequestreq-handlerargs-promiseltanygt)
+  - [.init()](#init)
+  - [.handleRequest(req, ...handlerArgs)](#handlerequestreq-handlerargs)
     - [Parameter: req](#parameter-req)
     - [Parameter: handlerArgs](#parameter-handlerargs)
-  - [.validateRequest(req): Ajv.ValidateFunction](#validaterequestreq-ajvvalidatefunction)
+  - [.validateRequest(req)](#validaterequestreq)
     - [Parameter: req](#parameter-req)
-  - [.register(handlers): void](#registerhandlers-void)
+  - [.register(handlers)](#registerhandlers)
     - [Parameter: opts.handlers](#parameter-optshandlers)
-  - [.registerHandler(operationId, handler): void](#registerhandleroperationid-handler-void)
+  - [.registerHandler(operationId, handler)](#registerhandleroperationid-handler)
     - [Parameter: operationId](#parameter-operationid)
     - [Parameter: handler](#parameter-handler)
-  - [.validateDefinition(): Document](#validatedefinition-document)
+  - [.validateDefinition()](#validatedefinition)
 - [Interfaces](#interfaces)
   - [Document Object](#document-object)
   - [Request Object](#request-object)
@@ -55,10 +55,10 @@ The main `OpenAPIBackend` class is exported as the default export for the `'open
 
 ## Class OpenAPIBackend
 
-The OpenAPIBackend is the main class you can interact with. You can create a new instance and initalize it with your
+OpenAPIBackend is the main class you can interact with. You can create a new instance and initalize it with your
 OpenAPI document and handlers.
 
-### new OpenAPIBackend(opts): OpenAPIBackend
+### new OpenAPIBackend(opts)
 
 Creates an instance of OpenAPIBackend and returns it.
 
@@ -104,7 +104,7 @@ Optional. [Operation Handlers](#operation-handlers) to be registered.
 
 Type: `{ [operationId: string]: Handler | ErrorHandler }`
 
-### .init(): Promise&lt;OpenAPIBackend&gt;
+### .init()
 
 Initalizes the OpenAPIBackend instace for use.
 
@@ -114,7 +114,7 @@ Initalizes the OpenAPIBackend instace for use.
 1. Marks member property `initalized` to true
 1. Registers all [Operation Handlers](#operation-handlers) passed in constructor options
 
-The `init()` method should be caAled right after creating a new instance of OpenAPIBackend. Although for ease of use, 
+The `init()` method should be caAled right after creating a new instance of OpenAPIBackend. Although for ease of use,
 some methods like `handleRequest()` will call the method if the initalized member property is set to false.
 
 Returns the initalized OpenAPI backend instance.
@@ -124,7 +124,7 @@ Example:
 api.init();
 ```
 
-### .handleRequest(req, ...handlerArgs): Promise&lt;any&gt;
+### .handleRequest(req, ...handlerArgs)
 
 Handles a request
 
@@ -162,7 +162,7 @@ response or the Lambda event and context.
 
 Type: `any[]`
 
-### .validateRequest(req): Ajv.ValidateFunction
+### .validateRequest(req)
 
 Validates a request and returns the result.
 
@@ -197,7 +197,7 @@ A request to validate.
 
 Type: [`RequestObject`](#request-object)
 
-### .register(handlers): void
+### .register(handlers)
 
 Registers multiple [Operation Handlers](#operation-handlers).
 
@@ -216,7 +216,7 @@ api.register({
 
 Type: `{ [operationId: string]: Handler | ErrorHandler }`
 
-### .registerHandler(operationId, handler): void
+### .registerHandler(operationId, handler)
 
 Registers a handler for an operation.
 
@@ -242,7 +242,7 @@ The operation handler.
 
 Type: `Handler | ErrorHandler`
 
-### .validateDefinition(): Document
+### .validateDefinition()
 
 Validates and returns the parsed document. Throws an error if validation fails.
 
@@ -336,18 +336,19 @@ These get called with the `.handleRequest()` method after routing and (optionall
 
 Example handler for Express
 ```javascript
-async function getPetHandler(req, res) {
+async function getPetByIdHandler(req, res) {
   const { id } = req.query;
-  const pets = await getPetById(id);
+  const pets = await pets.getPetById(id);
   return res.status(200).json({ result: pets });
 }
+api.register('getPetById', getPetByIdHandler);
 ```
 
 There are different ways to register operation handlers:
 
-1. In the `new OpenAPIBackend` constructor options
-1. With the `.register()` method
-1. With the `.registerHandler()` method
+1. In the [`new OpenAPIBackend`](#new-openapibackendopts) constructor options
+1. With the [`.register()`](#registerhandlers) method
+1. With the [`.registerHandler()`](registerhandleroperationid-handler) method
 
 In addition to the operationId handlers, you should also specify special handlers for different situtations:
 
@@ -358,8 +359,11 @@ The `validationFail` handler gets called by `.handleRequest()` if the input vali
 HINT: You should probably return a 400 status code from this handler.
 
 Example handler:
-```
-@TODO
+```javascript
+function validationFailHandler(err, req, res) {
+  return res.status(400).json({ status: 400, err });
+}
+api.register('notImplemented', validationFailHandler);
 ```
 
 ### notFound Handler
@@ -370,8 +374,11 @@ definitions.
 HINT: You should probably return a 404 status code from this handler.
 
 Example handler:
-```
-@TODO
+```javascript
+function notFoundHandler(req, res) {
+  return res.status(404).json({ status: 404, err: 'Not found' });
+}
+api.register('notFound', notFoundHandler);
 ```
 
 ### notImplemented Handler
@@ -382,6 +389,9 @@ the matched operation.
 HINT: You can either mock the response or return a 501 status code.
 
 Example handler:
-```
-@TODO
+```javascript
+function notImplementedHandler(req, res) {
+  return res.status(404).json({ status: 501, err: 'No handler registered for operation' });
+}
+api.register('notImplemented', notImplementedHandler);
 ```
