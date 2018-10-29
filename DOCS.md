@@ -2,6 +2,7 @@
 
 <!-- toc -->
 
+- [Getting Started](#getting-started)
 - [Installation](#installation)
 - [Class OpenAPIBackend](#class-openapibackend)
   - [new OpenAPIBackend(opts)](#new-openapibackendopts)
@@ -31,6 +32,11 @@
   - [notImplemented Handler](#notimplemented-handler)
 
 <!-- tocstop -->
+
+## Getting Started
+
+The easiest way to get started with OpenAPI Backend is to check out one of the
+[example projects](https://github.com/anttiviljami/openapi-backend/tree/master/examples).
 
 ## Installation
 
