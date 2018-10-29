@@ -10,8 +10,8 @@
     - [Parameter: opts.strict](#parameter-optsstrict)
     - [Parameter: opts.validate](#parameter-optsvalidate)
     - [Parameter: opts.handlers](#parameter-optshandlers)
-  - [.init(): Promise](#init-promiseopenapibackend)
-  - [.handleRequest(req, ...handlerArgs): Promise](#handlerequestreq-handlerargs-promiseany)
+  - [.init(): Promise&lt;OpenAPIBackend&gt;](#init-promiseltopenapibackendgt)
+  - [.handleRequest(req, ...handlerArgs): Promise&lt;any&gt;](#handlerequestreq-handlerargs-promiseltanygt)
     - [Parameter: req](#parameter-req)
     - [Parameter: handlerArgs](#parameter-handlerargs)
   - [.validateRequest(req): Ajv.ValidateFunction](#validaterequestreq-ajvvalidatefunction)
@@ -104,7 +104,7 @@ Optional. [Operation Handlers](#operation-handlers) to be registered.
 
 Type: `{ [operationId: string]: Handler | ErrorHandler }`
 
-### .init(): Promise<OpenAPIBackend>
+### .init(): Promise&lt;OpenAPIBackend&gt;
 
 Initalizes the OpenAPIBackend instace for use.
 
@@ -124,7 +124,7 @@ Example:
 api.init();
 ```
 
-### .handleRequest(req, ...handlerArgs): Promise<any>
+### .handleRequest(req, ...handlerArgs): Promise&lt;any&gt;
 
 Handles a request
 
