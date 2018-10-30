@@ -209,7 +209,8 @@ Type: [`Request`](#request-object)
 
 ### .matchOperation(req)
 
-Matches a request to an API operation (router) and returns the matched [Operation Object](#operation-object).
+Matches a request to an API operation (router) and returns the matched [Operation Object](#operation-object). Returns
+`undefined` if no operation was matched.
 
 Example usage:
 ```javascript
