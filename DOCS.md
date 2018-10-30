@@ -157,7 +157,7 @@ const response = await api.handleRequest(
 
 A request to handle.
 
-Type: [`RequestObject`](#request-object)
+Type: [`Request`](#request-object)
 
 #### Parameter: handlerArgs
 
@@ -201,7 +201,26 @@ if (validation.errors) {
 
 A request to validate.
 
-Type: [`RequestObject`](#request-object)
+Type: [`Request`](#request-object)
+
+### .matchOperation(req)
+
+Matches a request to an API operation (router) and returns the matched [Operation Object](#operation-object).
+
+Example usage:
+```javascript
+const operation = api.matchOperation({
+  method: 'GET',
+  path: '/pets',
+  headers: { accept: 'application/json' },
+});
+```
+
+#### Parameter: req
+
+A request to match to an Operation.
+
+Type: [`Request`](#request-object)
 
 ### .register(handlers)
 
@@ -253,86 +272,6 @@ Type: `Handler | ErrorHandler`
 Validates and returns the parsed document. Throws an error if validation fails.
 
 *NOTE: This method can't be called before `init()` is complete.*
-
-## Interfaces
-
-The `openapi-backend` module exports type definitions for TypeScript users. You can import them like you would normally.
-
-### Document Object
-
-The `Document` interface is a JavaScript object representation of an OpenAPI specification document.
-
-OpenAPIBackend uses type definitions from [`openapi-types`](https://www.npmjs.com/package/openapi-types), but
-re-exports the Document interface for ease of use.
-
-NOTE: Only OpenAPI v3+ documents are currently supported.
-
-```typescript
-import { Document } from 'openapi-backend';
-```
-
-An example Document Object:
-```javascript
-const definition = {
-  openapi: '3.0.1',
-  info: {
-    title: 'My API',
-    version: '1.0.0',
-  },
-  paths: {
-    '/pets': {
-      get: {
-        operationId: 'getPets',
-        responses: {
-          200: { description: 'ok' },
-        },
-      },
-    },
-    '/pets/{id}': {
-      get: {
-        operationId: 'getPetById',
-        responses: {
-          200: { description: 'ok' },
-        },
-      },
-      parameters: [
-        {
-          name: 'id',
-          in: 'path',
-          required: true,
-          schema: {
-            type: 'integer',
-          },
-        },
-      ],
-    },
-  },
-}
-```
-
-### Request Object
-
-The `RequestObject` interface represents a generic HTTP request.
-
-```javascript
-import { RequestObject } from 'openapi-backend';
-```
-
-Example object
-```javascript
-const request = {
-  // HTTP method of the request
-  method: 'POST',
-  // path of the request
-  path: '/pets/actions/treat',
-  // HTTP request headers
-  headers: { 'accept': 'application/json', 'cookie': 'sessionid=abc123;' },
-  // parsed query parameters (optional), we also parse query params from the path property
-  query: { 'format': 'json' },
-  // the request body (optional), either raw buffer/string or a parsed object/array
-  body: { treat: 'bone' },
-};
-```
 
 ## Operation Handlers
 
@@ -400,4 +339,169 @@ function notImplementedHandler(req, res) {
   return res.status(404).json({ status: 501, err: 'No handler registered for operation' });
 }
 api.register('notImplemented', notImplementedHandler);
+```
+
+## Interfaces
+
+The `openapi-backend` module exports type definitions for TypeScript users. You can import them like you would normally.
+
+### Document Object
+
+The `Document` interface is a JavaScript object representation of an OpenAPI specification document.
+
+OpenAPIBackend uses type definitions from [`openapi-types`](https://www.npmjs.com/package/openapi-types), but
+re-exports the Document interface for ease of use.
+
+NOTE: Only OpenAPI v3+ documents are currently supported.
+
+```typescript
+import { Document } from 'openapi-backend';
+```
+
+An example Document Object:
+```javascript
+const definition = {
+  openapi: '3.0.1',
+  info: {
+    title: 'My API',
+    version: '1.0.0',
+  },
+  paths: {
+    '/pets': {
+      get: {
+        operationId: 'getPets',
+        responses: {
+          200: { description: 'ok' },
+        },
+      },
+    },
+    '/pets/{id}': {
+      get: {
+        operationId: 'getPetById',
+        responses: {
+          200: { description: 'ok' },
+        },
+      },
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
+          schema: {
+            type: 'integer',
+          },
+        },
+      ],
+    },
+  },
+}
+```
+
+### Request Object
+
+The `Request` interface represents a generic HTTP request.
+
+```javascript
+import { Request } from 'openapi-backend';
+```
+
+Example object
+```javascript
+const request = {
+  // HTTP method of the request
+  method: 'POST',
+  // path of the request
+  path: '/pets/1/treat',
+  // HTTP request headers
+  headers: { 'accept': 'application/json', 'cookie': 'sessionid=abc123;' },
+  // parsed query parameters (optional), we also parse query params from the path property
+  query: { 'format': 'json' },
+  // the request body (optional), either raw buffer/string or a parsed object/array
+  body: { treat: 'bone' },
+};
+```
+
+### ParsedRequest Object
+
+The `ParsedRequest` interface represents a generic parsed HTTP request.
+
+```javascript
+import { ParsedRequest } from 'openapi-backend';
+```
+
+Example object
+```javascript
+const parsedRequest = {
+  // HTTP method of the request (in lowercase)
+  method: 'post',
+  // path of the request
+  path: '/pets/1/treat',
+  // the path params for the request
+  params: { id: 1 },
+  // HTTP request headers
+  headers: { 'accept': 'application/json', 'cookie': 'sessionid=abc123;' },
+  // the parsed cookies
+  cookies: { sessionid: 'abc123' },
+  // parsed query parameters (optional), we also parse query params from the path property
+  query: { 'format': 'json' },
+  // the request body (optional), either raw buffer/string or a parsed object/array
+  body: '{ "treat": "bone" }',
+  // the parsed request body
+  requestBody: { treat: 'bone' },
+};
+```
+
+### Operation Object
+
+The `Operation` interface is an [OpenAPI Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#operationObject)
+extended with the path and method of the operation for easier use. It should also include the path base object's
+parameters in its `parameters` property. 
+
+All JSON schemas in an Operation Object should be dereferenced i.e. not contain any `$ref` properties.
+
+```javascript
+import { Operation } from 'openapi-backend';
+```
+
+Example object
+```javascript
+const operation = {
+  method: 'patch',
+  path: '/pets/{id}',
+  operationId: 'updatePetById',
+  parameters: [
+    {
+      name: 'id',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'integer',
+        minimum: 0,
+      },
+    },
+  ],
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            name: {
+              type: 'string',
+            },
+            age: {
+              type: 'integer',
+            },
+          },
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Pet updated succesfully',
+    },
+  },
+};
 ```

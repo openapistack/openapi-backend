@@ -4,24 +4,23 @@ import { OpenAPIV3 } from 'openapi-types';
 import { validate as validateOpenAPI } from 'openapi-schema-validation';
 import SwaggerParser from 'swagger-parser';
 
-import { normalizeRequest, parseRequest, RequestObject } from './util/request';
+import { normalizeRequest, parseRequest, Request } from './util/request';
 
 // export public interfaces
 export type Document = OpenAPIV3.Document;
 export type Handler = (...args: any[]) => Promise<any>;
 export type ErrorHandler = (errors: any, ...args: any[]) => Promise<any>;
-export { RequestObject } from './util/request';
+export { Request } from './util/request';
 
 /**
  * OAS Operation Object containing the path and method so it can be placed in a flat array of operations
  *
- * @interface FlatOperation
+ * @interface Operation
  * @extends {OpenAPIV3.OperationObject}
  */
-interface FlatOperation extends OpenAPIV3.OperationObject {
+export interface Operation extends OpenAPIV3.OperationObject {
   path: string;
   method: string;
-  parentParameters?: OpenAPIV3.ParameterObject[];
 }
 
 interface InputValidationSchema {
@@ -145,12 +144,12 @@ export class OpenAPIBackend {
    * 2. Validation: Validates the request against the API operation schema
    * 3. Handling: Passes the request on to a registered handler
    *
-   * @param {RequestObject} req
+   * @param {Request} req
    * @param {...any[]} handlerArgs
    * @returns {Promise} handler return value
    * @memberof OpenAPIBackend
    */
-  public async handleRequest(req: RequestObject, ...handlerArgs: any[]) {
+  public async handleRequest(req: Request, ...handlerArgs: any[]) {
     if (!this.initalized) {
       // auto-initalize if not yet initalized
       await this.init();
@@ -205,11 +204,11 @@ export class OpenAPIBackend {
    * The method will first match the request to an API operation and use the pre-compiled Ajv validation schema to
    * validate it.
    *
-   * @param {RequestObject} req - request to validate
+   * @param {Request} req - request to validate
    * @returns {Ajv.ValidateFunction}
    * @memberof OpenAPIBackend
    */
-  public validateRequest(req: RequestObject): Ajv.ValidateFunction {
+  public validateRequest(req: Request): Ajv.ValidateFunction {
     const operation = this.matchOperation(req);
     const { operationId } = operation;
 
@@ -232,6 +231,34 @@ export class OpenAPIBackend {
     // validate parameters against pre-compiled schema
     validate(parameters);
     return validate;
+  }
+
+  /**
+   * Matches a request to an API operation (router)
+   *
+   * @param {Request} req
+   * @returns {Operation}
+   * @memberof OpenAPIBackend
+   */
+  public matchOperation(req: Request): Operation {
+    // normalize request for matching
+    req = normalizeRequest(req);
+
+    // get all operations matching request method in a flat array
+    const operations = _.filter(this.getOperations(), ({ method }) => method === req.method);
+
+    // first check for an exact match for path
+    const exactMatch = _.find(operations, ({ path }) => path === req.path);
+    if (exactMatch) {
+      return exactMatch;
+    }
+
+    // then check for matches using path templating
+    return _.find(operations, ({ path }) => {
+      // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
+      const pathPattern = `^${path.replace(/\{.*\}/g, '[^/]+').replace(/\//g, '\\/')}$`;
+      return Boolean(req.path.match(new RegExp(pathPattern, 'g')));
+    });
   }
 
   /**
@@ -297,10 +324,10 @@ export class OpenAPIBackend {
   /**
    * Builds an Ajv schema validation function for an operation and registers it
    *
-   * @param {FlatOperation} operation
+   * @param {Operation} operation
    * @memberof OpenAPIBackend
    */
-  public buildSchemaForOperation(operation: FlatOperation): void {
+  public buildSchemaForOperation(operation: Operation): void {
     const { operationId } = operation;
     const schema: InputValidationSchema = {
       title: 'Request',
@@ -336,8 +363,8 @@ export class OpenAPIBackend {
     };
 
     // params are dereferenced here, no reference objects.
-    const operationParameters = [...operation.parameters, ...operation.parentParameters];
-    operationParameters.map((param: OpenAPIV3.ParameterObject) => {
+    const { parameters } = operation;
+    parameters.map((param: OpenAPIV3.ParameterObject) => {
       const target = schema.properties[param.in];
       if (param.required) {
         target.required.push(param.name);
@@ -362,23 +389,26 @@ export class OpenAPIBackend {
   }
 
   /**
-   * Flattens operations into a simple array of FlatOperation objects easy to work with
+   * Flattens operations into a simple array of Operation objects easy to work with
    *
-   * @returns {FlatOperation[]}
+   * @returns {Operation[]}
    * @memberof OpenAPIBackend
    */
-  public getOperations(): FlatOperation[] {
+  public getOperations(): Operation[] {
     const paths = _.get(this.definition, 'paths', {});
     return _.chain(paths)
       .entries()
       .flatMap(([path, pathBaseObject]) => {
         const methods = _.pick(pathBaseObject, ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']);
         return _.map(_.entries(methods), ([method, operation]) => ({
+          ...(operation as OpenAPIV3.OperationObject),
           path,
           method,
-          parameters: [],
-          parentParameters: (pathBaseObject.parameters as OpenAPIV3.ParameterObject[]) || [],
-          ...(operation as OpenAPIV3.OperationObject),
+          // add the path base object's operations to the operation's parameters
+          parameters: [
+            ...((operation.parameters as OpenAPIV3.ParameterObject[]) || []),
+            ...((pathBaseObject.parameters as OpenAPIV3.ParameterObject[]) || []),
+          ],
         }));
       })
       .value();
@@ -388,38 +418,10 @@ export class OpenAPIBackend {
    * Gets a single operation based on operationId
    *
    * @param {string} operationId
-   * @returns {FlatOperation}
+   * @returns {Operation}
    * @memberof OpenAPIBackend
    */
-  public getOperation(operationId: string): FlatOperation {
+  public getOperation(operationId: string): Operation {
     return _.find(this.getOperations(), { operationId });
-  }
-
-  /**
-   * Matches a request to an API operation (router)
-   *
-   * @param {RequestObject} req
-   * @returns {FlatOperation}
-   * @memberof OpenAPIBackend
-   */
-  public matchOperation(req: RequestObject): FlatOperation {
-    // normalize request for matching
-    req = normalizeRequest(req);
-
-    // get all operations matching request method in a flat array
-    const operations = _.filter(this.getOperations(), ({ method }) => method === req.method);
-
-    // first check for an exact match for path
-    const exactMatch = _.find(operations, ({ path }) => path === req.path);
-    if (exactMatch) {
-      return exactMatch;
-    }
-
-    // then check for matches using path templating
-    return _.find(operations, ({ path }) => {
-      // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
-      const pathPattern = `^${path.replace(/\{.*\}/g, '[^/]+').replace(/\//g, '\\/')}$`;
-      return Boolean(req.path.match(new RegExp(pathPattern, 'g')));
-    });
   }
 }
