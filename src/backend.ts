@@ -10,7 +10,7 @@ import { normalizeRequest, parseRequest, Request } from './util/request';
 export type Document = OpenAPIV3.Document;
 export type Handler = (...args: any[]) => Promise<any>;
 export type ErrorHandler = (errors: any, ...args: any[]) => Promise<any>;
-export { Request } from './util/request';
+export { Request, ParsedRequest } from './util/request';
 
 /**
  * OAS Operation Object containing the path and method so it can be placed in a flat array of operations
@@ -23,14 +23,32 @@ export interface Operation extends OpenAPIV3.OperationObject {
   method: string;
 }
 
+/**
+ * The internal JSON schema model to validate InputParameters against
+ *
+ * @interface InputValidationSchema
+ */
 interface InputValidationSchema {
   title: string;
-  type: string;
+  type: 'object';
   additionalProperties?: boolean;
   properties: {
     [target: string]: OpenAPIV3.SchemaObject | OpenAPIV3.ArraySchemaObject | OpenAPIV3.NonArraySchemaObject;
   };
   required?: string[];
+}
+
+/**
+ * The internal input parameters object to validate against InputValidateSchema
+ *
+ * @interface InputParameters
+ */
+interface InputParameters {
+  path?: { [param: string]: string };
+  query?: { [param: string]: string };
+  header?: { [header: string]: string };
+  cookie?: { [cookie: string]: string };
+  requestBody?: any;
 }
 
 /**
@@ -217,7 +235,7 @@ export class OpenAPIBackend {
 
     // build a parameter object to validate
     const { params, query, headers, cookies, requestBody } = parseRequest(req, operation.path);
-    const parameters = _.omitBy(
+    const parameters: InputParameters = _.omitBy(
       {
         path: params,
         query,
