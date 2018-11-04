@@ -25,6 +25,12 @@
   - [.registerHandler(operationId, handler)](#registerhandleroperationid-handler)
     - [Parameter: operationId](#parameter-operationid)
     - [Parameter: handler](#parameter-handler)
+  - [.mockResponseForOperation(operationId, opts?)](#mockresponseforoperationoperationid-opts)
+    - [Parameter: operationId](#parameter-operationid)
+    - [Parameter: opts](#parameter-opts)
+    - [Parameter: opts.responseStatus](#parameter-optsresponsestatus)
+    - [Parameter: opts.mediaType](#parameter-optsmediatype)
+    - [Parameter: opts.example](#parameter-optsexample)
   - [.validateDefinition()](#validatedefinition)
 - [Operation Handlers](#operation-handlers)
   - [validationFail Handler](#validationfail-handler)
@@ -32,10 +38,10 @@
   - [notImplemented Handler](#notimplemented-handler)
 - [Interfaces](#interfaces)
   - [Document Object](#document-object)
+  - [Operation Object](#operation-object)
   - [Context Object](#context-object)
   - [Request Object](#request-object)
   - [ParsedRequest Object](#parsedrequest-object)
-  - [Operation Object](#operation-object)
 
 <!-- tocstop -->
 
@@ -280,6 +286,46 @@ The operation handler.
 
 Type: `Handler | ErrorHandler`
 
+### .mockResponseForOperation(operationId, opts?)
+
+Mocks a response for an operation based on example or response schema
+
+Example usage:
+```javascript
+api.registerHandler('notImplemented', async (c, req: Request, res: Response) => {
+  const mock = api.mockResponseForOperation(c.operation.operationId);
+  return res.status(200).json(mock);
+});
+```
+
+#### Parameter: operationId
+
+The operationId of the operation for which to mock the response
+
+Type: `string`
+
+#### Parameter: opts
+
+Optional. Options for mocking.
+
+#### Parameter: opts.responseStatus
+
+Optional. The response code of the response to mock (default: 200)
+
+Type: `number`
+
+#### Parameter: opts.mediaType
+
+Optional. The media type of the response to mock (default: application/json)
+
+Type: `string`
+
+#### Parameter: opts.example
+
+Optional. The specific example to use (if operation has multiple examples)
+
+Type: `string`
+
 ### .validateDefinition()
 
 Validates and returns the parsed document. Throws an error if validation fails.
@@ -310,7 +356,7 @@ There are different ways to register operation handlers:
 
 1. In the [`new OpenAPIBackend`](#new-openapibackendopts) constructor options
 1. With the [`.register()`](#registerhandlers) method
-1. With the [`.registerHandler()`](registerhandleroperationid-handler) method
+1. With the [`.registerHandler()`](#registerhandleroperationid-handler) method
 
 In addition to the operationId handlers, you should also specify special handlers for different situtations:
 

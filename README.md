@@ -17,6 +17,8 @@ and importing them via YAML or JSON files or as a JS object
 [Hapi](#hapi), [AWS Lambda](#aws-serverless-lambda) or [Azure Functions](#azure-serverless-function)
 - Use [JSON Schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#data-types) to validate
 API requests. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
+- Mock API operations using [OpenAPI response object examples](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#response-object)
+or JSON Schema response definitions
 
 (Currently only OpenAPI v3.0.0+ is supported)
 
@@ -161,6 +163,44 @@ module.exports = (context, req) =>
 ```
 
 [See full Azure Function example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/serverless-azure)
+
+## Registering Handlers for Operations
+
+Handlers are registered for `operationId`s found in the OpenAPI definitions. You can register handlers as shown above 
+with [`new OpenAPIBackend()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#parameter-optshandlers)
+constructor opts, or using the [`register()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#registerhandlers)
+and [`registerHandler()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#registerhandleroperationid-handler)
+methods.
+
+```javascript
+async function getPetByIdHandler(c, req, res) {
+  const { id } = c.request.params;
+  const pets = await pets.getPetById(id);
+  return res.status(200).json({ result: pets });
+}
+api.register('getPetById', getPetByIdHandler);
+```
+
+Operation handlers are passed a special context object as the first argument, which contains the parsed request, the
+matched API operation and input validation results. The other arguments in the example aboce are Express-specific
+handler arguments.
+
+## Mocking API responses
+
+Mocking APIs with OpenAPI backend is super-easy (and cool!). Just register a [`notImplemented` handler](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#notimplemented-handler)
+and use [`mockResponseForOperation()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md##mockresponseforoperationoperationid-opts)
+to generate mock responses from your OpenAPI spec.
+
+OpenAPI Backend supports mocking responses using both OpenAPI example objects and JSON Schema.
+
+```javascript
+api.registerHandler('notImplemented', (c, req, res) => {
+  const mock = api.mockResponseForOperation(c.operation.operationId);
+  return res.status(200).json(mock);
+});
+```
+
+[See full Mock API example on Express](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-ts-mock)
 
 ## Contributing
 

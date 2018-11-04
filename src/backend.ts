@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import Ajv from 'ajv';
-import { OpenAPIV3 } from 'openapi-types';
 import { validate as validateOpenAPI } from 'openapi-schema-validation';
 import SwaggerParser from 'swagger-parser';
-
+import { OpenAPIV3 } from 'openapi-types';
 import { normalizeRequest, parseRequest, Request, ParsedRequest } from './util/request';
+import { mock } from './util/mock';
 
 // export public interfaces
 export type Document = OpenAPIV3.Document;
@@ -431,6 +431,82 @@ export class OpenAPIBackend {
     // build the schema and register it
     const ajv = new Ajv(this.ajvOpts);
     this.schemas[operationId] = ajv.compile(schema);
+  }
+
+  /**
+   * Mocks a response for an operation based on example or response schema
+   *
+   * @param {string} operationId - operationId of the operation for which to mock the response
+   * @param {object} opts - (optional) options
+   * @param {number} opts.responseStatus - (optional) the response code of the response to mock (default: 200)
+   * @param {string} opts.mediaType - (optional) the media type of the response to mock (default: application/json)
+   * @param {string} opts.example - (optional) the specific example to use (if operation has multiple examples)
+   * @returns {*}
+   * @memberof OpenAPIBackend
+   */
+  public mockResponseForOperation(
+    operationId: string,
+    opts?: {
+      code?: number;
+      mediaType?: string;
+      example?: string;
+    },
+  ): any {
+    const { example, responseStatus, mediaType } = { responseStatus: 200, mediaType: 'application/json', ...opts };
+
+    const operation = this.getOperation(operationId);
+
+    const defaultMock = {};
+    if (!operation || !operation.responses) {
+      return defaultMock;
+    }
+
+    // choose response code
+    // 1. check for responseStatus opt (default: 200)
+    // 2. check for the "default" response
+    // 3. pick first response code in list
+    const { responses } = operation;
+    const response = (responses[responseStatus] ||
+      responses.default ||
+      responses[_.first(_.keys(responses))]) as OpenAPIV3.ResponseObject;
+    if (!response || !response.content) {
+      return defaultMock;
+    }
+
+    // choose media type
+    // 1. check for mediaType opt in content (default: application/json)
+    // 2. pick first media type in content
+    const { content } = response;
+    const mediaResponse = content[mediaType] || content[_.first(_.keys(content))];
+    if (!mediaResponse) {
+      return defaultMock;
+    }
+
+    const { examples, schema } = mediaResponse;
+
+    // if example argument was provided, locate and return its value
+    if (example && examples) {
+      const exampleObject = examples[example] as OpenAPIV3.ExampleObject;
+      if (exampleObject && exampleObject.value) {
+        return exampleObject.value;
+      }
+    }
+
+    // if operation has an example, return its value
+    if (mediaResponse.example && mediaResponse.example.value) {
+      return mediaResponse.example.value;
+    }
+
+    // pick the first example from examples
+    if (examples) {
+      const exampleObject = examples[_.first(_.keys(examples))] as OpenAPIV3.ExampleObject;
+      return exampleObject.value;
+    }
+
+    if (schema) {
+      return mock(schema as OpenAPIV3.SchemaObject);
+    }
+    return defaultMock;
   }
 
   /**
