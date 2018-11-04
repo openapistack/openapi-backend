@@ -181,23 +181,59 @@ async function getPetByIdHandler(c, req, res) {
 api.register('getPetById', getPetByIdHandler);
 ```
 
-Operation handlers are passed a special context object as the first argument, which contains the parsed request, the
+Operation handlers are passed a special [Context object](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#context-object)
+as the first argument, which contains the parsed request, the
 matched API operation and input validation results. The other arguments in the example aboce are Express-specific
 handler arguments.
 
 ## Mocking API responses
 
-Mocking APIs with OpenAPI backend is super-easy (and cool!). Just register a [`notImplemented` handler](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#notimplemented-handler)
+Mocking APIs with OpenAPI backend is easy. Just register a [`notImplemented` handler](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#notimplemented-handler)
 and use [`mockResponseForOperation()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md##mockresponseforoperationoperationid-opts)
 to generate mock responses from your OpenAPI spec.
-
-OpenAPI Backend supports mocking responses using both OpenAPI example objects and JSON Schema.
 
 ```javascript
 api.registerHandler('notImplemented', (c, req, res) => {
   const mock = api.mockResponseForOperation(c.operation.operationId);
   return res.status(200).json(mock);
 });
+```
+
+OpenAPI Backend supports mocking responses using both OpenAPI example objects and JSON Schema.
+
+```yaml
+paths:
+  /pets:
+    get:
+      operationId: getPets
+      summary: List pets
+      description: Returns all pets in database
+      responses:
+        '200':
+          $ref: '#/components/responses/PetList'
+components:
+  responses:
+    PetList:
+      description: List of pets in database
+      content:
+        'application/json':
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  minimum: 1
+                name:
+                  type: string
+                  example: Garfield
+```
+
+This example would produce:
+```javascript
+api.mockResponseForOperation('getPets');
+// returns: [{ id: 1, name: 'Garfield' }]
 ```
 
 [See full Mock API example on Express](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-ts-mock)
