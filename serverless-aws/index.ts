@@ -1,5 +1,5 @@
 import 'source-map-support/register';
-import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import * as Lambda from 'aws-lambda';
 import OpenAPIBackend from 'openapi-backend';
 
 // define api
@@ -40,30 +40,30 @@ const api = new OpenAPIBackend({
     },
   },
   handlers: {
-    getPets: async (event: APIGatewayProxyEvent, context: Context) => ({
+    getPets: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
       statusCode: 200,
-      body: JSON.stringify({ operationId: 'getPets' }),
+      body: JSON.stringify({ operationId: c.operation.operationId }),
       headers: {
         'content-type': 'application/json',
       },
     }),
-    getPetById: async (event: APIGatewayProxyEvent, context: Context) => ({
+    getPetById: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
       statusCode: 200,
-      body: JSON.stringify({ operationId: 'getPetById' }),
+      body: JSON.stringify({ operationId: c.operation.operationId }),
       headers: {
         'content-type': 'application/json',
       },
     }),
-    notFound: async (event: APIGatewayProxyEvent, context: Context) => ({
+    notFound: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
       statusCode: 404,
       body: JSON.stringify({ err: 'not found' }),
       headers: {
         'content-type': 'application/json',
       },
     }),
-    validationFail: async (err, event: APIGatewayProxyEvent, context: Context) => ({
+    validationFail: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
       statusCode: 400,
-      body: JSON.stringify({ err }),
+      body: JSON.stringify({ err: c.validation.errors }),
       headers: {
         'content-type': 'application/json',
       },
@@ -73,7 +73,7 @@ const api = new OpenAPIBackend({
 
 api.init();
 
-export async function handler(event: APIGatewayProxyEvent, context: Context) {
+export async function handler(event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) {
   return api.handleRequest(
     {
       method: event.httpMethod,

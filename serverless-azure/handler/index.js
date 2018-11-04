@@ -38,25 +38,25 @@ const api = new OpenAPIBackend({
     },
   },
   handlers: {
-    getPets: (context, req) => {
+    getPets: (c, context, req) => {
       context.res = {
         status: 200,
-        body: JSON.stringify({ operationId: 'getPets' }),
+        body: JSON.stringify({ operationId: c.operation.operationId }),
         headers: {
           'content-type': 'application/json',
         },
       };
     },
-    getPetById: (context, req) => {
+    getPetById: (c, context, req) => {
       context.res = {
         status: 200,
-        body: JSON.stringify({ operationId: 'getPetById' }),
+        body: JSON.stringify({ operationId: c.operation.operationId }),
         headers: {
           'content-type': 'application/json',
         },
       };
     },
-    notFound: (context, req) => {
+    notFound: (c, context, req) => {
       context.res = {
         status: 404,
         body: JSON.stringify({ err: 'not found' }),
@@ -65,10 +65,10 @@ const api = new OpenAPIBackend({
         },
       };
     },
-    validationFail: (err, context, req) => {
+    validationFail: (c, context, req) => {
       context.res = {
         status: 400,
-        body: JSON.stringify({ err }),
+        body: JSON.stringify({ err: c.validation.errors }),
         headers: {
           'content-type': 'application/json',
         },
