@@ -94,6 +94,8 @@ app.use((req, res) => api.handleRequest(req, req, res));
 app.listen(9000);
 ```
 
+[See full Express example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express)
+
 ### Hapi
 
 ```javascript
@@ -119,6 +121,8 @@ server.route({
 server.start();
 ```
 
+[See full Hapi example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/hapi-typescript)
+
 ### AWS Serverless (Lambda)
 
 ```javascript
@@ -137,7 +141,9 @@ module.exports.handler = (event, context) =>
   );
 ```
 
-### Azure Serverless Function
+[See full Serverless Lambda example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/serverless-aws)
+
+### Azure Function
 
 ```javascript
 module.exports = (context, req) =>
@@ -153,6 +159,8 @@ module.exports = (context, req) =>
     req,
   );
 ```
+
+[See full Azure Function example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/serverless-azure)
 
 ## Contributing
 
