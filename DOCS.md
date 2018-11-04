@@ -349,7 +349,7 @@ async function getPetByIdHandler(c, req, res) {
   const pets = await pets.getPetById(id);
   return res.status(200).json({ result: pets });
 }
-api.register('getPetById', getPetByIdHandler);
+api.registerHandler('getPetById', getPetByIdHandler);
 ```
 
 There are different ways to register operation handlers:
@@ -371,7 +371,7 @@ Example handler:
 function validationFailHandler(c, req, res) {
   return res.status(400).json({ status: 400, err: c.validation.errors });
 }
-api.register('notImplemented', validationFailHandler);
+api.registerHandler('notImplemented', validationFailHandler);
 ```
 
 ### notFound Handler
@@ -386,7 +386,7 @@ Example handler:
 function notFoundHandler(c, req, res) {
   return res.status(404).json({ status: 404, err: 'Not found' });
 }
-api.register('notFound', notFoundHandler);
+api.registerHandler('notFound', notFoundHandler);
 ```
 
 ### notImplemented Handler
@@ -401,7 +401,7 @@ Example handler:
 function notImplementedHandler(c, req, res) {
   return res.status(404).json({ status: 501, err: 'No handler registered for operation' });
 }
-api.register('notImplemented', notImplementedHandler);
+api.registerHandler('notImplemented', notImplementedHandler);
 ```
 
 ## Interfaces
@@ -464,7 +464,7 @@ const definition = {
 
 The `Operation` interface is an [OpenAPI Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#operationObject)
 extended with the path and method of the operation for easier use. It should also include the path base object's
-parameters in its `parameters` property. 
+parameters in its `parameters` property.
 
 All JSON schemas in an Operation Object should be dereferenced i.e. not contain any `$ref` properties.
 

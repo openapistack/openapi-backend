@@ -202,7 +202,7 @@ async function getPetByIdHandler(c, req, res) {
   const pets = await pets.getPetById(id);
   return res.status(200).json({ result: pets });
 }
-api.register('getPetById', getPetByIdHandler);
+api.registerHandler('getPetById', getPetByIdHandler);
 ```
 
 Operation handlers are passed a special [Context object](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#context-object)
