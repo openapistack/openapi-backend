@@ -166,7 +166,7 @@ module.exports = (context, req) =>
 
 ## Registering Handlers for Operations
 
-Handlers are registered for `operationId`s found in the OpenAPI definitions. You can register handlers as shown above 
+Handlers are registered for `operationId`s found in the OpenAPI definitions. You can register handlers as shown above
 with [`new OpenAPIBackend()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#parameter-optshandlers)
 constructor opts, or using the [`register()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#registerhandlers)
 and [`registerHandler()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#registerhandleroperationid-handler)
@@ -232,8 +232,7 @@ components:
 
 This example would produce:
 ```javascript
-api.mockResponseForOperation('getPets');
-// returns: [{ id: 1, name: 'Garfield' }]
+api.mockResponseForOperation('getPets'); // => [{ id: 1, name: 'Garfield' }]
 ```
 
 [See full Mock API example on Express](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-ts-mock)
