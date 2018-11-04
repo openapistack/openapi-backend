@@ -8,7 +8,7 @@ Non-opinionated middleware tools for building APIs with the [OpenAPI standard](h
 in your favourite Node.js framework.
 
 OpenAPI Backend sits nicely in between your framework and business logic. It handles routing, input validation and
-response mocking; using only standard OpenAPI specification!
+response mocking; using only standard OpenAPI specification.
 
 ## Features
 
@@ -18,8 +18,8 @@ and importing them via YAML or JSON files or just passing an object
 [Hapi](#hapi), [Koa](#koa), [AWS Lambda](#aws-serverless-lambda) or [Azure Functions](#azure-serverless-function)
 - [x] Use [JSON Schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#data-types) to validate
 API requests. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
-- [x] Mock API responses using [OpenAPI response object examples](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#response-object)
-or JSON Schema response definitions
+- [x] Mock API responses using [OpenAPI examples objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#example-object)
+or [JSON Schema definitions](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#schema-object)
 
 (Currently only OpenAPI v3.0.0+ is supported)
 
@@ -199,9 +199,9 @@ methods.
 
 ```javascript
 async function getPetByIdHandler(c, req, res) {
-  const { id } = c.request.params;
-  const pets = await pets.getPetById(id);
-  return res.status(200).json({ result: pets });
+  const id = c.request.params.id;
+  const pet = await pets.getPetById(id);
+  return res.status(200).json({ result: pet });
 }
 api.registerHandler('getPetById', getPetByIdHandler);
 ```

@@ -345,9 +345,9 @@ arguments, starting from the second one. You can disable passing the Context obj
 Example handler for Express
 ```javascript
 async function getPetByIdHandler(c, req, res) {
-  const { id } = c.request.params;
-  const pets = await pets.getPetById(id);
-  return res.status(200).json({ result: pets });
+  const id = c.request.params.id;
+  const pet = await pets.getPetById(id);
+  return res.status(200).json({ result: pet });
 }
 api.registerHandler('getPetById', getPetByIdHandler);
 ```
@@ -371,7 +371,7 @@ Example handler:
 function validationFailHandler(c, req, res) {
   return res.status(400).json({ status: 400, err: c.validation.errors });
 }
-api.registerHandler('notImplemented', validationFailHandler);
+api.registerHandler('validationFail', validationFailHandler);
 ```
 
 ### notFound Handler
