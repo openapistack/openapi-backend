@@ -227,36 +227,50 @@ api.registerHandler('notImplemented', (c, req, res) => {
 OpenAPI Backend supports mocking responses using both OpenAPI example objects and JSON Schema:
 ```yaml
 paths:
-  /pets:
+  '/pets':
     get:
       operationId: getPets
       summary: List pets
-      description: Returns all pets in database
       responses:
         200:
-          $ref: '#/components/responses/PetList'
+          $ref: '#/components/responses/PetListWithExample'
+  '/pets/{id}':
+    get:
+      operationId: getPetById
+      summary: Get pet by its id
+      responses:
+        200:
+          $ref: '#/components/responses/PetResponseWithSchema'
 components:
   responses:
-    PetList:
-      description: List of pets in database
+    PetListWithExample:
+      description: List of pets
+      content:
+        'application/json':
+          example:
+            - id: 1
+              name: Garfield
+            - id: 2
+              name: Odie
+    PetResponseWithSchema:
+      description: A single pet
       content:
         'application/json':
           schema:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: integer
-                  minimum: 1
-                name:
-                  type: string
-                  example: Garfield
+            type: object
+            properties:
+              id:
+                type: integer
+                minimum: 1
+              name:
+                type: string
+                example: Garfield
 ```
 
 The example above will yield:
 ```javascript
-api.mockResponseForOperation('getPets'); // => [{ id: 1, name: 'Garfield' }]
+api.mockResponseForOperation('getPets'); // => [{ id: 1, name: 'Garfield' }, { id: 2, name: 'Odie' }]
+api.mockResponseForOperation('getPetById'); // => { id: 1, name: 'Garfield' }
 ```
 
 [See full Mock API example on Express](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-ts-mock)
