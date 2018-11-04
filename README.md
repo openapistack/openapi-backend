@@ -213,9 +213,9 @@ handler arguments.
 
 ## Mocking API responses
 
-Mocking APIs with got really easy! Just register a [`notImplemented`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#notimplemented-handler)
+Mocking APIs just got really easy with OpenAPI Backend! Register a [`notImplemented`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#notimplemented-handler)
 handler and use [`mockResponseForOperation()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md##mockresponseforoperationoperationid-opts)
-to generate mock responses from your OpenAPI spec:
+to generate mock responses for operations with no custom handlers specified yet:
 
 ```javascript
 api.registerHandler('notImplemented', (c, req, res) => {
