@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "express": "^4.16.4",
-    "openapi-backend": "^0.2.1"
+    "openapi-backend": "^1.2.0"
   }
 }
