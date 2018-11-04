@@ -306,23 +306,23 @@ Type: `string`
 
 #### Parameter: opts
 
-(optional) Options for mocking.
+Optional. Options for mocking.
 
 #### Parameter: opts.responseStatus
 
-(optional) The response code of the response to mock (default: 200)
+Optional. The response code of the response to mock (default: 200)
 
 Type: `number`
 
 #### Parameter: opts.mediaType
 
-(optional) The media type of the response to mock (default: application/json)
+Optional. The media type of the response to mock (default: application/json)
 
 Type: `string`
 
 #### Parameter: opts.example
 
-(optional) The specific example to use (if operation has multiple examples)
+Optional. The specific example to use (if operation has multiple examples)
 
 Type: `string`
 
@@ -356,7 +356,7 @@ There are different ways to register operation handlers:
 
 1. In the [`new OpenAPIBackend`](#new-openapibackendopts) constructor options
 1. With the [`.register()`](#registerhandlers) method
-1. With the [`.registerHandler()`](registerhandleroperationid-handler) method
+1. With the [`.registerHandler()`](#registerhandleroperationid-handler) method
 
 In addition to the operationId handlers, you should also specify special handlers for different situtations:
 
