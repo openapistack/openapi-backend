@@ -414,6 +414,61 @@ const definition = {
 }
 ```
 
+### Operation Object
+
+The `Operation` interface is an [OpenAPI Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#operationObject)
+extended with the path and method of the operation for easier use. It should also include the path base object's
+parameters in its `parameters` property. 
+
+All JSON schemas in an Operation Object should be dereferenced i.e. not contain any `$ref` properties.
+
+```javascript
+import { Operation } from 'openapi-backend';
+```
+
+Example object
+```javascript
+const operation = {
+  method: 'patch',
+  path: '/pets/{id}',
+  operationId: 'updatePetById',
+  parameters: [
+    {
+      name: 'id',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'integer',
+        minimum: 0,
+      },
+    },
+  ],
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            name: {
+              type: 'string',
+            },
+            age: {
+              type: 'integer',
+            },
+          },
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Pet updated succesfully',
+    },
+  },
+};
+```
+
 ### Context Object
 
 The `Context` object gets passed to [Operation Handlers](#operation-handlers) as the first argument.
@@ -531,60 +586,5 @@ const parsedRequest = {
   body: '{ "treat": "bone" }',
   // the parsed request body
   requestBody: { treat: 'bone' },
-};
-```
-
-### Operation Object
-
-The `Operation` interface is an [OpenAPI Operation Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#operationObject)
-extended with the path and method of the operation for easier use. It should also include the path base object's
-parameters in its `parameters` property. 
-
-All JSON schemas in an Operation Object should be dereferenced i.e. not contain any `$ref` properties.
-
-```javascript
-import { Operation } from 'openapi-backend';
-```
-
-Example object
-```javascript
-const operation = {
-  method: 'patch',
-  path: '/pets/{id}',
-  operationId: 'updatePetById',
-  parameters: [
-    {
-      name: 'id',
-      in: 'path',
-      required: true,
-      schema: {
-        type: 'integer',
-        minimum: 0,
-      },
-    },
-  ],
-  requestBody: {
-    content: {
-      'application/json': {
-        schema: {
-          type: 'object',
-          additionalProperties: false,
-          properties: {
-            name: {
-              type: 'string',
-            },
-            age: {
-              type: 'integer',
-            },
-          },
-        },
-      },
-    },
-  },
-  responses: {
-    200: {
-      description: 'Pet updated succesfully',
-    },
-  },
 };
 ```
