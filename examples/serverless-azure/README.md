@@ -13,3 +13,10 @@ npm install
 npm start # API running at http://localhost:9000
 ```
 
+Try the endpoints:
+
+```bash
+curl -i http://localhost:9000/pets
+curl -i http://localhost:9000/pets/1
+```
+
