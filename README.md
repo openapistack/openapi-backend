@@ -98,33 +98,6 @@ app.listen(9000);
 
 [See full Express example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express)
 
-### Hapi
-
-```javascript
-import Hapi from 'hapi';
-
-const server = new Hapi.Server({ host: '0.0.0.0', port: 9000 });
-server.route({
-  method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  path: '/{path*}',
-  handler: (req, h) =>
-    api.handleRequest(
-      {
-        method: req.method,
-        path: req.path,
-        body: req.payload,
-        query: req.query,
-        headers: req.headers,
-      },
-      req,
-      h,
-    ),
-});
-server.start();
-```
-
-[See full Hapi example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/hapi-typescript)
-
 ### AWS Serverless (Lambda)
 
 ```javascript
@@ -163,6 +136,57 @@ module.exports = (context, req) =>
 ```
 
 [See full Azure Function example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/serverless-azure)
+
+### Hapi
+
+```javascript
+import Hapi from 'hapi';
+
+const server = new Hapi.Server({ host: '0.0.0.0', port: 9000 });
+server.route({
+  method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  path: '/{path*}',
+  handler: (req, h) =>
+    api.handleRequest(
+      {
+        method: req.method,
+        path: req.path,
+        body: req.payload,
+        query: req.query,
+        headers: req.headers,
+      },
+      req,
+      h,
+    ),
+});
+server.start();
+```
+
+[See full Hapi example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/hapi-typescript)
+
+
+### Koa
+
+```javascript
+import Koa from 'koa';
+
+const app = new Koa();
+app.use((ctx) =>
+  api.handleRequest(
+    {
+      method: ctx.request.method,
+      path: ctx.request.path,
+      body: ctx.request.body,
+      query: ctx.request.query,
+      headers: ctx.request.headers,
+    },
+    ctx,
+  ),
+);
+app.listen(9000);
+```
+
+[See full Koa example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/koa)
 
 ## Registering Handlers for Operations
 
