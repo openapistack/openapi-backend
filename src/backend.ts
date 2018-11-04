@@ -4,17 +4,16 @@ import { OpenAPIV3 } from 'openapi-types';
 import { validate as validateOpenAPI } from 'openapi-schema-validation';
 import SwaggerParser from 'swagger-parser';
 
-import { normalizeRequest, parseRequest, Request } from './util/request';
+import { normalizeRequest, parseRequest, Request, ParsedRequest } from './util/request';
 
 // export public interfaces
 export type Document = OpenAPIV3.Document;
-export type Handler = (...args: any[]) => Promise<any>;
-export type ErrorHandler = (errors: any, ...args: any[]) => Promise<any>;
 export { Request, ParsedRequest } from './util/request';
 
 /**
  * OAS Operation Object containing the path and method so it can be placed in a flat array of operations
  *
+ * @export
  * @interface Operation
  * @extends {OpenAPIV3.OperationObject}
  */
@@ -22,6 +21,20 @@ export interface Operation extends OpenAPIV3.OperationObject {
   path: string;
   method: string;
 }
+
+/**
+ * Passed context built for request. Passed as first argument for all handlers.
+ *
+ * @export
+ * @interface Context
+ */
+export interface Context {
+  request?: ParsedRequest;
+  operation?: Operation;
+  validation?: Ajv.ValidateFunction;
+}
+
+export type Handler = (context?: Context, ...args: any[]) => Promise<any>;
 
 /**
  * The internal JSON schema model to validate InputParameters against
@@ -62,9 +75,11 @@ export class OpenAPIBackend {
   public inputDocument: Document | string;
   public definition: Document;
 
+  public initalized: boolean;
+
   public strict: boolean;
   public validate: boolean;
-  public initalized: boolean;
+  public withContext: boolean;
 
   public handlers: { [operationId: string]: Handler };
   public allowedHandlers = ['notFound', 'notImplemented', 'validationFail'];
@@ -79,6 +94,7 @@ export class OpenAPIBackend {
    * @param {Document | string} opts.definition - the OpenAPI definition, file path or Document object
    * @param {boolean} opts.strict - strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
    * @param {boolean} opts.validate - whether to validate requests with Ajv (default: true)
+   * @param {boolean} opts.withContext - whether to pass context object to handlers as first argument (default: true)
    * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
    * @memberof OpenAPIBackend
    */
@@ -86,14 +102,16 @@ export class OpenAPIBackend {
     definition: Document | string;
     strict?: boolean;
     validate?: boolean;
+    withContext?: boolean;
     handlers?: {
       notFound?: Handler;
       notImplemented?: Handler;
-      validationFail?: ErrorHandler;
+      validationFail?: Handler;
       [handler: string]: Handler;
     };
   }) {
     const optsWithDefaults = {
+      withContext: true,
       validate: true,
       strict: false,
       handlers: {},
@@ -103,6 +121,7 @@ export class OpenAPIBackend {
     this.strict = optsWithDefaults.strict;
     this.validate = optsWithDefaults.validate;
     this.handlers = optsWithDefaults.handlers;
+    this.withContext = optsWithDefaults.withContext;
     this.schemas = {};
   }
 
@@ -173,47 +192,55 @@ export class OpenAPIBackend {
       await this.init();
     }
 
+    // initalize api context object
+    const context: Context = {};
+
+    // parse request
+    context.request = parseRequest(req);
+
     // match operation
-    const operation = this.matchOperation(req);
-    if (!operation || !operation.operationId) {
+    context.operation = this.matchOperation(req);
+    if (!context.operation || !context.operation.operationId) {
       const notFoundHandler: Handler = this.handlers['404'] || this.handlers['notFound'];
       if (!notFoundHandler) {
         throw Error(`404-notFound: no route matches request`);
       }
-      return notFoundHandler(...handlerArgs);
+      return this.withContext ? notFoundHandler(context, ...handlerArgs) : notFoundHandler(...handlerArgs);
     }
 
-    const { operationId } = operation;
+    const { path, operationId } = context.operation;
+
+    // parse request again now with matched path
+    context.request = parseRequest(req, path);
 
     // validate against route
     if (this.validate) {
-      const valid = this.validateRequest(req);
-      if (valid.errors) {
+      context.validation = this.validateRequest(req);
+      if (context.validation.errors) {
         // validation FAIL
-        const validationFailHandler: ErrorHandler = this.handlers['validationFail'];
-        if (!validationFailHandler) {
-          const prettyErrors = JSON.stringify(valid.errors, null, 2);
-          throw Error(`400-validationFail: ${operationId}, errors: ${prettyErrors}`);
+        const validationFailHandler: Handler = this.handlers['validationFail'];
+        if (validationFailHandler) {
+          return this.withContext
+            ? validationFailHandler(context, ...handlerArgs)
+            : validationFailHandler(...handlerArgs);
         }
-        return validationFailHandler(valid.errors, ...handlerArgs);
+        // if no validation handler is specified, just proceed to route handler (context.validation is still populated)
       }
     }
 
-    // validation PASS
     // handle route
     const routeHandler: Handler = this.handlers[operationId];
     if (!routeHandler) {
-      // @TODO: add mock option to mock response based on operation responses
       // 501 not implemented
       const notImplementedHandler = this.handlers['501'] || this.handlers['notImplemented'];
       if (!notImplementedHandler) {
         throw Error(`501-notImplemented: ${operationId} no handler registered`);
       }
-      return notImplementedHandler(...handlerArgs);
+      return this.withContext ? notImplementedHandler(context, ...handlerArgs) : notImplementedHandler(...handlerArgs);
     }
 
     // handle route
-    return routeHandler(...handlerArgs);
+    return this.withContext ? routeHandler(context, ...handlerArgs) : routeHandler(...handlerArgs);
   }
 
   /**
@@ -300,7 +327,7 @@ export class OpenAPIBackend {
    * @param {Handler | ErrorHandler} handler
    * @memberof OpenAPIBackend
    */
-  public registerHandler(operationId: string, handler: Handler | ErrorHandler): void {
+  public registerHandler(operationId: string, handler: Handler): void {
     // make sure we are registering a function and not anything else
     if (typeof handler !== 'function') {
       throw new Error('Handler should be a function');

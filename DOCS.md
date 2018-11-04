@@ -10,6 +10,7 @@
     - [Parameter: opts.definition](#parameter-optsdefinition)
     - [Parameter: opts.strict](#parameter-optsstrict)
     - [Parameter: opts.validate](#parameter-optsvalidate)
+    - [Parameter: opts.withContext](#parameter-optswithcontext)
     - [Parameter: opts.handlers](#parameter-optshandlers)
   - [.init()](#init)
   - [.handleRequest(req, ...handlerArgs)](#handlerequestreq-handlerargs)
@@ -31,6 +32,7 @@
   - [notImplemented Handler](#notimplemented-handler)
 - [Interfaces](#interfaces)
   - [Document Object](#document-object)
+  - [Context Object](#context-object)
   - [Request Object](#request-object)
   - [ParsedRequest Object](#parsedrequest-object)
   - [Operation Object](#operation-object)
@@ -108,11 +110,17 @@ Optional. Enable or disable request validation (default: true)
 
 Type: `boolean`
 
+#### Parameter: opts.withContext
+
+Optional. Whether to pass [Context object](#context-object) to handlers as the first argument (default: true)
+
+Type: `boolean`
+
 #### Parameter: opts.handlers
 
 Optional. [Operation Handlers](#operation-handlers) to be registered.
 
-Type: `{ [operationId: string]: Handler | ErrorHandler }`
+Type: `{ [operationId: string]: Handler }`
 
 ### .init()
 
@@ -284,10 +292,14 @@ You can register *Operation Handlers* for operationIds specified by your OpenAPI
 
 These get called with the `.handleRequest()` method after routing and (optionally) validation is finished.
 
+The first argument of the handler is the [Context object](#context-object) and rest are passed from `.handleRequest()`
+arguments, starting from the second one. You can disable passing the Context object to handlers by specifying
+`withContext: false` in [OpenAPIBackend constructor opts](#parameter-optswithcontext).
+
 Example handler for Express
 ```javascript
-async function getPetByIdHandler(req, res) {
-  const { id } = req.query;
+async function getPetByIdHandler(c, req, res) {
+  const { id } = c.request.params;
   const pets = await pets.getPetById(id);
   return res.status(200).json({ result: pets });
 }
@@ -310,8 +322,8 @@ HINT: You should probably return a 400 status code from this handler.
 
 Example handler:
 ```javascript
-function validationFailHandler(err, req, res) {
-  return res.status(400).json({ status: 400, err });
+function validationFailHandler(c, req, res) {
+  return res.status(400).json({ status: 400, err: c.validation.errors });
 }
 api.register('notImplemented', validationFailHandler);
 ```
@@ -325,7 +337,7 @@ HINT: You should probably return a 404 status code from this handler.
 
 Example handler:
 ```javascript
-function notFoundHandler(req, res) {
+function notFoundHandler(c, req, res) {
   return res.status(404).json({ status: 404, err: 'Not found' });
 }
 api.register('notFound', notFoundHandler);
@@ -340,7 +352,7 @@ HINT: You can either mock the response or return a 501 status code.
 
 Example handler:
 ```javascript
-function notImplementedHandler(req, res) {
+function notImplementedHandler(c, req, res) {
   return res.status(404).json({ status: 501, err: 'No handler registered for operation' });
 }
 api.register('notImplemented', notImplementedHandler);
@@ -402,6 +414,72 @@ const definition = {
 }
 ```
 
+### Context Object
+
+The `Context` object gets passed to [Operation Handlers](#operation-handlers) as the first argument.
+
+It contains useful information like the [parsed request](#parsedrequest-object), the matched
+[operation](#operation-object) and input validation results for the request.
+
+```javascript
+import { Context } from 'openapi-backend';
+```
+
+Example object
+```javascript
+const context = {
+  // the parsed request object
+  request: {
+    method: 'post',
+    path: '/pets/1/treat',
+    params: { id: '1' },
+    headers: { 'accept': 'application/json', 'cookie': 'sessionid=abc123;' },
+    cookies: { sessionid: 'abc123' },
+    query: { 'format': 'json' },
+    body: '{ "treat": "bone" }',
+    requestBody: { treat: 'bone' },
+  },
+  // the matched and dereferenced operation object for request
+  operation: {
+    method: 'post',
+    path: '/pets',
+    operationId: 'giveTreatToPetById',
+    summary: 'Gives a treat to a pet',
+    description: 'Adds a treat to the bowl where a pet can enjoy it.',
+    tags: ['pets'],
+    parameters: {
+      name: 'id',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'integer',
+      },
+    },
+    requestBody: {
+      description: 'A treat to give to the pet',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              treat: {
+                type: 'string',
+              }
+            },
+            required: ['treat'],
+          },
+        },
+      },
+    },
+  },
+  // Ajv validation results for request
+  validation: {
+    errors: undefined,
+  },
+};
+```
+
 ### Request Object
 
 The `Request` interface represents a generic HTTP request.
@@ -442,7 +520,7 @@ const parsedRequest = {
   // path of the request
   path: '/pets/1/treat',
   // the path params for the request
-  params: { id: 1 },
+  params: { id: '1' },
   // HTTP request headers
   headers: { 'accept': 'application/json', 'cookie': 'sessionid=abc123;' },
   // the parsed cookies

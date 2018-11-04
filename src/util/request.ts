@@ -77,14 +77,17 @@ export function parseRequest(req: Request, path?: string): ParsedRequest {
   // normalize
   req = normalizeRequest(req);
 
-  // parse path
-  const paramPlaceholder = '{[^\\/]*}';
-  const pathPattern = `^${path.replace(new RegExp(paramPlaceholder, 'g'), '([^\\/]*)').replace(/\//g, '\\/')}$`;
-  const paramValueArray = new RegExp(pathPattern).exec(req.path).splice(1);
-  const paramNameArray = (path.match(new RegExp(paramPlaceholder, 'g')) || []).map((param) =>
-    param.replace(/[{}]/g, ''),
-  );
-  const params = _.zipObject(paramNameArray, paramValueArray);
+  let params = {};
+  if (path) {
+    // parse path params if path is given
+    const paramPlaceholder = '{[^\\/]*}';
+    const pathPattern = `^${path.replace(new RegExp(paramPlaceholder, 'g'), '([^\\/]*)').replace(/\//g, '\\/')}$`;
+    const paramValueArray = new RegExp(pathPattern).exec(req.path).splice(1);
+    const paramNameArray = (path.match(new RegExp(paramPlaceholder, 'g')) || []).map((param) =>
+      param.replace(/[{}]/g, ''),
+    );
+    params = _.zipObject(paramNameArray, paramValueArray);
+  }
 
   return {
     ...req,

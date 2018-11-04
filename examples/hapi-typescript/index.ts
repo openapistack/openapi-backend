@@ -42,10 +42,12 @@ const api = new OpenAPIBackend({
     },
   },
   handlers: {
-    getPets: async (req: Hapi.Request) => ({ operationId: 'getPets' }),
-    getPetById: async (req: Hapi.Request) => ({ operationId: 'getPetById' }),
-    notFound: async (req: Hapi.Request, h: Hapi.ResponseToolkit) => h.response({ err: 'not found' }).code(404),
-    validationFail: async (err, req: Hapi.Request, h: Hapi.ResponseToolkit) => h.response({ err }).code(400),
+    getPets: async (context, req: Hapi.Request) => ({ operationId: context.operation.operationId }),
+    getPetById: async (context, req: Hapi.Request) => ({ operationId: context.operation.operationId }),
+    validationFail: async (context, req: Hapi.Request, h: Hapi.ResponseToolkit) =>
+      h.response({ err: context.validation.errors }).code(400),
+    notFound: async (context, req: Hapi.Request, h: Hapi.ResponseToolkit) =>
+      h.response({ context, err: 'not found' }).code(404),
   },
 });
 

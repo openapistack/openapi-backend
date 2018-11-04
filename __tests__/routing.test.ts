@@ -125,11 +125,12 @@ describe('Routing', () => {
     });
   });
 
-  describe('handleRequest', async () => {
+  describe('handleRequest withContext=false', async () => {
     const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
     const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
     const api = new OpenAPIBackend({
       definition,
+      withContext: false,
       handlers: {
         getPets: dummyHandler('getPets'),
         getPetById: dummyHandler('getPetById'),
@@ -193,6 +194,110 @@ describe('Routing', () => {
       const res = await api.handleRequest({ method: 'GET', path: 'pets', headers }, 'param8', 'param9');
       expect(res).toEqual({ operationId: 'getPets' });
       expect(dummyHandlers['getPets']).toBeCalledWith('param8', 'param9');
+    });
+  });
+
+  describe('handleRequest withContext=true', async () => {
+    const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
+    const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
+    const api = new OpenAPIBackend({
+      definition,
+      withContext: true,
+      handlers: {
+        getPets: dummyHandler('getPets'),
+        getPetById: dummyHandler('getPetById'),
+        createPet: dummyHandler('createPet'),
+        updatePetById: dummyHandler('updatePetById'),
+        notImplemented: dummyHandler('notImplemented'),
+        notFound: dummyHandler('notFound'),
+      },
+    });
+    beforeAll(() => api.init());
+
+    test('handles GET /pets and passes context', async () => {
+      const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });
+      expect(res).toEqual({ operationId: 'getPets' });
+      expect(dummyHandlers['getPets']).toBeCalled();
+
+      const contextArg = dummyHandlers['getPets'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', headers });
+      expect(contextArg.operation.operationId).toEqual('getPets');
+      expect(contextArg.validation.errors).toBeFalsy();
+    });
+
+    test('handles POST /pets and passes context', async () => {
+      const res = await api.handleRequest({ method: 'POST', path: '/pets', headers });
+      expect(res).toEqual({ operationId: 'createPet' });
+      expect(dummyHandlers['createPet']).toBeCalled();
+
+      const contextArg = dummyHandlers['createPet'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ method: 'post', path: '/pets', headers });
+      expect(contextArg.operation.operationId).toEqual('createPet');
+      expect(contextArg.validation.errors).toBeFalsy();
+    });
+
+    test('handles GET /pets/1 and passes context', async () => {
+      const res = await api.handleRequest({ method: 'GET', path: '/pets/1', headers });
+      expect(res).toEqual({ operationId: 'getPetById' });
+      expect(dummyHandlers['getPetById']).toBeCalled();
+
+      const contextArg = dummyHandlers['getPetById'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets/1', params: { id: '1' }, headers });
+      expect(contextArg.operation.operationId).toEqual('getPetById');
+      expect(contextArg.validation.errors).toBeFalsy();
+    });
+
+    test('handles PATCH /pets/1 and passes context', async () => {
+      const res = await api.handleRequest({ method: 'PATCH', path: '/pets/1', headers });
+      expect(res).toEqual({ operationId: 'updatePetById' });
+      expect(dummyHandlers['updatePetById']).toBeCalled();
+
+      const contextArg = dummyHandlers['updatePetById'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ method: 'patch', path: '/pets/1', params: { id: '1' }, headers });
+      expect(contextArg.operation.operationId).toEqual('updatePetById');
+      expect(contextArg.validation.errors).toBeFalsy();
+    });
+
+    test('handles a 404 for unregistered endpoint GET /humans and passes context', async () => {
+      const res = await api.handleRequest({ method: 'GET', path: '/humans', headers });
+      expect(res).toEqual({ operationId: 'notFound' });
+
+      const contextArg = dummyHandlers['notFound'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/humans', headers });
+      expect(contextArg.operation).toBeFalsy();
+    });
+
+    test('handles a 501 for not implemented endpoint DELETE /pets/1 and passes context', async () => {
+      const res = await api.handleRequest({ method: 'DELETE', path: '/pets/1', headers });
+      expect(res).toEqual({ operationId: 'notImplemented' });
+      expect(dummyHandlers['notImplemented']).toBeCalled();
+
+      const contextArg = dummyHandlers['notImplemented'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ method: 'delete', path: '/pets/1', params: { id: '1' }, headers });
+      expect(contextArg.operation.operationId).toEqual('deletePetById');
+      expect(contextArg.validation.errors).toBeFalsy();
+    });
+
+    test('handles GET /pets/ with trailing slash and passes context', async () => {
+      const res = await api.handleRequest({ method: 'GET', path: '/pets/', headers });
+      expect(res).toEqual({ operationId: 'getPets' });
+      expect(dummyHandlers['getPets']).toBeCalled();
+
+      const contextArg = dummyHandlers['getPets'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', headers });
+      expect(contextArg.operation.operationId).toEqual('getPets');
+      expect(contextArg.validation.errors).toBeFalsy();
+    });
+
+    test('handles GET /pets/?limit=10 with query string and passes context', async () => {
+      const res = await api.handleRequest({ method: 'GET', path: '/pets/?limit=10', headers });
+      expect(res).toEqual({ operationId: 'getPets' });
+      expect(dummyHandlers['getPets']).toBeCalled();
+
+      const contextArg = dummyHandlers['getPets'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', query: { limit: '10' }, headers });
+      expect(contextArg.operation.operationId).toEqual('getPets');
+      expect(contextArg.validation.errors).toBeFalsy();
     });
   });
 });
