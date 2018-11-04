@@ -209,7 +209,7 @@ paths:
       summary: List pets
       description: Returns all pets in database
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/PetList'
 components:
   responses:
