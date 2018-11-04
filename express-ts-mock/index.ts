@@ -20,29 +20,7 @@ const api = new OpenAPIBackend({
         get: {
           operationId: 'getPets',
           responses: {
-            200: {
-              description: 'ok',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      properties: {
-                        id: {
-                          type: 'integer',
-                          minimum: 1,
-                        },
-                        name: {
-                          type: 'string',
-                          example: 'Odie',
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
+            200: { $ref: '#/components/responses/ListPetsRes' },
           },
         },
       },
@@ -50,21 +28,7 @@ const api = new OpenAPIBackend({
         get: {
           operationId: 'getPetById',
           responses: {
-            200: {
-              description: 'ok',
-              content: {
-                'application/json': {
-                  examples: {
-                    garfield: {
-                      value: {
-                        id: 1,
-                        name: 'Garfield',
-                      },
-                    },
-                  },
-                },
-              },
-            },
+            200: { $ref: '#/components/responses/GetPetByIdRes' },
           },
         },
         parameters: [
@@ -77,6 +41,48 @@ const api = new OpenAPIBackend({
             },
           },
         ],
+      },
+    },
+    components: {
+      responses: {
+        ListPetsRes: {
+          description: 'ok',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'integer',
+                      minimum: 1,
+                    },
+                    name: {
+                      type: 'string',
+                      example: 'Odie',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        GetPetByIdRes: {
+          description: 'ok',
+          content: {
+            'application/json': {
+              examples: {
+                garfield: {
+                  value: {
+                    id: 1,
+                    name: 'Garfield',
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     },
   },
