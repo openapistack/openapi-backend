@@ -14,7 +14,7 @@ Includes routing, validation and mocking functionality.
 - Build APIs by describing them in [OpenAPI document specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
 and importing them via YAML or JSON files or as a JS object
 - Register handlers for API operations for routing in your favourite Node.js backend like [Express](#express),
-[Hapi](#hapi), [AWS Lambda](#aws-serverless-lambda) or [Azure Functions](#azure-serverless-function)
+[Hapi](#hapi), [Koa](#koa), [AWS Lambda](#aws-serverless-lambda) or [Azure Functions](#azure-serverless-function)
 - Use [JSON Schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#data-types) to validate
 API requests. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
 - Mock API operations using [OpenAPI response object examples](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#response-object)
