@@ -1,5 +1,6 @@
 import { parse as parseQuery } from 'query-string';
 import _ from 'lodash';
+import cookie from 'cookie';
 
 export interface Request {
   method: string;
@@ -61,18 +62,22 @@ export interface ParsedRequest extends Request {
  * @returns {ParsedRequest}
  */
 export function parseRequest(req: Request, path?: string): ParsedRequest {
-  let requestBody = typeof req.body === 'object' ? req.body : null;
-  try {
-    requestBody = JSON.parse(req.body.toString());
-  } catch {
-    // suppress json parsing errors
+  let requestBody = req.body;
+  if (typeof req.body !== 'object') {
+    try {
+      // attempt to parse json
+      requestBody = JSON.parse(req.body.toString());
+    } catch {
+      // suppress json parsing errors
+    }
   }
 
   // parse query string from req.path + req.query
   const query = typeof req.query === 'object' ? req.query : parseQuery(req.path.split('?')[1]);
 
-  // @TODO: parse cookie from headers
-  const cookies = {};
+  // parse cookie from headers
+  const cookieHeader = req.headers['cookie'] || req.headers['Cookie'];
+  const cookies = cookie.parse(_.flatten([cookieHeader]).join('; '));
 
   // normalize
   req = normalizeRequest(req);
