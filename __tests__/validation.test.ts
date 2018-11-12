@@ -299,6 +299,23 @@ describe('Validation', () => {
     const api = new OpenAPIBackend({
       definition: {
         ...meta,
+        components: {
+          schemas: {
+            Pet: {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                name: {
+                  type: 'string',
+                },
+                age: {
+                  type: 'integer',
+                },
+              },
+              required: ['name'],
+            },
+          },
+        },
         paths: {
           '/pets': {
             post: {
@@ -308,18 +325,24 @@ describe('Validation', () => {
                 content: {
                   'application/json': {
                     schema: {
-                      type: 'object',
-                      additionalProperties: false,
-                      properties: {
-                        name: {
-                          type: 'string',
-                        },
-                        age: {
-                          type: 'integer',
-                        },
-                      },
-                      required: ['name'],
+                      $ref: '#/components/schemas/Pet',
                     },
+                  },
+                },
+              },
+            },
+            put: {
+              operationId: 'replacePet',
+              responses,
+              requestBody: {
+                content: {
+                  'application/json': {
+                    schema: {
+                      $ref: '#/components/schemas/Pet',
+                    },
+                  },
+                  'application/xml': {
+                    example: '<Pet><name>string</name></Pet>',
                   },
                 },
               },
@@ -389,7 +412,18 @@ describe('Validation', () => {
       expect(valid.errors).toHaveLength(1);
     });
 
-    test('fails validation for malformed JSON', async () => {
+    test('fails validation for non-json data when the only media type defined is application/json', async () => {
+      const valid = api.validateRequest({
+        path: '/pets',
+        method: 'post',
+        body: '<XML>',
+        headers,
+      });
+      expect(valid.errors).toHaveLength(1);
+      expect(valid.errors[0].keyword).toBe('parse');
+    });
+
+    test('allows non-json data when application/json is not the only allowed media type', async () => {
       const valid = api.validateRequest({
         path: '/pets',
         method: 'post',

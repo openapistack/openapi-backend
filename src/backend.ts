@@ -269,15 +269,14 @@ export class OpenAPIBackend {
         query,
         header: headers,
         cookie: cookies,
-        requestBody,
       },
       _.isNil,
     );
 
     if (typeof req.body !== 'object') {
-      const payloadTypes = _.keys(_.get(operation, 'requestBody.content', {}));
-      if (_.includes(payloadTypes, 'application/json')) {
-        // check that JSON isn't malformed
+      const payloadFormats = _.keys(_.get(operation, 'requestBody.content', {}));
+      if (payloadFormats.length === 1 && payloadFormats[0] === 'application/json') {
+        // check that JSON isn't malformed when the only payload format is JSON
         try {
           JSON.parse(req.body.toString());
         } catch (err) {
@@ -293,6 +292,11 @@ export class OpenAPIBackend {
           return validate;
         }
       }
+    }
+
+    if (typeof requestBody === 'object' || headers['content-type'] === 'application/json') {
+      // include request body in validation if an object is provided
+      parameters.requestBody = requestBody;
     }
 
     // validate parameters against pre-compiled schema
@@ -399,7 +403,7 @@ export class OpenAPIBackend {
     const schema: InputValidationSchema = {
       title: 'Request',
       type: 'object',
-      additionalProperties: false,
+      additionalProperties: true,
       properties: {
         path: {
           type: 'object',
@@ -441,12 +445,14 @@ export class OpenAPIBackend {
     });
 
     if (operation.requestBody) {
-      // @TODO: infer most specific media type from headers
-      const mediaType = 'application/json';
-      const jsonbody = (operation.requestBody as OpenAPIV3.RequestBodyObject).content[mediaType];
+      const requestBody = operation.requestBody as OpenAPIV3.RequestBodyObject;
+      const jsonbody = requestBody.content['application/json'];
       if (jsonbody && jsonbody.schema) {
         schema.properties.requestBody = jsonbody.schema as OpenAPIV3.SchemaObject;
-        schema.required.push('requestBody');
+        if (_.keys(requestBody.content).length === 1) {
+          // if application/json is the only specified format, it's required
+          schema.required.push('requestBody');
+        }
       }
     }
 
