@@ -14,6 +14,11 @@ const exampleGarfield = {
   name: 'Garfield',
 };
 
+const exampleGarfieldWithTag = {
+  id: 1,
+  tag: 'Lost',
+};
+
 const exampleOdey = {
   id: 2,
   name: 'Odey',
@@ -35,8 +40,36 @@ describe('Mocking', () => {
           },
         },
         components: {
+          schemas: {
+            PetWithName: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'integer',
+                  minimum: 1,
+                },
+                name: {
+                  type: 'string',
+                  example: 'Garfield',
+                },
+              },
+            },
+            PetWithTag: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'integer',
+                  minimum: 1,
+                },
+                tag: {
+                  type: 'string',
+                  example: 'Lost',
+                },
+              },
+            },
+          },
           responses: {
-            PetsListWithExample: {
+            SimplePetsListWithExample: {
               description: 'ok',
               content: {
                 'application/json': {
@@ -46,7 +79,7 @@ describe('Mocking', () => {
                 },
               },
             },
-            PetsListWithExamplesArray: {
+            SimplePetsListWithExamplesArray: {
               description: 'ok',
               content: {
                 'application/json': {
@@ -58,7 +91,20 @@ describe('Mocking', () => {
                 },
               },
             },
-            PetsListWithResponseSchema: {
+            SimplePetsListWithResponseSchema: {
+              description: 'ok',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      $ref: '#/components/schemas/PetWithName',
+                    },
+                  },
+                },
+              },
+            },
+            AllOfPetsListWithResponseSchema: {
               description: 'ok',
               content: {
                 'application/json': {
@@ -66,16 +112,44 @@ describe('Mocking', () => {
                     type: 'array',
                     items: {
                       type: 'object',
-                      properties: {
-                        id: {
-                          type: 'integer',
-                          minimum: 1,
-                        },
-                        name: {
-                          type: 'string',
-                          example: 'Garfield',
-                        },
-                      },
+                      allOf: [
+                        { $ref: '#/components/schemas/PetWithName' },
+                        { $ref: '#/components/schemas/PetWithTag' },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            AnyOfPetsListWithResponseSchema: {
+              description: 'ok',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      anyOf: [
+                        { $ref: '#/components/schemas/PetWithName' },
+                        { $ref: '#/components/schemas/PetWithTag' },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            OneOfPetsListWithResponseSchema: {
+              description: 'ok',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      oneOf: [
+                        { $ref: '#/components/schemas/PetWithName' },
+                        { $ref: '#/components/schemas/PetWithTag' },
+                      ],
                     },
                   },
                 },
@@ -89,7 +163,7 @@ describe('Mocking', () => {
     test('mocks getPets with example object', async () => {
       const { paths } = api.inputDocument as OpenAPIV3.Document;
       paths['/pets'].get.responses = {
-        200: { $ref: '#/components/responses/PetsListWithExample' },
+        200: { $ref: '#/components/responses/SimplePetsListWithExample' },
       };
       await api.init();
       const mock = api.mockResponseForOperation('getPets');
@@ -99,7 +173,7 @@ describe('Mocking', () => {
     test('mocks getPets with examples array', async () => {
       const { paths } = api.inputDocument as OpenAPIV3.Document;
       paths['/pets'].get.responses = {
-        200: { $ref: '#/components/responses/PetsListWithExamplesArray' },
+        200: { $ref: '#/components/responses/SimplePetsListWithExamplesArray' },
       };
       await api.init();
       const mock = api.mockResponseForOperation('getPets');
@@ -109,7 +183,37 @@ describe('Mocking', () => {
     test('mocks getPets with response schema', async () => {
       const { paths } = api.inputDocument as OpenAPIV3.Document;
       paths['/pets'].get.responses = {
-        200: { $ref: '#/components/responses/PetsListWithResponseSchema' },
+        200: { $ref: '#/components/responses/SimplePetsListWithResponseSchema' },
+      };
+      await api.init();
+      const mock = api.mockResponseForOperation('getPets');
+      expect(mock).toMatchObject([exampleGarfield]);
+    });
+
+    test('mocks getPets with response schema containing allOf', async () => {
+      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      paths['/pets'].get.responses = {
+        200: { $ref: '#/components/responses/AnyOfPetsListWithResponseSchema' },
+      };
+      await api.init();
+      const mock = api.mockResponseForOperation('getPets');
+      expect(mock).toMatchObject([exampleGarfield, exampleGarfieldWithTag]);
+    });
+
+    test('mocks getPets with response schema containing anyOf', async () => {
+      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      paths['/pets'].get.responses = {
+        200: { $ref: '#/components/responses/AnyOfPetsListWithResponseSchema' },
+      };
+      await api.init();
+      const mock = api.mockResponseForOperation('getPets');
+      expect(mock).toMatchObject([exampleGarfield, exampleGarfieldWithTag]);
+    });
+
+    test('mocks getPets with response schema containing oneOf', async () => {
+      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      paths['/pets'].get.responses = {
+        200: { $ref: '#/components/responses/OneOfPetsListWithResponseSchema' },
       };
       await api.init();
       const mock = api.mockResponseForOperation('getPets');

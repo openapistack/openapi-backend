@@ -14,6 +14,16 @@ export function mock(schema: SchemaLike): any {
     return schema.default;
   }
 
+  // oneOf, use first
+  if (schema.oneOf && schema.oneOf[0]) {
+    return mock(schema.oneOf[0] as SchemaLike);
+  }
+
+  // anyOf, use first
+  if (schema.anyOf && schema.anyOf[0]) {
+    return mock(schema.anyOf[0] as SchemaLike);
+  }
+
   // get type, use first if array
   const type = _.isArray(schema) ? _.first(schema.type) : schema.type;
 
@@ -28,12 +38,26 @@ export function mock(schema: SchemaLike): any {
 
   if (type === 'array') {
     const array = schema as OpenAPIV3.ArraySchemaObject;
-    const { items } = array;
+    const items = array.items as SchemaLike;
     if (!items) {
       return [];
     }
-    const len = _.min([array.minItems, 1]);
-    return _.map(_.range(len), () => mock(items as SchemaLike));
+    const examples = [];
+    let example = ((items.oneOf && items.oneOf[0]) || items) as SchemaLike;
+    if (items.anyOf || items.allOf) {
+      // include one of each example for anyOf and allOf
+      for (const option of items.anyOf || items.allOf) {
+        example = option as SchemaLike;
+        examples.push(mock(example));
+      }
+    }
+    // if minItems is set make sure we have at least that many items
+    const minItems = array.minItems || 1;
+    while (examples.length < minItems) {
+      examples.push(mock(example));
+    }
+    // limit to max items if applicable
+    return array.maxItems ? _.take(examples, array.maxItems) : examples;
   }
 
   if (_.isArray(schema.enum)) {
