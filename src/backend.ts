@@ -262,6 +262,7 @@ export class OpenAPIBackend {
 
     // build a parameter object to validate
     const { params, query, headers, cookies, requestBody } = parseRequest(req, operation.path);
+
     const parameters: InputParameters = _.omitBy(
       {
         path: params,
@@ -272,6 +273,27 @@ export class OpenAPIBackend {
       },
       _.isNil,
     );
+
+    if (typeof req.body !== 'object') {
+      const payloadTypes = _.keys(_.get(operation, 'requestBody.content', {}));
+      if (_.includes(payloadTypes, 'application/json')) {
+        // check that JSON isn't malformed
+        try {
+          JSON.parse(req.body.toString());
+        } catch (err) {
+          validate.errors = [
+            {
+              keyword: 'parse',
+              dataPath: '',
+              schemaPath: '#/requestBody',
+              params: [],
+              message: err.message,
+            },
+          ];
+          return validate;
+        }
+      }
+    }
 
     // validate parameters against pre-compiled schema
     validate(parameters);

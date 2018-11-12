@@ -69,14 +69,18 @@ export function parseRequest(req: Request, path?: string): ParsedRequest {
       requestBody = JSON.parse(req.body.toString());
     } catch {
       // suppress json parsing errors
+      // we will emit error if validation requires it later
     }
   }
 
   // parse query string from req.path + req.query
   const query = typeof req.query === 'object' ? req.query : parseQuery(req.path.split('?')[1]);
 
+  // header keys are converted to lowercase, so Content-Type becomes content-type
+  const headers = _.mapKeys(req.headers, (val, header) => header.toLowerCase());
+
   // parse cookie from headers
-  const cookieHeader = req.headers['cookie'] || req.headers['Cookie'];
+  const cookieHeader = headers['cookie'];
   const cookies = cookie.parse(_.flatten([cookieHeader]).join('; '));
 
   // normalize
@@ -97,6 +101,7 @@ export function parseRequest(req: Request, path?: string): ParsedRequest {
   return {
     ...req,
     params,
+    headers,
     query,
     cookies,
     requestBody,

@@ -258,6 +258,7 @@ describe('Validation', () => {
                   type: 'string',
                   pattern: '^[A-Za-z0-9]{8,16}$',
                 },
+                required: true,
               },
             ],
           },
@@ -386,6 +387,17 @@ describe('Validation', () => {
         headers,
       });
       expect(valid.errors).toHaveLength(1);
+    });
+
+    test('fails validation for malformed JSON', async () => {
+      const valid = api.validateRequest({
+        path: '/pets',
+        method: 'post',
+        body: '<XML>',
+        headers,
+      });
+      expect(valid.errors).toHaveLength(1);
+      expect(valid.errors[0].keyword).toBe('parse');
     });
   });
 });
