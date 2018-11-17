@@ -1,4 +1,4 @@
-import OpenAPIBackend from '../src/index';
+import OpenAPIBackend from './index';
 import { OpenAPIV3 } from 'openapi-types';
 
 const meta = {
