@@ -1,9 +1,10 @@
 import path from 'path';
-import OpenAPIBackend from '../src/index';
+import { OpenAPIBackend } from './backend';
 import { OpenAPIV3 } from 'openapi-types';
 
-const examplePetAPIJSON = path.join(__dirname, 'resources', 'example-pet-api.openapi.json');
-const examplePetAPIYAML = path.join(__dirname, 'resources', 'example-pet-api.openapi.yml');
+const testsDir = path.join(__dirname, '..', '__tests__');
+const examplePetAPIJSON = path.join(testsDir, 'resources', 'example-pet-api.openapi.json');
+const examplePetAPIYAML = path.join(testsDir, 'resources', 'example-pet-api.openapi.yml');
 
 const responses: OpenAPIV3.ResponsesObject = {
   200: { description: 'ok' },
