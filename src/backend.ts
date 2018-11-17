@@ -4,7 +4,7 @@ import { validate as validateOpenAPI } from 'openapi-schema-validation';
 import SwaggerParser from 'swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
 import { normalizeRequest, parseRequest, Request, ParsedRequest } from './util/request';
-import { mock } from './util/mock';
+import { mock } from 'mock-json-schema';
 
 // export public interfaces
 export type Document = OpenAPIV3.Document;
