@@ -22,6 +22,7 @@ and importing them via YAML or JSON files or just passing an object
 API requests. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
 - [x] Mock API responses using [OpenAPI examples objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#example-object)
 or [JSON Schema definitions](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#schema-object)
+- [x] TypeScript types included
 
 (Currently only OpenAPI v3.0.0+ is supported)
 
