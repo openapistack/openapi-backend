@@ -19,8 +19,8 @@ const api = new OpenAPIBackend({
 
 // mock response handler
 api.registerHandler('notImplemented', async (c, req: Request, res: Response) => {
-  const mock = api.mockResponseForOperation(c.operation.operationId);
-  return res.status(200).json(mock);
+  const { status, mock } = api.mockResponseForOperation(c.operation.operationId);
+  return res.status(status).json(mock);
 });
 
 api.init();
