@@ -1,6 +1,7 @@
 const OpenAPIBackend = require('openapi-backend').default;
 const express = require('express');
 const app = express();
+app.use(express.json());
 
 // define api
 const api = new OpenAPIBackend({
