@@ -109,14 +109,19 @@ describe('OpenAPIBackend', () => {
     console.warn = warn; // reset console.warn
   });
 
-  describe('.registerHandler', () => {
+  describe('.register', () => {
     const api = new OpenAPIBackend({ definition });
     beforeAll(() => api.init());
 
     const dummyHandler = jest.fn();
 
-    test('registers a handler with .registerHandler', async () => {
+    test('registers a single handler with .registerHandler', async () => {
       api.registerHandler('getPets', dummyHandler);
+      expect(api.handlers['getPets']).toBe(dummyHandler);
+    });
+
+    test('registers a single handler with .register', async () => {
+      api.register('getPets', dummyHandler);
       expect(api.handlers['getPets']).toBe(dummyHandler);
     });
 
@@ -124,7 +129,7 @@ describe('OpenAPIBackend', () => {
       api.strict = false;
       const warn = console.warn;
       console.warn = jest.fn();
-      api.registerHandler('getHumans', dummyHandler);
+      api.register('getHumans', dummyHandler);
       expect(console.warn).toBeCalledTimes(1);
       expect(api.handlers['getHumans']).toBe(dummyHandler);
       console.warn = warn; // reset console.warn
@@ -132,7 +137,7 @@ describe('OpenAPIBackend', () => {
 
     test('refuses to register a handler for unknown operationId when in strict mode', async () => {
       api.strict = true;
-      expect(() => api.registerHandler('getAliens', dummyHandler)).toThrowError();
+      expect(() => api.register('getAliens', dummyHandler)).toThrowError();
       expect(api.handlers['getAliens']).not.toBe(dummyHandler);
     });
 

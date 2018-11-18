@@ -20,11 +20,11 @@
     - [Parameter: req](#parameter-req)
   - [.matchOperation(req)](#matchoperationreq)
     - [Parameter: req](#parameter-req)
-  - [.register(handlers)](#registerhandlers)
-    - [Parameter: opts.handlers](#parameter-optshandlers)
-  - [.registerHandler(operationId, handler)](#registerhandleroperationid-handler)
+  - [.register(operationId, handler)](#registeroperationid-handler)
     - [Parameter: operationId](#parameter-operationid)
     - [Parameter: handler](#parameter-handler)
+  - [.register(handlers)](#registerhandlers)
+    - [Parameter: opts.handlers](#parameter-optshandlers)
   - [.mockResponseForOperation(operationId, opts?)](#mockresponseforoperationoperationid-opts)
     - [Parameter: operationId](#parameter-operationid)
     - [Parameter: opts](#parameter-opts)
@@ -241,26 +241,7 @@ A request to match to an Operation.
 
 Type: [`Request`](#request-object)
 
-### .register(handlers)
-
-Registers multiple [Operation Handlers](#operation-handlers).
-
-Example usage:
-```javascript
-api.register({
-  getPets: (req, res) => res.json({ result: ['pet1', 'pet2'] }),
-  notFound: (req, res) => res.status(404).json({ err: 'not found' }),
-  validationFail: (err, req, res) => res.status(404).json({ err }),
-});
-```
-
-#### Parameter: opts.handlers
-
-[Operation Handlers](#operation-handlers) to be registered.
-
-Type: `{ [operationId: string]: Handler | ErrorHandler }`
-
-### .registerHandler(operationId, handler)
+### .register(operationId, handler)
 
 Registers a handler for an operation.
 
@@ -285,6 +266,25 @@ Type: `string`
 The operation handler.
 
 Type: `Handler | ErrorHandler`
+
+### .register(handlers)
+
+Registers multiple [Operation Handlers](#operation-handlers).
+
+Example usage:
+```javascript
+api.register({
+  getPets: (req, res) => res.json({ result: ['pet1', 'pet2'] }),
+  notFound: (req, res) => res.status(404).json({ err: 'not found' }),
+  validationFail: (err, req, res) => res.status(404).json({ err }),
+});
+```
+
+#### Parameter: opts.handlers
+
+[Operation Handlers](#operation-handlers) to be registered.
+
+Type: `{ [operationId: string]: Handler | ErrorHandler }`
 
 ### .mockResponseForOperation(operationId, opts?)
 
@@ -352,11 +352,10 @@ async function getPetByIdHandler(c, req, res) {
 api.registerHandler('getPetById', getPetByIdHandler);
 ```
 
-There are different ways to register operation handlers:
+There are two different ways to register operation handlers:
 
 1. In the [`new OpenAPIBackend`](#new-openapibackendopts) constructor options
-1. With the [`.register()`](#registerhandlers) method
-1. With the [`.registerHandler()`](#registerhandleroperationid-handler) method
+1. With the [`.register()`](##registeroperationid-handler) method
 
 In addition to the operationId handlers, you should also specify special handlers for different situtations:
 

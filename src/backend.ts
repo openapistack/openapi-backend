@@ -3,24 +3,13 @@ import Ajv from 'ajv';
 import { validate as validateOpenAPI } from 'openapi-schema-validation';
 import SwaggerParser from 'swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
-import { normalizeRequest, parseRequest, Request, ParsedRequest } from './util/request';
 import { mock } from 'mock-json-schema';
 
-// export public interfaces
-export type Document = OpenAPIV3.Document;
-export { Request, ParsedRequest } from './util/request';
+import { OpenAPIRouter, Request, ParsedRequest, Operation } from './router';
+import { OpenAPIRequestValidator } from './validation';
 
-/**
- * OAS Operation Object containing the path and method so it can be placed in a flat array of operations
- *
- * @export
- * @interface Operation
- * @extends {OpenAPIV3.OperationObject}
- */
-export interface Operation extends OpenAPIV3.OperationObject {
-  path: string;
-  method: string;
-}
+// alias Document to OpenAPIV3.Document
+type Document = OpenAPIV3.Document;
 
 /**
  * Passed context built for request. Passed as first argument for all handlers.
@@ -35,34 +24,6 @@ export interface Context {
 }
 
 export type Handler = (context?: Context, ...args: any[]) => Promise<any>;
-
-/**
- * The internal JSON schema model to validate InputParameters against
- *
- * @interface InputValidationSchema
- */
-interface InputValidationSchema {
-  title: string;
-  type: 'object';
-  additionalProperties?: boolean;
-  properties: {
-    [target: string]: OpenAPIV3.SchemaObject | OpenAPIV3.ArraySchemaObject | OpenAPIV3.NonArraySchemaObject;
-  };
-  required?: string[];
-}
-
-/**
- * The internal input parameters object to validate against InputValidateSchema
- *
- * @interface InputParameters
- */
-interface InputParameters {
-  path?: { [param: string]: string };
-  query?: { [param: string]: string };
-  header?: { [header: string]: string };
-  cookie?: { [cookie: string]: string };
-  requestBody?: any;
-}
 
 /**
  * Main class and the default export of the 'openapi-backend' module
@@ -84,7 +45,9 @@ export class OpenAPIBackend {
   public handlers: { [operationId: string]: Handler };
   public allowedHandlers = ['notFound', 'notImplemented', 'validationFail'];
 
-  public ajvOpts: Ajv.Options = { coerceTypes: true };
+  public router: OpenAPIRouter;
+  public validator: OpenAPIRequestValidator;
+
   public schemas: { [operationId: string]: Ajv.ValidateFunction };
 
   /**
@@ -159,14 +122,16 @@ export class OpenAPIBackend {
       }
     }
 
-    // build schemas for all operations
-    const operations = this.getOperations();
-    operations.map(this.buildSchemaForOperation.bind(this));
+    // initalize router with dereferenced definition
+    this.router = new OpenAPIRouter({ definition: this.definition });
 
-    // now that the definition is loaded and dereferenced, we are initalized
+    // initalize validator with dereferenced definition
+    this.validator = new OpenAPIRequestValidator({ definition: this.definition });
+
+    // we are initalized
     this.initalized = true;
 
-    // trigger registering all handlers now that we are initalized to valdiate them
+    // register all handlers
     if (this.handlers) {
       this.register(this.handlers);
     }
@@ -196,7 +161,7 @@ export class OpenAPIBackend {
     const context: Context = {};
 
     // parse request
-    context.request = parseRequest(req);
+    context.request = this.router.parseRequest(req);
 
     // match operation
     context.operation = this.matchOperation(req);
@@ -211,11 +176,11 @@ export class OpenAPIBackend {
     const { path, operationId } = context.operation;
 
     // parse request again now with matched path
-    context.request = parseRequest(req, path);
+    context.request = this.router.parseRequest(req, path);
 
     // validate against route
     if (this.validate) {
-      context.validation = this.validateRequest(req);
+      context.validation = this.validator.validateRequest(req);
       if (context.validation.errors) {
         // validation FAIL
         const validationFailHandler: Handler = this.handlers['validationFail'];
@@ -244,113 +209,10 @@ export class OpenAPIBackend {
   }
 
   /**
-   * Validates a request and returns the result.
-   *
-   * The method will first match the request to an API operation and use the pre-compiled Ajv validation schema to
-   * validate it.
-   *
-   * @param {Request} req - request to validate
-   * @returns {Ajv.ValidateFunction}
-   * @memberof OpenAPIBackend
-   */
-  public validateRequest(req: Request): Ajv.ValidateFunction {
-    const operation = this.matchOperation(req);
-    const { operationId } = operation;
-
-    // get pre-compiled ajv schema for operation
-    const validate = this.schemas[operationId];
-
-    // build a parameter object to validate
-    const { params, query, headers, cookies, requestBody } = parseRequest(req, operation.path);
-
-    const parameters: InputParameters = _.omitBy(
-      {
-        path: params,
-        query,
-        header: headers,
-        cookie: cookies,
-      },
-      _.isNil,
-    );
-
-    if (typeof req.body !== 'object') {
-      const payloadFormats = _.keys(_.get(operation, 'requestBody.content', {}));
-      if (payloadFormats.length === 1 && payloadFormats[0] === 'application/json') {
-        // check that JSON isn't malformed when the only payload format is JSON
-        try {
-          JSON.parse(req.body.toString());
-        } catch (err) {
-          validate.errors = [
-            {
-              keyword: 'parse',
-              dataPath: '',
-              schemaPath: '#/requestBody',
-              params: [],
-              message: err.message,
-            },
-          ];
-          return validate;
-        }
-      }
-    }
-
-    if (typeof requestBody === 'object' || headers['content-type'] === 'application/json') {
-      // include request body in validation if an object is provided
-      parameters.requestBody = requestBody;
-    }
-
-    // validate parameters against pre-compiled schema
-    validate(parameters);
-    return validate;
-  }
-
-  /**
-   * Matches a request to an API operation (router)
-   *
-   * @param {Request} req
-   * @returns {Operation}
-   * @memberof OpenAPIBackend
-   */
-  public matchOperation(req: Request): Operation {
-    // normalize request for matching
-    req = normalizeRequest(req);
-
-    // get all operations matching request method in a flat array
-    const operations = _.filter(this.getOperations(), ({ method }) => method === req.method);
-
-    // first check for an exact match for path
-    const exactMatch = _.find(operations, ({ path }) => path === req.path);
-    if (exactMatch) {
-      return exactMatch;
-    }
-
-    // then check for matches using path templating
-    return _.find(operations, ({ path }) => {
-      // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
-      const pathPattern = `^${path.replace(/\{.*\}/g, '[^/]+').replace(/\//g, '\\/')}$`;
-      return Boolean(req.path.match(new RegExp(pathPattern, 'g')));
-    });
-  }
-
-  /**
-   * Registers multiple operation handlers
-   *
-   * @param {{ [operationId: string]: Handler }} handlers
-   * @memberof OpenAPIBackend
-   */
-  public register(handlers: { [operationId: string]: Handler }): void {
-    for (const operationId in handlers) {
-      if (handlers[operationId]) {
-        this.registerHandler(operationId, handlers[operationId]);
-      }
-    }
-  }
-
-  /**
    * Registers a handler for an operation
    *
    * @param {string} operationId
-   * @param {Handler | ErrorHandler} handler
+   * @param {Handler} handler
    * @memberof OpenAPIBackend
    */
   public registerHandler(operationId: string, handler: Handler): void {
@@ -361,7 +223,7 @@ export class OpenAPIBackend {
 
     // if initalized, check that operation matches an operationId or is one of our allowed handlers
     if (this.initalized) {
-      const operation = this.getOperation(operationId);
+      const operation = this.router.getOperation(operationId);
       if (!operation && !_.includes(this.allowedHandlers, operationId)) {
         const err = `Unknown operationId ${operationId}`;
         // in strict mode, throw Error, otherwise just emit a warning
@@ -378,87 +240,45 @@ export class OpenAPIBackend {
   }
 
   /**
-   * Validates this.document, which is the parsed OpenAPI document. Throws an error if validation fails.
+   * Registers multiple handlers
    *
-   * @returns {Document} parsed document
+   * @param {{ [operationId: string]: Handler }} handlers
    * @memberof OpenAPIBackend
    */
-  public validateDefinition() {
-    const { valid, errors } = validateOpenAPI(this.document, 3);
-    if (!valid) {
-      const prettyErrors = JSON.stringify(errors, null, 2);
-      throw new Error(`Document is not valid OpenAPI. ${errors.length} validation errors:\n${prettyErrors}`);
-    }
-    return this.document;
-  }
+  public register(handlers: { [operationId: string]: Handler }): void;
 
   /**
-   * Builds an Ajv schema validation function for an operation and registers it
+   * Registers a handler for an operation
    *
-   * @param {Operation} operation
+   * Alias for: registerHandler
+   *
+   * @param {string} operationId
+   * @param {Handler} handler
    * @memberof OpenAPIBackend
    */
-  public buildSchemaForOperation(operation: Operation): void {
-    const { operationId } = operation;
-    const schema: InputValidationSchema = {
-      title: 'Request',
-      type: 'object',
-      additionalProperties: true,
-      properties: {
-        path: {
-          type: 'object',
-          additionalProperties: false,
-          properties: {},
-          required: [],
-        },
-        query: {
-          type: 'object',
-          properties: {},
-          additionalProperties: false,
-          required: [],
-        },
-        header: {
-          type: 'object',
-          additionalProperties: true,
-          properties: {},
-          required: [],
-        },
-        cookie: {
-          type: 'object',
-          additionalProperties: true,
-          properties: {},
-          required: [],
-        },
-      },
-      required: [],
-    };
+  public register(operationId: string, handler: Handler): void;
 
-    // params are dereferenced here, no reference objects.
-    const { parameters } = operation;
-    parameters.map((param: OpenAPIV3.ParameterObject) => {
-      const target = schema.properties[param.in];
-      if (param.required) {
-        target.required.push(param.name);
-        schema.required = _.uniq([...schema.required, param.in]);
-      }
-      target.properties[param.name] = param.schema as OpenAPIV3.SchemaObject;
-    });
-
-    if (operation.requestBody) {
-      const requestBody = operation.requestBody as OpenAPIV3.RequestBodyObject;
-      const jsonbody = requestBody.content['application/json'];
-      if (jsonbody && jsonbody.schema) {
-        schema.properties.requestBody = jsonbody.schema as OpenAPIV3.SchemaObject;
-        if (_.keys(requestBody.content).length === 1) {
-          // if application/json is the only specified format, it's required
-          schema.required.push('requestBody');
+  /**
+   * Overloaded register() implementation
+   *
+   * @param {...any[]} args
+   * @memberof OpenAPIBackend
+   */
+  public register(...args: any[]): void {
+    if (typeof args[0] === 'string') {
+      // register a single handler
+      const operationId: string = args[0];
+      const handler: Handler = args[1];
+      this.registerHandler(operationId, handler);
+    } else {
+      // register multiple handlers
+      const handlers: { [operationId: string]: Handler } = args[0];
+      for (const operationId in handlers) {
+        if (handlers[operationId]) {
+          this.registerHandler(operationId, handlers[operationId]);
         }
       }
     }
-
-    // build the schema and register it
-    const ajv = new Ajv(this.ajvOpts);
-    this.schemas[operationId] = ajv.compile(schema);
   }
 
   /**
@@ -482,7 +302,7 @@ export class OpenAPIBackend {
   ): any {
     const { example, responseStatus, mediaType } = { responseStatus: 200, mediaType: 'application/json', ...opts };
 
-    const operation = this.getOperation(operationId);
+    const operation = this.router.getOperation(operationId);
 
     const defaultMock = {};
     if (!operation || !operation.responses) {
@@ -538,39 +358,71 @@ export class OpenAPIBackend {
   }
 
   /**
+   * Validates this.document, which is the parsed OpenAPI document. Throws an error if validation fails.
+   *
+   * @returns {Document} parsed document
+   * @memberof OpenAPIBackend
+   */
+  public validateDefinition() {
+    const { valid, errors } = validateOpenAPI(this.document, 3);
+    if (!valid) {
+      const prettyErrors = JSON.stringify(errors, null, 2);
+      throw new Error(`Document is not valid OpenAPI. ${errors.length} validation errors:\n${prettyErrors}`);
+    }
+    return this.document;
+  }
+
+  /**
    * Flattens operations into a simple array of Operation objects easy to work with
+   *
+   * Alias for: router.getOperations()
    *
    * @returns {Operation[]}
    * @memberof OpenAPIBackend
    */
   public getOperations(): Operation[] {
-    const paths = _.get(this.definition, 'paths', {});
-    return _.chain(paths)
-      .entries()
-      .flatMap(([path, pathBaseObject]) => {
-        const methods = _.pick(pathBaseObject, ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']);
-        return _.map(_.entries(methods), ([method, operation]) => ({
-          ...(operation as OpenAPIV3.OperationObject),
-          path,
-          method,
-          // add the path base object's operations to the operation's parameters
-          parameters: [
-            ...((operation.parameters as OpenAPIV3.ParameterObject[]) || []),
-            ...((pathBaseObject.parameters as OpenAPIV3.ParameterObject[]) || []),
-          ],
-        }));
-      })
-      .value();
+    return this.router.getOperations();
   }
 
   /**
    * Gets a single operation based on operationId
+   *
+   * Alias for: router.getOperation(operationId)
    *
    * @param {string} operationId
    * @returns {Operation}
    * @memberof OpenAPIBackend
    */
   public getOperation(operationId: string): Operation {
-    return _.find(this.getOperations(), { operationId });
+    return this.router.getOperation(operationId);
+  }
+
+  /**
+   * Matches a request to an API operation (router)
+   *
+   * Alias for: router.matchOperation(req)
+   *
+   * @param {Request} req
+   * @returns {Operation}
+   * @memberof OpenAPIBackend
+   */
+  public matchOperation(req: Request): Operation {
+    return this.router.matchOperation(req);
+  }
+
+  /**
+   * Validates a request and returns the result.
+   *
+   * The method will first match the request to an API operation and use the pre-compiled Ajv validation schema to
+   * validate it.
+   *
+   * Alias for validator.validateRequest(req)
+   *
+   * @param {Request} req - request to validate
+   * @returns {Ajv.ValidateFunction}
+   * @memberof OpenAPIBackend
+   */
+  public validateRequest(req: Request): Ajv.ValidateFunction {
+    return this.validator.validateRequest(req);
   }
 }

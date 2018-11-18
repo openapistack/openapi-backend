@@ -197,9 +197,8 @@ app.listen(9000);
 
 Handlers are registered for `operationId`s found in the OpenAPI definitions. You can register handlers as shown above
 with [`new OpenAPIBackend()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#parameter-optshandlers)
-constructor opts, or using the [`register()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#registerhandlers)
-and [`registerHandler()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#registerhandleroperationid-handler)
-methods.
+constructor opts, or using the [`register()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#registeroperationid-handler)
+method.
 
 ```javascript
 async function getPetByIdHandler(c, req, res) {
@@ -207,7 +206,7 @@ async function getPetByIdHandler(c, req, res) {
   const pet = await pets.getPetById(id);
   return res.status(200).json({ result: pet });
 }
-api.registerHandler('getPetById', getPetByIdHandler);
+api.register('getPetById', getPetByIdHandler);
 ```
 
 Operation handlers are passed a special [Context object](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#context-object)
