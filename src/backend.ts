@@ -23,7 +23,7 @@ export interface Context {
   validation?: Ajv.ValidateFunction;
 }
 
-export type Handler = (context?: Context, ...args: any[]) => Promise<any>;
+export type Handler = (context?: Context, ...args: any[]) => any | Promise<any>;
 
 /**
  * Main class and the default export of the 'openapi-backend' module
