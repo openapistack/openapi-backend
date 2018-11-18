@@ -81,6 +81,7 @@ describe('OpenAPIBackend', () => {
     const api = new OpenAPIBackend({ definition, strict: true });
     await api.init();
     expect(api.initalized).toEqual(true);
+    expect(api.router.getOperations()).toHaveLength(8);
   });
 
   test('can be initalised using a valid YAML file', async () => {
@@ -88,6 +89,7 @@ describe('OpenAPIBackend', () => {
     const api = new OpenAPIBackend({ definition: examplePetAPIYAML, strict: true });
     await api.init();
     expect(api.initalized).toEqual(true);
+    expect(api.router.getOperations()).toHaveLength(8);
   });
 
   test('can be initalised using a valid JSON file', async () => {
@@ -95,6 +97,7 @@ describe('OpenAPIBackend', () => {
     const api = new OpenAPIBackend({ definition: examplePetAPIJSON, strict: true });
     await api.init();
     expect(api.initalized).toEqual(true);
+    expect(api.router.getOperations()).toHaveLength(8);
   });
 
   test('throws an error when initalised with an invalid document in strict mode', async () => {
