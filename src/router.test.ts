@@ -1,4 +1,5 @@
-import OpenAPIBackend from './index';
+import { OpenAPIRouter } from './router';
+import { OpenAPIBackend } from './backend';
 import { OpenAPIV3 } from 'openapi-types';
 
 const headers = { accept: 'application/json' };
@@ -79,10 +80,9 @@ const definition: OpenAPIV3.Document = {
   },
 };
 
-describe('Routing', () => {
-  describe('matchOperation', () => {
-    const api = new OpenAPIBackend({ definition });
-    beforeAll(() => api.init());
+describe('OpenAPIRouter', () => {
+  describe('.matchOperation', () => {
+    const api = new OpenAPIRouter({ definition });
 
     test('matches GET /pets', async () => {
       const { operationId } = api.matchOperation({ path: '/pets', method: 'get', headers });
@@ -124,8 +124,10 @@ describe('Routing', () => {
       expect(operationId).toEqual('getPetsMeta');
     });
   });
+});
 
-  describe('handleRequest withContext=false', async () => {
+describe('OpenAPIBackend', () => {
+  describe('.handleRequest withContext=false', async () => {
     const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
     const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
     const api = new OpenAPIBackend({
@@ -197,7 +199,7 @@ describe('Routing', () => {
     });
   });
 
-  describe('handleRequest withContext=true', async () => {
+  describe('.handleRequest withContext=true', async () => {
     const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
     const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
     const api = new OpenAPIBackend({
