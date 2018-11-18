@@ -223,8 +223,8 @@ to generate mock responses for operations with no custom handlers specified yet:
 
 ```javascript
 api.registerHandler('notImplemented', (c, req, res) => {
-  const mock = api.mockResponseForOperation(c.operation.operationId);
-  return res.status(200).json(mock);
+  const { status, mock } = api.mockResponseForOperation(c.operation.operationId);
+  return res.status(status).json(mock);
 });
 ```
 
