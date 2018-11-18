@@ -1,6 +1,7 @@
-import { parse as parseQuery } from 'query-string';
+import bath from 'bath';
 import _ from 'lodash';
 import cookie from 'cookie';
+import { parse as parseQuery } from 'query-string';
 
 export interface Request {
   method: string;
@@ -89,13 +90,8 @@ export function parseRequest(req: Request, path?: string): ParsedRequest {
   let params = {};
   if (path) {
     // parse path params if path is given
-    const paramPlaceholder = '{[^\\/]*}';
-    const pathPattern = `^${path.replace(new RegExp(paramPlaceholder, 'g'), '([^\\/]*)').replace(/\//g, '\\/')}$`;
-    const paramValueArray = new RegExp(pathPattern).exec(req.path).splice(1);
-    const paramNameArray = (path.match(new RegExp(paramPlaceholder, 'g')) || []).map((param) =>
-      param.replace(/[{}]/g, ''),
-    );
-    params = _.zipObject(paramNameArray, paramValueArray);
+    const pathParams = bath(path);
+    params = pathParams.params(req.path);
   }
 
   return {
