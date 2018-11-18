@@ -222,7 +222,7 @@ handler and use [`mockResponseForOperation()`](https://github.com/anttiviljami/o
 to generate mock responses for operations with no custom handlers specified yet:
 
 ```javascript
-api.registerHandler('notImplemented', (c, req, res) => {
+api.register('notImplemented', (c, req, res) => {
   const { status, mock } = api.mockResponseForOperation(c.operation.operationId);
   return res.status(status).json(mock);
 });
