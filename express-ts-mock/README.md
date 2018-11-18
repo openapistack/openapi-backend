@@ -15,5 +15,6 @@ Try the endpoints:
 ```bash
 curl -i http://localhost:9000/pets
 curl -i http://localhost:9000/pets/1
+curl -i -X POST -d {} http://localhost:9000/pets
 ```
 

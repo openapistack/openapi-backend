@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import { Request, Response } from 'express';
 
 const app = express();
+app.use(express.json());
 
 // define api
 const api = new OpenAPIBackend({
@@ -29,7 +30,6 @@ api.init();
 app.use(morgan('combined'));
 
 // use as express middleware
-app.use(express.json());
 app.use((req, res) => api.handleRequest(req, req, res));
 
 // start server
