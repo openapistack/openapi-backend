@@ -9,12 +9,21 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ListPetsRes'
+    post:
+      operationId: createPet
+      requestBody:
+        description: Pet object to create
+        content:
+          application/json: {}
+      responses:
+        '201':
+          $ref: '#/components/responses/PetRes'
   '/pets/{id}':
     get:
       operationId: getPetById
       responses:
         '200':
-          $ref: '#/components/responses/GetPetByIdRes'
+          $ref: '#/components/responses/PetRes'
     parameters:
       - name: id
         in: path
@@ -38,7 +47,7 @@ components:
                 name:
                   type: string
                   example: Odie
-    GetPetByIdRes:
+    PetRes:
       description: ok
       content:
         application/json:

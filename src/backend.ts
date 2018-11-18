@@ -289,72 +289,93 @@ export class OpenAPIBackend {
    * @param {number} opts.responseStatus - (optional) the response code of the response to mock (default: 200)
    * @param {string} opts.mediaType - (optional) the media type of the response to mock (default: application/json)
    * @param {string} opts.example - (optional) the specific example to use (if operation has multiple examples)
-   * @returns {*}
+   * @returns {{ status: number; mock: any }}
    * @memberof OpenAPIBackend
    */
   public mockResponseForOperation(
     operationId: string,
-    opts?: {
+    opts: {
       code?: number;
       mediaType?: string;
       example?: string;
-    },
-  ): any {
-    const { example, responseStatus, mediaType } = { responseStatus: 200, mediaType: 'application/json', ...opts };
+    } = {},
+  ): { status: number; mock: any } {
+    let status = 200;
+    const defaultMock = {};
 
     const operation = this.router.getOperation(operationId);
-
-    const defaultMock = {};
     if (!operation || !operation.responses) {
-      return defaultMock;
+      return { status, mock: defaultMock };
     }
 
-    // choose response code
-    // 1. check for responseStatus opt (default: 200)
-    // 2. check for the "default" response
-    // 3. pick first response code in list
+    // resolve status code
     const { responses } = operation;
-    const response = (responses[responseStatus] ||
-      responses.default ||
-      responses[_.first(_.keys(responses))]) as OpenAPIV3.ResponseObject;
-    if (!response || !response.content) {
-      return defaultMock;
+    let response: OpenAPIV3.ResponseObject;
+    // 1. check for provided code opt (default: 200)
+    if (!response && opts.code && responses[opts.code]) {
+      status = Number(opts.code);
+      response = responses[opts.code] as OpenAPIV3.ResponseObject;
     }
+    // 2. check for a 20X response
+    if (!response) {
+      for (const ok of _.range(200, 204)) {
+        if (responses[ok]) {
+          status = ok;
+          response = responses[ok] as OpenAPIV3.ResponseObject;
+        }
+      }
+    }
+    // 3. check for the "default" response
+    if (!response && responses.default) {
+      status = 200;
+      response = responses.default as OpenAPIV3.ResponseObject;
+    }
+    // 4. pick first response code in list
+    if (!response) {
+      status = Number(_.first(_.keys(responses)));
+      response = responses[_.first(_.keys(responses))] as OpenAPIV3.ResponseObject;
+    }
+    if (!response || !response.content) {
+      return { status, mock: defaultMock };
+    }
+    const { content } = response;
 
-    // choose media type
+    // resolve media type
     // 1. check for mediaType opt in content (default: application/json)
     // 2. pick first media type in content
-    const { content } = response;
+    const mediaType = opts.mediaType || 'application/json';
     const mediaResponse = content[mediaType] || content[_.first(_.keys(content))];
     if (!mediaResponse) {
-      return defaultMock;
+      return { status, mock: defaultMock };
     }
-
     const { examples, schema } = mediaResponse;
 
     // if example argument was provided, locate and return its value
-    if (example && examples) {
-      const exampleObject = examples[example] as OpenAPIV3.ExampleObject;
+    if (opts.example && examples) {
+      const exampleObject = examples[opts.example] as OpenAPIV3.ExampleObject;
       if (exampleObject && exampleObject.value) {
-        return exampleObject.value;
+        return { status, mock: exampleObject.value };
       }
     }
 
     // if operation has an example, return its value
     if (mediaResponse.example && mediaResponse.example.value) {
-      return mediaResponse.example.value;
+      return { status, mock: mediaResponse.example.value };
     }
 
     // pick the first example from examples
     if (examples) {
       const exampleObject = examples[_.first(_.keys(examples))] as OpenAPIV3.ExampleObject;
-      return exampleObject.value;
+      return { status, mock: exampleObject.value };
     }
 
+    // mock using json schema
     if (schema) {
-      return mock(schema as OpenAPIV3.SchemaObject);
+      return { status, mock: mock(schema as OpenAPIV3.SchemaObject) };
     }
-    return defaultMock;
+
+    // we should never get here, schema or an example must be provided
+    return { status, mock: defaultMock };
   }
 
   /**

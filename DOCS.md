@@ -288,13 +288,15 @@ Type: `{ [operationId: string]: Handler | ErrorHandler }`
 
 ### .mockResponseForOperation(operationId, opts?)
 
-Mocks a response for an operation based on example or response schema
+Mocks a response for an operation based on example or response schema.
+
+Returns an object with a status code and the mocked response.
 
 Example usage:
 ```javascript
 api.registerHandler('notImplemented', async (c, req: Request, res: Response) => {
-  const mock = api.mockResponseForOperation(c.operation.operationId);
-  return res.status(200).json(mock);
+  const { status, mock } = api.mockResponseForOperation(c.operation.operationId);
+  return res.status(status).json(mock);
 });
 ```
 

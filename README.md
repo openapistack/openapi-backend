@@ -273,8 +273,8 @@ components:
 
 The example above will yield:
 ```javascript
-api.mockResponseForOperation('getPets'); // => [{ id: 1, name: 'Garfield' }, { id: 2, name: 'Odie' }]
-api.mockResponseForOperation('getPetById'); // => { id: 1, name: 'Garfield' }
+api.mockResponseForOperation('getPets'); // => { status: 200, mock: [{ id: 1, name: 'Garfield' }, { id: 2, name: 'Odie' }]}
+api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, name: 'Garfield' }}
 ```
 
 [See full Mock API example on Express](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-ts-mock)

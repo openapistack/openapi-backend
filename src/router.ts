@@ -165,7 +165,7 @@ export class OpenAPIRouter {
    */
   public parseRequest(req: Request, path?: string): ParsedRequest {
     let requestBody = req.body;
-    if (typeof req.body !== 'object') {
+    if (req.body && typeof req.body !== 'object') {
       try {
         // attempt to parse json
         requestBody = JSON.parse(req.body.toString());

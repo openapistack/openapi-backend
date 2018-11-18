@@ -114,6 +114,7 @@ describe('OpenAPIBackend', () => {
     await api.init();
     expect(console.warn).toBeCalledTimes(1);
     console.warn = warn; // reset console.warn
+    expect(api.router.getOperations()).toHaveLength(0);
   });
 
   describe('.register', () => {
@@ -185,6 +186,12 @@ describe('OpenAPIBackend', () => {
                 200: { $ref: '#/components/responses/PetsListWithExample' },
               },
             },
+            post: {
+              operationId: 'createPet',
+              responses: {
+                201: { $ref: '#/components/responses/SinglePetWithResponseSchema' },
+              },
+            },
           },
         },
         components: {
@@ -217,6 +224,16 @@ describe('OpenAPIBackend', () => {
             },
           },
           responses: {
+            SinglePetWithResponseSchema: {
+              description: 'ok',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/PetWithName',
+                  },
+                },
+              },
+            },
             SimplePetsListWithExample: {
               description: 'ok',
               content: {
@@ -314,7 +331,8 @@ describe('OpenAPIBackend', () => {
         200: { $ref: '#/components/responses/SimplePetsListWithExample' },
       };
       await api.init();
-      const mock = api.mockResponseForOperation('getPets');
+      const { status, mock } = api.mockResponseForOperation('getPets');
+      expect(status).toBe(200);
       expect(mock).toMatchObject([exampleGarfield]);
     });
 
@@ -324,7 +342,8 @@ describe('OpenAPIBackend', () => {
         200: { $ref: '#/components/responses/SimplePetsListWithExamplesArray' },
       };
       await api.init();
-      const mock = api.mockResponseForOperation('getPets');
+      const { status, mock } = api.mockResponseForOperation('getPets');
+      expect(status).toBe(200);
       expect(mock).toMatchObject([exampleGarfield, exampleOdey]);
     });
 
@@ -334,7 +353,8 @@ describe('OpenAPIBackend', () => {
         200: { $ref: '#/components/responses/SimplePetsListWithResponseSchema' },
       };
       await api.init();
-      const mock = api.mockResponseForOperation('getPets');
+      const { status, mock } = api.mockResponseForOperation('getPets');
+      expect(status).toBe(200);
       expect(mock).toMatchObject([exampleGarfield]);
     });
 
@@ -344,7 +364,8 @@ describe('OpenAPIBackend', () => {
         200: { $ref: '#/components/responses/AnyOfPetsListWithResponseSchema' },
       };
       await api.init();
-      const mock = api.mockResponseForOperation('getPets');
+      const { status, mock } = api.mockResponseForOperation('getPets');
+      expect(status).toBe(200);
       expect(mock).toMatchObject([exampleGarfield, exampleGarfieldWithTag]);
     });
 
@@ -354,7 +375,8 @@ describe('OpenAPIBackend', () => {
         200: { $ref: '#/components/responses/AnyOfPetsListWithResponseSchema' },
       };
       await api.init();
-      const mock = api.mockResponseForOperation('getPets');
+      const { status, mock } = api.mockResponseForOperation('getPets');
+      expect(status).toBe(200);
       expect(mock).toMatchObject([exampleGarfield, exampleGarfieldWithTag]);
     });
 
@@ -364,8 +386,20 @@ describe('OpenAPIBackend', () => {
         200: { $ref: '#/components/responses/OneOfPetsListWithResponseSchema' },
       };
       await api.init();
-      const mock = api.mockResponseForOperation('getPets');
+      const { status, mock } = api.mockResponseForOperation('getPets');
+      expect(status).toBe(200);
       expect(mock).toMatchObject([exampleGarfield]);
+    });
+
+    test('mocks createPet with response schema', async () => {
+      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      paths['/pets'].post.responses = {
+        201: { $ref: '#/components/responses/SinglePetWithResponseSchema' },
+      };
+      await api.init();
+      const { status, mock } = api.mockResponseForOperation('createPet');
+      expect(status).toBe(201);
+      expect(mock).toMatchObject(exampleGarfield);
     });
   });
 });
