@@ -29,6 +29,7 @@ api.init();
 app.use(morgan('combined'));
 
 // use as express middleware
+app.use(express.json());
 app.use((req, res) => api.handleRequest(req, req, res));
 
 // start server

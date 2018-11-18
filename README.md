@@ -97,6 +97,7 @@ api.init();
 import express from 'express';
 
 const app = express();
+app.use(express.json());
 app.use((req, res) => api.handleRequest(req, req, res));
 app.listen(9000);
 ```
