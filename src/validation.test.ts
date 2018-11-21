@@ -212,6 +212,16 @@ describe('OpenAPIRequestValidator', () => {
                 responses,
                 parameters: [
                   {
+                    name: 'q',
+                    in: 'query',
+                    schema: {
+                      type: 'array',
+                      items: {
+                        type: 'string',
+                      },
+                    },
+                  },
+                  {
                     name: 'limit',
                     in: 'query',
                     schema: {
@@ -229,6 +239,31 @@ describe('OpenAPIRequestValidator', () => {
 
       test('passes validation for GET /pets?limit=10', async () => {
         const valid = validator.validateRequest({ path: '/pets?limit=10', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation for GET /pets?limit=10&limit=20', async () => {
+        const valid = validator.validateRequest({ path: '/pets?unknownparam=1', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+
+      test('passes validation for GET /pets?q=search', async () => {
+        const valid = validator.validateRequest({ path: '/pets?q=search', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for GET /pets?q=search1&q=search2', async () => {
+        const valid = validator.validateRequest({ path: '/pets?q=search1&q=search2', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for GET /pets?q[]=search1&q[]=search2', async () => {
+        const valid = validator.validateRequest({ path: '/pets?q[]=search1&q[]=search2', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for GET /pets?q[0]=search1&q[1]=search2', async () => {
+        const valid = validator.validateRequest({ path: '/pets?q[0]=search1&q[1]=search2', method: 'get', headers });
         expect(valid.errors).toBeFalsy();
       });
 

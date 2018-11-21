@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
 import bath from 'bath';
 import cookie from 'cookie';
-import { parse as parseQuery } from 'query-string';
+import { parse as parseQuery } from 'qs';
 
 // alias Document to OpenAPIV3.Document
 export type Document = OpenAPIV3.Document;
@@ -38,6 +38,9 @@ export interface ParsedRequest extends Request {
     [key: string]: string | string[];
   };
   cookies?: {
+    [key: string]: string | string[];
+  };
+  query?: {
     [key: string]: string | string[];
   };
   requestBody?: any;
