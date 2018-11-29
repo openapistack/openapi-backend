@@ -6,7 +6,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import { mock } from 'mock-json-schema';
 
 import { OpenAPIRouter, Request, ParsedRequest, Operation } from './router';
-import { OpenAPIRequestValidator } from './validation';
+import { OpenAPIRequestValidator, ValidationResult } from './validation';
 
 // alias Document to OpenAPIV3.Document
 type Document = OpenAPIV3.Document;
@@ -20,7 +20,7 @@ type Document = OpenAPIV3.Document;
 export interface Context {
   request?: ParsedRequest;
   operation?: Operation;
-  validation?: Ajv.ValidateFunction;
+  validation?: ValidationResult;
 }
 
 export type Handler = (context?: Context, ...args: any[]) => any | Promise<any>;
@@ -41,6 +41,8 @@ export class OpenAPIBackend {
   public strict: boolean;
   public validate: boolean;
   public withContext: boolean;
+
+  public ajvOpts: Ajv.Options;
 
   public handlers: { [operationId: string]: Handler };
   public allowedHandlers = ['notFound', 'notImplemented', 'validationFail'];
@@ -66,6 +68,7 @@ export class OpenAPIBackend {
     strict?: boolean;
     validate?: boolean;
     withContext?: boolean;
+    ajvOpts?: Ajv.Options;
     handlers?: {
       notFound?: Handler;
       notImplemented?: Handler;
@@ -77,6 +80,7 @@ export class OpenAPIBackend {
       withContext: true,
       validate: true,
       strict: false,
+      ajvOpts: {},
       handlers: {},
       ...opts,
     };
@@ -85,6 +89,7 @@ export class OpenAPIBackend {
     this.validate = optsWithDefaults.validate;
     this.handlers = optsWithDefaults.handlers;
     this.withContext = optsWithDefaults.withContext;
+    this.ajvOpts = optsWithDefaults.ajvOpts;
     this.schemas = {};
   }
 
@@ -126,7 +131,7 @@ export class OpenAPIBackend {
     this.router = new OpenAPIRouter({ definition: this.definition });
 
     // initalize validator with dereferenced definition
-    this.validator = new OpenAPIRequestValidator({ definition: this.definition });
+    this.validator = new OpenAPIRequestValidator({ definition: this.definition, ajvOpts: this.ajvOpts });
 
     // we are initalized
     this.initalized = true;
@@ -440,10 +445,10 @@ export class OpenAPIBackend {
    * Alias for validator.validateRequest(req)
    *
    * @param {Request} req - request to validate
-   * @returns {Ajv.ValidateFunction}
+   * @returns {ValidationStatus}
    * @memberof OpenAPIBackend
    */
-  public validateRequest(req: Request): Ajv.ValidateFunction {
+  public validateRequest(req: Request): ValidationResult {
     return this.validator.validateRequest(req);
   }
 }

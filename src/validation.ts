@@ -7,6 +7,17 @@ import { OpenAPIRouter, Request, Operation } from './router';
 type Document = OpenAPIV3.Document;
 
 /**
+ * The output object for validationRequest. Contains the results for validation
+ *
+ * @export
+ * @interface ValidationStatus
+ */
+export interface ValidationResult {
+  valid: boolean;
+  errors?: Ajv.ErrorObject[];
+}
+
+/**
  * The internal JSON schema model to validate InputParameters against
  *
  * @interface InputValidationSchema
@@ -42,8 +53,8 @@ interface InputParameters {
  */
 export class OpenAPIRequestValidator {
   public definition: Document;
-  public ajvOpts: Ajv.Options = { coerceTypes: true };
-  public schemas: { [operationId: string]: Ajv.ValidateFunction };
+  public ajvOpts: Ajv.Options;
+  public schemas: { [operationId: string]: Ajv.ValidateFunction[] };
   public router: OpenAPIRouter;
 
   /**
@@ -54,8 +65,9 @@ export class OpenAPIRequestValidator {
    * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
    * @memberof OpenAPIRequestValidator
    */
-  constructor(opts: { definition: Document }) {
+  constructor(opts: { definition: Document; ajvOpts?: Ajv.Options }) {
     this.definition = opts.definition;
+    this.ajvOpts = opts.ajvOpts || {};
 
     // initalize router
     this.router = new OpenAPIRouter({ definition: this.definition });
@@ -63,7 +75,7 @@ export class OpenAPIRequestValidator {
     // build schemas for api operations
     this.schemas = {};
     const operations = this.router.getOperations();
-    operations.map(this.buildSchemaForOperation.bind(this));
+    operations.map(this.buildSchemasForOperation.bind(this));
   }
 
   /**
@@ -73,17 +85,22 @@ export class OpenAPIRequestValidator {
    * validate it.
    *
    * @param {Request} req - request to validate
-   * @returns {Ajv.ValidateFunction}
+   * @returns {ValidationResult}
    * @memberof OpenAPIRequestValidator
    */
-  public validateRequest(req: Request, operation?: Operation): Ajv.ValidateFunction {
+  public validateRequest(req: Request, operation?: Operation): ValidationResult {
+    const result: ValidationResult = {
+      valid: true,
+      errors: [],
+    };
+
     if (!operation) {
       operation = this.router.matchOperation(req);
     }
     const { operationId } = operation;
 
-    // get pre-compiled ajv schema for operation
-    const validate = this.schemas[operationId];
+    // get pre-compiled ajv schemas for operation
+    const schemas = this.schemas[operationId];
 
     // build a parameter object to validate
     const { params, query, headers, cookies, requestBody } = this.router.parseRequest(req, operation.path);
@@ -111,23 +128,20 @@ export class OpenAPIRequestValidator {
       _.isNil,
     );
 
-    if (typeof req.body !== 'object') {
+    if (typeof req.body !== 'object' && req.body !== undefined) {
       const payloadFormats = _.keys(_.get(operation, 'requestBody.content', {}));
       if (payloadFormats.length === 1 && payloadFormats[0] === 'application/json') {
         // check that JSON isn't malformed when the only payload format is JSON
         try {
-          JSON.parse(req.body.toString());
+          JSON.parse(`${req.body}`);
         } catch (err) {
-          validate.errors = [
-            {
-              keyword: 'parse',
-              dataPath: '',
-              schemaPath: '#/requestBody',
-              params: [],
-              message: err.message,
-            },
-          ];
-          return validate;
+          result.errors.push({
+            keyword: 'parse',
+            dataPath: '',
+            schemaPath: '#/requestBody',
+            params: [],
+            message: err.message,
+          });
         }
       }
     }
@@ -137,9 +151,22 @@ export class OpenAPIRequestValidator {
       parameters.requestBody = requestBody;
     }
 
-    // validate parameters against pre-compiled schema
-    validate(parameters);
-    return validate;
+    // validate parameters against each pre-compiled schema
+    for (const validate of schemas) {
+      validate(parameters);
+      if (validate.errors) {
+        result.errors.push(...validate.errors);
+      }
+    }
+
+    if (_.isEmpty(result.errors)) {
+      // set empty errors array to null so we can check for result.errors truthiness
+      result.errors = null;
+    } else {
+      // there were errors, set valid to false
+      result.valid = false;
+    }
+    return result;
   }
 
   /**
@@ -148,9 +175,39 @@ export class OpenAPIRequestValidator {
    * @param {Operation} operation
    * @memberof OpenAPIRequestValidator
    */
-  public buildSchemaForOperation(operation: Operation): void {
+  public buildSchemasForOperation(operation: Operation): void {
     const { operationId } = operation;
-    const schema: InputValidationSchema = {
+
+    // schemas for this operation
+    const schemas: Ajv.ValidateFunction[] = [];
+
+    // schema for operation requestBody
+    if (operation.requestBody) {
+      const requestBody = operation.requestBody as OpenAPIV3.RequestBodyObject;
+      const jsonbody = requestBody.content['application/json'];
+      if (jsonbody && jsonbody.schema) {
+        const requestBodySchema: InputValidationSchema = {
+          title: 'Request',
+          type: 'object',
+          additionalProperties: true,
+          properties: {
+            requestBody: jsonbody.schema as OpenAPIV3.SchemaObject,
+          },
+          required: [],
+        };
+        if (_.keys(requestBody.content).length === 1) {
+          // if application/json is the only specified format, it's required
+          requestBodySchema.required.push('requestBody');
+        }
+
+        // add compiled params schema to schemas for this operation id
+        const requstBodyValidator = new Ajv(this.ajvOpts);
+        schemas.push(requstBodyValidator.compile(requestBodySchema));
+      }
+    }
+
+    // schema for operation parameters in: path,query,header,cookie
+    const paramsSchema: InputValidationSchema = {
       title: 'Request',
       type: 'object',
       additionalProperties: true,
@@ -186,28 +243,18 @@ export class OpenAPIRequestValidator {
     // params are dereferenced here, no reference objects.
     const { parameters } = operation;
     parameters.map((param: OpenAPIV3.ParameterObject) => {
-      const target = schema.properties[param.in];
+      const target = paramsSchema.properties[param.in];
       if (param.required) {
         target.required.push(param.name);
-        schema.required = _.uniq([...schema.required, param.in]);
+        paramsSchema.required = _.uniq([...paramsSchema.required, param.in]);
       }
       target.properties[param.name] = param.schema as OpenAPIV3.SchemaObject;
     });
 
-    if (operation.requestBody) {
-      const requestBody = operation.requestBody as OpenAPIV3.RequestBodyObject;
-      const jsonbody = requestBody.content['application/json'];
-      if (jsonbody && jsonbody.schema) {
-        schema.properties.requestBody = jsonbody.schema as OpenAPIV3.SchemaObject;
-        if (_.keys(requestBody.content).length === 1) {
-          // if application/json is the only specified format, it's required
-          schema.required.push('requestBody');
-        }
-      }
-    }
+    // add compiled params schema to schemas for this operation id
+    const paramsValidator = new Ajv({ ...this.ajvOpts, coerceTypes: true }); // types should be coerced for params
+    schemas.push(paramsValidator.compile(paramsSchema));
 
-    // build the schema and register it
-    const ajv = new Ajv(this.ajvOpts);
-    this.schemas[operationId] = ajv.compile(schema);
+    this.schemas[operationId] = schemas;
   }
 }

@@ -443,7 +443,7 @@ describe('OpenAPIRequestValidator', () => {
           body: '<XML>',
           headers,
         });
-        expect(valid.errors).toHaveLength(1);
+        expect(valid.errors).toHaveLength(2);
         expect(valid.errors[0].keyword).toBe('parse');
       });
 
@@ -454,7 +454,7 @@ describe('OpenAPIRequestValidator', () => {
           body: '<XML>',
           headers,
         });
-        expect(valid.errors).toHaveLength(1);
+        expect(valid.errors).toHaveLength(2);
         expect(valid.errors[0].keyword).toBe('parse');
       });
     });
