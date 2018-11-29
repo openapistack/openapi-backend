@@ -124,6 +124,12 @@ Optional. Whether to pass [Context object](#context-object) to handlers as the f
 
 Type: `boolean`
 
+#### Parameter: opts.ajvOpts
+
+Optional. The default AJV options to use for validation. See [available options](https://ajv.js.org/#options)
+
+Type: `Ajv.Options`
+
 #### Parameter: opts.handlers
 
 Optional. [Operation Handlers](#operation-handlers) to be registered.
