@@ -594,7 +594,8 @@ const context = {
   },
   // Ajv validation results for request
   validation: {
-    errors: undefined,
+    valid: true,
+    errors: null,
   },
 };
 ```
