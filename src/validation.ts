@@ -53,7 +53,7 @@ interface InputParameters {
  */
 export class OpenAPIRequestValidator {
   public definition: Document;
-  public ajvOpts: Ajv.Options = {};
+  public ajvOpts: Ajv.Options;
   public schemas: { [operationId: string]: Ajv.ValidateFunction[] };
   public router: OpenAPIRouter;
 
@@ -65,8 +65,9 @@ export class OpenAPIRequestValidator {
    * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
    * @memberof OpenAPIRequestValidator
    */
-  constructor(opts: { definition: Document }) {
+  constructor(opts: { definition: Document; ajvOpts?: Ajv.Options }) {
     this.definition = opts.definition;
+    this.ajvOpts = opts.ajvOpts || {};
 
     // initalize router
     this.router = new OpenAPIRouter({ definition: this.definition });
