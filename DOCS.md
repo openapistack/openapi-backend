@@ -16,8 +16,9 @@
   - [.handleRequest(req, ...handlerArgs)](#handlerequestreq-handlerargs)
     - [Parameter: req](#parameter-req)
     - [Parameter: handlerArgs](#parameter-handlerargs)
-  - [.validateRequest(req)](#validaterequestreq)
+  - [.validateRequest(req, operation?)](#validaterequestreq-operation)
     - [Parameter: req](#parameter-req)
+    - [Parameter: operation](#parameter-operation)
   - [.matchOperation(req)](#matchoperationreq)
     - [Parameter: req](#parameter-req)
   - [.register(operationId, handler)](#registeroperationid-handler)
@@ -42,6 +43,7 @@
   - [Context Object](#context-object)
   - [Request Object](#request-object)
   - [ParsedRequest Object](#parsedrequest-object)
+  - [ValidationResult Object](#validationresult-object)
 
 <!-- tocstop -->
 
@@ -186,7 +188,7 @@ response or the Lambda event and context.
 
 Type: `any[]`
 
-### .validateRequest(req)
+### .validateRequest(req, operation?)
 
 Validates a request and returns the result.
 
@@ -196,7 +198,7 @@ it.
 Normally, you wouldn't need to explicitly call `.validateRequest()` because `.handleRequest()` calls it for you when
 validation is set to `true`. But if you like, you can use it to just do request validation separately from handling.
 
-Returns a validated [Ajv instance](https://ajv.js.org). Hint: Generally you want to check its errors property.
+Returns a [ValidationResult object](#validationresult-object).
 
 Example usage:
 ```javascript
@@ -211,7 +213,7 @@ const validation = await api.validateRequest(
   },
 );
 if (validation.errors) {
-  // handle Ajv the error here
+  // there were errors
 }
 ```
 
@@ -220,6 +222,15 @@ if (validation.errors) {
 A request to validate.
 
 Type: [`Request`](#request-object)
+
+#### Parameter: operation
+
+Optional. The operation to validate against. 
+
+If omitted, [`.matchOperation()`](#matchoperation-req) will be used to match the operation first.
+
+Type: [`Operation`](#operation-object)
+
 
 ### .matchOperation(req)
 
@@ -633,5 +644,34 @@ const parsedRequest = {
   body: '{ "treat": "bone" }',
   // the parsed request body
   requestBody: { treat: 'bone' },
+};
+```
+
+### ValidationResult Object
+
+The `ValidationResult` interface is an object containing the results from performed json schema validation.
+
+The `valid` property is a boolean that tells you whether the validation succeeded (true) or not (false).
+
+The `errors` property is an array of [Ajv ErrorObjects](https://ajv.js.org/#error-objects) from the performed
+validation. If no errors were found, this property will be `null`.
+
+```javascript
+import { ValidationResult } from 'openapi-backend';
+```
+
+Example object
+```javascript
+const validationResult = {
+  valid: false,
+  errors: [
+    {
+      keyword: 'parse',
+      dataPath: '',
+      schemaPath: '#/requestBody',
+      params: [],
+      message: 'Unable to parse JSON request body',
+    }
+  ],
 };
 ```

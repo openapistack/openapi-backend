@@ -85,6 +85,7 @@ export class OpenAPIRequestValidator {
    * validate it.
    *
    * @param {Request} req - request to validate
+   * @param {Operation} operation - operation to validate against
    * @returns {ValidationResult}
    * @memberof OpenAPIRequestValidator
    */
