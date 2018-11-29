@@ -6,7 +6,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import { mock } from 'mock-json-schema';
 
 import { OpenAPIRouter, Request, ParsedRequest, Operation } from './router';
-import { OpenAPIRequestValidator } from './validation';
+import { OpenAPIRequestValidator, ValidationResult } from './validation';
 
 // alias Document to OpenAPIV3.Document
 type Document = OpenAPIV3.Document;
@@ -20,7 +20,7 @@ type Document = OpenAPIV3.Document;
 export interface Context {
   request?: ParsedRequest;
   operation?: Operation;
-  validation?: Ajv.ValidateFunction;
+  validation?: ValidationResult;
 }
 
 export type Handler = (context?: Context, ...args: any[]) => any | Promise<any>;
@@ -440,10 +440,10 @@ export class OpenAPIBackend {
    * Alias for validator.validateRequest(req)
    *
    * @param {Request} req - request to validate
-   * @returns {Ajv.ValidateFunction}
+   * @returns {ValidationStatus}
    * @memberof OpenAPIBackend
    */
-  public validateRequest(req: Request): Ajv.ValidateFunction {
+  public validateRequest(req: Request): ValidationResult {
     return this.validator.validateRequest(req);
   }
 }
