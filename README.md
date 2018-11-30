@@ -215,6 +215,23 @@ as the first argument, which contains the parsed request, the
 matched API operation and input validation results. The other arguments in the example aboce are Express-specific
 handler arguments.
 
+## Request validation
+
+You can enable request validation in your API by registering a [`validationFail`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validationfail-handler)
+handler.
+
+```javascript
+function validationFailHandler(c, req, res) {
+  return res.status(400).json({ status: 400, err: c.validation.errors });
+}
+api.registerHandler('validationFail', validationFailHandler);
+```
+
+This handler gets called if any JSON Schemas in either operation parameters (in: path, query, header, cookie) or
+requestPayload don't match the request.
+
+The context object `c` gets a `validation` property with the [validation result](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validationresult-object).
+
 ## Mocking API responses
 
 Mocking APIs just got really easy with OpenAPI Backend! Register a [`notImplemented`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#notimplemented-handler)
