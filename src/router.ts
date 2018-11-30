@@ -148,8 +148,8 @@ export class OpenAPIRouter {
       path: (req.path || '')
         .trim()
         .split('?')[0] // remove query string
-        .replace(/^\/*/, '/') // add leading slash
-        .replace(/\/+$/, ''), // remove trailing slash
+        .replace(/\/+$/, '') // remove trailing slash
+        .replace(/^\/*/, '/'), // add leading slash
       method: req.method.trim().toLowerCase(),
     };
   }
