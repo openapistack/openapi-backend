@@ -34,6 +34,12 @@ const definition: OpenAPIV3.Document = {
     version: '1.0.0',
   },
   paths: {
+    '/': {
+      get: {
+        operationId: 'apiRoot',
+        responses,
+      },
+    },
     '/pets': {
       get: {
         operationId: 'getPets',
@@ -83,6 +89,11 @@ const definition: OpenAPIV3.Document = {
 describe('OpenAPIRouter', () => {
   describe('.matchOperation', () => {
     const api = new OpenAPIRouter({ definition });
+
+    test('matches GET /', async () => {
+      const { operationId } = api.matchOperation({ path: '/', method: 'get', headers });
+      expect(operationId).toEqual('apiRoot');
+    });
 
     test('matches GET /pets', async () => {
       const { operationId } = api.matchOperation({ path: '/pets', method: 'get', headers });
@@ -134,6 +145,7 @@ describe('OpenAPIBackend', () => {
       definition,
       withContext: false,
       handlers: {
+        apiRoot: dummyHandler('apiRoot'),
         getPets: dummyHandler('getPets'),
         getPetById: dummyHandler('getPetById'),
         createPet: dummyHandler('createPet'),
@@ -143,6 +155,12 @@ describe('OpenAPIBackend', () => {
       },
     });
     beforeAll(() => api.init());
+
+    test('handles GET /', async () => {
+      const res = await api.handleRequest({ method: 'GET', path: '/', headers }, 'param0', 'param0');
+      expect(res).toEqual({ operationId: 'apiRoot' });
+      expect(dummyHandlers['apiRoot']).toBeCalledWith('param0', 'param0');
+    });
 
     test('handles GET /pets', async () => {
       const res = await api.handleRequest({ method: 'GET', path: '/pets', headers }, 'param0', 'param1');
@@ -206,6 +224,7 @@ describe('OpenAPIBackend', () => {
       definition,
       withContext: true,
       handlers: {
+        apiRoot: dummyHandler('apiRoot'),
         getPets: dummyHandler('getPets'),
         getPetById: dummyHandler('getPetById'),
         createPet: dummyHandler('createPet'),
@@ -215,6 +234,17 @@ describe('OpenAPIBackend', () => {
       },
     });
     beforeAll(() => api.init());
+
+    test('handles GET / and passes context', async () => {
+      const res = await api.handleRequest({ method: 'GET', path: '/', headers });
+      expect(res).toEqual({ operationId: 'apiRoot' });
+      expect(dummyHandlers['apiRoot']).toBeCalled();
+
+      const contextArg = dummyHandlers['apiRoot'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/', headers });
+      expect(contextArg.operation.operationId).toEqual('apiRoot');
+      expect(contextArg.validation.errors).toBeFalsy();
+    });
 
     test('handles GET /pets and passes context', async () => {
       const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });
