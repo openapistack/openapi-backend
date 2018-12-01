@@ -17,7 +17,8 @@ Also see: [openapi-frontend](https://github.com/anttiviljami/openapi-frontend)
 
 - [x] Build APIs by describing them in [OpenAPI document specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
 and importing them via YAML or JSON files or just passing an object
-- [x] Register handler functions for operationIds to route requests in your favourite Node.js backend
+- [x] Register handler functions for [operationId](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#fixed-fields-8)s
+to route requests in your favourite Node.js backend
 - [x] Use [JSON Schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#data-types) to validate
 API requests. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
 - [x] Mock API responses using [OpenAPI examples objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#example-object)
