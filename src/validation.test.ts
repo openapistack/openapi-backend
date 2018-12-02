@@ -1,12 +1,8 @@
-import { OpenAPIRequestValidator } from './index';
+import { OpenAPIValidator } from './index';
 import { OpenAPIV3 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
 
 const headers = { accept: 'application/json' };
-
-const responses: OpenAPIV3.ResponsesObject = {
-  200: { description: 'ok' },
-};
 
 const meta = {
   openapi: '3.0.0',
@@ -16,21 +12,21 @@ const meta = {
   },
 };
 
-describe('OpenAPIRequestValidator', () => {
+describe('OpenAPIValidator', () => {
   describe('.validateRequest', () => {
     describe('path params in path base object', () => {
-      const validator = new OpenAPIRequestValidator({
+      const validator = new OpenAPIValidator({
         definition: {
           ...meta,
           paths: {
             '/pets/{id}': {
               get: {
                 operationId: 'getPetById',
-                responses,
+                responses: { 200: { description: 'ok' } },
               },
               delete: {
                 operationId: 'deletePetById',
-                responses,
+                responses: { 200: { description: 'ok' } },
               },
               parameters: [
                 {
@@ -90,14 +86,14 @@ describe('OpenAPIRequestValidator', () => {
     });
 
     describe('path params in operation object', () => {
-      const validator = new OpenAPIRequestValidator({
+      const validator = new OpenAPIValidator({
         definition: {
           ...meta,
           paths: {
             '/pets/{id}': {
               get: {
                 operationId: 'getPetById',
-                responses,
+                responses: { 200: { description: 'ok' } },
                 parameters: [
                   {
                     name: 'id',
@@ -127,14 +123,14 @@ describe('OpenAPIRequestValidator', () => {
     });
 
     describe('query params in path base object', () => {
-      const validator = new OpenAPIRequestValidator({
+      const validator = new OpenAPIValidator({
         definition: {
           ...meta,
           paths: {
             '/pets': {
               get: {
                 operationId: 'getPets',
-                responses,
+                responses: { 200: { description: 'ok' } },
               },
               parameters: [
                 {
@@ -202,14 +198,14 @@ describe('OpenAPIRequestValidator', () => {
     });
 
     describe('query params in operation object', () => {
-      const validator = new OpenAPIRequestValidator({
+      const validator = new OpenAPIValidator({
         definition: {
           ...meta,
           paths: {
             '/pets': {
               get: {
                 operationId: 'getPets',
-                responses,
+                responses: { 200: { description: 'ok' } },
                 parameters: [
                   {
                     name: 'q',
@@ -274,14 +270,14 @@ describe('OpenAPIRequestValidator', () => {
     });
 
     describe('headers', () => {
-      const validator = new OpenAPIRequestValidator({
+      const validator = new OpenAPIValidator({
         definition: {
           ...meta,
           paths: {
             '/secret': {
               get: {
                 operationId: 'secretWithApiKey',
-                responses,
+                responses: { 200: { description: 'ok' } },
               },
               parameters: [
                 {
@@ -342,14 +338,14 @@ describe('OpenAPIRequestValidator', () => {
         required: ['name'],
       };
 
-      const validator = new OpenAPIRequestValidator({
+      const validator = new OpenAPIValidator({
         definition: {
           ...meta,
           paths: {
             '/pets': {
               post: {
                 operationId: 'createPet',
-                responses,
+                responses: { 200: { description: 'ok' } },
                 requestBody: {
                   content: {
                     'application/json': {
@@ -360,7 +356,7 @@ describe('OpenAPIRequestValidator', () => {
               },
               put: {
                 operationId: 'replacePet',
-                responses,
+                responses: { 200: { description: 'ok' } },
                 requestBody: {
                   content: {
                     'application/json': {
@@ -456,6 +452,169 @@ describe('OpenAPIRequestValidator', () => {
         });
         expect(valid.errors).toBeFalsy();
       });
+    });
+  });
+
+  describe('.validateResponse', () => {
+    const petSchema: SchemaLike = {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        name: {
+          type: 'string',
+        },
+        age: {
+          type: 'integer',
+        },
+      },
+      required: ['name'],
+    };
+
+    const validator = new OpenAPIValidator({
+      definition: {
+        ...meta,
+        paths: {
+          '/pets': {
+            get: {
+              operationId: 'listPets',
+              responses: {
+                200: {
+                  description: 'list of pets',
+                  content: {
+                    'application/json': {
+                      schema: {
+                        type: 'array',
+                        items: petSchema,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            post: {
+              operationId: 'createPet',
+              responses: {
+                201: {
+                  description: 'created pet',
+                },
+              },
+            },
+          },
+          '/pets/{id}': {
+            get: {
+              operationId: 'getPetById',
+              responses: {
+                200: {
+                  description: 'a pet',
+                  content: {
+                    'application/json': {
+                      schema: petSchema,
+                    },
+                  },
+                },
+                404: {
+                  description: 'pet not found',
+                  content: {
+                    'application/json': {
+                      schema: {
+                        type: 'object',
+                        properties: {
+                          err: { type: 'string' },
+                        },
+                        required: ['err'],
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            parameters: [
+              {
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: {
+                  type: 'integer',
+                  minimum: 0,
+                },
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    test('passes validation with valid 200 response object and operationId getPetById', async () => {
+      const valid = validator.validateResponse(
+        {
+          name: 'Garfield',
+          age: 30,
+        },
+        'getPetById',
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('passes validation with valid 200 response object and operation object for getPetById', async () => {
+      const valid = validator.validateResponse(
+        {
+          name: 'Garfield',
+          age: 30,
+        },
+        {
+          method: 'get',
+          path: '/pets/{id}',
+          operationId: 'getPetById',
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('passes validation with valid 404 response object and operationId getPetById', async () => {
+      const valid = validator.validateResponse(
+        {
+          err: 'pet not found',
+        },
+        'getPetById',
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('passes validation with valid response array and operationId listPets', async () => {
+      const valid = validator.validateResponse(
+        [
+          {
+            name: 'Garfield',
+            age: 30,
+          },
+          {
+            name: 'Odie',
+            age: 2,
+          },
+        ],
+        'listPets',
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('fails validation with an invalid response object', async () => {
+      const valid = validator.validateResponse(
+        {
+          unknown: 'property',
+        },
+        'getPetById',
+      );
+      expect(valid.errors).toBeTruthy();
+    });
+
+    test('fails validation with a missing response object', async () => {
+      const valid = validator.validateResponse(null, 'getPetById');
+      expect(valid.errors).toBeTruthy();
+    });
+
+    test('passes validation for an operation with no response schemas', async () => {
+      const valid = validator.validateResponse({}, 'createPet');
+      expect(valid.errors).toBeFalsy();
     });
   });
 });

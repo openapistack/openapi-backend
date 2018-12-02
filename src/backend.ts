@@ -6,7 +6,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import { mock } from 'mock-json-schema';
 
 import { OpenAPIRouter, Request, ParsedRequest, Operation } from './router';
-import { OpenAPIRequestValidator, ValidationResult } from './validation';
+import { OpenAPIValidator, ValidationResult } from './validation';
 
 // alias Document to OpenAPIV3.Document
 type Document = OpenAPIV3.Document;
@@ -21,9 +21,12 @@ export interface Context {
   request?: ParsedRequest;
   operation?: Operation;
   validation?: ValidationResult;
+  response?: any;
+  responseValidator?: Ajv.ValidateFunction;
 }
 
 export type Handler = (context?: Context, ...args: any[]) => any | Promise<any>;
+export type BoolPredicate = (context?: Context, ...args: any[]) => boolean;
 
 /**
  * Main class and the default export of the 'openapi-backend' module
@@ -39,16 +42,16 @@ export class OpenAPIBackend {
   public initalized: boolean;
 
   public strict: boolean;
-  public validate: boolean;
+  public validate: boolean | BoolPredicate;
   public withContext: boolean;
 
   public ajvOpts: Ajv.Options;
 
   public handlers: { [operationId: string]: Handler };
-  public allowedHandlers = ['notFound', 'notImplemented', 'validationFail'];
+  public allowedHandlers = ['notFound', 'notImplemented', 'validationFail', 'postResponseHandler'];
 
   public router: OpenAPIRouter;
-  public validator: OpenAPIRequestValidator;
+  public validator: OpenAPIValidator;
 
   public schemas: { [operationId: string]: Ajv.ValidateFunction };
 
@@ -67,6 +70,8 @@ export class OpenAPIBackend {
     definition: Document | string;
     strict?: boolean;
     validate?: boolean;
+    validateRequests?: boolean | BoolPredicate;
+    validateResponses?: boolean | BoolPredicate;
     withContext?: boolean;
     ajvOpts?: Ajv.Options;
     handlers?: {
@@ -131,7 +136,7 @@ export class OpenAPIBackend {
     this.router = new OpenAPIRouter({ definition: this.definition });
 
     // initalize validator with dereferenced definition
-    this.validator = new OpenAPIRequestValidator({ definition: this.definition, ajvOpts: this.ajvOpts });
+    this.validator = new OpenAPIValidator({ definition: this.definition, ajvOpts: this.ajvOpts });
 
     // we are initalized
     this.initalized = true;
@@ -183,9 +188,13 @@ export class OpenAPIBackend {
     // parse request again now with matched path
     context.request = this.router.parseRequest(req, path);
 
-    // validate against route
-    if (this.validate) {
-      context.validation = this.validator.validateRequest(req);
+    // check whether this request should be validated
+    const validate =
+      typeof this.validate === 'function' ? this.validate(context, ...handlerArgs) : Boolean(this.validate);
+
+    // validate request
+    if (validate) {
+      context.validation = this.validator.validateRequest(req, context.operation);
       if (context.validation.errors) {
         // validation FAIL
         const validationFailHandler: Handler = this.handlers['validationFail'];
@@ -210,7 +219,29 @@ export class OpenAPIBackend {
     }
 
     // handle route
-    return this.withContext ? routeHandler(context, ...handlerArgs) : routeHandler(...handlerArgs);
+    const handle = this.withContext ? routeHandler(context, ...handlerArgs) : routeHandler(...handlerArgs);
+
+    if (validate) {
+      // add response validator function to context
+      context.responseValidator = this.validator.getResponseValidatorForOperation(operationId);
+
+      // NOTE: We can't actually perform any validation on the handler's return value because different frameworks
+      // return different things from their handlers. The best thing to do is to register a postResponseHandler and
+      // use either context.responseValidator or api.validator.validateResponse to perform the validation
+    }
+
+    // post response handler
+    const postResponseHandler: Handler = this.handlers['postResponseHandler'];
+    if (postResponseHandler) {
+      // handle route
+      context.response = await handle;
+
+      // pass response to postResponseHandler
+      return this.withContext ? postResponseHandler(context, ...handlerArgs) : postResponseHandler(...handlerArgs);
+    } else {
+      // handle route without passing result to post response handler
+      return handle;
+    }
   }
 
   /**
