@@ -79,13 +79,13 @@ const definition: OpenAPIV3.Document = {
       },
       parameters: [pathId],
     },
-   '/pets/{id}/owner': {
-     get: {
-       operationId: 'getOwnerByPetId',
-       responses,
-     },
-     parameters: [pathId],
-   },
+    '/pets/{id}/owner': {
+      get: {
+        operationId: 'getOwnerByPetId',
+        responses,
+      },
+      parameters: [pathId],
+    },
     '/pets/{id}/hobbies/{hobbyId}': {
       get: {
         operationId: 'getPetHobbies',
