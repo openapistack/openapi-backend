@@ -218,9 +218,6 @@ export class OpenAPIBackend {
       return this.withContext ? notImplementedHandler(context, ...handlerArgs) : notImplementedHandler(...handlerArgs);
     }
 
-    // handle route
-    const handle = this.withContext ? routeHandler(context, ...handlerArgs) : routeHandler(...handlerArgs);
-
     if (validate) {
       // add response validator function to context
       context.responseValidator = this.validator.getResponseValidatorForOperation(operationId);
@@ -234,13 +231,15 @@ export class OpenAPIBackend {
     const postResponseHandler: Handler = this.handlers['postResponseHandler'];
     if (postResponseHandler) {
       // handle route
-      context.response = await handle;
+      context.response = (await this.withContext)
+        ? routeHandler(context, ...handlerArgs)
+        : routeHandler(...handlerArgs);
 
       // pass response to postResponseHandler
       return this.withContext ? postResponseHandler(context, ...handlerArgs) : postResponseHandler(...handlerArgs);
     } else {
       // handle route without passing result to post response handler
-      return handle;
+      return this.withContext ? routeHandler(context, ...handlerArgs) : routeHandler(...handlerArgs);
     }
   }
 
