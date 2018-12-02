@@ -89,7 +89,7 @@ export class OpenAPIRouter {
     // then check for matches using path templating
     return _.find(operations, ({ path }) => {
       // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
-      const pathPattern = `^${path.replace(/\{.*\}/g, '[^/]+').replace(/\//g, '\\/')}$`;
+      const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/]+').replace(/\//g, '\\/')}$`;
       return Boolean(req.path.match(new RegExp(pathPattern, 'g')));
     });
   }

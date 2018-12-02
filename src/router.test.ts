@@ -17,6 +17,15 @@ const pathId: OpenAPIV3.ParameterObject = {
   },
 };
 
+const hobbyId: OpenAPIV3.ParameterObject = {
+  name: 'hobbyId',
+  in: 'path',
+  required: true,
+  schema: {
+    type: 'integer',
+  },
+};
+
 const queryLimit: OpenAPIV3.ParameterObject = {
   name: 'limit',
   in: 'query',
@@ -70,12 +79,19 @@ const definition: OpenAPIV3.Document = {
       },
       parameters: [pathId],
     },
-    '/pets/{id}/owner': {
+   '/pets/{id}/owner': {
+     get: {
+       operationId: 'getOwnerByPetId',
+       responses,
+     },
+     parameters: [pathId],
+   },
+    '/pets/{id}/hobbies/{hobbyId}': {
       get: {
-        operationId: 'getOwnerByPetId',
+        operationId: 'getPetHobbies',
         responses,
       },
-      parameters: [pathId],
+      parameters: [pathId, hobbyId],
     },
     '/pets/meta': {
       get: {
@@ -128,6 +144,11 @@ describe('OpenAPIRouter', () => {
     test('matches GET /pets/{id}/owner', async () => {
       const { operationId } = api.matchOperation({ path: '/pets/1/owner', method: 'get', headers });
       expect(operationId).toEqual('getOwnerByPetId');
+    });
+
+    test('matches GET /pets/{id}/hobbies/{hobbyId}', async () => {
+      const { operationId } = api.matchOperation({ path: '/pets/1/hobbies/3', method: 'get', headers });
+      expect(operationId).toEqual('getPetHobbies');
     });
 
     test('matches GET /pets/meta', async () => {
