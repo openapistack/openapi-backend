@@ -1,5 +1,5 @@
 import { OpenAPIRouter } from './router';
-import { OpenAPIBackend } from './backend';
+import { OpenAPIBackend, Context } from './backend';
 import { OpenAPIV3 } from 'openapi-types';
 
 const headers = { accept: 'application/json' };
@@ -351,6 +351,67 @@ describe('OpenAPIBackend', () => {
       expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', query: { limit: '10' }, headers });
       expect(contextArg.operation.operationId).toEqual('getPets');
       expect(contextArg.validation.errors).toBeFalsy();
+    });
+  });
+
+  describe('.handleRequest postResponseHandler', async () => {
+    const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
+    const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
+    const api = new OpenAPIBackend({
+      definition,
+      withContext: true,
+      handlers: {
+        apiRoot: dummyHandler('apiRoot'),
+        getPets: dummyHandler('getPets'),
+        getPetById: dummyHandler('getPetById'),
+        createPet: dummyHandler('createPet'),
+        updatePetById: dummyHandler('updatePetById'),
+        notImplemented: dummyHandler('notImplemented'),
+        notFound: dummyHandler('notFound'),
+      },
+    });
+    beforeAll(() => api.init());
+
+    test('handles GET / and passes response to postResponseHandler', async () => {
+      const postResponseHandler = jest.fn((c: Context) => c.response);
+      await api.register({ postResponseHandler });
+
+      const res = await api.handleRequest({ method: 'GET', path: '/', headers });
+      expect(dummyHandlers['apiRoot']).toBeCalled();
+      expect(postResponseHandler).toBeCalled();
+      expect(res).toEqual({ operationId: 'apiRoot' });
+
+      const contextArg = postResponseHandler.mock.calls.slice(-1)[0][0];
+      expect(contextArg.response).toMatchObject({ operationId: 'apiRoot' });
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/', headers });
+    });
+
+    test('handles GET /pets and passes response to postResponseHandler', async () => {
+      const postResponseHandler = jest.fn((c: Context) => c.response);
+      await api.register({ postResponseHandler });
+
+      const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });
+      expect(dummyHandlers['getPets']).toBeCalled();
+      expect(postResponseHandler).toBeCalled();
+      expect(res).toEqual({ operationId: 'getPets' });
+
+      const contextArg = postResponseHandler.mock.calls.slice(-1)[0][0];
+      expect(contextArg.response).toMatchObject({ operationId: 'getPets' });
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', headers });
+    });
+
+    test('handles GET /pets and allows postResponseHandler to intercept response', async () => {
+      const postResponseHandler = jest.fn(() => ({ you: 'have been intercepted' }));
+      await api.register({ postResponseHandler });
+
+      const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });
+      expect(dummyHandlers['getPets']).toBeCalled();
+      expect(postResponseHandler).toBeCalled();
+      expect(res).toEqual({ you: 'have been intercepted' });
+
+      const contextArg = postResponseHandler.mock.calls.slice(-1)[0][0];
+      expect(contextArg.response).toMatchObject({ operationId: 'getPets' });
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', headers });
     });
   });
 });

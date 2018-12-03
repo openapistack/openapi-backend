@@ -46,15 +46,16 @@ interface InputParameters {
 }
 
 /**
- * Class that handles request validation
+ * Class that handles JSON schema validation
  *
  * @export
- * @class OpenAPIRequestValidator
+ * @class OpenAPIValidator
  */
-export class OpenAPIRequestValidator {
+export class OpenAPIValidator {
   public definition: Document;
   public ajvOpts: Ajv.Options;
-  public schemas: { [operationId: string]: Ajv.ValidateFunction[] };
+  public requestValidators: { [operationId: string]: Ajv.ValidateFunction[] };
+  public responseValidators: { [operationId: string]: Ajv.ValidateFunction };
   public router: OpenAPIRouter;
 
   /**
@@ -75,24 +76,30 @@ export class OpenAPIRequestValidator {
     // initalize router
     this.router = new OpenAPIRouter({ definition: this.definition });
 
-    // build schemas for api operations
-    this.schemas = {};
+    // get defined api operations
     const operations = this.router.getOperations();
-    operations.map(this.buildSchemasForOperation.bind(this));
+
+    // build request validation schemas for api operations
+    this.requestValidators = {};
+    operations.map(this.buildRequestValidatorsForOperation.bind(this));
+
+    // build response validation schemas for api operations
+    this.responseValidators = {};
+    operations.map(this.buildResponseValidatorForOperation.bind(this));
   }
 
   /**
-   * Validates a request with Ajv and returns the Ajv validator.
+   * Validates a request against prebuilt Ajv validators and returns the validation result.
    *
    * The method will first match the request to an API operation and use the pre-compiled Ajv validation schema to
    * validate it.
    *
    * @param {Request} req - request to validate
-   * @param {Operation} operation - operation to validate against
+   * @param {(Operation | string)} operation - operation to validate against
    * @returns {ValidationResult}
    * @memberof OpenAPIRequestValidator
    */
-  public validateRequest(req: Request, operation?: Operation): ValidationResult {
+  public validateRequest(req: Request, operation?: Operation | string): ValidationResult {
     const result: ValidationResult = {
       valid: true,
       errors: [],
@@ -100,11 +107,17 @@ export class OpenAPIRequestValidator {
 
     if (!operation) {
       operation = this.router.matchOperation(req);
+    } else if (typeof operation === 'string') {
+      operation = this.router.getOperation(operation);
     }
-    const { operationId } = operation;
+
+    if (!operation || !operation.operationId) {
+      throw new Error(`Unknown operation`);
+    }
 
     // get pre-compiled ajv schemas for operation
-    const schemas = this.schemas[operationId];
+    const { operationId } = operation;
+    const validators = this.getRequestValidatorsForOperation(operationId);
 
     // build a parameter object to validate
     const { params, query, headers, cookies, requestBody } = this.router.parseRequest(req, operation.path);
@@ -156,7 +169,7 @@ export class OpenAPIRequestValidator {
     }
 
     // validate parameters against each pre-compiled schema
-    for (const validate of schemas) {
+    for (const validate of validators) {
       validate(parameters);
       if (validate.errors) {
         result.errors.push(...validate.errors);
@@ -174,16 +187,69 @@ export class OpenAPIRequestValidator {
   }
 
   /**
-   * Builds an Ajv schema validation function for an operation and registers it
+   * Validates a response against a prebuilt Ajv validator and returns the result
+   *
+   * @param {*} res
+   * @param {(Operation | string)} [operation]
+   * @returns {ValidationResult}
+   * @memberof OpenAPIRequestValidator
+   */
+  public validateResponse(res: any, operation: Operation | string): ValidationResult {
+    const result: ValidationResult = {
+      valid: true,
+      errors: [],
+    };
+
+    if (typeof operation === 'string') {
+      operation = this.router.getOperation(operation);
+    }
+
+    if (!operation || !operation.operationId) {
+      throw new Error(`Unknown operation`);
+    }
+
+    const { operationId } = operation;
+    const validate = this.getResponseValidatorForOperation(operationId);
+
+    if (validate) {
+      validate(res);
+      if (validate.errors) {
+        result.errors.push(...validate.errors);
+      }
+    }
+
+    if (_.isEmpty(result.errors)) {
+      // set empty errors array to null so we can check for result.errors truthiness
+      result.errors = null;
+    } else {
+      // there were errors, set valid to false
+      result.valid = false;
+    }
+    return result;
+  }
+
+  /**
+   * Get an array of request validator functions for an operation by operationId
+   *
+   * @param {string} operationId
+   * @returns {Ajv.ValidateFunction[]}
+   * @memberof OpenAPIRequestValidator
+   */
+  public getRequestValidatorsForOperation(operationId: string) {
+    return this.requestValidators[operationId];
+  }
+
+  /**
+   * Builds Ajv request validation functions for an operation and registers them to requestValidators
    *
    * @param {Operation} operation
    * @memberof OpenAPIRequestValidator
    */
-  public buildSchemasForOperation(operation: Operation): void {
+  public buildRequestValidatorsForOperation(operation: Operation): void {
     const { operationId } = operation;
 
-    // schemas for this operation
-    const schemas: Ajv.ValidateFunction[] = [];
+    // validator functions for this operation
+    const validators: Ajv.ValidateFunction[] = [];
 
     // schema for operation requestBody
     if (operation.requestBody) {
@@ -206,7 +272,7 @@ export class OpenAPIRequestValidator {
 
         // add compiled params schema to schemas for this operation id
         const requstBodyValidator = new Ajv(this.ajvOpts);
-        schemas.push(requstBodyValidator.compile(requestBodySchema));
+        validators.push(requstBodyValidator.compile(requestBodySchema));
       }
     }
 
@@ -255,10 +321,53 @@ export class OpenAPIRequestValidator {
       target.properties[param.name] = param.schema as OpenAPIV3.SchemaObject;
     });
 
-    // add compiled params schema to schemas for this operation id
+    // add compiled params schema to requestValidators for this operation id
     const paramsValidator = new Ajv({ ...this.ajvOpts, coerceTypes: true }); // types should be coerced for params
-    schemas.push(paramsValidator.compile(paramsSchema));
+    validators.push(paramsValidator.compile(paramsSchema));
+    this.requestValidators[operationId] = validators;
+  }
 
-    this.schemas[operationId] = schemas;
+  /**
+   * Get response validator function for an operation by operationId
+   *
+   * @param {string} operationId
+   * @returns {Ajv.ValidateFunction}
+   * @memberof OpenAPIRequestValidator
+   */
+  public getResponseValidatorForOperation(operationId: string) {
+    return this.responseValidators[operationId];
+  }
+
+  /**
+   * Builds an ajv response validator function for an operation and registers it to responseValidators
+   *
+   * @param {Operation} operation
+   * @memberof OpenAPIRequestValidator
+   */
+  public buildResponseValidatorForOperation(operation: Operation): void {
+    if (!operation.responses) {
+      // operation has no responses, don't register a validator
+      return null;
+    }
+
+    const { operationId } = operation;
+    const responseSchemas: OpenAPIV3.SchemaObject[] = [];
+
+    _.mapKeys(operation.responses, (response: OpenAPIV3.ResponseObject, status) => {
+      if (response.content && response.content['application/json'] && response.content['application/json'].schema) {
+        responseSchemas.push(response.content['application/json'].schema as OpenAPIV3.SchemaObject);
+      }
+      return null;
+    });
+
+    if (_.isEmpty(responseSchemas)) {
+      // operation has no response schemas, don't register a validator
+      return null;
+    }
+
+    // compile the validator function and register to responseValidators
+    const schema = { oneOf: responseSchemas };
+    const validator = new Ajv(this.ajvOpts);
+    this.responseValidators[operationId] = validator.compile(schema);
   }
 }

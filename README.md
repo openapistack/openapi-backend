@@ -224,13 +224,35 @@ handler.
 function validationFailHandler(c, req, res) {
   return res.status(400).json({ status: 400, err: c.validation.errors });
 }
-api.registerHandler('validationFail', validationFailHandler);
+api.register('validationFail', validationFailHandler);
 ```
 
 This handler gets called if any JSON Schemas in either operation parameters (in: path, query, header, cookie) or
 requestPayload don't match the request.
 
 The context object `c` gets a `validation` property with the [validation result](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validationresult-object).
+
+## Response validation
+
+OpenAPIBackend doesn't automatically perform response validation for your handlers, but you can register a
+[`postResponseHandler`]() to add a response validation step.
+
+```javascript
+api.register({
+  getPet: (c) => {
+    // when a postResponseHandler is registered, your operation handlers' return value gets passed to context.response
+    return [{ id: 1, name: 'Garfield' }];
+  },
+  postResponseHandler: (c, req ,res) => {
+    const valid = c.api.validateResponse(c.response, c.operation);    
+    if (valid.errors) {
+      // response validation failed
+      return res.status(502).json({ status: 502, err: valid.errors });
+    }
+    return res.status(200).json(c.response);
+  },
+});
+```
 
 ## Mocking API responses
 
@@ -240,7 +262,7 @@ to generate mock responses for operations with no custom handlers specified yet:
 
 ```javascript
 api.register('notImplemented', (c, req, res) => {
-  const { status, mock } = api.mockResponseForOperation(c.operation.operationId);
+  const { status, mock } = c.api.mockResponseForOperation(c.operation.operationId);
   return res.status(status).json(mock);
 });
 ```
