@@ -217,7 +217,7 @@ handler arguments.
 
 ## Request validation
 
-You can enable request validation in your API by registering a [`validationFail`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validationfail-handler)
+The easiest way to enable request validation in your API is to register a [`validationFail`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validationfail-handler)
 handler.
 
 ```javascript
@@ -227,8 +227,8 @@ function validationFailHandler(c, req, res) {
 api.register('validationFail', validationFailHandler);
 ```
 
-This handler gets called if any JSON Schemas in either operation parameters (in: path, query, header, cookie) or
-requestPayload don't match the request.
+Once registered, this handler gets called if any JSON Schemas in either operation parameters (in: path, query, header,
+cookie) or requestPayload don't match the request.
 
 The context object `c` gets a `validation` property with the [validation result](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validationresult-object).
 
@@ -245,7 +245,7 @@ api.register({
     return [{ id: 1, name: 'Garfield' }];
   },
   postResponseHandler: (c, req ,res) => {
-    const valid = c.api.validateResponse(c.response, c.operation);    
+    const valid = c.api.validateResponse(c.response, c.operation);
     if (valid.errors) {
       // response validation failed
       return res.status(502).json({ status: 502, err: valid.errors });
