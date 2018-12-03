@@ -20,7 +20,7 @@ and importing them via YAML or JSON files or just passing an object
 - [x] Register handler functions for [operationId](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#fixed-fields-8)s
 to route requests in your favourite Node.js backend
 - [x] Use [JSON Schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#data-types) to validate
-API requests. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
+API requests and/or responses. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
 - [x] Mock API responses using [OpenAPI examples objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#example-object)
 or [JSON Schema definitions](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#schema-object)
 - [x] TypeScript types included
@@ -235,7 +235,8 @@ The context object `c` gets a `validation` property with the [validation result]
 ## Response validation
 
 OpenAPIBackend doesn't automatically perform response validation for your handlers, but you can register a
-[`postResponseHandler`]() to add a response validation step.
+[`postResponseHandler`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#postresponsehandler-handler)
+to add a response validation step.
 
 ```javascript
 api.register({
