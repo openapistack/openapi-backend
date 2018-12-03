@@ -67,7 +67,10 @@ export class OpenAPIRequestValidator {
    */
   constructor(opts: { definition: Document; ajvOpts?: Ajv.Options }) {
     this.definition = opts.definition;
-    this.ajvOpts = opts.ajvOpts || {};
+    this.ajvOpts = {
+      unknownFormats: 'ignore', // Ajv default behaviour is to throw an error when encountering an unknown format
+      ...(opts.ajvOpts || {}),
+    };
 
     // initalize router
     this.router = new OpenAPIRouter({ definition: this.definition });
