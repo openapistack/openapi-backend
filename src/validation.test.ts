@@ -450,12 +450,11 @@ describe('OpenAPIRequestValidator', () => {
       test('allows non-json data when application/json is not the only allowed media type', async () => {
         const valid = validator.validateRequest({
           path: '/pets',
-          method: 'post',
+          method: 'put',
           body: '<XML>',
           headers,
         });
-        expect(valid.errors).toHaveLength(2);
-        expect(valid.errors[0].keyword).toBe('parse');
+        expect(valid.errors).toBeFalsy();
       });
     });
   });
