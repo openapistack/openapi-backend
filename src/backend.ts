@@ -69,9 +69,7 @@ export class OpenAPIBackend {
   constructor(opts: {
     definition: Document | string;
     strict?: boolean;
-    validate?: boolean;
-    validateRequests?: boolean | BoolPredicate;
-    validateResponses?: boolean | BoolPredicate;
+    validate?: boolean | BoolPredicate;
     withContext?: boolean;
     ajvOpts?: Ajv.Options;
     handlers?: {
@@ -227,20 +225,21 @@ export class OpenAPIBackend {
       // use either context.responseValidator or api.validator.validateResponse to perform the validation
     }
 
+    // handle route
+    const response = this.withContext
+      ? await routeHandler(context, ...handlerArgs)
+      : await routeHandler(...handlerArgs);
+
     // post response handler
     const postResponseHandler: Handler = this.handlers['postResponseHandler'];
     if (postResponseHandler) {
-      // handle route
-      context.response = (await this.withContext)
-        ? routeHandler(context, ...handlerArgs)
-        : routeHandler(...handlerArgs);
-
       // pass response to postResponseHandler
+      context.response = response;
       return this.withContext ? postResponseHandler(context, ...handlerArgs) : postResponseHandler(...handlerArgs);
-    } else {
-      // handle route without passing result to post response handler
-      return this.withContext ? routeHandler(context, ...handlerArgs) : routeHandler(...handlerArgs);
     }
+
+    // return response
+    return response;
   }
 
   /**
