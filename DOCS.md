@@ -88,6 +88,7 @@ const api = new OpenAPIBackend({
   definition: './openapi.yml',
   strict: true,
   validate: true,
+  ajvOpts: { unknownFormats: true },
   handlers: {
     getPets: (req, res) => res.json({ result: ['pet1', 'pet2'] }),
     notFound: (req, res) => res.status(404).json({ err: 'not found' }),
@@ -231,7 +232,7 @@ Type: [`Request`](#request-object)
 
 #### Parameter: operation
 
-Optional. The operation to validate against. 
+Optional. The operation to validate against.
 
 If omitted, [`.matchOperation()`](#matchoperation-req) will be used to match the operation first.
 
