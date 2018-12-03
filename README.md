@@ -244,7 +244,7 @@ api.register({
     // when a postResponseHandler is registered, your operation handlers' return value gets passed to context.response
     return [{ id: 1, name: 'Garfield' }];
   },
-  postResponseHandler: (c, req ,res) => {
+  postResponseHandler: (c, req, res) => {
     const valid = c.api.validateResponse(c.response, c.operation);
     if (valid.errors) {
       // response validation failed
