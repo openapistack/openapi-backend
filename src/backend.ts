@@ -18,11 +18,11 @@ type Document = OpenAPIV3.Document;
  * @interface Context
  */
 export interface Context {
+  api: OpenAPIBackend;
   request?: ParsedRequest;
   operation?: Operation;
   validation?: ValidationResult;
   response?: any;
-  responseValidator?: Ajv.ValidateFunction;
 }
 
 export type Handler = (context?: Context, ...args: any[]) => any | Promise<any>;
@@ -165,8 +165,8 @@ export class OpenAPIBackend {
       await this.init();
     }
 
-    // initalize api context object
-    const context: Context = {};
+    // initalize context object with a reference to this OpenAPIBackend instance
+    const context: Context = { api: this };
 
     // parse request
     context.request = this.router.parseRequest(req);
@@ -214,15 +214,6 @@ export class OpenAPIBackend {
         throw Error(`501-notImplemented: ${operationId} no handler registered`);
       }
       return this.withContext ? notImplementedHandler(context, ...handlerArgs) : notImplementedHandler(...handlerArgs);
-    }
-
-    if (validate) {
-      // add response validator function to context
-      context.responseValidator = this.validator.getResponseValidatorForOperation(operationId);
-
-      // NOTE: We can't actually perform any validation on the handler's return value because different frameworks
-      // return different things from their handlers. The best thing to do is to register a postResponseHandler and
-      // use either context.responseValidator or api.validator.validateResponse to perform the validation
     }
 
     // handle route
