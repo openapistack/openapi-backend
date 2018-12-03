@@ -236,7 +236,7 @@ The context object `c` gets a `validation` property with the [validation result]
 
 OpenAPIBackend doesn't automatically perform response validation for your handlers, but you can register a
 [`postResponseHandler`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#postresponsehandler-handler)
-to add a response validation step.
+to add a response validation step using [`validateResponse`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validateresponseres-operation).
 
 ```javascript
 api.register({
