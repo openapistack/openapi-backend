@@ -11,6 +11,7 @@
     - [Parameter: opts.strict](#parameter-optsstrict)
     - [Parameter: opts.validate](#parameter-optsvalidate)
     - [Parameter: opts.withContext](#parameter-optswithcontext)
+    - [Parameter: opts.ajvOpts](#parameter-optsajvopts)
     - [Parameter: opts.handlers](#parameter-optshandlers)
   - [.init()](#init)
   - [.handleRequest(req, ...handlerArgs)](#handlerequestreq-handlerargs)
@@ -18,6 +19,9 @@
     - [Parameter: handlerArgs](#parameter-handlerargs)
   - [.validateRequest(req, operation?)](#validaterequestreq-operation)
     - [Parameter: req](#parameter-req)
+    - [Parameter: operation](#parameter-operation)
+  - [.validateResponse(res, operation)](#validateresponseres-operation)
+    - [Parameter: res](#parameter-res)
     - [Parameter: operation](#parameter-operation)
   - [.matchOperation(req)](#matchoperationreq)
     - [Parameter: req](#parameter-req)
@@ -37,6 +41,7 @@
   - [validationFail Handler](#validationfail-handler)
   - [notFound Handler](#notfound-handler)
   - [notImplemented Handler](#notimplemented-handler)
+  - [postResponseHandler Handler](#postresponsehandler-handler)
 - [Interfaces](#interfaces)
   - [Document Object](#document-object)
   - [Operation Object](#operation-object)
@@ -209,8 +214,7 @@ Returns a [ValidationResult object](#validationresult-object).
 
 Example usage:
 ```javascript
-// express example
-const validation = await api.validateRequest(
+const valid = await api.validateRequest(
   {
     method: req.method,
     path: req.path,
@@ -219,7 +223,7 @@ const validation = await api.validateRequest(
     headers: req.headers,
   },
 );
-if (validation.errors) {
+if (valid.errors) {
   // there were errors
 }
 ```
@@ -232,12 +236,40 @@ Type: [`Request`](#request-object)
 
 #### Parameter: operation
 
-Optional. The operation to validate against.
+Optional. The Operation object or operationId to validate against.
 
 If omitted, [`.matchOperation()`](#matchoperation-req) will be used to match the operation first.
 
-Type: [`Operation`](#operation-object)
+Type: [`Operation`](#operation-object) or `string` (operationId)
 
+
+### .validateResponse(res, operation)
+
+Validates a response and returns the result.
+
+The method will use the pre-compiled Ajv validation schema to validate the given response.
+
+Returns a [ValidationResult object](#validationresult-object).
+
+Example usage:
+```javascript
+const valid = await api.validateResponse({ name: 'Garfield' }, 'getPetById');
+if (valid.errors) {
+  // there were errors
+}
+```
+
+#### Parameter: res
+
+The response to validate. 
+
+Type: `any`
+
+#### Parameter: operation
+
+The Operation object or operationId to validate against.
+
+Type: [`Operation`](#operation-object) or `string`
 
 ### .matchOperation(req)
 
@@ -369,7 +401,7 @@ async function getPetByIdHandler(c, req, res) {
   const pet = await pets.getPetById(id);
   return res.status(200).json({ result: pet });
 }
-api.registerHandler('getPetById', getPetByIdHandler);
+api.register('getPetById', getPetByIdHandler);
 ```
 
 There are two different ways to register operation handlers:
@@ -390,7 +422,7 @@ Example handler:
 function validationFailHandler(c, req, res) {
   return res.status(400).json({ status: 400, err: c.validation.errors });
 }
-api.registerHandler('validationFail', validationFailHandler);
+api.register('validationFail', validationFailHandler);
 ```
 
 ### notFound Handler
@@ -405,7 +437,7 @@ Example handler:
 function notFoundHandler(c, req, res) {
   return res.status(404).json({ status: 404, err: 'Not found' });
 }
-api.registerHandler('notFound', notFoundHandler);
+api.register('notFound', notFoundHandler);
 ```
 
 ### notImplemented Handler
@@ -420,7 +452,28 @@ Example handler:
 function notImplementedHandler(c, req, res) {
   return res.status(404).json({ status: 501, err: 'No handler registered for operation' });
 }
-api.registerHandler('notImplemented', notImplementedHandler);
+api.register('notImplemented', notImplementedHandler);
+```
+
+### postResponseHandler Handler
+
+The `postResponseHandler` handler gets called by `.handleRequest()` after resolving the operation handler.
+
+The return value of the operation handler will be passed in the context object `response` property.
+
+HINT: You can use the postResponseHandler to validate API responses against your response schema
+
+Example handler:
+```javascript
+function postResponseHandler(c, req, res) {
+  const valid = c.api.validateResponse(c.response, c.operation);    
+  if (valid.errors) {
+    // response validation failed
+    return res.status(502).json({ status: 502, err: valid.errors });
+  }
+  return res.status(200).json(c.response);
+}
+api.register('postResponseHandler', postResponseHandler);
 ```
 
 ## Interfaces
@@ -541,6 +594,9 @@ The `Context` object gets passed to [Operation Handlers](#operation-handlers) as
 It contains useful information like the [parsed request](#parsedrequest-object), the matched
 [operation](#operation-object) and input validation results for the request.
 
+The context object also contains a reference to the OpenAPIBackend instance in `api` property for easy access to
+instance methods inside handlers.
+
 ```javascript
 import { Context } from 'openapi-backend';
 ```
@@ -548,6 +604,12 @@ import { Context } from 'openapi-backend';
 Example object
 ```javascript
 const context = {
+  // reference to OpenAPIBackend instance
+  // can be used to access instance OpenAPI instance methods in handlers:
+  // - api.validateRequest()
+  // - api.validateResponse()
+  // - api.mockResponseForOperation()
+  api,
   // the parsed request object
   request: {
     method: 'post',
@@ -597,6 +659,10 @@ const context = {
   validation: {
     valid: true,
     errors: null,
+  },
+  // Return value from operation handler (only passed to postResponseHandler)
+  response: {
+    message: 'woof! thanks for the treat',
   },
 };
 ```

@@ -459,16 +459,33 @@ export class OpenAPIBackend {
   /**
    * Validates a request and returns the result.
    *
-   * The method will first match the request to an API operation and use the pre-compiled Ajv validation schema to
+   * The method will first match the request to an API operation and use the pre-compiled Ajv validation schemas to
    * validate it.
    *
-   * Alias for validator.validateRequest(req)
+   * Alias for validator.validateRequest
    *
    * @param {Request} req - request to validate
+   * @param {(Operation | string)} [operation]
    * @returns {ValidationStatus}
    * @memberof OpenAPIBackend
    */
-  public validateRequest(req: Request): ValidationResult {
-    return this.validator.validateRequest(req);
+  public validateRequest(req: Request, operation?: Operation | string): ValidationResult {
+    return this.validator.validateRequest(req, operation);
+  }
+
+  /**
+   * Validates a response and returns the result.
+   *
+   * The method will use the pre-compiled Ajv validation schema to validate a request it.
+   *
+   * Alias for validator.validateResponse
+   *
+   * @param {*} res - response to validate
+   * @param {(Operation | string)} [operation]
+   * @returns {ValidationStatus}
+   * @memberof OpenAPIBackend
+   */
+  public validateResponse(res: any, operation: Operation | string): ValidationResult {
+    return this.validator.validateResponse(res, operation);
   }
 }
