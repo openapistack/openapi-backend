@@ -17,7 +17,7 @@ Also see: [openapi-frontend](https://github.com/anttiviljami/openapi-frontend)
 
 - [x] Build APIs by describing them in [OpenAPI document specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
 and importing them via YAML or JSON files or just passing an object
-- [x] Register handler functions for [operationId](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#fixed-fields-8)s
+- [x] Register handler functions for [operationIds](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#fixed-fields-8)
 to route requests in your favourite Node.js backend
 - [x] Use [JSON Schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#data-types) to validate
 API requests and/or responses. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
@@ -196,8 +196,8 @@ app.listen(9000);
 
 ## Registering Handlers for Operations
 
-Handlers are registered for `operationId`s found in the OpenAPI definitions. You can register handlers as shown above
-with [`new OpenAPIBackend()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#parameter-optshandlers)
+Handlers are registered for [`operationIds`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#fixed-fields-8)
+found in the OpenAPI definitions. You can register handlers as shown above with [`new OpenAPIBackend()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#parameter-optshandlers)
 constructor opts, or using the [`register()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#registeroperationid-handler)
 method.
 
