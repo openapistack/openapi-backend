@@ -15,15 +15,12 @@ const api = new OpenAPIBackend({
   handlers: {
     validationFail: async (c, req: Request, res: Response) => res.status(400).json({ err: c.validation.errors }),
     notFound: async (c, req: Request, res: Response) => res.status(404).json({ err: 'not found' }),
+    notImplemented: async (c, req: Request, res: Response) => {
+      const { status, mock } = c.api.mockResponseForOperation(c.operation.operationId);
+      return res.status(status).json(mock);
+    },
   },
 });
-
-// mock response handler
-api.register('notImplemented', async (c, req: Request, res: Response) => {
-  const { status, mock } = api.mockResponseForOperation(c.operation.operationId);
-  return res.status(status).json(mock);
-});
-
 api.init();
 
 // logging
