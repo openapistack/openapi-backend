@@ -11,6 +11,6 @@
     "test": "NODE_ENV=test jest -i"
   },
   "dependencies": {
-    "openapi-backend": "^1.2.0"
+    "openapi-backend": "^1.6.1"
   }
 }
