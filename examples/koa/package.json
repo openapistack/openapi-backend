@@ -10,7 +10,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "koa": "^2.6.1",
-    "openapi-backend": "^1.3.0"
+    "koa": "^2.6.2",
+    "openapi-backend": "^1.6.1"
   }
 }
