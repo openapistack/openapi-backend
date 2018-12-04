@@ -8,7 +8,7 @@
 **Build, Validate, Route, and Mock using OpenAPI specification.** Framework-agnostic middleware tools for building APIs
 with the [OpenAPI standard](https://github.com/OAI/OpenAPI-Specification).
 
-OpenAPI Backend sits nicely in between your framework and business logic. It can handle routing, input validation and
+OpenAPI Backend sits nicely in between your framework and business logic. It can handle routing, validation and
 response mocking; using only standard OpenAPI specification.
 
 Also see: [openapi-client-axios](https://github.com/anttiviljami/openapi-client-axios)
