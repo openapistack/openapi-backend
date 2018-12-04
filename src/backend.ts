@@ -38,6 +38,7 @@ export class OpenAPIBackend {
   public document: Document;
   public inputDocument: Document | string;
   public definition: Document;
+  public apiRoot: string;
 
   public initalized: boolean;
 
@@ -68,6 +69,7 @@ export class OpenAPIBackend {
    */
   constructor(opts: {
     definition: Document | string;
+    apiRoot?: string;
     strict?: boolean;
     validate?: boolean | BoolPredicate;
     withContext?: boolean;
@@ -80,6 +82,7 @@ export class OpenAPIBackend {
     };
   }) {
     const optsWithDefaults = {
+      apiRoot: '/',
       withContext: true,
       validate: true,
       strict: false,
@@ -87,6 +90,7 @@ export class OpenAPIBackend {
       handlers: {},
       ...opts,
     };
+    this.apiRoot = optsWithDefaults.apiRoot;
     this.inputDocument = optsWithDefaults.definition;
     this.strict = optsWithDefaults.strict;
     this.validate = optsWithDefaults.validate;
@@ -131,10 +135,10 @@ export class OpenAPIBackend {
     }
 
     // initalize router with dereferenced definition
-    this.router = new OpenAPIRouter({ definition: this.definition });
+    this.router = new OpenAPIRouter({ definition: this.definition, apiRoot: this.apiRoot });
 
     // initalize validator with dereferenced definition
-    this.validator = new OpenAPIValidator({ definition: this.definition, ajvOpts: this.ajvOpts });
+    this.validator = new OpenAPIValidator({ definition: this.definition, ajvOpts: this.ajvOpts, router: this.router });
 
     // we are initalized
     this.initalized = true;

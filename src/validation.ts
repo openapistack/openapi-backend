@@ -66,7 +66,7 @@ export class OpenAPIValidator {
    * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
    * @memberof OpenAPIRequestValidator
    */
-  constructor(opts: { definition: Document; ajvOpts?: Ajv.Options }) {
+  constructor(opts: { definition: Document; ajvOpts?: Ajv.Options; router?: OpenAPIRouter }) {
     this.definition = opts.definition;
     this.ajvOpts = {
       unknownFormats: 'ignore', // Ajv default behaviour is to throw an error when encountering an unknown format
@@ -74,7 +74,7 @@ export class OpenAPIValidator {
     };
 
     // initalize router
-    this.router = new OpenAPIRouter({ definition: this.definition });
+    this.router = opts.router || new OpenAPIRouter({ definition: this.definition });
 
     // get defined api operations
     const operations = this.router.getOperations();

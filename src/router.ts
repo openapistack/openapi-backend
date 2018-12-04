@@ -54,6 +54,7 @@ export interface ParsedRequest extends Request {
  */
 export class OpenAPIRouter {
   public definition: Document;
+  public apiRoot: string;
 
   /**
    * Creates an instance of OpenAPIRouter
@@ -62,8 +63,9 @@ export class OpenAPIRouter {
    * @param {Document} opts.definition - the OpenAPI definition, file path or Document object
    * @memberof OpenAPIRouter
    */
-  constructor(opts: { definition: Document }) {
+  constructor(opts: { definition: Document; apiRoot?: string }) {
     this.definition = opts.definition;
+    this.apiRoot = opts.apiRoot || '/';
   }
 
   /**
@@ -77,11 +79,14 @@ export class OpenAPIRouter {
     // normalize request for matching
     req = this.normalizeRequest(req);
 
+    // get relative path
+    const relativePath = req.path.replace(new RegExp(`^${this.apiRoot}/?`), '/');
+
     // get all operations matching request method in a flat array
     const operations = _.filter(this.getOperations(), ({ method }) => method === req.method);
 
     // first check for an exact match for path
-    const exactMatch = _.find(operations, ({ path }) => path === req.path);
+    const exactMatch = _.find(operations, ({ path }) => path === relativePath);
     if (exactMatch) {
       return exactMatch;
     }
@@ -89,8 +94,8 @@ export class OpenAPIRouter {
     // then check for matches using path templating
     return _.find(operations, ({ path }) => {
       // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
-      const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/]+').replace(/\//g, '\\/')}$`;
-      return Boolean(req.path.match(new RegExp(pathPattern, 'g')));
+      const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/]+')}$`;
+      return Boolean(relativePath.match(new RegExp(pathPattern, 'g')));
     });
   }
 

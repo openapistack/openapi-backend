@@ -156,6 +156,20 @@ describe('OpenAPIRouter', () => {
       expect(operationId).toEqual('getPetsMeta');
     });
   });
+
+  describe('.matchOperation with apiRoot = /api', () => {
+    const api = new OpenAPIRouter({ definition, apiRoot: '/api' });
+
+    test('matches GET /api as apiRoot', async () => {
+      const { operationId } = api.matchOperation({ path: '/api', method: 'get', headers });
+      expect(operationId).toEqual('apiRoot');
+    });
+
+    test('matches GET /api/pets as getPets', async () => {
+      const { operationId } = api.matchOperation({ path: '/api/pets', method: 'get', headers });
+      expect(operationId).toEqual('getPets');
+    });
+  });
 });
 
 describe('OpenAPIBackend', () => {

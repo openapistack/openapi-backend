@@ -8,6 +8,7 @@
   - [new OpenAPIBackend(opts)](#new-openapibackendopts)
     - [Parameter: opts](#parameter-opts)
     - [Parameter: opts.definition](#parameter-optsdefinition)
+    - [Parameter: opts.apiRoot](#parameter-optsapiroot)
     - [Parameter: opts.strict](#parameter-optsstrict)
     - [Parameter: opts.validate](#parameter-optsvalidate)
     - [Parameter: opts.withContext](#parameter-optswithcontext)
@@ -111,6 +112,12 @@ Constructor options
 The OpenAPI definition as a file path or [Document object](#document-object).
 
 Type: `Document | string`
+
+#### Parameter: opts.apiRoot
+
+The root URI of your api. All paths will be matched relative to apiRoot 
+
+Type: `string`
 
 #### Parameter: opts.strict
 
