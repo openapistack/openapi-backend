@@ -61,6 +61,7 @@ export class OpenAPIRouter {
    *
    * @param opts - constructor options
    * @param {Document} opts.definition - the OpenAPI definition, file path or Document object
+   * @param {string} opts.apiRoot - the root URI of the api. all paths are matched relative to apiRoot
    * @memberof OpenAPIRouter
    */
   constructor(opts: { definition: Document; apiRoot?: string }) {

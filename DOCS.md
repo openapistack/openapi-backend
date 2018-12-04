@@ -115,7 +115,7 @@ Type: `Document | string`
 
 #### Parameter: opts.apiRoot
 
-The root URI of your api. All paths will be matched relative to apiRoot 
+The root URI of your api. All paths will be matched relative to apiRoot (default: "/")
 
 Type: `string`
 

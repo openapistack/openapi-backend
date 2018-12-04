@@ -63,7 +63,8 @@ export class OpenAPIValidator {
    *
    * @param opts - constructor options
    * @param {Document | string} opts.definition - the OpenAPI definition, file path or Document object
-   * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
+   * @param {boolean} opts.ajvOpts - default ajv constructor opts (default: { unknownFormats: 'ignore' })
+   * @param {OpenAPIRouter} opts.router - passed instance of OpenAPIRouter. Will create own child if no passed
    * @memberof OpenAPIRequestValidator
    */
   constructor(opts: { definition: Document; ajvOpts?: Ajv.Options; router?: OpenAPIRouter }) {

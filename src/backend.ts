@@ -61,9 +61,11 @@ export class OpenAPIBackend {
    *
    * @param opts - constructor options
    * @param {Document | string} opts.definition - the OpenAPI definition, file path or Document object
+   * @param {string} opts.apiRoot - the root URI of the api. all paths are matched relative to apiRoot
    * @param {boolean} opts.strict - strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
    * @param {boolean} opts.validate - whether to validate requests with Ajv (default: true)
    * @param {boolean} opts.withContext - whether to pass context object to handlers as first argument (default: true)
+   * @param {boolean} opts.ajvOpts - default ajv opts to pass to the validator
    * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
    * @memberof OpenAPIBackend
    */
