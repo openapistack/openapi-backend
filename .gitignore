@@ -3,6 +3,9 @@
 *.js.map
 *.d.ts
 
+# include js scripts
+!scripts/*.js
+
 # include types
 !src/types/*.d.ts
 
