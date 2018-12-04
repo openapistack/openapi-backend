@@ -11,7 +11,7 @@ with the [OpenAPI standard](https://github.com/OAI/OpenAPI-Specification).
 OpenAPI Backend sits nicely in between your framework and business logic. It handles routing, input validation and
 response mocking; using only standard OpenAPI specification.
 
-Also see: [openapi-frontend](https://github.com/anttiviljami/openapi-frontend)
+Also see: [openapi-client-axios](https://github.com/anttiviljami/openapi-client-axios)
 
 ## Features
 
