@@ -208,6 +208,10 @@ async function getPetByIdHandler(c, req, res) {
   return res.status(200).json({ result: pet });
 }
 api.register('getPetById', getPetByIdHandler);
+// or
+api.register({
+  getPetById: getPetByIdHandler,
+});
 ```
 
 Operation handlers are passed a special [Context object](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#context-object)
