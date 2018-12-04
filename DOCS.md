@@ -261,7 +261,7 @@ if (valid.errors) {
 
 #### Parameter: res
 
-The response to validate. 
+The response to validate.
 
 Type: `any`
 
@@ -457,16 +457,16 @@ api.register('notImplemented', notImplementedHandler);
 
 ### postResponseHandler Handler
 
-The `postResponseHandler` handler gets called by `.handleRequest()` after resolving the operation handler.
+The `postResponseHandler` handler gets called by `.handleRequest()` after resolving the response handler.
 
-The return value of the operation handler will be passed in the context object `response` property.
+The return value of the response handler will be passed in the context object `response` property.
 
 HINT: You can use the postResponseHandler to validate API responses against your response schema
 
 Example handler:
 ```javascript
 function postResponseHandler(c, req, res) {
-  const valid = c.api.validateResponse(c.response, c.operation);    
+  const valid = c.api.validateResponse(c.response, c.operation);
   if (valid.errors) {
     // response validation failed
     return res.status(502).json({ status: 502, err: valid.errors });

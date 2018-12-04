@@ -168,58 +168,61 @@ export class OpenAPIBackend {
     // initalize context object with a reference to this OpenAPIBackend instance
     const context: Context = { api: this };
 
-    // parse request
-    context.request = this.router.parseRequest(req);
+    // handle request with correct handler
+    const response = await (async () => {
+      // parse request
+      context.request = this.router.parseRequest(req);
 
-    // match operation
-    context.operation = this.matchOperation(req);
-    if (!context.operation || !context.operation.operationId) {
-      const notFoundHandler: Handler = this.handlers['404'] || this.handlers['notFound'];
-      if (!notFoundHandler) {
-        throw Error(`404-notFound: no route matches request`);
-      }
-      return this.withContext ? notFoundHandler(context, ...handlerArgs) : notFoundHandler(...handlerArgs);
-    }
-
-    const { path, operationId } = context.operation;
-
-    // parse request again now with matched path
-    context.request = this.router.parseRequest(req, path);
-
-    // check whether this request should be validated
-    const validate =
-      typeof this.validate === 'function' ? this.validate(context, ...handlerArgs) : Boolean(this.validate);
-
-    // validate request
-    if (validate) {
-      context.validation = this.validator.validateRequest(req, context.operation);
-      if (context.validation.errors) {
-        // validation FAIL
-        const validationFailHandler: Handler = this.handlers['validationFail'];
-        if (validationFailHandler) {
-          return this.withContext
-            ? validationFailHandler(context, ...handlerArgs)
-            : validationFailHandler(...handlerArgs);
+      // match operation
+      context.operation = this.matchOperation(req);
+      if (!context.operation || !context.operation.operationId) {
+        // 404 route not found
+        const notFoundHandler: Handler = this.handlers['404'] || this.handlers['notFound'];
+        if (!notFoundHandler) {
+          throw Error(`404-notFound: no route matches request`);
         }
-        // if no validation handler is specified, just proceed to route handler (context.validation is still populated)
+        return this.withContext ? notFoundHandler(context, ...handlerArgs) : notFoundHandler(...handlerArgs);
       }
-    }
+      const { path, operationId } = context.operation;
 
-    // handle route
-    const routeHandler: Handler = this.handlers[operationId];
-    if (!routeHandler) {
-      // 501 not implemented
-      const notImplementedHandler = this.handlers['501'] || this.handlers['notImplemented'];
-      if (!notImplementedHandler) {
-        throw Error(`501-notImplemented: ${operationId} no handler registered`);
+      // parse request again now with matched path
+      context.request = this.router.parseRequest(req, path);
+
+      // check whether this request should be validated
+      const validate =
+        typeof this.validate === 'function' ? this.validate(context, ...handlerArgs) : Boolean(this.validate);
+
+      // validate request
+      const validationFailHandler: Handler = this.handlers['validationFail'];
+      if (validate) {
+        context.validation = this.validator.validateRequest(req, context.operation);
+        if (context.validation.errors) {
+          // 400 request validation fail
+          if (validationFailHandler) {
+            return this.withContext
+              ? validationFailHandler(context, ...handlerArgs)
+              : validationFailHandler(...handlerArgs);
+          }
+          // if no validation handler is specified, just ignore it and proceed to route handler
+        }
       }
-      return this.withContext ? notImplementedHandler(context, ...handlerArgs) : notImplementedHandler(...handlerArgs);
-    }
 
-    // handle route
-    const response = this.withContext
-      ? await routeHandler(context, ...handlerArgs)
-      : await routeHandler(...handlerArgs);
+      // get operation handler
+      const routeHandler: Handler = this.handlers[operationId];
+      if (!routeHandler) {
+        // 501 not implemented
+        const notImplementedHandler = this.handlers['501'] || this.handlers['notImplemented'];
+        if (!notImplementedHandler) {
+          throw Error(`501-notImplemented: ${operationId} no handler registered`);
+        }
+        return this.withContext
+          ? notImplementedHandler(context, ...handlerArgs)
+          : notImplementedHandler(...handlerArgs);
+      }
+
+      // handle route
+      return this.withContext ? routeHandler(context, ...handlerArgs) : routeHandler(...handlerArgs);
+    }).bind(this)();
 
     // post response handler
     const postResponseHandler: Handler = this.handlers['postResponseHandler'];
