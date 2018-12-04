@@ -240,7 +240,7 @@ to add a response validation step using [`validateResponse`](https://github.com/
 
 ```javascript
 api.register({
-  getPet: (c) => {
+  getPets: (c) => {
     // when a postResponseHandler is registered, your operation handlers' return value gets passed to context.response
     return [{ id: 1, name: 'Garfield' }];
   },
