@@ -497,4 +497,23 @@ export class OpenAPIBackend {
   public validateResponse(res: any, operation: Operation | string): ValidationResult {
     return this.validator.validateResponse(res, operation);
   }
+
+  /**
+   * Validates a response and returns the result.
+   *
+   * The method will use the pre-compiled Ajv validation schema to validate a request it.
+   *
+   * Alias for validator.validateResponseHeaders
+   *
+   * @param {*} headers - response to validate
+   * @param {(Operation | string)} [operation]
+   * @param {number} [statusCode]
+   * @param {string} [setMatchType] - one of 'any', 'superset', 'subset', 'exact'
+   * @returns {ValidationStatus}
+   * @memberof OpenAPIBackend
+   */
+  public validateResponseHeaders(headers: any, operation: Operation | string, statusCode: number, setMatchType?: string)
+    : ValidationResult {
+    return this.validator.validateResponseHeaders(headers, operation, statusCode, setMatchType);
+  }
 }
