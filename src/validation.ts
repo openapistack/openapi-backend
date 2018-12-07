@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Ajv from 'ajv';
 import { OpenAPIV3 } from 'openapi-types';
 import { OpenAPIRouter, Request, Operation } from './router';
+import OpenAPIUtils from './utils';
 
 // alias Document to OpenAPIV3.Document
 type Document = OpenAPIV3.Document;
@@ -276,24 +277,19 @@ export class OpenAPIValidator {
     const validateMap: ResponseHeadersValidateFunctionMap = this.getResponseHeadersValidatorForOperation(operationId);
 
     if (validateMap) {
-      let strStatusCode = statusCode.toString();
-      let validate = validateMap[strStatusCode] && validateMap[strStatusCode][setMatchType];
 
-      if (!validate) {
-        // The spec allow statusCode to be 1XX, 2XX ...
-        strStatusCode = Math.floor(statusCode / 100) + 'XX';
-        validate = validateMap[strStatusCode] && validateMap[strStatusCode][setMatchType];
-      }
+      const validateForStatus: { [setMatchType: string]: Ajv.ValidateFunction } =
+        OpenAPIUtils.findStatusCodeMatch(statusCode, validateMap);
 
-      if (!validate) {
-        strStatusCode = 'default';
-        validate = validateMap[strStatusCode] && validateMap[strStatusCode][setMatchType];
-      }
+      if (validateForStatus) {
 
-      if (validate) {
-        validate({headers});
-        if (validate.errors) {
-          result.errors.push(...validate.errors);
+        const validate = validateForStatus[setMatchType];
+
+        if (validate) {
+          validate({headers});
+          if (validate.errors) {
+            result.errors.push(...validate.errors);
+          }
         }
       }
     }
