@@ -617,6 +617,84 @@ describe('OpenAPIValidator', () => {
       const valid = validator.validateResponse({}, 'createPet');
       expect(valid.errors).toBeFalsy();
     });
+
+    test('passes validation with valid 200 response object and operationId getPetById', async () => {
+      const valid = validator.validateResponse(
+        {
+          name: 'Garfield',
+          age: 30,
+        },
+        'getPetById',
+        200,
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('fails validation with valid 404 response object and operationId getPetById', async () => {
+      const valid = validator.validateResponse(
+        {
+          name: 'Garfield',
+          age: 30,
+        },
+        'getPetById',
+        404,
+      );
+      expect(valid.errors).toBeTruthy();
+    });
+
+    test('passes validation with valid 200 response object and operation object for getPetById', async () => {
+      const valid = validator.validateResponse(
+        {
+          name: 'Garfield',
+          age: 30,
+        },
+        {
+          method: 'get',
+          path: '/pets/{id}',
+          operationId: 'getPetById',
+        },
+        200,
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('fails validation with valid 404 response object and operation object for getPetById', async () => {
+      const valid = validator.validateResponse(
+        {
+          name: 'Garfield',
+          age: 30,
+        },
+        {
+          method: 'get',
+          path: '/pets/{id}',
+          operationId: 'getPetById',
+        },
+        404,
+      );
+      expect(valid.errors).toBeTruthy();
+    });
+
+    test('passes validation with valid 404 response object and operationId getPetById', async () => {
+      const valid = validator.validateResponse(
+        {
+          err: 'pet not found',
+        },
+        'getPetById',
+        404,
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('fails validation with valid 200 response object and operationId getPetById', async () => {
+      const valid = validator.validateResponse(
+        {
+          err: 'pet not found',
+        },
+        'getPetById',
+        200,
+      );
+      expect(valid.errors).toBeTruthy();
+    });
   });
 
   describe('.validateResponseHeaders', () => {
