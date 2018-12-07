@@ -24,6 +24,11 @@
   - [.validateResponse(res, operation)](#validateresponseres-operation)
     - [Parameter: res](#parameter-res)
     - [Parameter: operation](#parameter-operation)
+  - [.validateResponseHeaders(headers, operation, statusCode, setMatchType)](#validateresponseheadersheaders-operation-rescode-setmatchtype)
+    - [Parameter: headers](#parameter-headers)
+    - [Parameter: operation](#parameter-operation-2)
+    - [Parameter: statusCode](#parameter-statuscode)
+    - [Parameter: setMatchType](#parameter-setmatchtype)
   - [.matchOperation(req)](#matchoperationreq)
     - [Parameter: req](#parameter-req)
   - [.register(operationId, handler)](#registeroperationid-handler)
@@ -277,6 +282,54 @@ Type: `any`
 The Operation object or operationId to validate against.
 
 Type: [`Operation`](#operation-object) or `string`
+
+
+### .validateResponseHeaders(headers, operation, resCode, setMatchType)
+
+Validates a response headers and returns the result.
+
+The method will use the pre-compiled Ajv validation schema to validate the given response.
+
+Returns a [ValidationResult object](#validationresult-object).
+
+Example usage:
+```javascript
+const valid = await api.validateResponseHeaders({ 'Content-Type': 'text/plain' }, 'getPetById', 200, 'exact');
+if (valid.errors) {
+  // there were errors
+}
+```
+
+#### Parameter: headers
+
+The response headers to validate.
+
+Type: `any`
+
+#### Parameter: operation
+
+The Operation object or operationId to validate against.
+
+Type: [`Operation`](#operation-object) or `string`
+
+#### Parameter: statusCode
+
+The status code of the response.
+
+Type: `number`
+
+#### Parameter: setMatchType
+
+The type of set matching to perform, in relation with the set of headers defined in your spec. 
+It can be `any`, `superset`, `subset` or `exact`.
+This parameter is optional and defaults to `any`.
+
+- `any`: Skip checks for missing or additional headers. It only checks that the types of the headers are matching with the spec.
+- `superset`: Check that `headers` is a superset of the headers defined in your spec. In other words, you can have headers in `headers` that are described in your spec.
+- `subset`: Check that `headers` is a subset of the headers defined in your spec. In other words, you can have headers in you spec that are not present in `headers`.
+- `exact`: Check that `headers` exactly match the headers defined in your spec.
+
+Type: `string`
 
 ### .matchOperation(req)
 
