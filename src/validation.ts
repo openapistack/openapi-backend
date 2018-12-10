@@ -70,7 +70,7 @@ export class OpenAPIValidator {
   public ajvOpts: Ajv.Options;
   public requestValidators: { [operationId: string]: Ajv.ValidateFunction[] };
   public responseValidators: { [operationId: string]: Ajv.ValidateFunction };
-  public responseValidators2: ResponseValidatorsFunctionMap;
+  public statusBasedResponseValidators: ResponseValidatorsFunctionMap;
 
   public responseHeadersValidators: { [operationId: string]: ResponseHeadersValidateFunctionMap };
 
@@ -107,8 +107,8 @@ export class OpenAPIValidator {
     operations.map(this.buildResponseValidatorForOperation.bind(this));
 
     // build response validation schemas for api operations, per status code
-    this.responseValidators2 = {};
-    operations.map(this.buildResponseValidatorForOperation2.bind(this));
+    this.statusBasedResponseValidators = {};
+    operations.map(this.buildStatusBasedResponseValidatorForOperation.bind(this));
 
     // build response header validation schemas for api operations
     this.responseHeadersValidators = {};
@@ -284,7 +284,8 @@ export class OpenAPIValidator {
     }
 
     const { operationId } = operation;
-    const validateMap: StatusBasedResponseValidatorsFunctionMap = this.getResponseValidatorForOperation2(operationId);
+    const validateMap: StatusBasedResponseValidatorsFunctionMap =
+      this.getStatusBasedResponseValidatorForOperation(operationId);
 
     if (validateMap) {
       const validate: Ajv.ValidateFunction = OpenAPIUtils.findStatusCodeMatch(statusCode, validateMap);
@@ -531,8 +532,8 @@ export class OpenAPIValidator {
    * @returns {Object.<Ajv.ValidateFunction>}}
    * @memberof OpenAPIRequestValidator
    */
-  public getResponseValidatorForOperation2(operationId: string): StatusBasedResponseValidatorsFunctionMap {
-    return this.responseValidators2[operationId];
+  public getStatusBasedResponseValidatorForOperation(operationId: string): StatusBasedResponseValidatorsFunctionMap {
+    return this.statusBasedResponseValidators[operationId];
   }
 
   /**
@@ -541,7 +542,7 @@ export class OpenAPIValidator {
    * @param {Operation} operation
    * @memberof OpenAPIRequestValidator
    */
-  public buildResponseValidatorForOperation2(operation: Operation): void {
+  public buildStatusBasedResponseValidatorForOperation(operation: Operation): void {
     if (!operation.responses) {
       // operation has no responses, don't register a validator
       return null;
@@ -559,7 +560,7 @@ export class OpenAPIValidator {
       return null;
     });
 
-    this.responseValidators2[operationId] = responseValidators;
+    this.statusBasedResponseValidators[operationId] = responseValidators;
   }
 
   /**
