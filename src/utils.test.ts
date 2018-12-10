@@ -126,4 +126,65 @@ describe('OpenAPIUtils', () => {
     });
 
   });
+
+  describe('.findDefaultStatusCodeMatch', () => {
+    test('matches 200', async () => {
+      const value = OpenAPIUtils.findDefaultStatusCodeMatch({
+        '200': '200',
+        '201': '201',
+      });
+      expect(value.res).toEqual('200');
+    });
+
+    test('matches 201', async () => {
+      const value = OpenAPIUtils.findDefaultStatusCodeMatch({
+        '201': '201',
+        '300': '300',
+      });
+      expect(value.res).toEqual('201');
+    });
+
+    test('matches 201 with 2XX fallback', async () => {
+      const value = OpenAPIUtils.findDefaultStatusCodeMatch({
+        '201': '201',
+        '2XX': '2XX',
+        '300': '300',
+      });
+      expect(value.res).toEqual('201');
+    });
+
+    test('matches 201 with default fallback', async () => {
+      const value = OpenAPIUtils.findDefaultStatusCodeMatch({
+        'default': 'default',
+        '201': '201',
+        '2XX': '2XX',
+        '300': '300',
+      });
+      expect(value.res).toEqual('201');
+    });
+
+    test('matches 2XX', async () => {
+      const value = OpenAPIUtils.findDefaultStatusCodeMatch({
+        '2XX': '2XX',
+        '300': '300',
+      });
+      expect(value.res).toEqual('2XX');
+    });
+
+    test('matches 2XX with default fallback', async () => {
+      const value = OpenAPIUtils.findDefaultStatusCodeMatch({
+        '2XX': '2XX',
+        'default': 'default',
+      });
+      expect(value.res).toEqual('2XX');
+    });
+
+    test('matches first one', async () => {
+      const value = OpenAPIUtils.findDefaultStatusCodeMatch({
+        '305': '305',
+        '3XX': '3XX',
+      });
+      expect(value.res).toEqual('305');
+    });
+  });
 });
