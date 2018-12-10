@@ -1,6 +1,7 @@
 import { OpenAPIValidator } from './index';
 import { OpenAPIV3 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
+import { SetMatchType } from './backend';
 
 const headers = { accept: 'application/json' };
 
@@ -740,7 +741,7 @@ describe('OpenAPIValidator', () => {
         },
         'listPets',
         200,
-        'exact',
+        SetMatchType.Exact,
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -754,7 +755,7 @@ describe('OpenAPIValidator', () => {
         },
         'createPet',
         201,
-        'exact',
+        SetMatchType.Exact,
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -768,7 +769,7 @@ describe('OpenAPIValidator', () => {
         },
         'listPets',
         200,
-        'exact',
+        SetMatchType.Exact,
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -782,7 +783,7 @@ describe('OpenAPIValidator', () => {
         },
         'createPet',
         404,
-        'exact',
+        SetMatchType.Exact,
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -797,7 +798,7 @@ describe('OpenAPIValidator', () => {
         },
         'listPets',
         200,
-        'superset',
+        SetMatchType.Superset,
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -810,7 +811,7 @@ describe('OpenAPIValidator', () => {
         },
         'listPets',
         200,
-        'superset',
+        SetMatchType.Superset,
       );
       expect(valid.errors).toBeTruthy();
     });
@@ -823,7 +824,7 @@ describe('OpenAPIValidator', () => {
         },
         'listPets',
         200,
-        'subset',
+        SetMatchType.Subset,
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -838,7 +839,7 @@ describe('OpenAPIValidator', () => {
         },
         'listPets',
         200,
-        'subset',
+        SetMatchType.Subset,
       );
       expect(valid.errors).toBeTruthy();
     });
@@ -851,7 +852,7 @@ describe('OpenAPIValidator', () => {
         },
         'listPets',
         200,
-        'any',
+        SetMatchType.Any,
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -863,13 +864,13 @@ describe('OpenAPIValidator', () => {
         },
         'listPets',
         200,
-        'exact',
+        SetMatchType.Exact,
       );
       expect(valid.errors).toBeTruthy();
     });
 
     test('fails validation with a missing response object', async () => {
-      const valid = validator.validateResponseHeaders(null, 'listPets', 200, 'exact');
+      const valid = validator.validateResponseHeaders(null, 'listPets', 200, SetMatchType.Exact);
       expect(valid.errors).toBeTruthy();
     });
 
@@ -882,7 +883,7 @@ describe('OpenAPIValidator', () => {
         },
         'listPets',
         205,
-        'exact',
+        SetMatchType.Exact,
       );
       expect(valid.errors).toBeFalsy();
     });

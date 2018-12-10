@@ -3,6 +3,7 @@ import Ajv from 'ajv';
 import { OpenAPIV3 } from 'openapi-types';
 import { OpenAPIRouter, Request, Operation } from './router';
 import OpenAPIUtils from './utils';
+import { SetMatchType } from './backend';
 
 // alias Document to OpenAPIV3.Document
 type Document = OpenAPIV3.Document;
@@ -62,7 +63,6 @@ export class OpenAPIValidator {
   public requestValidators: { [operationId: string]: Ajv.ValidateFunction[] };
   public responseValidators: { [operationId: string]: Ajv.ValidateFunction };
 
-  public allowedSetMatchTypes = ['any', 'superset', 'subset', 'exact'];
   public responseHeadersValidators: { [operationId: string]: ResponseHeadersValidateFunctionMap };
 
   public router: OpenAPIRouter;
@@ -248,12 +248,16 @@ export class OpenAPIValidator {
    * @param {*} headers
    * @param {(Operation | string)} [operation]
    * @param {number} [statusCode]
-   * @param {string} [setMatchType] - one of 'any', 'superset', 'subset', 'exact'
+   * @param {SetMatchType} [setMatchType] - one of 'any', 'superset', 'subset', 'exact'
    * @returns {ValidationResult}
    * @memberof OpenAPIRequestValidator
    */
-  public validateResponseHeaders(headers: any, operation: Operation | string, statusCode: number, setMatchType?: string)
-    : ValidationResult {
+  public validateResponseHeaders(
+    headers: any,
+    operation: Operation | string,
+    statusCode: number,
+    setMatchType?: SetMatchType,
+  ): ValidationResult {
     const result: ValidationResult = {
       valid: true,
       errors: [],
@@ -268,8 +272,8 @@ export class OpenAPIValidator {
     }
 
     if (!setMatchType) {
-      setMatchType = this.allowedSetMatchTypes[0];
-    } else if (!_.includes(this.allowedSetMatchTypes, setMatchType)) {
+      setMatchType = SetMatchType.Any;
+    } else if (!_.includes(Object.values(SetMatchType), setMatchType)) {
       throw new Error(`Unknown setMatchType ${setMatchType}`);
     }
 
@@ -487,7 +491,7 @@ export class OpenAPIValidator {
         return null;
       });
 
-      validateFns['any'] = validator.compile({
+      validateFns[SetMatchType.Any] = validator.compile({
         type: 'object',
         properties: {
           headers: {
@@ -499,7 +503,7 @@ export class OpenAPIValidator {
         },
       });
 
-      validateFns['superset'] = validator.compile({
+      validateFns[SetMatchType.Superset] = validator.compile({
         type: 'object',
         properties: {
           headers: {
@@ -511,7 +515,7 @@ export class OpenAPIValidator {
         },
       });
 
-      validateFns['subset'] = validator.compile({
+      validateFns[SetMatchType.Subset] = validator.compile({
         type: 'object',
         properties: {
           headers: {
@@ -523,7 +527,7 @@ export class OpenAPIValidator {
         },
       });
 
-      validateFns['exact'] = validator.compile({
+      validateFns[SetMatchType.Exact] = validator.compile({
         type: 'object',
         properties: {
           headers: {

@@ -29,6 +29,18 @@ export type Handler = (context?: Context, ...args: any[]) => any | Promise<any>;
 export type BoolPredicate = (context?: Context, ...args: any[]) => boolean;
 
 /**
+ * The different possibilities for set matching.
+ *
+ * @enum {string}
+ */
+export enum SetMatchType {
+  Any = 'any',
+  Superset = 'superset',
+  Subset = 'subset',
+  Exact = 'exact',
+}
+
+/**
  * Main class and the default export of the 'openapi-backend' module
  *
  * @export
@@ -508,12 +520,16 @@ export class OpenAPIBackend {
    * @param {*} headers - response to validate
    * @param {(Operation | string)} [operation]
    * @param {number} [statusCode]
-   * @param {string} [setMatchType] - one of 'any', 'superset', 'subset', 'exact'
+   * @param {SetMatchType} [setMatchType] - one of 'any', 'superset', 'subset', 'exact'
    * @returns {ValidationStatus}
    * @memberof OpenAPIBackend
    */
-  public validateResponseHeaders(headers: any, operation: Operation | string, statusCode: number, setMatchType?: string)
-    : ValidationResult {
+  public validateResponseHeaders(
+    headers: any,
+    operation: Operation | string,
+    statusCode: number,
+    setMatchType?: SetMatchType,
+  ): ValidationResult {
     return this.validator.validateResponseHeaders(headers, operation, statusCode, setMatchType);
   }
 }
