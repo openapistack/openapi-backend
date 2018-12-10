@@ -281,15 +281,14 @@ export class OpenAPIValidator {
     const validateMap: ResponseHeadersValidateFunctionMap = this.getResponseHeadersValidatorForOperation(operationId);
 
     if (validateMap) {
-
       const validateForStatus: { [setMatchType: string]: Ajv.ValidateFunction } =
         OpenAPIUtils.findStatusCodeMatch(statusCode, validateMap);
 
       if (validateForStatus) {
-
         const validate = validateForStatus[setMatchType];
 
         if (validate) {
+          headers = _.mapKeys(headers, (value: OpenAPIV3.HeaderObject, headerName: string) => headerName.toLowerCase());
           validate({headers});
           if (validate.errors) {
             result.errors.push(...validate.errors);
@@ -484,6 +483,7 @@ export class OpenAPIValidator {
       const required: string[] = [];
 
       _.mapKeys(response.headers, (header: OpenAPIV3.HeaderObject, headerName: string) => {
+        headerName = headerName.toLowerCase();
         if (header.schema) {
           properties[headerName] = header.schema as OpenAPIV3.SchemaObject;
           required.push(headerName);
