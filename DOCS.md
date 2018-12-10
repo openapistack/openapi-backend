@@ -27,8 +27,9 @@
   - [.validateResponseHeaders(headers, operation, statusCode, setMatchType)](#validateresponseheadersheaders-operation-rescode-setmatchtype)
     - [Parameter: headers](#parameter-headers)
     - [Parameter: operation](#parameter-operation-2)
-    - [Parameter: statusCode](#parameter-statuscode)
-    - [Parameter: setMatchType](#parameter-setmatchtype)
+    - [Parameter: opts](#parameter-opts)
+    - [Parameter: opts.statusCode](#parameter-optsstatuscode)
+    - [Parameter: opts.setMatchType](#parameter-optssetmatchtype)
   - [.matchOperation(req)](#matchoperationreq)
     - [Parameter: req](#parameter-req)
   - [.register(operationId, handler)](#registeroperationid-handler)
@@ -312,17 +313,20 @@ The Operation object or operationId to validate against.
 
 Type: [`Operation`](#operation-object) or `string`
 
-#### Parameter: statusCode
+#### Parameter: opts
 
-The status code of the response.
+Optional. Options for validate the response headers.
+
+#### Parameter: opts.statusCode
+
+Optional. The status code of the response.
 
 Type: `number`
 
-#### Parameter: setMatchType
+#### Parameter: opts.setMatchType
 
-The type of set matching to perform, in relation with the set of headers defined in your spec. 
-It can be `any`, `superset`, `subset` or `exact`.
-This parameter is optional and defaults to `any`.
+Optional. The type of set matching to perform, in relation with the set of headers defined in your spec.
+It can be `any`, `superset`, `subset` or `exact`. Defaults to `any`.
 
 - `any`: Skip checks for missing or additional headers. It only checks that the types of the headers are matching with the spec.
 - `superset`: Check that `headers` is a superset of the headers defined in your spec. In other words, you can have headers in `headers` that are described in your spec.

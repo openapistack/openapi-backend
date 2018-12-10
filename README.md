@@ -268,7 +268,10 @@ api.register({
     return [{ id: 1, name: 'Garfield' }];
   },
   postResponseHandler: (c, req, res) => {
-    const valid = c.api.validateResponseHeaders(res.headers, c.operation, res.statusCode, 'exact');
+    const valid = c.api.validateResponseHeaders(res.headers, c.operation, {
+      statusCode: res.statusCode,
+      setMatchType: 'exact',
+    });
     if (valid.errors) {
       // response validation failed
       return res.status(502).json({ status: 502, err: valid.errors });
