@@ -902,5 +902,33 @@ describe('OpenAPIValidator', () => {
         );
       }).toThrow();
     });
+
+    test('passes validation with header case not matching the spec', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-OtHer-InTeger': '42',
+          'x-other-string': 42,
+          'X-OTHER-BOOLEAN': 'true',
+        },
+        'listPets',
+        205,
+        SetMatchType.Exact,
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('fails validation with header separators omitted', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'xotherinteger': '42',
+          'xotherstring': 42,
+          'XOTHERBOOLEAN': 'true',
+        },
+        'listPets',
+        205,
+        SetMatchType.Exact,
+      );
+      expect(valid.errors).toBeTruthy();
+    });
   });
 });
