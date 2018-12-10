@@ -1,3 +1,6 @@
+import _ from 'lodash';
+import { resolve } from 'path';
+
 export default class OpenAPIUtils {
 
   /**
@@ -27,5 +30,49 @@ export default class OpenAPIUtils {
     }
 
     return obj['default'];
+  }
+
+  /**
+   * Finds the default most appropriate value in an object, based on the following rule
+   * 1. check for a 20X res
+   * 2. check for a 2XX res
+   * 3. check for the "default" res
+   * 4. pick first res code in list
+   * Returns the value in the 'obj' argument.
+   * @param {Object.<string, *>} obj The object containing values referenced by possibly patterned status code key.
+   * @returns {{status: string, res: *}}
+   */
+  public static findDefaultStatusCodeMatch(obj: {[patternedStatusCode: string]: any}): {status: number, res: any} {
+    // 1. check for a 20X response
+    for (const ok of _.range(200, 204)) {
+      if (obj[ok]) {
+        return {
+          status: ok,
+          res: obj[ok],
+        };
+      }
+    }
+
+    // 2. check for a 2XX response
+    if (obj['2XX']) {
+      return {
+        status: 200,
+        res: obj['2XX'],
+      };
+    }
+
+    // 3. check for the "default" response
+    if (obj.default) {
+      return {
+        status: 200,
+        res: obj.default,
+      };
+    }
+
+    // 4. pick first response code in list
+    return {
+      status: Number(_.first(_.keys(obj))),
+      res: obj[_.first(_.keys(obj))],
+    };
   }
 }

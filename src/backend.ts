@@ -7,6 +7,7 @@ import { mock } from 'mock-json-schema';
 
 import { OpenAPIRouter, Request, ParsedRequest, Operation } from './router';
 import { OpenAPIValidator, ValidationResult } from './validation';
+import OpenAPIUtils from './utils';
 
 // alias Document to OpenAPIV3.Document
 type Document = OpenAPIV3.Document;
@@ -362,25 +363,14 @@ export class OpenAPIBackend {
       status = Number(opts.code);
       response = responses[opts.code] as OpenAPIV3.ResponseObject;
     }
-    // 2. check for a 20X response
+
+    // 2. check for a default response
     if (!response) {
-      for (const ok of _.range(200, 204)) {
-        if (responses[ok]) {
-          status = ok;
-          response = responses[ok] as OpenAPIV3.ResponseObject;
-        }
-      }
+      const res = OpenAPIUtils.findDefaultStatusCodeMatch(responses);
+      status = res.status;
+      response = res.res;
     }
-    // 3. check for the "default" response
-    if (!response && responses.default) {
-      status = 200;
-      response = responses.default as OpenAPIV3.ResponseObject;
-    }
-    // 4. pick first response code in list
-    if (!response) {
-      status = Number(_.first(_.keys(responses)));
-      response = responses[_.first(_.keys(responses))] as OpenAPIV3.ResponseObject;
-    }
+
     if (!response || !response.content) {
       return { status, mock: defaultMock };
     }
