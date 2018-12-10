@@ -21,7 +21,7 @@
   - [.validateRequest(req, operation?)](#validaterequestreq-operation)
     - [Parameter: req](#parameter-req)
     - [Parameter: operation](#parameter-operation)
-  - [.validateResponse(res, operation)](#validateresponseres-operation)
+  - [.validateResponse(res, operation, statusCode?)](#validateresponseres-operation-statuscode)
     - [Parameter: res](#parameter-res)
     - [Parameter: operation](#parameter-operation)
   - [.validateResponseHeaders(headers, operation, opts?)](#validateresponseheadersheaders-operation-opts)
@@ -256,17 +256,26 @@ If omitted, [`.matchOperation()`](#matchoperation-req) will be used to match the
 Type: [`Operation`](#operation-object) or `string` (operationId)
 
 
-### .validateResponse(res, operation)
+### .validateResponse(res, operation, statusCode?)
 
 Validates a response and returns the result.
 
 The method will use the pre-compiled Ajv validation schema to validate the given response.
+
+You can optionally provide a status code for more accurate validation.
 
 Returns a [ValidationResult object](#validationresult-object).
 
 Example usage:
 ```javascript
 const valid = await api.validateResponse({ name: 'Garfield' }, 'getPetById');
+if (valid.errors) {
+  // there were errors
+}
+```
+
+```javascript
+const valid = await api.validateResponse({ name: 'Unknown' }, 'getPetById', 200);
 if (valid.errors) {
   // there were errors
 }
@@ -284,6 +293,11 @@ The Operation object or operationId to validate against.
 
 Type: [`Operation`](#operation-object) or `string`
 
+#### Parameter: statusCode
+
+The HTTP response status code.
+
+Type: `number`
 
 ### .validateResponseHeaders(headers, operation, opts?)
 
