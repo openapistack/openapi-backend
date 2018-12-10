@@ -887,5 +887,20 @@ describe('OpenAPIValidator', () => {
       );
       expect(valid.errors).toBeFalsy();
     });
+
+    test('throw an error when passing SetMatchType', async () => {
+      expect(() => {
+        validator.validateResponseHeaders(
+          {
+            'X-Other-Integer': '42',
+            'X-Other-String': 42,
+            'X-Other-Boolean': 'true',
+          },
+          'listPets',
+          205,
+          'error' as SetMatchType,
+        );
+      }).toThrow();
+    });
   });
 });
