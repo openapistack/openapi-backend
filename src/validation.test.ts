@@ -740,8 +740,25 @@ describe('OpenAPIValidator', () => {
           'X-Boolean': true,
         },
         'listPets',
-        200,
-        SetMatchType.Exact,
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('passes validation with valid header object, operationId listPets and no statusCode', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': 42,
+          'X-String': '42',
+          'X-Boolean': true,
+        },
+        'listPets',
+        {
+          setMatchType: SetMatchType.Exact,
+        },
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -754,8 +771,10 @@ describe('OpenAPIValidator', () => {
           'X-Boolean': true,
         },
         'createPet',
-        201,
-        SetMatchType.Exact,
+        {
+          statusCode: 201,
+          setMatchType: SetMatchType.Exact,
+        },
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -768,8 +787,10 @@ describe('OpenAPIValidator', () => {
           'X-Boolean': 'true',
         },
         'listPets',
-        200,
-        SetMatchType.Exact,
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Exact,
+        },
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -782,8 +803,10 @@ describe('OpenAPIValidator', () => {
           'X-Other-Boolean': 'true',
         },
         'createPet',
-        404,
-        SetMatchType.Exact,
+        {
+          statusCode: 404,
+          setMatchType: SetMatchType.Exact,
+        },
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -797,8 +820,10 @@ describe('OpenAPIValidator', () => {
           'X-Other': 'false',
         },
         'listPets',
-        200,
-        SetMatchType.Superset,
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Superset,
+        },
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -810,8 +835,10 @@ describe('OpenAPIValidator', () => {
           'X-String': 42,
         },
         'listPets',
-        200,
-        SetMatchType.Superset,
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Superset,
+        },
       );
       expect(valid.errors).toBeTruthy();
     });
@@ -823,8 +850,10 @@ describe('OpenAPIValidator', () => {
           'X-String': 42,
         },
         'listPets',
-        200,
-        SetMatchType.Subset,
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Subset,
+        },
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -838,8 +867,10 @@ describe('OpenAPIValidator', () => {
           'X-Other': 'false',
         },
         'listPets',
-        200,
-        SetMatchType.Subset,
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Subset,
+        },
       );
       expect(valid.errors).toBeTruthy();
     });
@@ -851,8 +882,10 @@ describe('OpenAPIValidator', () => {
           'X-String': 42,
         },
         'listPets',
-        200,
-        SetMatchType.Any,
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Any,
+        },
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -863,14 +896,23 @@ describe('OpenAPIValidator', () => {
           unknown: 'property',
         },
         'listPets',
-        200,
-        SetMatchType.Exact,
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Exact,
+        },
       );
       expect(valid.errors).toBeTruthy();
     });
 
     test('fails validation with a missing response object', async () => {
-      const valid = validator.validateResponseHeaders(null, 'listPets', 200, SetMatchType.Exact);
+      const valid = validator.validateResponseHeaders(
+        null,
+        'listPets',
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
       expect(valid.errors).toBeTruthy();
     });
 
@@ -882,8 +924,10 @@ describe('OpenAPIValidator', () => {
           'X-Other-Boolean': 'true',
         },
         'listPets',
-        205,
-        SetMatchType.Exact,
+        {
+          statusCode: 205,
+          setMatchType: SetMatchType.Exact,
+        },
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -897,8 +941,10 @@ describe('OpenAPIValidator', () => {
             'X-Other-Boolean': 'true',
           },
           'listPets',
-          205,
-          'error' as SetMatchType,
+          {
+            statusCode: 205,
+            setMatchType: 'error' as SetMatchType,
+          },
         );
       }).toThrow();
     });
@@ -911,8 +957,10 @@ describe('OpenAPIValidator', () => {
           'X-OTHER-BOOLEAN': 'true',
         },
         'listPets',
-        205,
-        SetMatchType.Exact,
+        {
+          statusCode: 205,
+          setMatchType: SetMatchType.Exact,
+        },
       );
       expect(valid.errors).toBeFalsy();
     });
@@ -925,8 +973,10 @@ describe('OpenAPIValidator', () => {
           'XOTHERBOOLEAN': 'true',
         },
         'listPets',
-        205,
-        SetMatchType.Exact,
+        {
+          statusCode: 205,
+          setMatchType: SetMatchType.Exact,
+        },
       );
       expect(valid.errors).toBeTruthy();
     });

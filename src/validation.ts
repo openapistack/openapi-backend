@@ -247,16 +247,18 @@ export class OpenAPIValidator {
    *
    * @param {*} headers
    * @param {(Operation | string)} [operation]
-   * @param {number} [statusCode]
-   * @param {SetMatchType} [setMatchType] - one of 'any', 'superset', 'subset', 'exact'
+   * @param {number} [opts.statusCode]
+   * @param {SetMatchType} [opts.setMatchType] - one of 'any', 'superset', 'subset', 'exact'
    * @returns {ValidationResult}
    * @memberof OpenAPIRequestValidator
    */
   public validateResponseHeaders(
     headers: any,
     operation: Operation | string,
-    statusCode: number,
-    setMatchType?: SetMatchType,
+    opts?: {
+      statusCode?: number,
+      setMatchType?: SetMatchType,
+    },
   ): ValidationResult {
     const result: ValidationResult = {
       valid: true,
@@ -271,6 +273,9 @@ export class OpenAPIValidator {
       throw new Error(`Unknown operation`);
     }
 
+    let setMatchType = opts && opts.setMatchType;
+    const statusCode = opts && opts.statusCode;
+
     if (!setMatchType) {
       setMatchType = SetMatchType.Any;
     } else if (!_.includes(Object.values(SetMatchType), setMatchType)) {
@@ -281,8 +286,12 @@ export class OpenAPIValidator {
     const validateMap: ResponseHeadersValidateFunctionMap = this.getResponseHeadersValidatorForOperation(operationId);
 
     if (validateMap) {
-      const validateForStatus: { [setMatchType: string]: Ajv.ValidateFunction } =
-        OpenAPIUtils.findStatusCodeMatch(statusCode, validateMap);
+      let validateForStatus: { [setMatchType: string]: Ajv.ValidateFunction };
+      if (statusCode) {
+        validateForStatus = OpenAPIUtils.findStatusCodeMatch(statusCode, validateMap);
+      } else {
+        validateForStatus = OpenAPIUtils.findDefaultStatusCodeMatch(validateMap).res;
+      }
 
       if (validateForStatus) {
         const validate = validateForStatus[setMatchType];

@@ -509,17 +509,19 @@ export class OpenAPIBackend {
    *
    * @param {*} headers - response to validate
    * @param {(Operation | string)} [operation]
-   * @param {number} [statusCode]
-   * @param {SetMatchType} [setMatchType] - one of 'any', 'superset', 'subset', 'exact'
+   * @param {number} [opts.statusCode]
+   * @param {SetMatchType} [opts.setMatchType] - one of 'any', 'superset', 'subset', 'exact'
    * @returns {ValidationStatus}
    * @memberof OpenAPIBackend
    */
   public validateResponseHeaders(
     headers: any,
     operation: Operation | string,
-    statusCode: number,
-    setMatchType?: SetMatchType,
+    opts?: {
+      statusCode?: number,
+      setMatchType?: SetMatchType,
+    },
   ): ValidationResult {
-    return this.validator.validateResponseHeaders(headers, operation, statusCode, setMatchType);
+    return this.validator.validateResponseHeaders(headers, operation, opts);
   }
 }
