@@ -24,7 +24,7 @@
   - [.validateResponse(res, operation)](#validateresponseres-operation)
     - [Parameter: res](#parameter-res)
     - [Parameter: operation](#parameter-operation)
-  - [.validateResponseHeaders(headers, operation, statusCode, setMatchType)](#validateresponseheadersheaders-operation-rescode-setmatchtype)
+  - [.validateResponseHeaders(headers, operation, opts?)](#validateresponseheadersheaders-operation-opts)
     - [Parameter: headers](#parameter-headers)
     - [Parameter: operation](#parameter-operation-2)
     - [Parameter: opts](#parameter-opts)
@@ -285,7 +285,7 @@ The Operation object or operationId to validate against.
 Type: [`Operation`](#operation-object) or `string`
 
 
-### .validateResponseHeaders(headers, operation, resCode, setMatchType)
+### .validateResponseHeaders(headers, operation, opts?)
 
 Validates a response headers and returns the result.
 
