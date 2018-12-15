@@ -7,7 +7,7 @@
 !scripts/*.js
 
 # include types
-!src/types/*.d.ts
+!**/types/*.d.ts
 
 # include jest config
 !jest.config.js

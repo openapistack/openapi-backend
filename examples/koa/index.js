@@ -48,9 +48,11 @@ const api = new OpenAPIBackend({
     },
     validationFail: async (c, ctx) => {
       ctx.body = { err: c.validation.errors };
+      ctx.status = 400;
     },
     notFound: async (c, ctx) => {
       ctx.body = { err: 'not found' };
+      ctx.status = 404;
     },
   },
 });
