@@ -6,11 +6,16 @@
   "license": "MIT",
   "keywords": [],
   "scripts": {
-    "link": "npm link ../../",
     "start": "func start",
-    "test": "NODE_ENV=test jest -i"
+    "test": "jest"
   },
   "dependencies": {
     "openapi-backend": "^1.6.1"
+  },
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "azure-functions-core-tools": "^2.3.148",
+    "jest": "^23.6.0",
+    "wait-on": "^3.2.0"
   }
 }

@@ -6,13 +6,13 @@
   "license": "MIT",
   "keywords": [],
   "scripts": {
-    "link": "npm link ../../",
     "build": "tsc",
     "watch-build": "tsc -w",
     "start": "node dist/index.js",
     "watch-start": "nodemon --delay 2 -w dist/ -x 'npm run start'",
     "dev": "concurrently -k -p '[{name}]' -n 'typescript,api' -c 'yellow.bold,cyan.bold' npm:watch-build npm:watch-start",
-    "lint": "tslint --format prose --project ."
+    "lint": "tslint --format prose --project .",
+    "test": "jest"
   },
   "dependencies": {
     "express": "^4.16.4",
@@ -23,9 +23,13 @@
   "devDependencies": {
     "@types/morgan": "^1.7.35",
     "@types/node": "^10.12.12",
+    "axios": "^0.18.0",
     "concurrently": "^4.1.0",
+    "jest": "^23.6.0",
     "nodemon": "^1.18.7",
+    "ts-jest": "^23.10.5",
     "tslint": "^5.11.0",
-    "typescript": "^3.2.1"
+    "typescript": "^3.2.1",
+    "wait-on": "^3.2.0"
   }
 }
