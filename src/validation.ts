@@ -2,6 +2,8 @@ import _ from 'lodash';
 import Ajv from 'ajv';
 import { OpenAPIV3 } from 'openapi-types';
 import { OpenAPIRouter, Request, Operation } from './router';
+import OpenAPIUtils from './utils';
+import { SetMatchType } from './backend';
 
 // alias Document to OpenAPIV3.Document
 type Document = OpenAPIV3.Document;
@@ -45,6 +47,10 @@ interface InputParameters {
   requestBody?: any;
 }
 
+interface ResponseHeadersValidateFunctionMap {
+  [statusCode: string]: { [setMatchType: string]: Ajv.ValidateFunction };
+}
+
 /**
  * Class that handles JSON schema validation
  *
@@ -56,6 +62,9 @@ export class OpenAPIValidator {
   public ajvOpts: Ajv.Options;
   public requestValidators: { [operationId: string]: Ajv.ValidateFunction[] };
   public responseValidators: { [operationId: string]: Ajv.ValidateFunction };
+
+  public responseHeadersValidators: { [operationId: string]: ResponseHeadersValidateFunctionMap };
+
   public router: OpenAPIRouter;
 
   /**
@@ -87,6 +96,10 @@ export class OpenAPIValidator {
     // build response validation schemas for api operations
     this.responseValidators = {};
     operations.map(this.buildResponseValidatorForOperation.bind(this));
+
+    // build response header validation schemas for api operations
+    this.responseHeadersValidators = {};
+    operations.map(this.buildResponseHeadersValidatorForOperation.bind(this));
   }
 
   /**
@@ -216,6 +229,80 @@ export class OpenAPIValidator {
       validate(res);
       if (validate.errors) {
         result.errors.push(...validate.errors);
+      }
+    }
+
+    if (_.isEmpty(result.errors)) {
+      // set empty errors array to null so we can check for result.errors truthiness
+      result.errors = null;
+    } else {
+      // there were errors, set valid to false
+      result.valid = false;
+    }
+    return result;
+  }
+
+  /**
+   * Validates a response against a prebuilt Ajv validator and returns the result
+   *
+   * @param {*} headers
+   * @param {(Operation | string)} [operation]
+   * @param {number} [opts.statusCode]
+   * @param {SetMatchType} [opts.setMatchType] - one of 'any', 'superset', 'subset', 'exact'
+   * @returns {ValidationResult}
+   * @memberof OpenAPIRequestValidator
+   */
+  public validateResponseHeaders(
+    headers: any,
+    operation: Operation | string,
+    opts?: {
+      statusCode?: number,
+      setMatchType?: SetMatchType,
+    },
+  ): ValidationResult {
+    const result: ValidationResult = {
+      valid: true,
+      errors: [],
+    };
+
+    if (typeof operation === 'string') {
+      operation = this.router.getOperation(operation);
+    }
+
+    if (!operation || !operation.operationId) {
+      throw new Error(`Unknown operation`);
+    }
+
+    let setMatchType = opts && opts.setMatchType;
+    const statusCode = opts && opts.statusCode;
+
+    if (!setMatchType) {
+      setMatchType = SetMatchType.Any;
+    } else if (!_.includes(Object.values(SetMatchType), setMatchType)) {
+      throw new Error(`Unknown setMatchType ${setMatchType}`);
+    }
+
+    const { operationId } = operation;
+    const validateMap: ResponseHeadersValidateFunctionMap = this.getResponseHeadersValidatorForOperation(operationId);
+
+    if (validateMap) {
+      let validateForStatus: { [setMatchType: string]: Ajv.ValidateFunction };
+      if (statusCode) {
+        validateForStatus = OpenAPIUtils.findStatusCodeMatch(statusCode, validateMap);
+      } else {
+        validateForStatus = OpenAPIUtils.findDefaultStatusCodeMatch(validateMap).res;
+      }
+
+      if (validateForStatus) {
+        const validate = validateForStatus[setMatchType];
+
+        if (validate) {
+          headers = _.mapKeys(headers, (value: OpenAPIV3.HeaderObject, headerName: string) => headerName.toLowerCase());
+          validate({headers});
+          if (validate.errors) {
+            result.errors.push(...validate.errors);
+          }
+        }
       }
     }
 
@@ -370,5 +457,101 @@ export class OpenAPIValidator {
     const schema = { oneOf: responseSchemas };
     const validator = new Ajv(this.ajvOpts);
     this.responseValidators[operationId] = validator.compile(schema);
+  }
+
+  /**
+   * Get response validator function for an operation by operationId
+   *
+   * @param {string} operationId
+   * @returns {Object.<Object.<Ajv.ValidateFunction>>}}
+   * @memberof OpenAPIRequestValidator
+   */
+  public getResponseHeadersValidatorForOperation(operationId: string): ResponseHeadersValidateFunctionMap {
+    return this.responseHeadersValidators[operationId];
+  }
+
+  /**
+   * Builds an ajv response validator function for an operation and registers it to responseHeadersValidators
+   *
+   * @param {Operation} operation
+   * @memberof OpenAPIRequestValidator
+   */
+  public buildResponseHeadersValidatorForOperation(operation: Operation): void {
+    if (!operation.responses) {
+      // operation has no responses, don't register a validator
+      return null;
+    }
+
+    const { operationId } = operation;
+    const headerValidators: ResponseHeadersValidateFunctionMap = {};
+    const validator = new Ajv({ ...this.ajvOpts, coerceTypes: true });
+
+    _.mapKeys(operation.responses, (response: OpenAPIV3.ResponseObject, status: string) => {
+      const validateFns: { [setMatchType: string]: Ajv.ValidateFunction } = {};
+      const properties: { [headerName: string]: OpenAPIV3.SchemaObject } = {};
+      const required: string[] = [];
+
+      _.mapKeys(response.headers, (header: OpenAPIV3.HeaderObject, headerName: string) => {
+        headerName = headerName.toLowerCase();
+        if (header.schema) {
+          properties[headerName] = header.schema as OpenAPIV3.SchemaObject;
+          required.push(headerName);
+        }
+        return null;
+      });
+
+      validateFns[SetMatchType.Any] = validator.compile({
+        type: 'object',
+        properties: {
+          headers: {
+            type: 'object',
+            additionalProperties: true,
+            properties,
+            required: [],
+          },
+        },
+      });
+
+      validateFns[SetMatchType.Superset] = validator.compile({
+        type: 'object',
+        properties: {
+          headers: {
+            type: 'object',
+            additionalProperties: true,
+            properties,
+            required,
+          },
+        },
+      });
+
+      validateFns[SetMatchType.Subset] = validator.compile({
+        type: 'object',
+        properties: {
+          headers: {
+            type: 'object',
+            additionalProperties: false,
+            properties,
+            required: [],
+          },
+        },
+      });
+
+      validateFns[SetMatchType.Exact] = validator.compile({
+        type: 'object',
+        properties: {
+          headers: {
+            type: 'object',
+            additionalProperties: false,
+            properties,
+            required,
+          },
+        },
+      });
+
+      headerValidators[status] = validateFns;
+      return null;
+    });
+
+    this.responseHeadersValidators[operationId] = headerValidators;
   }
 }

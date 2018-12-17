@@ -1,6 +1,7 @@
 import { OpenAPIValidator } from './index';
 import { OpenAPIV3 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
+import { SetMatchType } from './backend';
 
 const headers = { accept: 'application/json' };
 
@@ -615,6 +616,381 @@ describe('OpenAPIValidator', () => {
     test('passes validation for an operation with no response schemas', async () => {
       const valid = validator.validateResponse({}, 'createPet');
       expect(valid.errors).toBeFalsy();
+    });
+  });
+
+  describe('.validateResponseHeaders', () => {
+    const validator = new OpenAPIValidator({
+      definition: {
+        ...meta,
+        paths: {
+          '/pets': {
+            get: {
+              operationId: 'listPets',
+              responses: {
+                200: {
+                  description: 'list of pets',
+                  headers: {
+                    'X-Integer': {
+                      description: 'A header with an Integer',
+                      schema: {
+                        type: 'integer',
+                      },
+                    },
+                    'X-String': {
+                       description: 'The number of remaining requests in the current period',
+                       schema: {
+                         type: 'string',
+                      },
+                    },
+                    'X-Boolean': {
+                       description: 'The number of seconds left in the current period',
+                       schema: {
+                         type: 'boolean',
+                      },
+                    },
+                  },
+                },
+                '2XX': {
+                  description: 'list of pets',
+                  headers: {
+                    'X-Other-Integer': {
+                      description: 'A header with an Integer',
+                      schema: {
+                        type: 'integer',
+                      },
+                    },
+                    'X-Other-String': {
+                      description: 'The number of remaining requests in the current period',
+                      schema: {
+                        type: 'string',
+                      },
+                    },
+                    'X-Other-Boolean': {
+                      description: 'The number of seconds left in the current period',
+                      schema: {
+                        type: 'boolean',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            post: {
+              operationId: 'createPet',
+              responses: {
+                201: {
+                  description: 'created pet',
+                  headers: {
+                    'X-Integer': {
+                      description: 'A header with an Integer',
+                      schema: {
+                        type: 'integer',
+                      },
+                    },
+                    'X-String': {
+                      description: 'The number of remaining requests in the current period',
+                      schema: {
+                        type: 'string',
+                      },
+                    },
+                    'X-Boolean': {
+                      description: 'The number of seconds left in the current period',
+                      schema: {
+                        type: 'boolean',
+                      },
+                    },
+                  },
+                },
+                default: {
+                  description: 'created pet',
+                  headers: {
+                    'X-Other-Integer': {
+                      description: 'A header with an Integer',
+                      schema: {
+                        type: 'integer',
+                      },
+                    },
+                    'X-Other-String': {
+                      description: 'The number of remaining requests in the current period',
+                      schema: {
+                        type: 'string',
+                      },
+                    },
+                    'X-Other-Boolean': {
+                      description: 'The number of seconds left in the current period',
+                      schema: {
+                        type: 'boolean',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    test('passes validation with valid header object and operationId listPets, no options', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': 42,
+          'X-String': '42',
+          'X-Boolean': true,
+        },
+        'listPets',
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('passes validation with valid header object and operationId listPets', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': 42,
+          'X-String': '42',
+          'X-Boolean': true,
+        },
+        'listPets',
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('passes validation with valid header object, operationId listPets and no statusCode', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': 42,
+          'X-String': '42',
+          'X-Boolean': true,
+        },
+        'listPets',
+        {
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('passes validation with valid header object and operationId createPet', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': 42,
+          'X-String': '42',
+          'X-Boolean': true,
+        },
+        'createPet',
+        {
+          statusCode: 201,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('passes validation with valid header object after coercion and operationId listPets', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': '42',
+          'X-String': 42,
+          'X-Boolean': 'true',
+        },
+        'listPets',
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('passes validation when fallback to default', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Other-Integer': '42',
+          'X-Other-String': 42,
+          'X-Other-Boolean': 'true',
+        },
+        'createPet',
+        {
+          statusCode: 404,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('passes validation with additional headers and setMatchType is superset', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': '42',
+          'X-String': 42,
+          'X-Boolean': 'true',
+          'X-Other': 'false',
+        },
+        'listPets',
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Superset,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('fails validation with missing headers and setMatchType is superset', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': '42',
+          'X-String': 42,
+        },
+        'listPets',
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Superset,
+        },
+      );
+      expect(valid.errors).toBeTruthy();
+    });
+
+    test('passes validation with missing headers and setMatchType is subset', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': '42',
+          'X-String': 42,
+        },
+        'listPets',
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Subset,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('fails validation with additional headers and setMatchType is subset', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': '42',
+          'X-String': 42,
+          'X-Boolean': 'true',
+          'X-Other': 'false',
+        },
+        'listPets',
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Subset,
+        },
+      );
+      expect(valid.errors).toBeTruthy();
+    });
+
+    test('passes validation with any header set and setMatchType is any', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': '42',
+          'X-String': 42,
+        },
+        'listPets',
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Any,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('fails validation with an invalid response object', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          unknown: 'property',
+        },
+        'listPets',
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeTruthy();
+    });
+
+    test('fails validation with a missing response object', async () => {
+      const valid = validator.validateResponseHeaders(
+        null,
+        'listPets',
+        {
+          statusCode: 200,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeTruthy();
+    });
+
+    test('passes validation with a res code handler fallback', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Other-Integer': '42',
+          'X-Other-String': 42,
+          'X-Other-Boolean': 'true',
+        },
+        'listPets',
+        {
+          statusCode: 205,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('throw an error when passing SetMatchType', async () => {
+      expect(() => {
+        validator.validateResponseHeaders(
+          {
+            'X-Other-Integer': '42',
+            'X-Other-String': 42,
+            'X-Other-Boolean': 'true',
+          },
+          'listPets',
+          {
+            statusCode: 205,
+            setMatchType: 'error' as SetMatchType,
+          },
+        );
+      }).toThrow();
+    });
+
+    test('passes validation with header case not matching the spec', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-OtHer-InTeger': '42',
+          'x-other-string': 42,
+          'X-OTHER-BOOLEAN': 'true',
+        },
+        'listPets',
+        {
+          statusCode: 205,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
+    test('fails validation with header separators omitted', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'xotherinteger': '42',
+          'xotherstring': 42,
+          'XOTHERBOOLEAN': 'true',
+        },
+        'listPets',
+        {
+          statusCode: 205,
+          setMatchType: SetMatchType.Exact,
+        },
+      );
+      expect(valid.errors).toBeTruthy();
     });
   });
 });

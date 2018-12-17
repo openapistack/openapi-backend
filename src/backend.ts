@@ -7,6 +7,7 @@ import { mock } from 'mock-json-schema';
 
 import { OpenAPIRouter, Request, ParsedRequest, Operation } from './router';
 import { OpenAPIValidator, ValidationResult } from './validation';
+import OpenAPIUtils from './utils';
 
 // alias Document to OpenAPIV3.Document
 type Document = OpenAPIV3.Document;
@@ -27,6 +28,18 @@ export interface Context {
 
 export type Handler = (context?: Context, ...args: any[]) => any | Promise<any>;
 export type BoolPredicate = (context?: Context, ...args: any[]) => boolean;
+
+/**
+ * The different possibilities for set matching.
+ *
+ * @enum {string}
+ */
+export enum SetMatchType {
+  Any = 'any',
+  Superset = 'superset',
+  Subset = 'subset',
+  Exact = 'exact',
+}
 
 /**
  * Main class and the default export of the 'openapi-backend' module
@@ -350,25 +363,14 @@ export class OpenAPIBackend {
       status = Number(opts.code);
       response = responses[opts.code] as OpenAPIV3.ResponseObject;
     }
-    // 2. check for a 20X response
+
+    // 2. check for a default response
     if (!response) {
-      for (const ok of _.range(200, 204)) {
-        if (responses[ok]) {
-          status = ok;
-          response = responses[ok] as OpenAPIV3.ResponseObject;
-        }
-      }
+      const res = OpenAPIUtils.findDefaultStatusCodeMatch(responses);
+      status = res.status;
+      response = res.res;
     }
-    // 3. check for the "default" response
-    if (!response && responses.default) {
-      status = 200;
-      response = responses.default as OpenAPIV3.ResponseObject;
-    }
-    // 4. pick first response code in list
-    if (!response) {
-      status = Number(_.first(_.keys(responses)));
-      response = responses[_.first(_.keys(responses))] as OpenAPIV3.ResponseObject;
-    }
+
     if (!response || !response.content) {
       return { status, mock: defaultMock };
     }
@@ -496,5 +498,30 @@ export class OpenAPIBackend {
    */
   public validateResponse(res: any, operation: Operation | string): ValidationResult {
     return this.validator.validateResponse(res, operation);
+  }
+
+  /**
+   * Validates response headers and returns the result.
+   *
+   * The method will use the pre-compiled Ajv validation schema to validate a request it.
+   *
+   * Alias for validator.validateResponseHeaders
+   *
+   * @param {*} headers - response to validate
+   * @param {(Operation | string)} [operation]
+   * @param {number} [opts.statusCode]
+   * @param {SetMatchType} [opts.setMatchType] - one of 'any', 'superset', 'subset', 'exact'
+   * @returns {ValidationStatus}
+   * @memberof OpenAPIBackend
+   */
+  public validateResponseHeaders(
+    headers: any,
+    operation: Operation | string,
+    opts?: {
+      statusCode?: number,
+      setMatchType?: SetMatchType,
+    },
+  ): ValidationResult {
+    return this.validator.validateResponseHeaders(headers, operation, opts);
   }
 }

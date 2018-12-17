@@ -259,6 +259,28 @@ api.register({
 });
 ```
 
+It's also possible to validate the response headers using [`validateResponseHeaders`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validateresponseheadersres-operation).
+
+```javascript
+api.register({
+  getPets: (c) => {
+    // when a postResponseHandler is registered, your operation handlers' return value gets passed to context.response
+    return [{ id: 1, name: 'Garfield' }];
+  },
+  postResponseHandler: (c, req, res) => {
+    const valid = c.api.validateResponseHeaders(res.headers, c.operation, {
+      statusCode: res.statusCode,
+      setMatchType: 'exact',
+    });
+    if (valid.errors) {
+      // response validation failed
+      return res.status(502).json({ status: 502, err: valid.errors });
+    }
+    return res.status(200).json(c.response);
+  },
+});
+```
+
 ## Mocking API responses
 
 Mocking APIs just got really easy with OpenAPI Backend! Register a [`notImplemented`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#notimplemented-handler)
