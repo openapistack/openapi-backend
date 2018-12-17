@@ -287,7 +287,7 @@ Type: [`Operation`](#operation-object) or `string`
 
 ### .validateResponseHeaders(headers, operation, opts?)
 
-Validates a response headers and returns the result.
+Validates response headers and returns the result.
 
 The method will use the pre-compiled Ajv validation schema to validate the given response.
 
@@ -295,7 +295,16 @@ Returns a [ValidationResult object](#validationresult-object).
 
 Example usage:
 ```javascript
-const valid = await api.validateResponseHeaders({ 'Content-Type': 'text/plain' }, 'getPetById', 200, 'exact');
+const valid = await api.validateResponseHeaders(
+  {
+    'Content-Type': 'text/plain',
+  },
+  'getPetById',
+  {
+    statusCode: 200,
+    setMatchType: 'exact',
+  },
+);
 if (valid.errors) {
   // there were errors
 }
@@ -333,7 +342,7 @@ It can be `any`, `superset`, `subset` or `exact`. Defaults to `any`.
 - `subset`: Check that `headers` is a subset of the headers defined in your spec. In other words, you can have headers in you spec that are not present in `headers`.
 - `exact`: Check that `headers` exactly match the headers defined in your spec.
 
-Type: `string`
+Type: `SetMatchType`
 
 ### .matchOperation(req)
 

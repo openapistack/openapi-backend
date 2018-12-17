@@ -501,7 +501,7 @@ export class OpenAPIBackend {
   }
 
   /**
-   * Validates a response and returns the result.
+   * Validates response headers and returns the result.
    *
    * The method will use the pre-compiled Ajv validation schema to validate a request it.
    *
