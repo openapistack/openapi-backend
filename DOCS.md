@@ -568,7 +568,7 @@ import { Document } from 'openapi-backend';
 
 An example Document Object:
 ```javascript
-const definition = {
+const document: Document = {
   openapi: '3.0.1',
   info: {
     title: 'My API',
@@ -613,13 +613,13 @@ parameters in its `parameters` property.
 
 All JSON schemas in an Operation Object should be dereferenced i.e. not contain any `$ref` properties.
 
-```javascript
+```typescript
 import { Operation } from 'openapi-backend';
 ```
 
 Example object
-```javascript
-const operation = {
+```typescript
+const operation: Operation = {
   method: 'patch',
   path: '/pets/{id}',
   operationId: 'updatePetById',
@@ -670,13 +670,13 @@ It contains useful information like the [parsed request](#parsedrequest-object),
 The context object also contains a reference to the OpenAPIBackend instance in `api` property for easy access to
 instance methods inside handlers.
 
-```javascript
+```typescript
 import { Context } from 'openapi-backend';
 ```
 
 Example object
-```javascript
-const context = {
+```typescript
+const context: Context = {
   // reference to OpenAPIBackend instance
   // can be used to access instance OpenAPI instance methods in handlers:
   // - api.validateRequest()
@@ -744,13 +744,13 @@ const context = {
 
 The `Request` interface represents a generic HTTP request.
 
-```javascript
+```typescript
 import { Request } from 'openapi-backend';
 ```
 
 Example object
-```javascript
-const request = {
+```typescript
+const request: Request = {
   // HTTP method of the request
   method: 'POST',
   // path of the request
@@ -768,13 +768,13 @@ const request = {
 
 The `ParsedRequest` interface represents a generic parsed HTTP request.
 
-```javascript
+```typescript
 import { ParsedRequest } from 'openapi-backend';
 ```
 
 Example object
-```javascript
-const parsedRequest = {
+```typescript
+const parsedRequest: ParsedRequest = {
   // HTTP method of the request (in lowercase)
   method: 'post',
   // path of the request
@@ -803,13 +803,13 @@ The `valid` property is a boolean that tells you whether the validation succeede
 The `errors` property is an array of [Ajv ErrorObjects](https://ajv.js.org/#error-objects) from the performed
 validation. If no errors were found, this property will be `null`.
 
-```javascript
+```typescript
 import { ValidationResult } from 'openapi-backend';
 ```
 
 Example object
-```javascript
-const validationResult = {
+```typescript
+const validationResult: ValidationResult = {
   valid: false,
   errors: [
     {
