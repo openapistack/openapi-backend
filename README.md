@@ -259,7 +259,7 @@ api.register({
 });
 ```
 
-It's also possible to validate the response headers using [`validateResponseHeaders`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validateresponseheadersres-operation).
+It's also possible to validate the response headers using [`validateResponseHeaders`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validateresponseheadersheaders-operation-opts).
 
 ```javascript
 api.register({
