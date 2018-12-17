@@ -732,6 +732,18 @@ describe('OpenAPIValidator', () => {
       },
     });
 
+    test('passes validation with valid header object and operationId listPets, no options', async () => {
+      const valid = validator.validateResponseHeaders(
+        {
+          'X-Integer': 42,
+          'X-String': '42',
+          'X-Boolean': true,
+        },
+        'listPets',
+      );
+      expect(valid.errors).toBeFalsy();
+    });
+
     test('passes validation with valid header object and operationId listPets', async () => {
       const valid = validator.validateResponseHeaders(
         {
