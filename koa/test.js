@@ -39,4 +39,10 @@ describe('koa example', () => {
     expect(res.status).toBe(404);
     expect(res.data).toHaveProperty('err');
   });
+
+  test('POST /pets returns 201 with matched operation', async () => {
+    const res = await client.post('/pets', {});
+    expect(res.status).toBe(201);
+    expect(res.data).toEqual({ operationId: 'createPet' });
+  });
 });
