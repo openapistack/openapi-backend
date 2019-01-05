@@ -1,6 +1,8 @@
 const OpenAPIBackend = require('openapi-backend').default;
 const Koa = require('koa');
+const bodyparser = require('koa-bodyparser');
 const app = new Koa();
+app.use(bodyparser());
 
 // define api
 const api = new OpenAPIBackend({
@@ -14,6 +16,18 @@ const api = new OpenAPIBackend({
       '/pets': {
         get: {
           operationId: 'getPets',
+          responses: {
+            200: { description: 'ok' },
+          },
+        },
+        post: {
+          operationId: 'createPet',
+          requestBody: {
+            description: 'Pet object to create',
+            content: {
+              'application/json': {},
+            },
+          },
           responses: {
             200: { description: 'ok' },
           },
@@ -45,6 +59,10 @@ const api = new OpenAPIBackend({
     },
     getPetById: async (c, ctx) => {
       ctx.body = { operationId: c.operation.operationId };
+    },
+    createPet: async (c, ctx) => {
+      ctx.body = { operationId: c.operation.operationId };
+      ctx.status = 201;
     },
     validationFail: async (c, ctx) => {
       ctx.body = { err: c.validation.errors };

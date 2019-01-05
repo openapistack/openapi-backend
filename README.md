@@ -175,8 +175,11 @@ server.start();
 
 ```javascript
 import Koa from 'koa';
+import bodyparser from 'koa-bodyparser';
 
 const app = new Koa();
+
+app.use(bodyparser());
 app.use((ctx) =>
   api.handleRequest(
     {
