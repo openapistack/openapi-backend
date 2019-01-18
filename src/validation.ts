@@ -218,58 +218,11 @@ export class OpenAPIValidator {
    *
    * @param {*} res
    * @param {(Operation | string)} [operation]
-   * @returns {ValidationResult}
-   * @memberof OpenAPIRequestValidator
-   */
-  public validateResponseLegacy(res: any, operation: Operation | string): ValidationResult {
-    const result: ValidationResult = {
-      valid: true,
-      errors: [],
-    };
-
-    if (typeof operation === 'string') {
-      operation = this.router.getOperation(operation);
-    }
-
-    if (!operation || !operation.operationId) {
-      throw new Error(`Unknown operation`);
-    }
-
-    const { operationId } = operation;
-    const validate = this.getResponseValidatorForOperation(operationId);
-
-    if (validate) {
-      validate(res);
-      if (validate.errors) {
-        result.errors.push(...validate.errors);
-      }
-    }
-
-    if (_.isEmpty(result.errors)) {
-      // set empty errors array to null so we can check for result.errors truthiness
-      result.errors = null;
-    } else {
-      // there were errors, set valid to false
-      result.valid = false;
-    }
-    return result;
-  }
-
-  /**
-   * Validates a response against a prebuilt Ajv validator and returns the result
-   *
-   * @param {*} res
-   * @param {(Operation | string)} [operation]
    * @package {number} [statusCode]
    * @returns {ValidationResult}
    * @memberof OpenAPIRequestValidator
    */
   public validateResponse(res: any, operation: Operation | string, statusCode?: number): ValidationResult {
-
-    if (statusCode === undefined) {
-      return this.validateResponseLegacy(res, operation);
-    }
-
     const result: ValidationResult = {
       valid: true,
       errors: [],
@@ -284,18 +237,28 @@ export class OpenAPIValidator {
     }
 
     const { operationId } = operation;
-    const validateMap: StatusBasedResponseValidatorsFunctionMap =
-      this.getStatusBasedResponseValidatorForOperation(operationId);
 
-    if (validateMap) {
-      const validate: Ajv.ValidateFunction = OpenAPIUtils.findStatusCodeMatch(statusCode, validateMap);
-
-      if (validate) {
-        validate(res);
-        if (validate.errors) {
-          result.errors.push(...validate.errors);
-        }
+    let validate: Ajv.ValidateFunction;
+    if (statusCode) {
+      // use specific status code
+      const validateMap = this.getStatusBasedResponseValidatorForOperation(operationId);
+      if (validateMap) {
+        validate = OpenAPIUtils.findStatusCodeMatch(statusCode, validateMap);
       }
+    } else {
+      // match against all status codes
+      validate = this.getResponseValidatorForOperation(operationId);
+    }
+
+    if (validate) {
+      // perform validation against response
+      validate(res);
+      if (validate.errors) {
+        result.errors.push(...validate.errors);
+      }
+    } else {
+      // maybe we should warn about this? TODO: add option to enable / disable warnings
+      // console.warn(`No validation matched for ${JSON.stringify({ operationId, statusCode })}`);
     }
 
     if (_.isEmpty(result.errors)) {
@@ -309,7 +272,7 @@ export class OpenAPIValidator {
   }
 
   /**
-   * Validates a response against a prebuilt Ajv validator and returns the result
+   * Validates response headers against a prebuilt Ajv validator and returns the result
    *
    * @param {*} headers
    * @param {(Operation | string)} [operation]
@@ -322,8 +285,8 @@ export class OpenAPIValidator {
     headers: any,
     operation: Operation | string,
     opts?: {
-      statusCode?: number,
-      setMatchType?: SetMatchType,
+      statusCode?: number;
+      setMatchType?: SetMatchType;
     },
   ): ValidationResult {
     const result: ValidationResult = {
@@ -364,7 +327,7 @@ export class OpenAPIValidator {
 
         if (validate) {
           headers = _.mapKeys(headers, (value: OpenAPIV3.HeaderObject, headerName: string) => headerName.toLowerCase());
-          validate({headers});
+          validate({ headers });
           if (validate.errors) {
             result.errors.push(...validate.errors);
           }
