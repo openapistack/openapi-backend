@@ -2,7 +2,6 @@ import _ from 'lodash';
 import { resolve } from 'path';
 
 export default class OpenAPIUtils {
-
   /**
    * Finds the value for a given key (status code) in an object,
    * based on the OpenAPI specification for patterned field.
@@ -12,8 +11,7 @@ export default class OpenAPIUtils {
    * @param {Object.<string, *>} obj The object containing values referenced by possibly patterned status code key.
    * @returns {*}
    */
-  public static findStatusCodeMatch(statusCode: number, obj: {[patternedStatusCode: string]: any}): any {
-
+  public static findStatusCodeMatch(statusCode: number, obj: { [patternedStatusCode: string]: any }): any {
     let value: any = obj[statusCode];
 
     if (value !== undefined) {
@@ -42,7 +40,7 @@ export default class OpenAPIUtils {
    * @param {Object.<string, *>} obj The object containing values referenced by possibly patterned status code key.
    * @returns {{status: string, res: *}}
    */
-  public static findDefaultStatusCodeMatch(obj: {[patternedStatusCode: string]: any}): {status: number, res: any} {
+  public static findDefaultStatusCodeMatch(obj: { [patternedStatusCode: string]: any }): { status: number; res: any } {
     // 1. check for a 20X response
     for (const ok of _.range(200, 204)) {
       if (obj[ok]) {
