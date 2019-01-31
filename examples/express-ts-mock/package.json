@@ -21,11 +21,12 @@
     "source-map-support": "^0.5.9"
   },
   "devDependencies": {
+    "@types/jest": "^23.3.13",
     "@types/morgan": "^1.7.35",
     "@types/node": "^10.12.12",
     "axios": "^0.18.0",
     "concurrently": "^4.1.0",
-    "jest": "^23.6.0",
+    "jest": "^24.0.0",
     "nodemon": "^1.18.7",
     "ts-jest": "^23.10.5",
     "tslint": "^5.11.0",
