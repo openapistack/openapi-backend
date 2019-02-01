@@ -493,11 +493,12 @@ export class OpenAPIBackend {
    *
    * @param {*} res - response to validate
    * @param {(Operation | string)} [operation]
+   * @param {number} status
    * @returns {ValidationStatus}
    * @memberof OpenAPIBackend
    */
-  public validateResponse(res: any, operation: Operation | string): ValidationResult {
-    return this.validator.validateResponse(res, operation);
+  public validateResponse(res: any, operation: Operation | string, statusCode?: number): ValidationResult {
+    return this.validator.validateResponse(res, operation, statusCode);
   }
 
   /**
