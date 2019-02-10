@@ -282,7 +282,7 @@ describe('OpenAPIValidator', () => {
               },
               parameters: [
                 {
-                  name: 'x-api-key',
+                  name: 'X-Api-Key',
                   in: 'header',
                   schema: {
                     type: 'string',
