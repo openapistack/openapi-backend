@@ -431,11 +431,14 @@ export class OpenAPIValidator {
     const { parameters } = operation;
     parameters.map((param: OpenAPIV3.ParameterObject) => {
       const target = paramsSchema.properties[param.in];
+      // Header params are case-insensitive according to https://tools.ietf.org/html/rfc7230#page-22, so they are
+      // normalized to lower case and validated as such.
+      const normalizedParamName = param.in === 'header' ? param.name.toLowerCase() : param.name;
       if (param.required) {
-        target.required.push(param.name);
+        target.required.push(normalizedParamName);
         paramsSchema.required = _.uniq([...paramsSchema.required, param.in]);
       }
-      target.properties[param.name] = param.schema as OpenAPIV3.SchemaObject;
+      target.properties[normalizedParamName] = param.schema as OpenAPIV3.SchemaObject;
     });
 
     // add compiled params schema to requestValidators for this operation id
