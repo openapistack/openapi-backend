@@ -81,13 +81,13 @@ export class OpenAPIRouter {
     req = this.normalizeRequest(req);
 
     // get relative path
-    const relativePath = req.path.replace(new RegExp(`^${this.apiRoot}/?`), '/');
+    const normalizedPath = this.normalizePath(req.path);
 
     // get all operations matching request method in a flat array
     const operations = _.filter(this.getOperations(), ({ method }) => method === req.method);
 
     // first check for an exact match for path
-    const exactMatch = _.find(operations, ({ path }) => path === relativePath);
+    const exactMatch = _.find(operations, ({ path }) => path === normalizedPath);
     if (exactMatch) {
       return exactMatch;
     }
@@ -96,7 +96,7 @@ export class OpenAPIRouter {
     return _.find(operations, ({ path }) => {
       // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
       const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/]+')}$`;
-      return Boolean(relativePath.match(new RegExp(pathPattern, 'g')));
+      return Boolean(normalizedPath.match(new RegExp(pathPattern, 'g')));
     });
   }
 
@@ -161,6 +161,17 @@ export class OpenAPIRouter {
   }
 
   /**
+   * Normalises path for matching: strips apiRoot prefix from the path.
+   *
+   * @export
+   * @param {string} path
+   * @returns {string}
+   */
+  public normalizePath(path: string) {
+    return path.replace(new RegExp(`^${this.apiRoot}/?`), '/');
+  }
+
+  /**
    * Parses request
    * - parse json body
    * - parse path params based on uri template
@@ -199,9 +210,12 @@ export class OpenAPIRouter {
 
     let params = {};
     if (path) {
+      // get relative path
+      const normalizedPath = this.normalizePath(req.path);
+
       // parse path params if path is given
       const pathParams = bath(path);
-      params = pathParams.params(req.path);
+      params = pathParams.params(normalizedPath);
     }
 
     return {

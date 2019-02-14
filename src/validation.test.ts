@@ -1,4 +1,4 @@
-import { OpenAPIValidator } from './index';
+import { OpenAPIRouter, OpenAPIValidator } from './index';
 import { OpenAPIV3 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
 import { SetMatchType } from './backend';
@@ -120,6 +120,41 @@ describe('OpenAPIValidator', () => {
       test('fails validation for GET /pets/NaN', async () => {
         const valid = validator.validateRequest({ path: '/pets/NaN', method: 'get', headers });
         expect(valid.errors).toHaveLength(1);
+      });
+    });
+
+    describe('path params with custom apiRoot', () => {
+      const definition: OpenAPIV3.Document = {
+        ...meta,
+        paths: {
+          '/pets/{id}': {
+            get: {
+              operationId: 'getPetById',
+              responses: { 200: { description: 'ok' } },
+              parameters: [
+                {
+                  name: 'id',
+                  in: 'path',
+                  required: true,
+                  schema: {
+                    type: 'integer',
+                    minimum: 0,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      };
+
+      const validator = new OpenAPIValidator({
+        definition,
+        router: new OpenAPIRouter({ definition, apiRoot: '/v1' }),
+      });
+
+      test('passes validation for GET /v1/pets/1', async () => {
+        const valid = validator.validateRequest({ path: '/v1/pets/1', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
       });
     });
 
