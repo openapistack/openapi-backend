@@ -17,19 +17,19 @@
   "dependencies": {
     "express": "^4.16.4",
     "morgan": "^1.9.1",
-    "openapi-backend": "^1.6.1",
-    "source-map-support": "^0.5.9"
+    "openapi-backend": "^2.0.0",
+    "source-map-support": "^0.5.10"
   },
   "devDependencies": {
     "@types/morgan": "^1.7.35",
-    "@types/node": "^10.12.12",
+    "@types/node": "^10.12.26",
     "axios": "^0.18.0",
     "concurrently": "^4.1.0",
     "jest": "^23.6.0",
-    "nodemon": "^1.18.7",
+    "nodemon": "^1.18.10",
     "ts-jest": "^23.10.5",
-    "tslint": "^5.11.0",
-    "typescript": "^3.2.1",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3",
     "wait-on": "^3.2.0"
   }
 }
