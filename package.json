@@ -1,7 +1,7 @@
 {
   "name": "openapi-backend",
   "description": "Build, Validate, Route, and Mock using OpenAPI specification. Framework-agnostic",
-  "version": "1.7.1",
+  "version": "2.0.0",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "license": "MIT",
   "keywords": [
@@ -40,31 +40,31 @@
     "!*.config.js"
   ],
   "dependencies": {
-    "ajv": "^6.7.0",
+    "ajv": "^6.9.1",
     "bath": "^2.1.1",
     "cookie": "^0.3.1",
     "lodash": "^4.17.11",
     "mock-json-schema": "^1.0.5",
     "openapi-schema-validation": "^0.4.2",
-    "openapi-types": "^1.3.2",
+    "openapi-types": "^1.3.4",
     "qs": "^6.6.0",
-    "swagger-parser": "^6.0.3"
+    "swagger-parser": "^6.0.5"
   },
   "devDependencies": {
     "@types/cookie": "^0.3.2",
-    "@types/jest": "^23.3.12",
-    "@types/lodash": "^4.14.120",
-    "@types/node": "^10.12.18",
+    "@types/jest": "^23.3.14",
+    "@types/lodash": "^4.14.121",
+    "@types/node": "^10.12.26",
     "@types/qs": "^6.5.1",
-    "@types/swagger-parser": "^4.0.2",
+    "@types/swagger-parser": "^4.0.3",
     "jest": "^23.6.0",
     "markdown-toc": "^1.2.0",
-    "prettier": "^1.15.3",
+    "prettier": "^1.16.4",
     "source-map-support": "^0.5.10",
     "ts-jest": "^23.10.5",
     "tslint": "^5.12.1",
     "tslint-microsoft-contrib": "^5.2.1",
-    "typescript": "^3.2.4"
+    "typescript": "^3.3.3"
   },
   "scripts": {
     "build": "tsc",

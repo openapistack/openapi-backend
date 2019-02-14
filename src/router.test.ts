@@ -415,7 +415,7 @@ describe('OpenAPIBackend', () => {
     });
 
     test('handles GET /pets and allows postResponseHandler to intercept response', async () => {
-      const postResponseHandler = jest.fn(() => ({ you: 'have been intercepted' }));
+      const postResponseHandler = jest.fn((ctx) => ({ you: 'have been intercepted' }));
       await api.register({ postResponseHandler });
 
       const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });

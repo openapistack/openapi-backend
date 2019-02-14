@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "express": "^4.16.4",
-    "openapi-backend": "^1.6.1"
+    "openapi-backend": "^2.0.0"
   },
   "devDependencies": {
     "axios": "^0.18.0",
