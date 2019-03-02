@@ -72,6 +72,7 @@
     "lint": "tslint --format prose --project .",
     "prettier": "prettier --write src/** __tests__/**",
     "toc": "./scripts/generate-toc.js",
+    "prepare": "npm run build && npm run toc",
     "test": "NODE_ENV=test jest"
   },
   "engines": {
