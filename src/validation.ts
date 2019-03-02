@@ -149,7 +149,7 @@ export class OpenAPIValidator {
 
     // convert singular query parameters to arrays if specified as array in operation parametes
     if (query) {
-      for (const [name, value] of Object.entries(query)) {
+      for (const [name, value] of _.entries(query)) {
         if (typeof value === 'string') {
           const operationParameter = _.find(operation.parameters, { name, in: 'query' });
           if (operationParameter) {

@@ -113,7 +113,7 @@ export class OpenAPIRouter {
       .entries()
       .flatMap(([path, pathBaseObject]) => {
         const methods = _.pick(pathBaseObject, ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']);
-        return Object.entries(methods).map(([method, operation]) => {
+        return _.entries(methods).map(([method, operation]) => {
           const op = operation as OpenAPIV3.OperationObject;
           return {
             ...op,
