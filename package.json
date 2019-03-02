@@ -1,7 +1,7 @@
 {
   "name": "openapi-backend",
   "description": "Build, Validate, Route, and Mock using OpenAPI specification. Framework-agnostic",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "license": "MIT",
   "keywords": [
@@ -40,7 +40,7 @@
     "!*.config.js"
   ],
   "dependencies": {
-    "ajv": "^6.9.1",
+    "ajv": "^6.9.2",
     "bath": "^2.1.1",
     "cookie": "^0.3.1",
     "lodash": "^4.17.11",
@@ -54,17 +54,17 @@
     "@types/cookie": "^0.3.2",
     "@types/jest": "^23.3.14",
     "@types/lodash": "^4.14.121",
-    "@types/node": "^10.12.26",
-    "@types/qs": "^6.5.1",
+    "@types/node": "^10.12.29",
+    "@types/qs": "^6.5.2",
     "@types/swagger-parser": "^4.0.3",
     "jest": "^23.6.0",
     "markdown-toc": "^1.2.0",
     "prettier": "^1.16.4",
     "source-map-support": "^0.5.10",
     "ts-jest": "^23.10.5",
-    "tslint": "^5.12.1",
+    "tslint": "^5.13.1",
     "tslint-microsoft-contrib": "^5.2.1",
-    "typescript": "^3.3.3"
+    "typescript": "^3.3.3333"
   },
   "scripts": {
     "build": "tsc",
