@@ -3,6 +3,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import bath from 'bath';
 import cookie from 'cookie';
 import { parse as parseQuery } from 'qs';
+import { Parameters } from 'bath/_/types';
 
 // alias Document to OpenAPIV3.Document
 export type Document = OpenAPIV3.Document;
@@ -76,7 +77,7 @@ export class OpenAPIRouter {
    * @returns {Operation}
    * @memberof OpenAPIRouter
    */
-  public matchOperation(req: Request): Operation {
+  public matchOperation(req: Request): Operation | undefined {
     // normalize request for matching
     req = this.normalizeRequest(req);
 
@@ -112,16 +113,19 @@ export class OpenAPIRouter {
       .entries()
       .flatMap(([path, pathBaseObject]) => {
         const methods = _.pick(pathBaseObject, ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']);
-        return _.map(_.entries(methods), ([method, operation]) => ({
-          ...(operation as OpenAPIV3.OperationObject),
-          path,
-          method,
-          // add the path base object's operations to the operation's parameters
-          parameters: [
-            ...((operation.parameters as OpenAPIV3.ParameterObject[]) || []),
-            ...((pathBaseObject.parameters as OpenAPIV3.ParameterObject[]) || []),
-          ],
-        }));
+        return Object.entries(methods).map(([method, operation]) => {
+          const op = operation as OpenAPIV3.OperationObject;
+          return {
+            ...op,
+            path,
+            method,
+            // add the path base object's operations to the operation's parameters
+            parameters: [
+              ...((op.parameters as OpenAPIV3.ParameterObject[]) || []),
+              ...((pathBaseObject.parameters as OpenAPIV3.ParameterObject[]) || []),
+            ],
+          };
+        });
       })
       .value();
   }
@@ -133,7 +137,7 @@ export class OpenAPIRouter {
    * @returns {Operation}
    * @memberof OpenAPIRouter
    */
-  public getOperation(operationId: string): Operation {
+  public getOperation(operationId: string): Operation | undefined {
     return _.find(this.getOperations(), { operationId });
   }
 
@@ -208,14 +212,14 @@ export class OpenAPIRouter {
     // normalize
     req = this.normalizeRequest(req);
 
-    let params = {};
+    let params: Parameters | undefined = {};
     if (path) {
       // get relative path
       const normalizedPath = this.normalizePath(req.path);
 
       // parse path params if path is given
       const pathParams = bath(path);
-      params = pathParams.params(normalizedPath);
+      params = pathParams.params(normalizedPath) || undefined;
     }
 
     return {

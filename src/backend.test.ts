@@ -175,147 +175,136 @@ describe('OpenAPIBackend', () => {
       name: 'Odey',
     };
 
-    const api = new OpenAPIBackend({
-      definition: {
-        ...meta,
-        paths: {
-          '/pets': {
-            get: {
-              operationId: 'getPets',
-              responses: {
-                200: { $ref: '#/components/responses/PetsListWithExample' },
+    const mockDefinition = {
+      ...meta,
+      paths: {
+        '/pets': {
+          get: {
+            operationId: 'getPets',
+            responses: {
+              200: { $ref: '#/components/responses/PetsListWithExample' },
+            },
+          },
+          post: {
+            operationId: 'createPet',
+            responses: {
+              201: { $ref: '#/components/responses/SinglePetWithResponseSchema' },
+            },
+          },
+        },
+      },
+      components: {
+        schemas: {
+          PetWithName: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'integer',
+                minimum: 1,
+              },
+              name: {
+                type: 'string',
+                example: 'Garfield',
               },
             },
-            post: {
-              operationId: 'createPet',
-              responses: {
-                201: { $ref: '#/components/responses/SinglePetWithResponseSchema' },
+          },
+          PetWithTag: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'integer',
+                minimum: 1,
+              },
+              tag: {
+                type: 'string',
+                example: 'Lost',
               },
             },
           },
         },
-        components: {
-          schemas: {
-            PetWithName: {
-              type: 'object',
-              properties: {
-                id: {
-                  type: 'integer',
-                  minimum: 1,
-                },
-                name: {
-                  type: 'string',
-                  example: 'Garfield',
-                },
-              },
-            },
-            PetWithTag: {
-              type: 'object',
-              properties: {
-                id: {
-                  type: 'integer',
-                  minimum: 1,
-                },
-                tag: {
-                  type: 'string',
-                  example: 'Lost',
+        responses: {
+          SinglePetWithResponseSchema: {
+            description: 'ok',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/PetWithName',
                 },
               },
             },
           },
-          responses: {
-            SinglePetWithResponseSchema: {
-              description: 'ok',
-              content: {
-                'application/json': {
-                  schema: {
+          SimplePetsListWithExample: {
+            description: 'ok',
+            content: {
+              'application/json': {
+                example: {
+                  value: [exampleGarfield],
+                },
+              },
+            },
+          },
+          SimplePetsListWithExamplesArray: {
+            description: 'ok',
+            content: {
+              'application/json': {
+                examples: {
+                  garfield: {
+                    value: [exampleGarfield, exampleOdey],
+                  },
+                },
+              },
+            },
+          },
+          SimplePetsListWithResponseSchema: {
+            description: 'ok',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
                     $ref: '#/components/schemas/PetWithName',
                   },
                 },
               },
             },
-            SimplePetsListWithExample: {
-              description: 'ok',
-              content: {
-                'application/json': {
-                  example: {
-                    value: [exampleGarfield],
+          },
+          AllOfPetsListWithResponseSchema: {
+            description: 'ok',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    allOf: [{ $ref: '#/components/schemas/PetWithName' }, { $ref: '#/components/schemas/PetWithTag' }],
                   },
                 },
               },
             },
-            SimplePetsListWithExamplesArray: {
-              description: 'ok',
-              content: {
-                'application/json': {
-                  examples: {
-                    garfield: {
-                      value: [exampleGarfield, exampleOdey],
-                    },
+          },
+          AnyOfPetsListWithResponseSchema: {
+            description: 'ok',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    anyOf: [{ $ref: '#/components/schemas/PetWithName' }, { $ref: '#/components/schemas/PetWithTag' }],
                   },
                 },
               },
             },
-            SimplePetsListWithResponseSchema: {
-              description: 'ok',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'array',
-                    items: {
-                      $ref: '#/components/schemas/PetWithName',
-                    },
-                  },
-                },
-              },
-            },
-            AllOfPetsListWithResponseSchema: {
-              description: 'ok',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      allOf: [
-                        { $ref: '#/components/schemas/PetWithName' },
-                        { $ref: '#/components/schemas/PetWithTag' },
-                      ],
-                    },
-                  },
-                },
-              },
-            },
-            AnyOfPetsListWithResponseSchema: {
-              description: 'ok',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      anyOf: [
-                        { $ref: '#/components/schemas/PetWithName' },
-                        { $ref: '#/components/schemas/PetWithTag' },
-                      ],
-                    },
-                  },
-                },
-              },
-            },
-            OneOfPetsListWithResponseSchema: {
-              description: 'ok',
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      oneOf: [
-                        { $ref: '#/components/schemas/PetWithName' },
-                        { $ref: '#/components/schemas/PetWithTag' },
-                      ],
-                    },
+          },
+          OneOfPetsListWithResponseSchema: {
+            description: 'ok',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    oneOf: [{ $ref: '#/components/schemas/PetWithName' }, { $ref: '#/components/schemas/PetWithTag' }],
                   },
                 },
               },
@@ -323,10 +312,12 @@ describe('OpenAPIBackend', () => {
           },
         },
       },
-    });
+    };
+
+    const api = new OpenAPIBackend({ definition: mockDefinition as OpenAPIV3.Document });
 
     test('mocks getPets with example object', async () => {
-      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      const { paths } = mockDefinition;
       paths['/pets'].get.responses = {
         200: { $ref: '#/components/responses/SimplePetsListWithExample' },
       };
@@ -337,7 +328,7 @@ describe('OpenAPIBackend', () => {
     });
 
     test('mocks getPets with examples array', async () => {
-      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      const { paths } = mockDefinition;
       paths['/pets'].get.responses = {
         200: { $ref: '#/components/responses/SimplePetsListWithExamplesArray' },
       };
@@ -348,7 +339,7 @@ describe('OpenAPIBackend', () => {
     });
 
     test('mocks getPets with response schema', async () => {
-      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      const { paths } = mockDefinition;
       paths['/pets'].get.responses = {
         200: { $ref: '#/components/responses/SimplePetsListWithResponseSchema' },
       };
@@ -359,7 +350,7 @@ describe('OpenAPIBackend', () => {
     });
 
     test('mocks getPets with response schema containing allOf', async () => {
-      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      const { paths } = mockDefinition;
       paths['/pets'].get.responses = {
         200: { $ref: '#/components/responses/AnyOfPetsListWithResponseSchema' },
       };
@@ -370,7 +361,7 @@ describe('OpenAPIBackend', () => {
     });
 
     test('mocks getPets with response schema containing anyOf', async () => {
-      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      const { paths } = mockDefinition;
       paths['/pets'].get.responses = {
         200: { $ref: '#/components/responses/AnyOfPetsListWithResponseSchema' },
       };
@@ -381,7 +372,7 @@ describe('OpenAPIBackend', () => {
     });
 
     test('mocks getPets with response schema containing oneOf', async () => {
-      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      const { paths } = mockDefinition;
       paths['/pets'].get.responses = {
         200: { $ref: '#/components/responses/OneOfPetsListWithResponseSchema' },
       };
@@ -392,7 +383,7 @@ describe('OpenAPIBackend', () => {
     });
 
     test('mocks createPet with response schema', async () => {
-      const { paths } = api.inputDocument as OpenAPIV3.Document;
+      const { paths } = mockDefinition;
       paths['/pets'].post.responses = {
         201: { $ref: '#/components/responses/SinglePetWithResponseSchema' },
       };

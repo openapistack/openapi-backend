@@ -16,7 +16,7 @@ type Document = OpenAPIV3.Document;
  */
 export interface ValidationResult {
   valid: boolean;
-  errors?: Ajv.ErrorObject[];
+  errors?: Ajv.ErrorObject[] | null;
 }
 
 /**
@@ -127,10 +127,8 @@ export class OpenAPIValidator {
    * @memberof OpenAPIRequestValidator
    */
   public validateRequest(req: Request, operation?: Operation | string): ValidationResult {
-    const result: ValidationResult = {
-      valid: true,
-      errors: [],
-    };
+    const result: ValidationResult = { valid: true };
+    result.errors = [];
 
     if (!operation) {
       operation = this.router.matchOperation(req);
@@ -150,13 +148,15 @@ export class OpenAPIValidator {
     const { params, query, headers, cookies, requestBody } = this.router.parseRequest(req, operation.path);
 
     // convert singular query parameters to arrays if specified as array in operation parametes
-    for (const [name, value] of _.entries(query)) {
-      if (typeof value === 'string') {
-        const operationParameter = _.find(operation.parameters, { name, in: 'query' });
-        if (operationParameter) {
-          const { schema } = operationParameter as OpenAPIV3.ParameterObject;
-          if (schema && (schema as OpenAPIV3.SchemaObject).type === 'array') {
-            query[name] = [value];
+    if (query) {
+      for (const [name, value] of Object.entries(query)) {
+        if (typeof value === 'string') {
+          const operationParameter = _.find(operation.parameters, { name, in: 'query' });
+          if (operationParameter) {
+            const { schema } = operationParameter as OpenAPIV3.ParameterObject;
+            if (schema && (schema as OpenAPIV3.SchemaObject).type === 'array') {
+              query[name] = [value];
+            }
           }
         }
       }
@@ -223,22 +223,17 @@ export class OpenAPIValidator {
    * @memberof OpenAPIRequestValidator
    */
   public validateResponse(res: any, operation: Operation | string, statusCode?: number): ValidationResult {
-    const result: ValidationResult = {
-      valid: true,
-      errors: [],
-    };
+    const result: ValidationResult = { valid: true };
+    result.errors = [];
 
-    if (typeof operation === 'string') {
-      operation = this.router.getOperation(operation);
-    }
-
-    if (!operation || !operation.operationId) {
+    const op = typeof operation === 'string' ? this.router.getOperation(operation) : operation;
+    if (!op || !op.operationId) {
       throw new Error(`Unknown operation`);
     }
 
-    const { operationId } = operation;
+    const { operationId } = op;
 
-    let validate: Ajv.ValidateFunction;
+    let validate: Ajv.ValidateFunction | undefined;
     if (statusCode) {
       // use specific status code
       const validateMap = this.getStatusBasedResponseValidatorForOperation(operationId);
@@ -289,16 +284,11 @@ export class OpenAPIValidator {
       setMatchType?: SetMatchType;
     },
   ): ValidationResult {
-    const result: ValidationResult = {
-      valid: true,
-      errors: [],
-    };
+    const result: ValidationResult = { valid: true };
+    result.errors = [];
 
-    if (typeof operation === 'string') {
-      operation = this.router.getOperation(operation);
-    }
-
-    if (!operation || !operation.operationId) {
+    const op = typeof operation === 'string' ? this.router.getOperation(operation) : operation;
+    if (!op || !op.operationId) {
       throw new Error(`Unknown operation`);
     }
 
@@ -311,7 +301,7 @@ export class OpenAPIValidator {
       throw new Error(`Unknown setMatchType ${setMatchType}`);
     }
 
-    const { operationId } = operation;
+    const { operationId } = op;
     const validateMap: ResponseHeadersValidateFunctionMap = this.getResponseHeadersValidatorForOperation(operationId);
 
     if (validateMap) {
@@ -363,6 +353,10 @@ export class OpenAPIValidator {
    * @memberof OpenAPIRequestValidator
    */
   public buildRequestValidatorsForOperation(operation: Operation): void {
+    if (!operation || !operation.operationId) {
+      // no operationId, don't register a validator
+      return;
+    }
     const { operationId } = operation;
 
     // validator functions for this operation
@@ -380,8 +374,8 @@ export class OpenAPIValidator {
           properties: {
             requestBody: jsonbody.schema as OpenAPIV3.SchemaObject,
           },
-          required: [],
         };
+        requestBodySchema.required = [];
         if (_.keys(requestBody.content).length === 1) {
           // if application/json is the only specified format, it's required
           requestBodySchema.required.push('requestBody');
@@ -429,17 +423,22 @@ export class OpenAPIValidator {
 
     // params are dereferenced here, no reference objects.
     const { parameters } = operation;
-    parameters.map((param: OpenAPIV3.ParameterObject) => {
-      const target = paramsSchema.properties[param.in];
-      // Header params are case-insensitive according to https://tools.ietf.org/html/rfc7230#page-22, so they are
-      // normalized to lower case and validated as such.
-      const normalizedParamName = param.in === 'header' ? param.name.toLowerCase() : param.name;
-      if (param.required) {
-        target.required.push(normalizedParamName);
-        paramsSchema.required = _.uniq([...paramsSchema.required, param.in]);
-      }
-      target.properties[normalizedParamName] = param.schema as OpenAPIV3.SchemaObject;
-    });
+    if (parameters) {
+      parameters.map((parameter) => {
+        const param = parameter as OpenAPIV3.ParameterObject;
+        const target = paramsSchema.properties[param.in];
+        // Header params are case-insensitive according to https://tools.ietf.org/html/rfc7230#page-22, so they are
+        // normalized to lower case and validated as such.
+        const normalizedParamName = param.in === 'header' ? param.name.toLowerCase() : param.name;
+        if (param.required) {
+          target.required = target.required || [];
+          target.required.push(normalizedParamName);
+          paramsSchema.required = _.uniq([...(paramsSchema.required as string[]), param.in]);
+        }
+        target.properties = target.properties || {};
+        target.properties[normalizedParamName] = param.schema as OpenAPIV3.SchemaObject;
+      });
+    }
 
     // add compiled params schema to requestValidators for this operation id
     const paramsValidator = new Ajv({ ...this.ajvOpts, coerceTypes: true }); // types should be coerced for params
@@ -465,15 +464,20 @@ export class OpenAPIValidator {
    * @memberof OpenAPIRequestValidator
    */
   public buildResponseValidatorForOperation(operation: Operation): void {
+    if (!operation || !operation.operationId) {
+      // no operationId, don't register a validator
+      return;
+    }
     if (!operation.responses) {
       // operation has no responses, don't register a validator
-      return null;
+      return;
     }
 
     const { operationId } = operation;
     const responseSchemas: OpenAPIV3.SchemaObject[] = [];
 
-    _.mapKeys(operation.responses, (response: OpenAPIV3.ResponseObject, status) => {
+    _.mapKeys(operation.responses, (res, status) => {
+      const response = res as OpenAPIV3.ResponseObject;
       if (response.content && response.content['application/json'] && response.content['application/json'].schema) {
         responseSchemas.push(response.content['application/json'].schema as OpenAPIV3.SchemaObject);
       }
@@ -482,7 +486,7 @@ export class OpenAPIValidator {
 
     if (_.isEmpty(responseSchemas)) {
       // operation has no response schemas, don't register a validator
-      return null;
+      return;
     }
 
     // compile the validator function and register to responseValidators
@@ -509,16 +513,21 @@ export class OpenAPIValidator {
    * @memberof OpenAPIRequestValidator
    */
   public buildStatusBasedResponseValidatorForOperation(operation: Operation): void {
+    if (!operation || !operation.operationId) {
+      // no operationId, don't register a validator
+      return;
+    }
     if (!operation.responses) {
       // operation has no responses, don't register a validator
-      return null;
+      return;
     }
-
     const { operationId } = operation;
+
     const responseValidators: StatusBasedResponseValidatorsFunctionMap = {};
     const validator = new Ajv(this.ajvOpts);
 
-    _.mapKeys(operation.responses, (response: OpenAPIV3.ResponseObject, status: string) => {
+    _.mapKeys(operation.responses, (res, status: string) => {
+      const response = res as OpenAPIV3.ResponseObject;
       if (response.content && response.content['application/json'] && response.content['application/json'].schema) {
         const validateFn = response.content['application/json'].schema;
         responseValidators[status] = validator.compile(validateFn);
@@ -526,7 +535,7 @@ export class OpenAPIValidator {
       return null;
     });
 
-    this.statusBasedResponseValidators[operationId] = responseValidators;
+    this.statusBasedResponseValidators[operationId as string] = responseValidators;
   }
 
   /**
@@ -547,21 +556,27 @@ export class OpenAPIValidator {
    * @memberof OpenAPIRequestValidator
    */
   public buildResponseHeadersValidatorForOperation(operation: Operation): void {
+    if (!operation || !operation.operationId) {
+      // no operationId, don't register a validator
+      return;
+    }
     if (!operation.responses) {
       // operation has no responses, don't register a validator
-      return null;
+      return;
     }
 
     const { operationId } = operation;
     const headerValidators: ResponseHeadersValidateFunctionMap = {};
     const validator = new Ajv({ ...this.ajvOpts, coerceTypes: true });
 
-    _.mapKeys(operation.responses, (response: OpenAPIV3.ResponseObject, status: string) => {
+    _.mapKeys(operation.responses, (res, status: string) => {
+      const response = res as OpenAPIV3.ResponseObject;
       const validateFns: { [setMatchType: string]: Ajv.ValidateFunction } = {};
       const properties: { [headerName: string]: OpenAPIV3.SchemaObject } = {};
       const required: string[] = [];
 
-      _.mapKeys(response.headers, (header: OpenAPIV3.HeaderObject, headerName: string) => {
+      _.mapKeys(response.headers, (h, headerName: string) => {
+        const header = h as OpenAPIV3.HeaderObject;
         headerName = headerName.toLowerCase();
         if (header.schema) {
           properties[headerName] = header.schema as OpenAPIV3.SchemaObject;

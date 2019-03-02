@@ -476,7 +476,7 @@ describe('OpenAPIValidator', () => {
           headers,
         });
         expect(valid.errors).toHaveLength(2);
-        expect(valid.errors[0].keyword).toBe('parse');
+        expect(valid.errors && valid.errors[0].keyword).toBe('parse');
       });
 
       test('allows non-json data when application/json is not the only allowed media type', async () => {
@@ -751,15 +751,15 @@ describe('OpenAPIValidator', () => {
                       },
                     },
                     'X-String': {
-                       description: 'The number of remaining requests in the current period',
-                       schema: {
-                         type: 'string',
+                      description: 'The number of remaining requests in the current period',
+                      schema: {
+                        type: 'string',
                       },
                     },
                     'X-Boolean': {
-                       description: 'The number of seconds left in the current period',
-                       schema: {
-                         type: 'boolean',
+                      description: 'The number of seconds left in the current period',
+                      schema: {
+                        type: 'boolean',
                       },
                     },
                   },
@@ -1030,14 +1030,10 @@ describe('OpenAPIValidator', () => {
     });
 
     test('fails validation with a missing response object', async () => {
-      const valid = validator.validateResponseHeaders(
-        null,
-        'listPets',
-        {
-          statusCode: 200,
-          setMatchType: SetMatchType.Exact,
-        },
-      );
+      const valid = validator.validateResponseHeaders(null, 'listPets', {
+        statusCode: 200,
+        setMatchType: SetMatchType.Exact,
+      });
       expect(valid.errors).toBeTruthy();
     });
 
@@ -1093,9 +1089,9 @@ describe('OpenAPIValidator', () => {
     test('fails validation with header separators omitted', async () => {
       const valid = validator.validateResponseHeaders(
         {
-          'xotherinteger': '42',
-          'xotherstring': 42,
-          'XOTHERBOOLEAN': 'true',
+          xotherinteger: '42',
+          xotherstring: 42,
+          XOTHERBOOLEAN: 'true',
         },
         'listPets',
         {

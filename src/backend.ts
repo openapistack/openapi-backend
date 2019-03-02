@@ -93,7 +93,7 @@ export class OpenAPIBackend {
       notFound?: Handler;
       notImplemented?: Handler;
       validationFail?: Handler;
-      [handler: string]: Handler;
+      [handler: string]: Handler | undefined;
     };
   }) {
     const optsWithDefaults = {
@@ -358,14 +358,13 @@ export class OpenAPIBackend {
     // resolve status code
     const { responses } = operation;
     let response: OpenAPIV3.ResponseObject;
-    // 1. check for provided code opt (default: 200)
-    if (!response && opts.code && responses[opts.code]) {
+
+    if (opts.code && responses[opts.code]) {
+      // 1. check for provided code opt (default: 200)
       status = Number(opts.code);
       response = responses[opts.code] as OpenAPIV3.ResponseObject;
-    }
-
-    // 2. check for a default response
-    if (!response) {
+    } else {
+      // 2. check for a default response
       const res = OpenAPIUtils.findDefaultStatusCodeMatch(responses);
       status = res.status;
       response = res.res;
@@ -380,7 +379,7 @@ export class OpenAPIBackend {
     // 1. check for mediaType opt in content (default: application/json)
     // 2. pick first media type in content
     const mediaType = opts.mediaType || 'application/json';
-    const mediaResponse = content[mediaType] || content[_.first(_.keys(content))];
+    const mediaResponse = content[mediaType] || content[Object.keys(content)[0]];
     if (!mediaResponse) {
       return { status, mock: defaultMock };
     }
@@ -401,7 +400,7 @@ export class OpenAPIBackend {
 
     // pick the first example from examples
     if (examples) {
-      const exampleObject = examples[_.first(_.keys(examples))] as OpenAPIV3.ExampleObject;
+      const exampleObject = examples[Object.keys(examples)[0]] as OpenAPIV3.ExampleObject;
       return { status, mock: exampleObject.value };
     }
 
@@ -450,7 +449,7 @@ export class OpenAPIBackend {
    * @returns {Operation}
    * @memberof OpenAPIBackend
    */
-  public getOperation(operationId: string): Operation {
+  public getOperation(operationId: string): Operation | undefined {
     return this.router.getOperation(operationId);
   }
 
@@ -463,7 +462,7 @@ export class OpenAPIBackend {
    * @returns {Operation}
    * @memberof OpenAPIBackend
    */
-  public matchOperation(req: Request): Operation {
+  public matchOperation(req: Request): Operation | undefined {
     return this.router.matchOperation(req);
   }
 
@@ -519,8 +518,8 @@ export class OpenAPIBackend {
     headers: any,
     operation: Operation | string,
     opts?: {
-      statusCode?: number,
-      setMatchType?: SetMatchType,
+      statusCode?: number;
+      setMatchType?: SetMatchType;
     },
   ): ValidationResult {
     return this.validator.validateResponseHeaders(headers, operation, opts);

@@ -1,4 +1,4 @@
-import { OpenAPIRouter } from './router';
+import { OpenAPIRouter, Operation } from './router';
 import { OpenAPIBackend, Context } from './backend';
 import { OpenAPIV3 } from 'openapi-types';
 
@@ -107,52 +107,52 @@ describe('OpenAPIRouter', () => {
     const api = new OpenAPIRouter({ definition });
 
     test('matches GET /', async () => {
-      const { operationId } = api.matchOperation({ path: '/', method: 'get', headers });
+      const { operationId } = api.matchOperation({ path: '/', method: 'get', headers }) as Operation;
       expect(operationId).toEqual('apiRoot');
     });
 
     test('matches GET /pets', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets', method: 'get', headers });
+      const { operationId } = api.matchOperation({ path: '/pets', method: 'get', headers }) as Operation;
       expect(operationId).toEqual('getPets');
     });
 
     test('matches POST /pets', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets', method: 'post', headers });
+      const { operationId } = api.matchOperation({ path: '/pets', method: 'post', headers }) as Operation;
       expect(operationId).toEqual('createPet');
     });
 
     test('matches GET /pets/{id}', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'get', headers });
+      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'get', headers }) as Operation;
       expect(operationId).toEqual('getPetById');
     });
 
     test('matches PUT /pets/{id}', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'put', headers });
+      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'put', headers }) as Operation;
       expect(operationId).toEqual('replacePetById');
     });
 
     test('matches PATCH /pets/{id}', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'patch', headers });
+      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'patch', headers }) as Operation;
       expect(operationId).toEqual('updatePetById');
     });
 
     test('matches DELETE /pets/{id}', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'delete', headers });
+      const { operationId } = api.matchOperation({ path: '/pets/1', method: 'delete', headers }) as Operation;
       expect(operationId).toEqual('deletePetById');
     });
 
     test('matches GET /pets/{id}/owner', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1/owner', method: 'get', headers });
+      const { operationId } = api.matchOperation({ path: '/pets/1/owner', method: 'get', headers }) as Operation;
       expect(operationId).toEqual('getOwnerByPetId');
     });
 
     test('matches GET /pets/{id}/hobbies/{hobbyId}', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/1/hobbies/3', method: 'get', headers });
+      const { operationId } = api.matchOperation({ path: '/pets/1/hobbies/3', method: 'get', headers }) as Operation;
       expect(operationId).toEqual('getPetHobbies');
     });
 
     test('matches GET /pets/meta', async () => {
-      const { operationId } = api.matchOperation({ path: '/pets/meta', method: 'get', headers });
+      const { operationId } = api.matchOperation({ path: '/pets/meta', method: 'get', headers }) as Operation;
       expect(operationId).toEqual('getPetsMeta');
     });
   });
@@ -161,12 +161,12 @@ describe('OpenAPIRouter', () => {
     const api = new OpenAPIRouter({ definition, apiRoot: '/api' });
 
     test('matches GET /api as apiRoot', async () => {
-      const { operationId } = api.matchOperation({ path: '/api', method: 'get', headers });
+      const { operationId } = api.matchOperation({ path: '/api', method: 'get', headers }) as Operation;
       expect(operationId).toEqual('apiRoot');
     });
 
     test('matches GET /api/pets as getPets', async () => {
-      const { operationId } = api.matchOperation({ path: '/api/pets', method: 'get', headers });
+      const { operationId } = api.matchOperation({ path: '/api/pets', method: 'get', headers }) as Operation;
       expect(operationId).toEqual('getPets');
     });
   });
@@ -387,7 +387,7 @@ describe('OpenAPIBackend', () => {
     beforeAll(() => api.init());
 
     test('handles GET / and passes response to postResponseHandler', async () => {
-      const postResponseHandler = jest.fn((c: Context) => c.response);
+      const postResponseHandler = jest.fn((c?: Context) => c && c.response);
       await api.register({ postResponseHandler });
 
       const res = await api.handleRequest({ method: 'GET', path: '/', headers });
@@ -395,13 +395,13 @@ describe('OpenAPIBackend', () => {
       expect(postResponseHandler).toBeCalled();
       expect(res).toEqual({ operationId: 'apiRoot' });
 
-      const contextArg = postResponseHandler.mock.calls.slice(-1)[0][0];
+      const contextArg = postResponseHandler.mock.calls.slice(-1)[0][0] as Context;
       expect(contextArg.response).toMatchObject({ operationId: 'apiRoot' });
       expect(contextArg.request).toMatchObject({ method: 'get', path: '/', headers });
     });
 
     test('handles GET /pets and passes response to postResponseHandler', async () => {
-      const postResponseHandler = jest.fn((c: Context) => c.response);
+      const postResponseHandler = jest.fn((c?: Context) => c && c.response);
       await api.register({ postResponseHandler });
 
       const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });
@@ -409,7 +409,7 @@ describe('OpenAPIBackend', () => {
       expect(postResponseHandler).toBeCalled();
       expect(res).toEqual({ operationId: 'getPets' });
 
-      const contextArg = postResponseHandler.mock.calls.slice(-1)[0][0];
+      const contextArg = postResponseHandler.mock.calls.slice(-1)[0][0] as Context;
       expect(contextArg.response).toMatchObject({ operationId: 'getPets' });
       expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', headers });
     });

@@ -68,9 +68,10 @@ export default class OpenAPIUtils {
     }
 
     // 4. pick first response code in list
+    const code = Object.keys(obj)[0];
     return {
-      status: Number(_.first(_.keys(obj))),
-      res: obj[_.first(_.keys(obj))],
+      status: Number(code),
+      res: obj[code],
     };
   }
 }
