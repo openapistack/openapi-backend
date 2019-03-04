@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "es2017",
+    "target": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
     "lib": ["es2017"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
     "baseUrl": ".",

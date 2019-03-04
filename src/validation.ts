@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import Ajv from 'ajv';
+import * as _ from 'lodash';
+import * as Ajv from 'ajv';
 import { OpenAPIV3 } from 'openapi-types';
 import { OpenAPIRouter, Request, Operation } from './router';
 import OpenAPIUtils from './utils';

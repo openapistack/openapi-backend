@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 import { OpenAPIBackend } from './backend';
 import { OpenAPIV3 } from 'openapi-types';
 

@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import Ajv from 'ajv';
+import * as _ from 'lodash';
+import * as Ajv from 'ajv';
 import { validate as validateOpenAPI } from 'openapi-schema-validation';
-import SwaggerParser from 'swagger-parser';
+import * as SwaggerParser from 'swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
 import { mock } from 'mock-json-schema';
 
