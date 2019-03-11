@@ -89,6 +89,8 @@ export class OpenAPIValidator {
     this.definition = opts.definition;
     this.ajvOpts = {
       unknownFormats: 'ignore', // Ajv default behaviour is to throw an error when encountering an unknown format
+      nullable: true, // OpenAPI v3 JSON schema extension
+      // https://github.com/epoberezkin/ajv/commit/f2010f40f2046d5c2a9232d9e40601f1300a678d
       ...(opts.ajvOpts || {}),
     };
 
