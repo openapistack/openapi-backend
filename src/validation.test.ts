@@ -369,6 +369,7 @@ describe('OpenAPIValidator', () => {
           },
           age: {
             type: 'integer',
+            nullable: true,
           },
         },
         required: ['name'],
@@ -429,6 +430,19 @@ describe('OpenAPIValidator', () => {
           headers,
           body: {
             name: 'Garfield',
+          },
+        });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for POST /pets with nullable age', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'post',
+          headers,
+          body: {
+            name: 'Garfield',
+            age: null,
           },
         });
         expect(valid.errors).toBeFalsy();
