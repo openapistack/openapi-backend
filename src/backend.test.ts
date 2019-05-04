@@ -237,9 +237,7 @@ describe('OpenAPIBackend', () => {
             description: 'ok',
             content: {
               'application/json': {
-                example: {
-                  value: [exampleGarfield],
-                },
+                example: [exampleGarfield],
               },
             },
           },

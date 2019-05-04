@@ -394,8 +394,8 @@ export class OpenAPIBackend {
     }
 
     // if operation has an example, return its value
-    if (mediaResponse.example && mediaResponse.example.value) {
-      return { status, mock: mediaResponse.example.value };
+    if (mediaResponse.example) {
+      return { status, mock: mediaResponse.example };
     }
 
     // pick the first example from examples
