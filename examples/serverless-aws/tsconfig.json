@@ -3,7 +3,7 @@
     "target": "es2017",
     "module": "commonjs",
     "moduleResolution": "node",
-    "lib": ["es7", "esnext.asynciterable"],
+    "lib": ["esnext"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
@@ -12,13 +12,7 @@
     "baseUrl": ".",
     "rootDir": ".",
     "outDir": "dist",
-    "sourceMap": true,
-    "paths": {
-      "*": [
-        "node_modules/*",
-        "types/*"
-      ]
-    }
+    "sourceMap": true
   },
   "include": [
     "**/*"
