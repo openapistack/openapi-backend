@@ -1,76 +1,39 @@
 import 'source-map-support/register';
 import * as Lambda from 'aws-lambda';
 import OpenAPIBackend from 'openapi-backend';
+const headers = {
+  'content-type': 'application/json',
+  'access-control-allow-origin': '*', // lazy cors config
+};
 
-// define api
-const api = new OpenAPIBackend({
-  definition: {
-    openapi: '3.0.1',
-    info: {
-      title: 'My API',
-      version: '1.0.0',
-    },
-    paths: {
-      '/pets': {
-        get: {
-          operationId: 'getPets',
-          responses: {
-            200: { description: 'ok' },
-          },
-        },
-      },
-      '/pets/{id}': {
-        get: {
-          operationId: 'getPetById',
-          responses: {
-            200: { description: 'ok' },
-          },
-        },
-        parameters: [
-          {
-            name: 'id',
-            in: 'path',
-            required: true,
-            schema: {
-              type: 'integer',
-            },
-          },
-        ],
-      },
-    },
-  },
-  handlers: {
-    getPets: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
-      statusCode: 200,
-      body: JSON.stringify({ operationId: c.operation.operationId }),
-      headers: {
-        'content-type': 'application/json',
-      },
-    }),
-    getPetById: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
-      statusCode: 200,
-      body: JSON.stringify({ operationId: c.operation.operationId }),
-      headers: {
-        'content-type': 'application/json',
-      },
-    }),
-    notFound: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
-      statusCode: 404,
-      body: JSON.stringify({ err: 'not found' }),
-      headers: {
-        'content-type': 'application/json',
-      },
-    }),
-    validationFail: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
-      statusCode: 400,
-      body: JSON.stringify({ err: c.validation.errors }),
-      headers: {
-        'content-type': 'application/json',
-      },
-    }),
-  },
+// create api from definition
+const api = new OpenAPIBackend({ definition: './openapi.yml' });
+
+// register some handlers
+api.register({
+  notFound: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
+    statusCode: 404,
+    body: JSON.stringify({ err: 'not found' }),
+    headers,
+  }),
+  validationFail: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
+    statusCode: 400,
+    body: JSON.stringify({ err: c.validation.errors }),
+    headers,
+  }),
+  getPets: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
+    statusCode: 200,
+    body: JSON.stringify({ operationId: c.operation.operationId }),
+    headers,
+  }),
+  getPetById: async (c, event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) => ({
+    statusCode: 200,
+    body: JSON.stringify({ operationId: c.operation.operationId }),
+    headers,
+  }),
 });
 
+// init api
 api.init();
 
 export async function handler(event: Lambda.APIGatewayProxyEvent, context: Lambda.Context) {
