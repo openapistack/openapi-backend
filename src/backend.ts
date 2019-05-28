@@ -6,7 +6,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import { mock } from 'mock-json-schema';
 
 import { OpenAPIRouter, Request, ParsedRequest, Operation } from './router';
-import { OpenAPIValidator, ValidationResult } from './validation';
+import { OpenAPIValidator, ValidationResult, AjvCustomizer } from './validation';
 import OpenAPIUtils from './utils';
 
 // alias Document to OpenAPIV3.Document
@@ -60,6 +60,7 @@ export class OpenAPIBackend {
   public withContext: boolean;
 
   public ajvOpts: Ajv.Options;
+  public customizeAjv: AjvCustomizer | undefined;
 
   public handlers: { [operationId: string]: Handler };
   public allowedHandlers = ['notFound', 'notImplemented', 'validationFail', 'postResponseHandler'];
@@ -89,6 +90,7 @@ export class OpenAPIBackend {
     validate?: boolean | BoolPredicate;
     withContext?: boolean;
     ajvOpts?: Ajv.Options;
+    customizeAjv?: AjvCustomizer;
     handlers?: {
       notFound?: Handler;
       notImplemented?: Handler;
@@ -112,6 +114,7 @@ export class OpenAPIBackend {
     this.handlers = optsWithDefaults.handlers;
     this.withContext = optsWithDefaults.withContext;
     this.ajvOpts = optsWithDefaults.ajvOpts;
+    this.customizeAjv = optsWithDefaults.customizeAjv;
     this.schemas = {};
   }
 
@@ -153,7 +156,12 @@ export class OpenAPIBackend {
     this.router = new OpenAPIRouter({ definition: this.definition, apiRoot: this.apiRoot });
 
     // initalize validator with dereferenced definition
-    this.validator = new OpenAPIValidator({ definition: this.definition, ajvOpts: this.ajvOpts, router: this.router });
+    this.validator = new OpenAPIValidator({
+      definition: this.definition,
+      ajvOpts: this.ajvOpts,
+      customizeAjv: this.customizeAjv,
+      router: this.router,
+    });
 
     // we are initalized
     this.initalized = true;

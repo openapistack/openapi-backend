@@ -13,6 +13,7 @@
     - [Parameter: opts.validate](#parameter-optsvalidate)
     - [Parameter: opts.withContext](#parameter-optswithcontext)
     - [Parameter: opts.ajvOpts](#parameter-optsajvopts)
+    - [Parameter: opts.customizeAjv(originalAjv, ajvOpts, validationContext)](#parameter-optscustomizeajvoriginalajv-ajvopts-validationcontext)
     - [Parameter: opts.handlers](#parameter-optshandlers)
   - [.init()](#init)
   - [.handleRequest(req, ...handlerArgs)](#handlerequestreq-handlerargs)
@@ -102,6 +103,7 @@ const api = new OpenAPIBackend({
   strict: true,
   validate: true,
   ajvOpts: { unknownFormats: true },
+  customizeAjv: () => new Ajv(),
   handlers: {
     getPets: (req, res) => res.json({ result: ['pet1', 'pet2'] }),
     notFound: (req, res) => res.status(404).json({ err: 'not found' }),
@@ -149,6 +151,24 @@ Type: `boolean`
 Optional. The default AJV options to use for validation. See [available options](https://ajv.js.org/#options)
 
 Type: `Ajv.Options`
+
+#### Parameter: opts.customizeAjv(originalAjv, ajvOpts, validationContext)
+
+Optional. Customizer function to use custom Ajv for validation.
+
+Type: `AjvCustomizer`
+
+Takes in three arguments
+
+- **originalAjv** the original Ajv instance created by OpenAPIBackend
+- **ajvOpts** the opts for the original Ajv instance
+- **validationContext** the context in which this Ajv instance will be used. One of:
+  - `'requestBodyValidator'`
+  - `'paramsValidator'`
+  - `'responseValidator'`
+  - `'responseHeadersValidator'`
+
+Returns an Ajv instance.
 
 #### Parameter: opts.handlers
 
