@@ -141,7 +141,7 @@ export class OpenAPIBackend {
       this.validateDefinition();
 
       // dereference the document into definition (make sure not to copy)
-      this.definition = await SwaggerParser.dereference(_.cloneDeep(this.document));
+      this.definition = await SwaggerParser.dereference(this.inputDocument);
     } catch (err) {
       if (this.strict) {
         // in strict-mode, fail hard and re-throw the error
