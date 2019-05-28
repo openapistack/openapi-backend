@@ -252,7 +252,7 @@ describe('OpenAPIBackend', () => {
     });
   });
 
-  describe('.handleRequest withContext=true', async () => {
+  describe('.handleRequest withContext=true', () => {
     const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
     const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
     const api = new OpenAPIBackend({
@@ -368,7 +368,7 @@ describe('OpenAPIBackend', () => {
     });
   });
 
-  describe('.handleRequest postResponseHandler', async () => {
+  describe('.handleRequest postResponseHandler', () => {
     const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
     const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
     const api = new OpenAPIBackend({
