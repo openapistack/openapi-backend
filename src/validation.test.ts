@@ -1,7 +1,9 @@
+import * as Ajv from 'ajv';
 import { OpenAPIRouter, OpenAPIValidator } from './index';
 import { OpenAPIV3 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
 import { SetMatchType } from './backend';
+import { ValidationContext } from './validation';
 
 const headers = { accept: 'application/json' };
 
@@ -1114,6 +1116,161 @@ describe('OpenAPIValidator', () => {
         },
       );
       expect(valid.errors).toBeTruthy();
+    });
+  });
+
+  describe('customizeAjv', () => {
+    describe('using custom formats', () => {
+      const paths: OpenAPIV3.PathObject = {
+        '/pets/{id}': {
+          get: {
+            operationId: 'getPet',
+            responses: { 200: { description: 'ok' } },
+            parameters: [
+              {
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: {
+                  type: 'integer',
+                  format: 'int64', // openapi specific format
+                },
+              },
+            ],
+          },
+        },
+        '/pets': {
+          get: {
+            operationId: 'getPets',
+            responses: {
+              '200': {
+                description: 'ok',
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        int64: {
+                          type: 'integer',
+                          format: 'int64', // openapi specific format
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          post: {
+            operationId: 'createPet',
+            responses: { 201: { description: 'ok' } },
+            requestBody: {
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      int64: {
+                        type: 'integer',
+                        format: 'int64', // openapi specific format
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      };
+
+      const customizeAjv = (ajv: Ajv.Ajv, ajvOpts: Ajv.Options, context: ValidationContext) => {
+        if (context === ValidationContext.Response) {
+          // return vanilla Ajv for params validation
+          return new Ajv();
+        }
+        if (context === ValidationContext.Params) {
+          // return overridden custom formats
+          return new Ajv({ ...ajvOpts, unknownFormats: ['int64'] });
+        }
+        // otherwise return original ajv
+        return ajv;
+      };
+
+      test('customised Ajv should throw error for unknown formats in response', () => {
+        const {
+          '/pets': { get: getPets },
+        } = paths;
+        const warn = console.warn;
+        console.warn = jest.fn();
+        const construct = () =>
+          new OpenAPIValidator({
+            definition: {
+              ...meta,
+              paths: {
+                '/pets': { get: getPets },
+              },
+            },
+            customizeAjv,
+          });
+        expect(construct).toThrow();
+      });
+
+      test('customised Ajv should ignore unknown formats in params', () => {
+        const {
+          '/pets/{id}': { get: getPet },
+        } = paths;
+        const warn = console.warn;
+        console.warn = jest.fn();
+        const construct = () =>
+          new OpenAPIValidator({
+            definition: {
+              ...meta,
+              paths: {
+                '/pets/{id}': { get: getPet },
+              },
+            },
+            customizeAjv,
+          });
+        expect(construct()).toBeInstanceOf(OpenAPIValidator);
+        expect(console.warn).toBeCalledTimes(0);
+        console.warn = warn; // reset console.warn
+      });
+
+      test('customised Ajv should warn about unknown formats in requestBody', () => {
+        const {
+          '/pets': { post: createPet },
+        } = paths;
+        const warn = console.warn;
+        console.warn = jest.fn();
+        const construct = () =>
+          new OpenAPIValidator({
+            definition: {
+              ...meta,
+              paths: {
+                '/pets': { post: createPet },
+              },
+            },
+            customizeAjv,
+          });
+        expect(construct()).toBeInstanceOf(OpenAPIValidator);
+        expect(console.warn).toBeCalled();
+        console.warn = warn; // reset console.warn
+      });
+
+      test('non-customised Ajv should warn about unknown formats', () => {
+        const warn = console.warn;
+        console.warn = jest.fn();
+        const construct = () =>
+          new OpenAPIValidator({
+            definition: {
+              ...meta,
+              paths,
+            },
+          });
+        expect(construct()).toBeInstanceOf(OpenAPIValidator);
+        expect(console.warn).toBeCalled();
+        console.warn = warn; // reset console.warn
+      });
     });
   });
 });
