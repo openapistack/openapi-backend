@@ -173,7 +173,7 @@ describe('OpenAPIRouter', () => {
 });
 
 describe('OpenAPIBackend', () => {
-  describe('.handleRequest withContext=false', async () => {
+  describe('.handleRequest withContext=false', () => {
     const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
     const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
     const api = new OpenAPIBackend({
