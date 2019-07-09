@@ -184,7 +184,7 @@ export class OpenAPIBackend {
    */
   public authenticateRequest(c: Context): boolean {
     const op = c.operation;
-    const securitySchemes = op != undefined ? op.security : [];
+    const securitySchemes = op ? op.security : {};
     const req = c.request as ParsedRequest;
     let authorized = false;
 
