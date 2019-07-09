@@ -178,31 +178,34 @@ export class OpenAPIBackend {
   /**
    * Validates request authorization based on SecurityScheme objects.
    *
-   * @param {Request} req
-   * @param {Operation} op
+   * @param {Context} c
    * @returns {boolean} authorized
    * @memberof OpenAPIBackend
    */
-  public authenticateRequest(req: Request, op: Operation): boolean {
-    const securitySchemes = op.security;
+  public authenticateRequest(c: Context): boolean {
+    const op = c.operation;
+    const securitySchemes = op != undefined ? op.security : [];
+    const req = c.request as ParsedRequest;
     let authorized = false;
 
     _.forEach(_.values(securitySchemes), (securityScheme: OpenAPIV3.SecuritySchemeObject) => {
       if (securityScheme.type === 'apiKey') {
-        switch(securityScheme.in) {
+        const apiKey = securityScheme as OpenAPIV3.ApiKeySecurityScheme;
+        switch(apiKey.in) {
           case 'header':
-            authorized = (req.headers[securityScheme.name] != null);
+            authorized = ((req.headers[apiKey.name as string]) != null);
             break;
           case 'query':
             if (req.query != undefined) {
-              authorized = (req.query[securityScheme.name] != null)
+              authorized = (req.query[apiKey.name as string] != null)
             }
             break;
         }
       } else if (securityScheme.type === 'http') {
+        const httpScheme = securityScheme as OpenAPIV3.HttpSecurityScheme;
         authorized = (
           req.headers['Authorization'] != null &&
-          _.split(req.headers['Authorization'], ':', 1) === securityScheme.scheme
+          _.split(req.headers['Authorization'], ':', 1) === httpScheme.scheme
         );
       }
     });
@@ -251,7 +254,7 @@ export class OpenAPIBackend {
 
       if (!authorizationHandler) {
         // simply checks if the request contains the parameters/headers required by the security object
-        authorized = this.authenticateRequest(req, context.operation);
+        authorized = this.authenticateRequest(context);
       } else {
         // uses the user-defined authorization
         authorized = authorizationHandler(context, ...handlerArgs);
