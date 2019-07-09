@@ -18,7 +18,7 @@ export type Document = OpenAPIV3.Document;
 export interface Operation extends OpenAPIV3.OperationObject {
   path: string;
   method: string;
-  securitySchemes: {[key: string]: OpenAPIV3.SecuritySchemeObject};
+  securitySchemes?: {[key: string]: OpenAPIV3.SecuritySchemeObject};
   operationId: string;
 }
 
@@ -119,7 +119,7 @@ export class OpenAPIRouter {
     const globalSecurity = _.flatten(_.map(_.get(this.definition, 'security', []) as Array<OpenAPIV3.SecurityRequirementObject>, _.keys)) as Array<string>;
 
     // turns the name array into an object, with this structure:  {<securitySchemeName>: {<security scheme properties>} }
-    const globallyAppliedSecurity = [] as {[key: string]: OpenAPIV3.SecuritySchemeObject};
+    const globallyAppliedSecurity = {} as {[key: string]: OpenAPIV3.SecuritySchemeObject};
     _.forEach(globalSecurity, (k: string) => {
         globallyAppliedSecurity[k] = securitySchemes[k];
     });
