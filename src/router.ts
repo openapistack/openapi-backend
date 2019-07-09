@@ -115,12 +115,13 @@ export class OpenAPIRouter {
     // get security schemes definitions from components definition
     const securitySchemes = _.get(
       this.definition,
-      'components.securitySchemes', {}
+      'components.securitySchemes',
+      {},
     ) as {[key: string]: OpenAPIV3.SecuritySchemeObject};
 
     // gets the list of the names of security schemes applied globally (on all paths)
     const globalSecurity = _.flatten(
-      _.map(_.get(this.definition, 'security', []) as OpenAPIV3.SecurityRequirementObject[], _.keys)
+      _.map(_.get(this.definition, 'security', []) as OpenAPIV3.SecurityRequirementObject[], _.keys),
     ) as string[];
 
     /* turns the name array into an object, with this structure:

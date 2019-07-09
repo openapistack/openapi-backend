@@ -69,7 +69,7 @@ export class OpenAPIBackend {
     'unauthorized',
     'validationFail',
     'postResponseHandler',
-    'authorizationHandler'
+    'authorizationHandler',
   ];
 
   public router: OpenAPIRouter;
