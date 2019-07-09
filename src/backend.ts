@@ -205,7 +205,7 @@ export class OpenAPIBackend {
         const httpScheme = securityScheme as OpenAPIV3.HttpSecurityScheme;
         authorized = (
           req.headers['Authorization'] != null &&
-          _.split(_.join(req.headers['Authorization'], ''), ':', 1) === httpScheme.scheme
+          _.toString(_.split(req.headers['Authorization'] as string, ':', 1)) === (httpScheme.scheme as string)
         );
       }
     });
