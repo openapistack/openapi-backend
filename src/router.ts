@@ -18,7 +18,7 @@ export type Document = OpenAPIV3.Document;
 export interface Operation extends OpenAPIV3.OperationObject {
   path: string;
   method: string;
-  security: {[key: string]: OpenAPIV3.SecuritySchemeObject};
+  securitySchemes: {[key: string]: OpenAPIV3.SecuritySchemeObject};
   operationId: string;
 }
 
@@ -110,17 +110,17 @@ export class OpenAPIRouter {
    * @memberof OpenAPIRouter
    */
   public getOperations(): Operation[] {
-    const paths = _.get(this.definition, 'paths', {}) as OpenAPIV3.PathsObject;
+    const paths = _.get(this.definition, 'paths', {});
 
     // get security schemes definitions from components definition
-    const securitySchemes = _.get(this.definition, 'components.securitySchemes', {}) as OpenAPIV3.SecuritySchemeObject;
+    const securitySchemes = _.get(this.definition, 'components.securitySchemes', {}) as {[key: string]: OpenAPIV3.SecuritySchemeObject};
 
     // gets the list of the names of security schemes applied globally (on all paths)
-    const globalSecurity = _.flatten(_.map(_.get(this.definition, 'security', []) as OpenAPIV3.SecurityRequirementObject, _.keys)) as Array<string>;
+    const globalSecurity = _.flatten(_.map(_.get(this.definition, 'security', []) as Array<OpenAPIV3.SecurityRequirementObject>, _.keys)) as Array<string>;
 
     // turns the name array into an object, with this structure:  {<securitySchemeName>: {<security scheme properties>} }
     const globallyAppliedSecurity = [] as {[key: string]: OpenAPIV3.SecuritySchemeObject};
-    _.forEach(globalSecurity, (k: string | number) => {
+    _.forEach(globalSecurity, (k: string) => {
         globallyAppliedSecurity[k] = securitySchemes[k];
     });
 
@@ -136,7 +136,7 @@ export class OpenAPIRouter {
 
           // forms an object array with all global and local security objects (if for some reason a security scheme appears both locally and globally, it only gets added to the array once.)
           const security = globallyAppliedSecurity as {[key: string]: OpenAPIV3.SecuritySchemeObject};
-          _.forEach(localSecurity, (k: string | number) => {
+          _.forEach(localSecurity, (k: string) => {
               security[k] = securitySchemes[k];
           });
 
@@ -145,7 +145,7 @@ export class OpenAPIRouter {
             path,
             method,
             // add the array of security objects to the operation object
-            security,
+            securitySchemes: security,
             // add the path base object's operations to the operation's parameters
             parameters: [
               ...((op.parameters as OpenAPIV3.ParameterObject[]) || []),

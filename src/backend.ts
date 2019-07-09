@@ -184,7 +184,7 @@ export class OpenAPIBackend {
    */
   public authenticateRequest(c: Context): boolean {
     const op = c.operation;
-    const securitySchemes = op ? op.security : {};
+    const securitySchemes = op ? op.securitySchemes : {};
     const req = c.request as ParsedRequest;
     let authorized = false;
 
@@ -205,7 +205,7 @@ export class OpenAPIBackend {
         const httpScheme = securityScheme as OpenAPIV3.HttpSecurityScheme;
         authorized = (
           req.headers['Authorization'] != null &&
-          _.split(req.headers['Authorization'], ':', 1) === httpScheme.scheme
+          _.split(_.join(req.headers['Authorization'], ''), ':', 1) === httpScheme.scheme
         );
       }
     });
