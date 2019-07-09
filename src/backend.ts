@@ -63,7 +63,7 @@ export class OpenAPIBackend {
   public customizeAjv: AjvCustomizer | undefined;
 
   public handlers: { [operationId: string]: Handler };
-  public allowedHandlers = ['notFound', 'notImplemented', 'validationFail', 'postResponseHandler'];
+  public allowedHandlers = ['notFound', 'notImplemented', 'unauthorized', 'validationFail', 'postResponseHandler', 'authorizationHandler'];
 
   public router: OpenAPIRouter;
   public validator: OpenAPIValidator;
@@ -176,6 +176,40 @@ export class OpenAPIBackend {
   }
 
   /**
+   * Validates request authorization based on SecurityScheme objects.
+   *
+   * @param {Request} req
+   * @param {Operation} op
+   * @returns {boolean} authorized
+   * @memberof OpenAPIBackend
+   */
+  public authenticateRequest(req: Request, op: Operation): boolean {
+    const securitySchemes = op.security;
+    let authorized = false;
+
+    _.forEach(_.values(securitySchemes), (securityScheme: OpenAPIV3.SecuritySchemeObject) => {
+      if (securityScheme.type === 'apiKey') {
+        switch(securityScheme.in) {
+          case 'header':
+            authorized = (req.headers[securityScheme.name] != null);
+            break;
+          case 'query':
+            if (req.query != undefined) {
+              authorized = (req.query[securityScheme.name] != null)
+            }
+            break;
+        }
+      } else if (securityScheme.type === 'http') {
+        authorized = (
+          req.headers['Authorization'] != null &&
+          _.split(req.headers['Authorization'], ':', 1) === securityScheme.scheme
+        );
+      }
+    });
+    return authorized;
+  }
+
+  /**
    * Handles a request
    * 1. Routing: Matches the request to an API operation
    * 2. Validation: Validates the request against the API operation schema
@@ -210,6 +244,29 @@ export class OpenAPIBackend {
         }
         return this.withContext ? notFoundHandler(context, ...handlerArgs) : notFoundHandler(...handlerArgs);
       }
+
+      // checks if a user-defined handler has been defined for the authorization process
+      const authorizationHandler: Handler = this.handlers['authorizationHandler'];
+      let authorized = false;
+
+      if (!authorizationHandler) {
+        // simply checks if the request contains the parameters/headers required by the security object
+        authorized = this.authenticateRequest(req, context.operation);
+      } else {
+        // uses the user-defined authorization
+        authorized = authorizationHandler(context, ...handlerArgs);
+      }
+
+      // checks if the request has been rejected in the authorization process
+      if (!authorized) {
+        // 401 unauthorized
+        const unauthorizedHandler: Handler = this.handlers['401'] || this.handlers['unauthorized'];
+        if (!unauthorizedHandler) {
+          throw Error(`401-unauthorized: authorization needed`);
+        }
+        return this.withContext ? unauthorizedHandler(context, ...handlerArgs) : unauthorizedHandler(...handlerArgs);
+      }
+
       const { path, operationId } = context.operation;
 
       // parse request again now with matched path

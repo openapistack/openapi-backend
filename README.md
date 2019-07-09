@@ -239,6 +239,28 @@ cookie) or requestPayload don't match the request.
 
 The context object `c` gets a `validation` property with the [validation result](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validationresult-object).
 
+## Request authorization
+
+OpenAPIBackend partly supports authorization of requests as specified in the `SecuritySchemaObject` in the OpenAPI document.
+
+Currently, only HTTP (basic and bearer) and apiKey (in: query and in: header) security schemes are supported.
+
+If your OpenAPI document contains a `SecuritySchemaObject` that is required in the `security` property of a certain path,
+OpenAPIBackend will either call your [`authorizationHandler`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#authorization-handler) if you have defined one,
+or will use the default one, which simply makes sure that the authorization field(s) specified in the `SecuritySchemaObject` is present and not null.
+
+For example, if your API simply calls a third party API, you can stick to the default authorization handler and just check that the request contains an API key,
+and forward the key in your third party API call for validation.
+
+Note that, whether you use a custom `authorizationHandler` or the default one, it is REQUIRED that you register an [`unauthorizedHandler`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#unauthorized-handler) to reject requests which don't respect the security schema:
+
+```javascript
+function unauthorizedHandler(c, req, res) {
+  return res.status(401).json({ status: 401, err: 'Unauthorized request' });
+}
+api.register('unauthorized', unauthorizedHandler);
+```
+
 ## Response validation
 
 OpenAPIBackend doesn't automatically perform response validation for your handlers, but you can register a

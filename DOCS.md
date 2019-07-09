@@ -50,7 +50,9 @@
   - [validationFail Handler](#validationfail-handler)
   - [notFound Handler](#notfound-handler)
   - [notImplemented Handler](#notimplemented-handler)
+  - [unauthorized Handler](#unauthorized-handler)
   - [postResponseHandler Handler](#postresponsehandler-handler)
+  - [authorizationHandler Handler](#authorization-handler) 
 - [Interfaces](#interfaces)
   - [Document Object](#document-object)
   - [Operation Object](#operation-object)
@@ -563,6 +565,21 @@ function notImplementedHandler(c, req, res) {
 api.register('notImplemented', notImplementedHandler);
 ```
 
+### unauthorized Handler
+
+The `unauthorized` handler gets called by `.handleRequest()` if the request has been denied access in the authorization process,
+based on what is specified in the SecuritySchemes.
+
+HINT: You should probably return a 401 status code from this handler.
+
+Example handler:
+```javascript
+function unauthorizedHandler(c, req, res) {
+  return res.status(401).json({ status: 401, err: 'Unauthorized request' });
+}
+api.register('unauthorized', unauthorizedHandler);
+```
+
 ### postResponseHandler Handler
 
 The `postResponseHandler` handler gets called by `.handleRequest()` after resolving the response handler.
@@ -582,6 +599,51 @@ function postResponseHandler(c, req, res) {
   return res.status(200).json(c.response);
 }
 api.register('postResponseHandler', postResponseHandler);
+```
+
+### authorization Handler
+
+The `authorizationHandler` handler gets called by `.handleRequest()`.
+
+The return value of the response MUST be of type boolean: true means the request is authorized, false means it is not (and that the unauthorizedHandler will be called).
+
+This handler is not required.
+
+The default handler currently supports security objects of type HTTP (basic and bearer) and apiKey (in: header and in: query):
+it does not have any logic for actually doing anything with the value inside the fields (obviously, since it depends on your project),
+it will only check that the field has been specified and is not null.
+
+HINT: You can use the authorizationHandler to authorize API calls against your security schema
+
+Example handler:
+```javascript
+function authorizationHandler (c, req, res) => {
+    const securitySchemes = c.operation.security;
+    var authorized = false;
+
+    for (schemeName in securitySchemes) {
+        const securityScheme = securitySchemes[schemeName];
+
+        if (securityScheme.type === 'apiKey') {
+            switch (securityScheme.in) {
+                case 'header':
+                    authorized = (req.headers[securityScheme.name] != null);
+                    break;
+                case 'query':
+                  if (req.query != undefined) {
+                    authorized = (req.query[securityScheme.name] != null)
+                  }
+                  break;
+            }
+        }
+        else if (securityScheme.type === 'http') {
+            authorized = (req.headers['Authorization'] != null &&
+                (req.headers['Authorization'].split(':')[0]) === securityScheme.scheme);
+        }
+    }
+    return authorized;
+}
+api.register('authorizationHandler', authorizationHandler);
 ```
 
 ## Interfaces
