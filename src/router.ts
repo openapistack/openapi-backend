@@ -128,7 +128,7 @@ export class OpenAPIRouter {
       .entries()
       .flatMap(([path, pathBaseObject]: [string, OpenAPIV3.PathItemObject]) => {
         const methods = _.pick(pathBaseObject, ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']);
-        return _.entries(methods).map(([method, operation]: [string, OpenAPIV3.OperationObject]) => {
+        return _.entries(methods).map(([method, operation]: [string, OpenAPIV3.OperationObject | undefined]) => {
           const op = operation;
 
           // gets the list of the names of security schemes applied locally (only to the current path)
