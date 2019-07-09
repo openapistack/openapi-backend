@@ -113,12 +113,19 @@ export class OpenAPIRouter {
     const paths = _.get(this.definition, 'paths', {});
 
     // get security schemes definitions from components definition
-    const securitySchemes = _.get(this.definition, 'components.securitySchemes', {}) as {[key: string]: OpenAPIV3.SecuritySchemeObject};
+    const securitySchemes = _.get(
+      this.definition,
+      'components.securitySchemes', {}
+    ) as {[key: string]: OpenAPIV3.SecuritySchemeObject};
 
     // gets the list of the names of security schemes applied globally (on all paths)
-    const globalSecurity = _.flatten(_.map(_.get(this.definition, 'security', []) as Array<OpenAPIV3.SecurityRequirementObject>, _.keys)) as Array<string>;
+    const globalSecurity = _.flatten(
+      _.map(_.get(this.definition, 'security', []) as OpenAPIV3.SecurityRequirementObject[], _.keys)
+    ) as string[];
 
-    // turns the name array into an object, with this structure:  {<securitySchemeName>: {<security scheme properties>} }
+    /* turns the name array into an object, with this structure:
+        {<securitySchemeName>: {<security scheme properties>} }
+    */
     const globallyAppliedSecurity = {} as {[key: string]: OpenAPIV3.SecuritySchemeObject};
     _.forEach(globalSecurity, (k: string) => {
         globallyAppliedSecurity[k] = securitySchemes[k];
@@ -132,9 +139,12 @@ export class OpenAPIRouter {
           const op = operation || {};
 
           // gets the list of the names of security schemes applied locally (only to the current path)
-          const localSecurity = _.flatten(_.map(_.get(op, 'security', []), _.keys)) as Array<string>;
+          const localSecurity = _.flatten(_.map(_.get(op, 'security', []), _.keys)) as string[];
 
-          // forms an object array with all global and local security objects (if for some reason a security scheme appears both locally and globally, it only gets added to the array once.)
+          /* forms an object array with all global and local security objects
+              (if for some reason a security scheme appears both locally and globally,
+              it only gets added to the array once.)
+          */
           const security = globallyAppliedSecurity as {[key: string]: OpenAPIV3.SecuritySchemeObject};
           _.forEach(localSecurity, (k: string) => {
               security[k] = securitySchemes[k];
