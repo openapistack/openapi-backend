@@ -188,27 +188,32 @@ export class OpenAPIBackend {
     const req = c.request as ParsedRequest;
     let authorized = false;
 
-    _.forEach(_.values(securitySchemes), (securityScheme: OpenAPIV3.SecuritySchemeObject) => {
-      if (securityScheme.type === 'apiKey') {
-        const apiKey = securityScheme as OpenAPIV3.ApiKeySecurityScheme;
-        switch(apiKey.in) {
-          case 'header':
-            authorized = ((req.headers[apiKey.name as string]) != null);
-            break;
-          case 'query':
-            if (req.query != undefined) {
-              authorized = (req.query[apiKey.name as string] != null)
-            }
-            break;
+    if (!_.isEmpty(securitySchemes)) {
+      _.forEach(_.values(securitySchemes), (securityScheme: OpenAPIV3.SecuritySchemeObject) => {
+        if (securityScheme.type === 'apiKey') {
+          const apiKey = securityScheme as OpenAPIV3.ApiKeySecurityScheme;
+          switch(apiKey.in) {
+            case 'header':
+              authorized = ((req.headers[apiKey.name as string]) != null);
+              break;
+            case 'query':
+              if (req.query != undefined) {
+                authorized = (req.query[apiKey.name as string] != null)
+              }
+              break;
+          }
+        } else if (securityScheme.type === 'http') {
+          const httpScheme = securityScheme as OpenAPIV3.HttpSecurityScheme;
+          authorized = (
+            req.headers['Authorization'] != null &&
+            _.toString(_.split(req.headers['Authorization'] as string, ':', 1)) === (httpScheme.scheme as string)
+          );
         }
-      } else if (securityScheme.type === 'http') {
-        const httpScheme = securityScheme as OpenAPIV3.HttpSecurityScheme;
-        authorized = (
-          req.headers['Authorization'] != null &&
-          _.toString(_.split(req.headers['Authorization'] as string, ':', 1)) === (httpScheme.scheme as string)
-        );
-      }
-    });
+      });
+    } else {
+      // no authorization needed
+      authorized = true;
+    }
     return authorized;
   }
 
