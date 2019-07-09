@@ -63,7 +63,14 @@ export class OpenAPIBackend {
   public customizeAjv: AjvCustomizer | undefined;
 
   public handlers: { [operationId: string]: Handler };
-  public allowedHandlers = ['notFound', 'notImplemented', 'unauthorized', 'validationFail', 'postResponseHandler', 'authorizationHandler'];
+  public allowedHandlers = [
+    'notFound',
+    'notImplemented',
+    'unauthorized',
+    'validationFail',
+    'postResponseHandler',
+    'authorizationHandler'
+  ];
 
   public router: OpenAPIRouter;
   public validator: OpenAPIValidator;
@@ -192,13 +199,13 @@ export class OpenAPIBackend {
       _.forEach(_.values(securitySchemes), (securityScheme: OpenAPIV3.SecuritySchemeObject) => {
         if (securityScheme.type === 'apiKey') {
           const apiKey = securityScheme as OpenAPIV3.ApiKeySecurityScheme;
-          switch(apiKey.in) {
+          switch (apiKey.in) {
             case 'header':
               authorized = ((req.headers[apiKey.name as string]) != null);
               break;
             case 'query':
-              if (req.query != undefined) {
-                authorized = (req.query[apiKey.name as string] != null)
+              if (req.query !== undefined && req.query !== null) {
+                authorized = (req.query[apiKey.name as string] != null);
               }
               break;
           }
