@@ -129,7 +129,7 @@ export class OpenAPIRouter {
       .flatMap(([path, pathBaseObject]: [string, OpenAPIV3.PathItemObject]) => {
         const methods = _.pick(pathBaseObject, ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']);
         return _.entries(methods).map(([method, operation]: [string, OpenAPIV3.OperationObject | undefined]) => {
-          const op = operation;
+          const op = operation || {};
 
           // gets the list of the names of security schemes applied locally (only to the current path)
           const localSecurity = _.flatten(_.map(_.get(op, 'security', []), _.keys)) as Array<string>;
@@ -144,7 +144,7 @@ export class OpenAPIRouter {
             ...op,
             path,
             method,
-            operationId: op.operationId,
+            operationId: op.operationId || '',
             // add the array of security objects to the operation object
             securitySchemes: security,
             // add the path base object's operations to the operation's parameters
