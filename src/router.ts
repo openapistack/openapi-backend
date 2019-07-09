@@ -144,6 +144,7 @@ export class OpenAPIRouter {
             ...op,
             path,
             method,
+            operationId: op.operationId,
             // add the array of security objects to the operation object
             securitySchemes: security,
             // add the path base object's operations to the operation's parameters
