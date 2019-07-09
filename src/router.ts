@@ -18,7 +18,8 @@ export type Document = OpenAPIV3.Document;
 export interface Operation extends OpenAPIV3.OperationObject {
   path: string;
   method: string;
-  security: Array<OpenAPIV3.SecuritySchemeObject>;
+  security: {[key: string]: OpenAPIV3.SecuritySchemeObject};
+  operationId: string;
 }
 
 export interface Request {
