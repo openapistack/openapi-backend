@@ -1,5 +1,4 @@
 import * as _ from 'lodash';
-import { resolve } from 'path';
 
 export default class OpenAPIUtils {
   /**
