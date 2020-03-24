@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
-import bath from 'bath';
+import bath from 'bath-es5';
 import * as cookie from 'cookie';
 import { parse as parseQuery } from 'qs';
-import { Parameters } from 'bath/_/types';
+import { Parameters } from 'bath-es5/_/types';
 
 // alias Document to OpenAPIV3.Document
 export type Document = OpenAPIV3.Document;
