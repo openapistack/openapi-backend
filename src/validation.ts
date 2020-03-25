@@ -471,7 +471,7 @@ export class OpenAPIValidator {
         const normalizedParamName = param.in === 'header' ? param.name.toLowerCase() : param.name;
         if (param.required) {
           target.required = target.required || [];
-          target.required.push(normalizedParamName);
+          target.required = _.uniq([...target.required, normalizedParamName]);
           paramsSchema.required = _.uniq([...(paramsSchema.required as string[]), param.in]);
         }
         target.properties = target.properties || {};
