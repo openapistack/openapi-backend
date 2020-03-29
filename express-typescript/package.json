@@ -23,7 +23,7 @@
   "devDependencies": {
     "@types/morgan": "^1.7.35",
     "@types/node": "^10.12.26",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "concurrently": "^4.1.0",
     "jest": "^23.6.0",
     "nodemon": "^1.18.10",
