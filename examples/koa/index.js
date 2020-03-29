@@ -69,6 +69,7 @@ const api = new OpenAPIBackend({
       ctx.status = 400;
     },
     notFound: async (c, ctx) => {
+      console.log(c);
       ctx.body = { err: 'not found' };
       ctx.status = 404;
     },

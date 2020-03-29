@@ -871,7 +871,7 @@ const validationResult: ValidationResult = {
 ## API Versioning
 
 Since OpenAPI specification already supports the `version` field in the [`info` object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#infoObject),
-it's easy to do URI versioning utilising multiple [`OpenAPIBackend`]((#class-openapibackend) instances with different
+it's easy to do URI versioning utilising multiple [`OpenAPIBackend`](#class-openapibackend) instances with different
 [`apiRoot`](#parameter-optsapiroot) values.
 
 Simple example:
