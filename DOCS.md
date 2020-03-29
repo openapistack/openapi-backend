@@ -10,6 +10,7 @@
     - [Parameter: opts.definition](#parameter-optsdefinition)
     - [Parameter: opts.apiRoot](#parameter-optsapiroot)
     - [Parameter: opts.strict](#parameter-optsstrict)
+    - [Parameter: opts.quick](#parameter-optsquick)
     - [Parameter: opts.validate](#parameter-optsvalidate)
     - [Parameter: opts.withContext](#parameter-optswithcontext)
     - [Parameter: opts.ajvOpts](#parameter-optsajvopts)
@@ -131,6 +132,14 @@ Type: `string`
 #### Parameter: opts.strict
 
 Optional. Strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
+
+Type: `boolean`
+
+#### Parameter: opts.quick
+
+Optional. Quick startup. Attempts to optimize startup time by skipping and deferring some parts.
+
+Warning: might break things. (default: false)
 
 Type: `boolean`
 

@@ -56,6 +56,7 @@ export class OpenAPIBackend {
   public initalized: boolean;
 
   public strict: boolean;
+  public quick: boolean;
   public validate: boolean | BoolPredicate;
   public withContext: boolean;
 
@@ -77,6 +78,7 @@ export class OpenAPIBackend {
    * @param {Document | string} opts.definition - the OpenAPI definition, file path or Document object
    * @param {string} opts.apiRoot - the root URI of the api. all paths are matched relative to apiRoot
    * @param {boolean} opts.strict - strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
+   * @param {boolean} opts.quick - quick startup, attempts to optimise startup; might break things (default: false)
    * @param {boolean} opts.validate - whether to validate requests with Ajv (default: true)
    * @param {boolean} opts.withContext - whether to pass context object to handlers as first argument (default: true)
    * @param {boolean} opts.ajvOpts - default ajv opts to pass to the validator
@@ -87,6 +89,7 @@ export class OpenAPIBackend {
     definition: Document | string;
     apiRoot?: string;
     strict?: boolean;
+    quick?: boolean;
     validate?: boolean | BoolPredicate;
     withContext?: boolean;
     ajvOpts?: Ajv.Options;
@@ -103,6 +106,7 @@ export class OpenAPIBackend {
       withContext: true,
       validate: true,
       strict: false,
+      quick: false,
       ajvOpts: {},
       handlers: {},
       ...opts,
@@ -110,6 +114,7 @@ export class OpenAPIBackend {
     this.apiRoot = optsWithDefaults.apiRoot;
     this.inputDocument = optsWithDefaults.definition;
     this.strict = optsWithDefaults.strict;
+    this.quick = optsWithDefaults.quick;
     this.validate = optsWithDefaults.validate;
     this.handlers = optsWithDefaults.handlers;
     this.withContext = optsWithDefaults.withContext;
@@ -135,10 +140,19 @@ export class OpenAPIBackend {
   public async init() {
     try {
       // parse the document
-      this.document = await SwaggerParser.parse(this.inputDocument);
+      if (this.quick) {
+        // we don't care when the document is ready
+        SwaggerParser.parse(this.inputDocument).then((doc) => {
+          this.document = doc;
+        });
+      } else {
+        this.document = await SwaggerParser.parse(this.inputDocument);
+      }
 
-      // validate the document
-      this.validateDefinition();
+      if (!this.quick) {
+        // validate the document
+        this.validateDefinition();
+      }
 
       // dereference the document into definition (make sure not to copy)
       this.definition = await SwaggerParser.dereference(this.inputDocument);
@@ -156,12 +170,14 @@ export class OpenAPIBackend {
     this.router = new OpenAPIRouter({ definition: this.definition, apiRoot: this.apiRoot });
 
     // initalize validator with dereferenced definition
-    this.validator = new OpenAPIValidator({
-      definition: this.definition,
-      ajvOpts: this.ajvOpts,
-      customizeAjv: this.customizeAjv,
-      router: this.router,
-    });
+    if (this.validate !== false) {
+      this.validator = new OpenAPIValidator({
+        definition: this.definition,
+        ajvOpts: this.ajvOpts,
+        customizeAjv: this.customizeAjv,
+        router: this.router,
+      });
+    }
 
     // we are initalized
     this.initalized = true;
