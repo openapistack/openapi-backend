@@ -113,8 +113,27 @@ The main `OpenAPIBackend` class is exported as the default export for the `'open
 
 ## Class OpenAPIBackend
 
-OpenAPIBackend is the main class you can interact with. You can create a new instance and initalize it with your
-OpenAPI document and handlers.
+OpenAPIBackend is the main class you can interact with. You can create a new
+instance and initalize it with your OpenAPI document and handlers.
+
+OpenAPIBackend is also the default import of the `openapi-backend` module. It
+can be imported  in any of the following ways:
+
+```javascript
+import OpenAPIBackend from 'openapi-backend';
+```
+
+```javascript
+import { OpenAPIBackend } from 'openapi-backend';
+```
+
+```javascript
+const { OpenAPIBackend } = require('openapi-backend');
+```
+
+```javascript
+const OpenAPIBackend = require('openapi-backend').default;
+```
 
 ### new OpenAPIBackend(opts)
 
@@ -391,6 +410,22 @@ an OpenAPI operation.
 Calling the [init method](#init) creates an instance of OpenAPIRouter which can
 be publicly accessed via the OpenAPIBackend.router property.
 
+The OpenAPIRouter class is exported from the `openapi-backend` module:
+
+```javascript
+import { OpenAPIRouter } from 'openapi-backend';
+```
+
+```javascript
+const { OpenAPIRouter } = require('openapi-backend');
+```
+
+You can also directly import the class from the submodule:
+
+```javascript
+import { OpenAPIRouter } from 'openapi-backend/router';
+```
+
 ### new OpenAPIRouter(opts)
 
 Creates an instance of OpenAPIRouter and returns it.
@@ -398,7 +433,7 @@ Creates an instance of OpenAPIRouter and returns it.
 Example:
 ```javascript
 const router = new OpenAPIRouter({
-  definition: parsedOASDocumen,
+  definition: api.document,
   apiRoot: '/',
 });
 ```
@@ -516,14 +551,32 @@ be publicly accessed via the OpenAPIBackend.validator property.
 
 ### new OpenAPIValidator(opts)
 
-Creates an instance of OpenAPIRouter and returns it.
+Creates an instance of OpenAPIValidator and returns it.
 
 Example:
 ```javascript
-const router = new OpenAPIRouter({
-  definition: './openapi.yml',
-
+const validator = new OpenAPIValidator({
+  definition: api.document,
+  router: new OpenAPIRouter()
+  ajvOpts: { unknownFormats: true },
+  customizeAjv: (originalAjv, ajvOpts, validationContext) => new Ajv(),
 });
+```
+
+The OpenAPIValidator class is exported from the `openapi-backend` module:
+
+```javascript
+import { OpenAPIValidator } from 'openapi-backend';
+```
+
+```javascript
+const { OpenAPIValidator } = require('openapi-backend');
+```
+
+You can also directly import the class from the submodule:
+
+```javascript
+import { OpenAPIValidator } from 'openapi-backend/validation';
 ```
 
 #### Parameter: opts
