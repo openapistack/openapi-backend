@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/hapi": "^17.8.5",
+    "@types/jest": "^25.2.1",
     "@types/node": "^10.12.26",
     "axios": "^0.18.1",
     "concurrently": "^4.1.0",
