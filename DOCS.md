@@ -72,6 +72,7 @@
 - [Operation Handlers](#operation-handlers)
   - [validationFail Handler](#validationfail-handler)
   - [notFound Handler](#notfound-handler)
+  - [methodNotAllowed Handler](#methodnotallowed-handler)
   - [notImplemented Handler](#notimplemented-handler)
   - [postResponseHandler Handler](#postresponsehandler-handler)
 - [Interfaces](#interfaces)
