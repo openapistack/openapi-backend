@@ -169,6 +169,11 @@ describe('OpenAPIRouter', () => {
       const { operationId } = api.matchOperation({ path: '/api/pets', method: 'get', headers }) as Operation;
       expect(operationId).toEqual('getPets');
     });
+
+    test('does not match GET /pets', async () => {
+      const operation = api.matchOperation({ path: '/pets', method: 'get', headers }) as Operation;
+      expect(operation).toBeFalsy();
+    });
   });
 });
 

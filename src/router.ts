@@ -81,6 +81,11 @@ export class OpenAPIRouter {
     // normalize request for matching
     req = this.normalizeRequest(req);
 
+    // make sure request path matches apiRoot
+    if (!req.path.startsWith(this.apiRoot)) {
+      return undefined;
+    }
+
     // get relative path
     const normalizedPath = this.normalizePath(req.path);
 
