@@ -6,6 +6,7 @@
   "license": "MIT",
   "keywords": [],
   "scripts": {
+    "postinstall": "npm run build",
     "build": "tsc",
     "watch-build": "tsc -w",
     "start": "serverless offline start --stage local",
