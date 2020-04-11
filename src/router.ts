@@ -176,11 +176,11 @@ export class OpenAPIRouter {
   }
 
   /**
-   * Parses request
+   * Parses and normalizes a request
    * - parse json body
-   * - parse path params based on uri template
    * - parse query string
    * - parse cookies from headers
+   * - parse path params based on uri template
    *
    * @export
    * @param {Request} req

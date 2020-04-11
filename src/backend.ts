@@ -68,8 +68,6 @@ export class OpenAPIBackend {
   public router: OpenAPIRouter;
   public validator: OpenAPIValidator;
 
-  public schemas: { [operationId: string]: Ajv.ValidateFunction };
-
   /**
    * Creates an instance of OpenAPIBackend.
    *
@@ -115,7 +113,6 @@ export class OpenAPIBackend {
     this.handlers = optsWithDefaults.handlers;
     this.ajvOpts = optsWithDefaults.ajvOpts;
     this.customizeAjv = optsWithDefaults.customizeAjv;
-    this.schemas = {};
   }
 
   /**

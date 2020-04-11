@@ -19,6 +19,43 @@
   - [.handleRequest(req, ...handlerArgs)](#handlerequestreq-handlerargs)
     - [Parameter: req](#parameter-req)
     - [Parameter: handlerArgs](#parameter-handlerargs)
+  - [.validateRequest()](#validaterequest)
+  - [.validateResponse()](#validateresponse)
+  - [.validateResponseHeaders()](#validateresponseheaders)
+  - [.matchOperation()](#matchoperation)
+  - [.register(operationId, handler)](#registeroperationid-handler)
+    - [Parameter: operationId](#parameter-operationid)
+    - [Parameter: handler](#parameter-handler)
+  - [.register(handlers)](#registerhandlers)
+    - [Parameter: opts.handlers](#parameter-optshandlers)
+  - [.mockResponseForOperation(operationId, opts?)](#mockresponseforoperationoperationid-opts)
+    - [Parameter: operationId](#parameter-operationid)
+    - [Parameter: opts](#parameter-opts)
+    - [Parameter: opts.responseStatus](#parameter-optsresponsestatus)
+    - [Parameter: opts.mediaType](#parameter-optsmediatype)
+    - [Parameter: opts.example](#parameter-optsexample)
+  - [.router](#router)
+  - [.validator](#validator)
+- [Class OpenAPIRouter](#class-openapirouter)
+  - [new OpenAPIRouter(opts)](#new-openapirouteropts)
+    - [Parameter: opts](#parameter-opts)
+    - [Parameter: opts.definition](#parameter-optsdefinition)
+    - [Parameter: opts.apiRoot](#parameter-optsapiroot)
+  - [.matchOperation(req)](#matchoperationreq)
+    - [Parameter: req](#parameter-req)
+  - [.getOperations()](#getoperations)
+  - [.getOperation(operationId)](#getoperationoperationid)
+    - [Parameter: operationId](#parameter-operationid)
+  - [.parseRequest(req, path?)](#parserequestreq-path)
+    - [Parameter: req](#parameter-req)
+    - [Parameter: path](#parameter-path)
+- [Class OpenAPIValidator](#class-openapivalidator)
+  - [new OpenAPIValidator(opts)](#new-openapivalidatoropts)
+    - [Parameter: opts](#parameter-opts)
+    - [Parameter: opts.definition](#parameter-optsdefinition)
+    - [Parameter: opts.ajvOpts](#parameter-optsajvopts)
+    - [Parameter: opts.router](#parameter-optsrouter)
+    - [Parameter: opts.customizeAjv(originalAjv, ajvOpts, validationContext)](#parameter-optscustomizeajvoriginalajv-ajvopts-validationcontext)
   - [.validateRequest(req, operation?)](#validaterequestreq-operation)
     - [Parameter: req](#parameter-req)
     - [Parameter: operation](#parameter-operation)
@@ -32,20 +69,6 @@
     - [Parameter: opts](#parameter-opts)
     - [Parameter: opts.statusCode](#parameter-optsstatuscode)
     - [Parameter: opts.setMatchType](#parameter-optssetmatchtype)
-  - [.matchOperation(req)](#matchoperationreq)
-    - [Parameter: req](#parameter-req)
-  - [.register(operationId, handler)](#registeroperationid-handler)
-    - [Parameter: operationId](#parameter-operationid)
-    - [Parameter: handler](#parameter-handler)
-  - [.register(handlers)](#registerhandlers)
-    - [Parameter: opts.handlers](#parameter-optshandlers)
-  - [.mockResponseForOperation(operationId, opts?)](#mockresponseforoperationoperationid-opts)
-    - [Parameter: operationId](#parameter-operationid)
-    - [Parameter: opts](#parameter-opts)
-    - [Parameter: opts.responseStatus](#parameter-optsresponsestatus)
-    - [Parameter: opts.mediaType](#parameter-optsmediatype)
-    - [Parameter: opts.example](#parameter-optsexample)
-  - [.validateDefinition()](#validatedefinition)
 - [Operation Handlers](#operation-handlers)
   - [validationFail Handler](#validationfail-handler)
   - [notFound Handler](#notfound-handler)
@@ -102,6 +125,7 @@ Example:
 const api = new OpenAPIBackend({
   definition: './openapi.yml',
   strict: true,
+  quick: false,
   validate: true,
   ajvOpts: { unknownFormats: true },
   customizeAjv: () => new Ajv(),
@@ -236,6 +260,311 @@ These should be the arguments you normally use when handling requests in your ba
 response or the Lambda event and context.
 
 Type: `any[]`
+
+### .validateRequest()
+
+Validates a request and returns the result.
+
+See [`OpenAPIValidator.validateRequest()`](#validaterequestreq-operation)
+
+### .validateResponse()
+
+Validates a response and returns the result.
+
+See [`OpenAPIValidator.validateResponse()`](#validateresponseres-operation-statuscode)
+
+### .validateResponseHeaders()
+
+Validates response headers and returns the result.
+
+See [`OpenAPIValidator.validateResponseHeaders()`](#validateresponseheadersheaders-operation-opts)
+
+### .matchOperation()
+
+Matches a request to an API operation (router).
+
+See [`OpenAPIRouter.matchOperation()`](#matchoperationreq)
+
+### .register(operationId, handler)
+
+Registers a handler for an operation.
+
+Example usage:
+```javascript
+api.registerHandler('getPets', function (req, res) {
+  return {
+    status: 200,
+    body: JSON.stringify(['pet1', 'pet2']),
+  };
+};
+```
+
+#### Parameter: operationId
+
+The operationId of the operation to register a handler for.
+
+Type: `string`
+
+#### Parameter: handler
+
+The operation handler.
+
+Type: `Handler | ErrorHandler`
+
+### .register(handlers)
+
+Registers multiple [Operation Handlers](#operation-handlers).
+
+Example usage:
+```javascript
+api.register({
+  getPets: (req, res) => res.json({ result: ['pet1', 'pet2'] }),
+  notFound: (req, res) => res.status(404).json({ err: 'not found' }),
+  validationFail: (err, req, res) => res.status(404).json({ err }),
+});
+```
+
+#### Parameter: opts.handlers
+
+[Operation Handlers](#operation-handlers) to be registered.
+
+Type: `{ [operationId: string]: Handler | ErrorHandler }`
+
+### .mockResponseForOperation(operationId, opts?)
+
+Mocks a response for an operation based on example or response schema.
+
+Returns an object with a status code and the mocked response.
+
+Example usage:
+```javascript
+api.registerHandler('notImplemented', async (c, req: Request, res: Response) => {
+  const { status, mock } = api.mockResponseForOperation(c.operation.operationId);
+  return res.status(status).json(mock);
+});
+```
+
+#### Parameter: operationId
+
+The operationId of the operation for which to mock the response
+
+Type: `string`
+
+#### Parameter: opts
+
+Optional. Options for mocking.
+
+#### Parameter: opts.responseStatus
+
+Optional. The response code of the response to mock (default: 200)
+
+Type: `number`
+
+#### Parameter: opts.mediaType
+
+Optional. The media type of the response to mock (default: application/json)
+
+Type: `string`
+
+#### Parameter: opts.example
+
+Optional. The specific example to use (if operation has multiple examples)
+
+Type: `string`
+
+### .router
+
+OpenAPIBackend instances expose an instance of [OpenAPIRouter](#class-openapirouter)
+created during [`init()`](#init) to be used for matching requests to their
+OpenAPI operations.
+
+### .validator
+
+OpenAPIBackend instances expose an instance of [OpenAPIValidator](#class-openapivalidator)
+created during [`init()`](#init) to be used for validating schemas.
+
+## Class OpenAPIRouter
+
+OpenAPIRouter is an internal class that matches an abstract Request object to
+an OpenAPI operation.
+
+Calling the [init method](#init) creates an instance of OpenAPIRouter which can
+be publicly accessed via the OpenAPIBackend.router property.
+
+### new OpenAPIRouter(opts)
+
+Creates an instance of OpenAPIRouter and returns it.
+
+Example:
+```javascript
+const router = new OpenAPIRouter({
+  definition: parsedOASDocumen,
+  apiRoot: '/',
+});
+```
+
+#### Parameter: opts
+
+Constructor options
+
+#### Parameter: opts.definition
+
+The OpenAPI definition as a [Document object](#document-object).
+
+Type: `Document`
+
+#### Parameter: opts.apiRoot
+
+The root URI of your api. All paths will be matched relative to apiRoot (default: "/")
+
+Type: `string`
+
+### .matchOperation(req)
+
+Matches a request to an API operation (router) and returns the matched [Operation Object](#operation-object). Returns
+`undefined` if no operation was matched.
+
+Example usage:
+```javascript
+const operation = api.router.matchOperation({
+  method: 'GET',
+  path: '/pets',
+  headers: { accept: 'application/json' },
+});
+```
+
+#### Parameter: req
+
+A request to match to an Operation.
+
+Type: [`Request`](#request-object)
+
+### .getOperations()
+
+Flattens operations into a simple array of [Operation objects](#operation-object) easy to work with.
+
+Example usage:
+```javascript
+const operations = api.router.getOperations();
+console.log(`There are ${operations.length} operations in this api`);
+```
+
+### .getOperation(operationId)
+
+Gets a single operation by its operationId.
+
+Example usage:
+```javascript
+const operation = api.router.getOperation('getPets');
+console.log(`The tags for getPets are: ${operation.tags.join(', ')}`);
+```
+
+#### Parameter: operationId
+
+The operationId of the operation to get.
+
+Type: `string`
+
+### .parseRequest(req, path?)
+
+Parses and normalizes a request.
+
+This method used to construct the parsed request for [Context objects](#context-object).
+
+1. Parses body into an object
+1. Parses query parameters from query string
+1. Parses cookies from the cookie header
+1. Parses path parameters from the request uri and passed path template parameter
+1. Strips apiRoot from path
+
+```javascript
+const parsedRequest = api.router.parseRequest({
+  method: 'GET',
+  path: '/v1/pet/8?fields=name',
+  headers: {
+    accept: 'application/json',
+    cookie: 'token=abc123;path=/',
+  },
+}, '/pet/{id}');
+
+assert(parsedRequest.method, 'get');
+assert(parsedRequest.query.fields, 'name');
+assert(parsedRequest.cookies.token, 'abc123');
+assert(parsedRequest.path, '/pet/8');
+assert(parsedRequest.params.id, '8');
+```
+
+#### Parameter: req
+
+A request to parse.
+
+Type: [`Request`](#request-object)
+
+#### Parameter: path
+
+Optional. Path template string to parse path parameters from.
+
+Type: `string`
+
+## Class OpenAPIValidator
+
+OpenAPIValidator is an internal class for performing validations against json
+schemas in an OpenAPI definition.
+
+Calling the [init method](#init) creates an instance of OpenAPIValidator which can
+be publicly accessed via the OpenAPIBackend.validator property.
+
+### new OpenAPIValidator(opts)
+
+Creates an instance of OpenAPIRouter and returns it.
+
+Example:
+```javascript
+const router = new OpenAPIRouter({
+  definition: './openapi.yml',
+
+});
+```
+
+#### Parameter: opts
+
+Constructor options
+
+#### Parameter: opts.definition
+
+The OpenAPI definition as a [Document object](#document-object).
+
+Type: `Document`
+
+#### Parameter: opts.ajvOpts
+
+Optional. The default AJV options to use for validation. See [available options](https://ajv.js.org/#options)
+
+Type: `Ajv.Options`
+
+#### Parameter: opts.router
+
+Optional. Passed instance of OpenAPIRouter. Will create new instance from definition object if not passed.
+
+Type: [`OpenAPIRouter`](#class-openapirouter)
+
+#### Parameter: opts.customizeAjv(originalAjv, ajvOpts, validationContext)
+
+Optional. Customizer function to use custom Ajv for validation.
+
+Type: `AjvCustomizer`
+
+Takes in three arguments
+
+- **originalAjv** the original Ajv instance created by OpenAPIBackend
+- **ajvOpts** the opts for the original Ajv instance
+- **validationContext** the context in which this Ajv instance will be used. One of:
+  - `'requestBodyValidator'`
+  - `'paramsValidator'`
+  - `'responseValidator'`
+  - `'responseHeadersValidator'`
+
+Returns an Ajv instance.
 
 ### .validateRequest(req, operation?)
 
@@ -381,119 +710,6 @@ It can be `any`, `superset`, `subset` or `exact`. Defaults to `any`.
 - `exact`: Check that `headers` exactly match the headers defined in your spec.
 
 Type: `SetMatchType`
-
-### .matchOperation(req)
-
-Matches a request to an API operation (router) and returns the matched [Operation Object](#operation-object). Returns
-`undefined` if no operation was matched.
-
-Example usage:
-```javascript
-const operation = api.matchOperation({
-  method: 'GET',
-  path: '/pets',
-  headers: { accept: 'application/json' },
-});
-```
-
-#### Parameter: req
-
-A request to match to an Operation.
-
-Type: [`Request`](#request-object)
-
-### .register(operationId, handler)
-
-Registers a handler for an operation.
-
-Example usage:
-```javascript
-api.registerHandler('getPets', function (req, res) {
-  return {
-    status: 200,
-    body: JSON.stringify(['pet1', 'pet2']),
-  };
-};
-```
-
-#### Parameter: operationId
-
-The operationId of the operation to register a handler for.
-
-Type: `string`
-
-#### Parameter: handler
-
-The operation handler.
-
-Type: `Handler | ErrorHandler`
-
-### .register(handlers)
-
-Registers multiple [Operation Handlers](#operation-handlers).
-
-Example usage:
-```javascript
-api.register({
-  getPets: (req, res) => res.json({ result: ['pet1', 'pet2'] }),
-  notFound: (req, res) => res.status(404).json({ err: 'not found' }),
-  validationFail: (err, req, res) => res.status(404).json({ err }),
-});
-```
-
-#### Parameter: opts.handlers
-
-[Operation Handlers](#operation-handlers) to be registered.
-
-Type: `{ [operationId: string]: Handler | ErrorHandler }`
-
-### .mockResponseForOperation(operationId, opts?)
-
-Mocks a response for an operation based on example or response schema.
-
-Returns an object with a status code and the mocked response.
-
-Example usage:
-```javascript
-api.registerHandler('notImplemented', async (c, req: Request, res: Response) => {
-  const { status, mock } = api.mockResponseForOperation(c.operation.operationId);
-  return res.status(status).json(mock);
-});
-```
-
-#### Parameter: operationId
-
-The operationId of the operation for which to mock the response
-
-Type: `string`
-
-#### Parameter: opts
-
-Optional. Options for mocking.
-
-#### Parameter: opts.responseStatus
-
-Optional. The response code of the response to mock (default: 200)
-
-Type: `number`
-
-#### Parameter: opts.mediaType
-
-Optional. The media type of the response to mock (default: application/json)
-
-Type: `string`
-
-#### Parameter: opts.example
-
-Optional. The specific example to use (if operation has multiple examples)
-
-Type: `string`
-
-### .validateDefinition()
-
-Validates and returns the parsed document. Throws an error if validation fails.
-
-*NOTE: This method can't be called before `init()` is complete.*
 
 ## Operation Handlers
 
