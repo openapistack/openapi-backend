@@ -21,7 +21,7 @@
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.13",
+    "@types/jest": "^23.3.14",
     "@types/morgan": "^1.7.35",
     "@types/node": "^10.12.26",
     "axios": "^0.18.1",
