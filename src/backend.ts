@@ -63,7 +63,17 @@ export class OpenAPIBackend {
   public customizeAjv: AjvCustomizer | undefined;
 
   public handlers: { [operationId: string]: Handler };
-  public allowedHandlers = ['notFound', 'notImplemented', 'validationFail', 'postResponseHandler'];
+  public allowedHandlers = [
+    '404',
+    'notFound',
+    '405',
+    'methodNotAllowed',
+    '501',
+    'notImplemented',
+    '400',
+    'validationFail',
+    'postResponseHandler',
+  ];
 
   public router: OpenAPIRouter;
   public validator: OpenAPIValidator;
@@ -209,16 +219,25 @@ export class OpenAPIBackend {
       context.request = this.router.parseRequest(req);
 
       // match operation
-      context.operation = this.matchOperation(req);
-      if (!context.operation || !context.operation.operationId) {
-        // 404 route not found
-        const notFoundHandler: Handler = this.handlers['404'] || this.handlers['notFound'];
-        if (!notFoundHandler) {
-          throw Error(`404-notFound: no route matches request`);
+      try {
+        context.operation = this.router.matchOperation(req, true);
+      } catch (err) {
+        let handler: Handler | undefined;
+        if (err.message.startsWith('404')) {
+          // 404 route not found
+          handler = this.handlers['404'] || this.handlers['notFound'];
         }
-        return notFoundHandler(context as Context, ...handlerArgs);
+        if (err.message.startsWith('405')) {
+          // 405 method not allowed
+          handler = this.handlers['405'] || this.handlers['methodNotAllowed'] || handler;
+        }
+        if (!handler) {
+          throw err;
+        }
+        return handler(context as Context, ...handlerArgs);
       }
-      const { path, operationId } = context.operation;
+      const operationId = context.operation.operationId as string;
+      const path = context.operation.path;
 
       // parse request again now with matched path
       context.request = this.router.parseRequest(req, path);

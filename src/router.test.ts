@@ -155,6 +155,11 @@ describe('OpenAPIRouter', () => {
       const { operationId } = api.matchOperation({ path: '/pets/meta', method: 'get', headers }) as Operation;
       expect(operationId).toEqual('getPetsMeta');
     });
+
+    test('does not match GET /v2/pets', async () => {
+      const operation = api.matchOperation({ path: '/v2/pets', method: 'get', headers }) as Operation;
+      expect(operation).toBe(undefined);
+    });
   });
 
   describe('.matchOperation with apiRoot = /api', () => {
@@ -172,7 +177,31 @@ describe('OpenAPIRouter', () => {
 
     test('does not match GET /pets', async () => {
       const operation = api.matchOperation({ path: '/pets', method: 'get', headers }) as Operation;
-      expect(operation).toBeFalsy();
+      expect(operation).toBe(undefined);
+    });
+  });
+
+  describe('.matchOperation with strict mode', () => {
+    const api = new OpenAPIRouter({ definition });
+
+    test('matches GET /', async () => {
+      const { operationId } = api.matchOperation({ path: '/', method: 'get', headers }, true);
+      expect(operationId).toEqual('apiRoot');
+    });
+
+    test('matches GET /pets', async () => {
+      const { operationId } = api.matchOperation({ path: '/pets', method: 'get', headers }, true);
+      expect(operationId).toEqual('getPets');
+    });
+
+    test('throws a 404 for GET /humans', async () => {
+      const call = () => api.matchOperation({ path: '/humans', method: 'get', headers }, true);
+      expect(call).toThrowError('404-notFound: no route matches request');
+    });
+
+    test('throws a 405 for DELETE /pets', async () => {
+      const call = () => api.matchOperation({ path: '/pets', method: 'delete', headers }, true);
+      expect(call).toThrowError('405-methodNotAllowed: this method is not registered for the route');
     });
   });
 });

@@ -154,10 +154,62 @@ describe('OpenAPIBackend', () => {
         getPetById: dummyHandler,
         createPet: dummyHandler,
         notFound: dummyHandler,
+        methodNotAllowed: dummyHandler,
       });
       expect(api.handlers['getPetById']).toBe(dummyHandler);
       expect(api.handlers['createPet']).toBe(dummyHandler);
       expect(api.handlers['notFound']).toBe(dummyHandler);
+      expect(api.handlers['methodNotAllowed']).toBe(dummyHandler);
+    });
+  });
+
+  describe('.handleRequest', () => {
+    const api = new OpenAPIBackend({ definition });
+
+    test('handles GET /pets request with getPets handler', async () => {
+      const dummyHandler = jest.fn(() => 'dummyResponse');
+      api.register('getPets', dummyHandler);
+      await api.init();
+
+      const request = {
+        method: 'get',
+        path: '/pets',
+        headers: {},
+      };
+
+      const res = await api.handleRequest(request);
+      expect(dummyHandler).toBeCalledTimes(1);
+      expect(res).toBe('dummyResponse');
+    });
+
+    test('handles GET /unknown request with notFound handler', async () => {
+      const dummyHandler = jest.fn(() => 'dummyResponse');
+      api.register('notFound', dummyHandler);
+      await api.init();
+
+      const request = {
+        method: 'get',
+        path: '/unknown',
+        headers: {},
+      };
+      const res = await api.handleRequest(request);
+      expect(dummyHandler).toBeCalledTimes(1);
+      expect(res).toBe('dummyResponse');
+    });
+
+    test('handles DELETE /pets request with methodNotAllowed handler', async () => {
+      const dummyHandler = jest.fn(() => 'dummyResponse');
+      api.register('methodNotAllowed', dummyHandler);
+      await api.init();
+
+      const request = {
+        method: 'delete',
+        path: '/pets',
+        headers: {},
+      };
+      const res = await api.handleRequest(request);
+      expect(dummyHandler).toBeCalledTimes(1);
+      expect(res).toBe('dummyResponse');
     });
   });
 

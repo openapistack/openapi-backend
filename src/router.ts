@@ -74,36 +74,63 @@ export class OpenAPIRouter {
    * Matches a request to an API operation (router)
    *
    * @param {Request} req
-   * @returns {Operation}
+   * @param {boolean} [strict] strict mode, throw error if operation is not found
+   * @returns {Operation }
    * @memberof OpenAPIRouter
    */
-  public matchOperation(req: Request): Operation | undefined {
+  public matchOperation(req: Request): Operation | undefined;
+  public matchOperation(req: Request, strict: boolean): Operation;
+  public matchOperation(req: Request, strict?: boolean) {
     // normalize request for matching
     req = this.normalizeRequest(req);
 
-    // make sure request path matches apiRoot
+    // if request doesn't match apiRoot, throw 404
     if (!req.path.startsWith(this.apiRoot)) {
-      return undefined;
+      if (strict) {
+        throw Error('404-notFound: no route matches request');
+      } else {
+        return undefined;
+      }
     }
 
     // get relative path
     const normalizedPath = this.normalizePath(req.path);
 
-    // get all operations matching request method in a flat array
-    const operations = _.filter(this.getOperations(), ({ method }) => method === req.method);
+    // get all operations matching exact path
+    const exactPathMatches = _.filter(this.getOperations(), ({ path }) => path === normalizedPath);
 
-    // first check for an exact match for path
-    const exactMatch = _.find(operations, ({ path }) => path === normalizedPath);
+    // check if there's one with correct method and return if found
+    const exactMatch = _.find(exactPathMatches, ({ method }) => method === req.method);
     if (exactMatch) {
       return exactMatch;
     }
 
-    // then check for matches using path templating
-    return _.find(operations, ({ path }) => {
+    // check with path templates
+    const templatePathMatches = _.filter(this.getOperations(), ({ path }) => {
       // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
-      const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/]+')}$`;
+      const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/:]+')}$`;
       return Boolean(normalizedPath.match(new RegExp(pathPattern, 'g')));
     });
+
+    // if no operations match the path, throw 404
+    if (!templatePathMatches.length) {
+      if (strict) {
+        throw Error('404-notFound: no route matches request');
+      } else {
+        return undefined;
+      }
+    }
+
+    // then check if one of the matched operations matches the method
+    const match = _.find(templatePathMatches, ({ method }) => method === req.method);
+    if (!match) {
+      if (strict) {
+        throw Error('405-methodNotAllowed: this method is not registered for the route');
+      } else {
+        return undefined;
+      }
+    }
+    return match;
   }
 
   /**

@@ -806,17 +806,34 @@ api.register('validationFail', validationFailHandler);
 
 ### notFound Handler
 
-The `notFound` handler gets called by `.handleRequest()` if the routing doesn't match an operation in the API
-definitions.
+The `notFound` handler gets called by `.handleRequest()` if the path doesn't
+match an operation in the API definitions.
 
 HINT: You should probably return a 404 status code from this handler.
 
 Example handler:
 ```javascript
-function notFoundHandler(c, req, res) {
+function notFound(c, req, res) {
   return res.status(404).json({ status: 404, err: 'Not found' });
 }
-api.register('notFound', notFoundHandler);
+api.register('notFound', notFound);
+```
+
+### methodNotAllowed Handler
+
+The `methodNotAllowed` handler gets called by `.handleRequest()` if used the
+method is not registered for the path.
+
+If this handler isn't registered, the [notFound Handler](#notfound-handler) will be used instead.
+
+HINT: You should probably return a 405 status code from this handler.
+
+Example handler:
+```javascript
+function methodNotAllowed(c, req, res) {
+  return res.status(405).json({ status: 405, err: 'Method not allowed' });
+}
+api.register('methodNotAllowed', methodNotAllowed);
 ```
 
 ### notImplemented Handler
