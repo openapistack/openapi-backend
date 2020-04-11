@@ -16,7 +16,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "openapi-backend": "^2.3.2",
+    "openapi-backend": "^3.0.0",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {

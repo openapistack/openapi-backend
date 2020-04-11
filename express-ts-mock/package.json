@@ -18,7 +18,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "morgan": "^1.9.1",
-    "openapi-backend": "^2.0.0",
+    "openapi-backend": "^3.0.0",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
