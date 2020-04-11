@@ -822,8 +822,8 @@ api.register('notFound', notFound);
 
 ### methodNotAllowed Handler
 
-The `methodNotAllowed` handler gets called by `.handleRequest()` if used the
-method is not registered for the path.
+The `methodNotAllowed` handler gets called by `.handleRequest()` if request
+method does not match any operations for the path.
 
 If this handler isn't registered, the [notFound Handler](#notfound-handler) will be used instead.
 
