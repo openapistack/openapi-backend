@@ -1,0 +1,46 @@
+name: CI
+on:
+  push:
+    branches: ['master']
+    tags: ['*']
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project_dir:
+          - .
+          - ./examples/express
+          - ./examples/express-ts-mock
+          - ./examples/express-typescript
+          - ./examples/hapi-typescript
+          - ./examples/koa
+          - ./examples/serverless-aws
+          - ./examples/serverless-azure
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+      - run: npm ci
+        working-directory: ${{ matrix.project_dir }}
+      - run: npm run lint
+        if: matrix.project_dir == '.'
+      - run: npm test
+        working-directory: ${{ matrix.project_dir }}
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    needs:
+      - test
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm publish || true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
