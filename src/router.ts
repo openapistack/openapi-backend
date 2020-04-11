@@ -35,16 +35,16 @@ export interface Request {
 }
 
 export interface ParsedRequest extends Request {
-  params?: {
+  params: {
     [key: string]: string | string[];
   };
-  cookies?: {
+  cookies: {
     [key: string]: string | string[];
   };
-  query?: {
+  query: {
     [key: string]: string | string[];
   };
-  requestBody?: any;
+  requestBody: any;
 }
 
 /**
@@ -212,14 +212,14 @@ export class OpenAPIRouter {
     // normalize
     req = this.normalizeRequest(req);
 
-    let params: Parameters | undefined = {};
+    let params: Parameters = {};
     if (path) {
       // get relative path
       const normalizedPath = this.normalizePath(req.path);
 
       // parse path params if path is given
       const pathParams = bath(path);
-      params = pathParams.params(normalizedPath) || undefined;
+      params = pathParams.params(normalizedPath) || {};
     }
 
     return {

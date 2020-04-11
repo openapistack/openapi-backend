@@ -20,14 +20,14 @@ type Document = OpenAPIV3.Document;
  */
 export interface Context {
   api: OpenAPIBackend;
-  request?: ParsedRequest;
-  operation?: Operation;
-  validation?: ValidationResult;
-  response?: any;
+  request: ParsedRequest;
+  operation: Operation;
+  validation: ValidationResult;
+  response: any;
 }
 
-export type Handler = (context?: Context, ...args: any[]) => any | Promise<any>;
-export type BoolPredicate = (context?: Context, ...args: any[]) => boolean;
+export type Handler = (context: Context, ...args: any[]) => any | Promise<any>;
+export type BoolPredicate = (context: Context, ...args: any[]) => boolean;
 
 /**
  * The different possibilities for set matching.
@@ -58,7 +58,6 @@ export class OpenAPIBackend {
   public strict: boolean;
   public quick: boolean;
   public validate: boolean | BoolPredicate;
-  public withContext: boolean;
 
   public ajvOpts: Ajv.Options;
   public customizeAjv: AjvCustomizer | undefined;
@@ -80,7 +79,6 @@ export class OpenAPIBackend {
    * @param {boolean} opts.strict - strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
    * @param {boolean} opts.quick - quick startup, attempts to optimise startup; might break things (default: false)
    * @param {boolean} opts.validate - whether to validate requests with Ajv (default: true)
-   * @param {boolean} opts.withContext - whether to pass context object to handlers as first argument (default: true)
    * @param {boolean} opts.ajvOpts - default ajv opts to pass to the validator
    * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
    * @memberof OpenAPIBackend
@@ -91,7 +89,6 @@ export class OpenAPIBackend {
     strict?: boolean;
     quick?: boolean;
     validate?: boolean | BoolPredicate;
-    withContext?: boolean;
     ajvOpts?: Ajv.Options;
     customizeAjv?: AjvCustomizer;
     handlers?: {
@@ -103,7 +100,6 @@ export class OpenAPIBackend {
   }) {
     const optsWithDefaults = {
       apiRoot: '/',
-      withContext: true,
       validate: true,
       strict: false,
       quick: false,
@@ -117,7 +113,6 @@ export class OpenAPIBackend {
     this.quick = optsWithDefaults.quick;
     this.validate = optsWithDefaults.validate;
     this.handlers = optsWithDefaults.handlers;
-    this.withContext = optsWithDefaults.withContext;
     this.ajvOpts = optsWithDefaults.ajvOpts;
     this.customizeAjv = optsWithDefaults.customizeAjv;
     this.schemas = {};
@@ -209,7 +204,7 @@ export class OpenAPIBackend {
     }
 
     // initalize context object with a reference to this OpenAPIBackend instance
-    const context: Context = { api: this };
+    const context: Partial<Context> = { api: this };
 
     // handle request with correct handler
     const response = await (async () => {
@@ -224,7 +219,7 @@ export class OpenAPIBackend {
         if (!notFoundHandler) {
           throw Error(`404-notFound: no route matches request`);
         }
-        return this.withContext ? notFoundHandler(context, ...handlerArgs) : notFoundHandler(...handlerArgs);
+        return notFoundHandler(context as Context, ...handlerArgs);
       }
       const { path, operationId } = context.operation;
 
@@ -233,7 +228,9 @@ export class OpenAPIBackend {
 
       // check whether this request should be validated
       const validate =
-        typeof this.validate === 'function' ? this.validate(context, ...handlerArgs) : Boolean(this.validate);
+        typeof this.validate === 'function'
+          ? this.validate(context as Context, ...handlerArgs)
+          : Boolean(this.validate);
 
       // validate request
       const validationFailHandler: Handler = this.handlers['validationFail'];
@@ -242,9 +239,7 @@ export class OpenAPIBackend {
         if (context.validation.errors) {
           // 400 request validation fail
           if (validationFailHandler) {
-            return this.withContext
-              ? validationFailHandler(context, ...handlerArgs)
-              : validationFailHandler(...handlerArgs);
+            return validationFailHandler(context as Context, ...handlerArgs);
           }
           // if no validation handler is specified, just ignore it and proceed to route handler
         }
@@ -258,13 +253,11 @@ export class OpenAPIBackend {
         if (!notImplementedHandler) {
           throw Error(`501-notImplemented: ${operationId} no handler registered`);
         }
-        return this.withContext
-          ? notImplementedHandler(context, ...handlerArgs)
-          : notImplementedHandler(...handlerArgs);
+        return notImplementedHandler(context as Context, ...handlerArgs);
       }
 
       // handle route
-      return this.withContext ? routeHandler(context, ...handlerArgs) : routeHandler(...handlerArgs);
+      return routeHandler(context as Context, ...handlerArgs);
     }).bind(this)();
 
     // post response handler
@@ -272,7 +265,7 @@ export class OpenAPIBackend {
     if (postResponseHandler) {
       // pass response to postResponseHandler
       context.response = response;
-      return this.withContext ? postResponseHandler(context, ...handlerArgs) : postResponseHandler(...handlerArgs);
+      return postResponseHandler(context as Context, ...handlerArgs);
     }
 
     // return response

@@ -173,91 +173,11 @@ describe('OpenAPIRouter', () => {
 });
 
 describe('OpenAPIBackend', () => {
-  describe('.handleRequest withContext=false', () => {
+  describe('.handleRequest', () => {
     const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
     const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
     const api = new OpenAPIBackend({
       definition,
-      withContext: false,
-      handlers: {
-        apiRoot: dummyHandler('apiRoot'),
-        getPets: dummyHandler('getPets'),
-        getPetById: dummyHandler('getPetById'),
-        createPet: dummyHandler('createPet'),
-        updatePetById: dummyHandler('updatePetById'),
-        notImplemented: dummyHandler('notImplemented'),
-        notFound: dummyHandler('notFound'),
-      },
-    });
-    beforeAll(() => api.init());
-
-    test('handles GET /', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/', headers }, 'param0', 'param0');
-      expect(res).toEqual({ operationId: 'apiRoot' });
-      expect(dummyHandlers['apiRoot']).toBeCalledWith('param0', 'param0');
-    });
-
-    test('handles GET /pets', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/pets', headers }, 'param0', 'param1');
-      expect(res).toEqual({ operationId: 'getPets' });
-      expect(dummyHandlers['getPets']).toBeCalledWith('param0', 'param1');
-    });
-
-    test('handles POST /pets', async () => {
-      const res = await api.handleRequest({ method: 'POST', path: '/pets', headers }, 'param1', 'param2');
-      expect(res).toEqual({ operationId: 'createPet' });
-      expect(dummyHandlers['createPet']).toBeCalledWith('param1', 'param2');
-    });
-
-    test('handles GET /pets/1', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/pets/1', headers }, 'param2', 'param3');
-      expect(res).toEqual({ operationId: 'getPetById' });
-      expect(dummyHandlers['getPetById']).toBeCalledWith('param2', 'param3');
-    });
-
-    test('handles PATCH /pets/1', async () => {
-      const res = await api.handleRequest({ method: 'PATCH', path: '/pets/1', headers }, 'param3', 'param4');
-      expect(res).toEqual({ operationId: 'updatePetById' });
-      expect(dummyHandlers['updatePetById']).toBeCalledWith('param3', 'param4');
-    });
-
-    test('handles a 404 for unregistered endpoint GET /humans', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/humans', headers }, 'param4', 'param5');
-      expect(res).toEqual({ operationId: 'notFound' });
-      expect(dummyHandlers['notFound']).toBeCalledWith('param4', 'param5');
-    });
-
-    test('handles a 501 for not implemented endpoint DELETE /pets/1', async () => {
-      const res = await api.handleRequest({ method: 'DELETE', path: '/pets/1', headers }, 'param5', 'param6');
-      expect(res).toEqual({ operationId: 'notImplemented' });
-      expect(dummyHandlers['notImplemented']).toBeCalledWith('param5', 'param6');
-    });
-
-    test('handles GET /pets/ with trailing slash', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/pets/', headers }, 'param6', 'param7');
-      expect(res).toEqual({ operationId: 'getPets' });
-      expect(dummyHandlers['getPets']).toBeCalledWith('param6', 'param7');
-    });
-
-    test('handles GET /pets/?limit=10 with query string', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: '/pets/?limit=10', headers }, 'param7', 'param8');
-      expect(res).toEqual({ operationId: 'getPets' });
-      expect(dummyHandlers['getPets']).toBeCalledWith('param7', 'param8');
-    });
-
-    test('handles GET pets with no leading slash', async () => {
-      const res = await api.handleRequest({ method: 'GET', path: 'pets', headers }, 'param8', 'param9');
-      expect(res).toEqual({ operationId: 'getPets' });
-      expect(dummyHandlers['getPets']).toBeCalledWith('param8', 'param9');
-    });
-  });
-
-  describe('.handleRequest withContext=true', () => {
-    const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
-    const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
-    const api = new OpenAPIBackend({
-      definition,
-      withContext: true,
       handlers: {
         apiRoot: dummyHandler('apiRoot'),
         getPets: dummyHandler('getPets'),
@@ -373,7 +293,6 @@ describe('OpenAPIBackend', () => {
     const dummyHandler = (operationId: string) => (dummyHandlers[operationId] = jest.fn(() => ({ operationId })));
     const api = new OpenAPIBackend({
       definition,
-      withContext: true,
       handlers: {
         apiRoot: dummyHandler('apiRoot'),
         getPets: dummyHandler('getPets'),
@@ -387,7 +306,7 @@ describe('OpenAPIBackend', () => {
     beforeAll(() => api.init());
 
     test('handles GET / and passes response to postResponseHandler', async () => {
-      const postResponseHandler = jest.fn((c?: Context) => c && c.response);
+      const postResponseHandler = jest.fn((c: Context) => c && c.response);
       await api.register({ postResponseHandler });
 
       const res = await api.handleRequest({ method: 'GET', path: '/', headers });
@@ -401,7 +320,7 @@ describe('OpenAPIBackend', () => {
     });
 
     test('handles GET /pets and passes response to postResponseHandler', async () => {
-      const postResponseHandler = jest.fn((c?: Context) => c && c.response);
+      const postResponseHandler = jest.fn((c: Context) => c && c.response);
       await api.register({ postResponseHandler });
 
       const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });

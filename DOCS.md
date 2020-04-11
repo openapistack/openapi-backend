@@ -12,7 +12,6 @@
     - [Parameter: opts.strict](#parameter-optsstrict)
     - [Parameter: opts.quick](#parameter-optsquick)
     - [Parameter: opts.validate](#parameter-optsvalidate)
-    - [Parameter: opts.withContext](#parameter-optswithcontext)
     - [Parameter: opts.ajvOpts](#parameter-optsajvopts)
     - [Parameter: opts.customizeAjv(originalAjv, ajvOpts, validationContext)](#parameter-optscustomizeajvoriginalajv-ajvopts-validationcontext)
     - [Parameter: opts.handlers](#parameter-optshandlers)
@@ -147,12 +146,6 @@ Type: `boolean`
 #### Parameter: opts.validate
 
 Optional. Enable or disable request validation (default: true)
-
-Type: `boolean`
-
-#### Parameter: opts.withContext
-
-Optional. Whether to pass [Context object](#context-object) to handlers as the first argument (default: true)
 
 Type: `boolean`
 
@@ -509,8 +502,7 @@ You can register *Operation Handlers* for operationIds specified by your OpenAPI
 These get called with the `.handleRequest()` method after routing and (optionally) validation is finished.
 
 The first argument of the handler is the [Context object](#context-object) and rest are passed from `.handleRequest()`
-arguments, starting from the second one. You can disable passing the Context object to handlers by specifying
-`withContext: false` in [OpenAPIBackend constructor opts](#parameter-optswithcontext).
+arguments, starting from the second one.
 
 Example handler for Express
 ```javascript
