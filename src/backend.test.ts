@@ -164,9 +164,8 @@ describe('OpenAPIBackend', () => {
   });
 
   describe('.handleRequest', () => {
-    const api = new OpenAPIBackend({ definition });
-
     test('handles GET /pets request with getPets handler', async () => {
+      const api = new OpenAPIBackend({ definition });
       const dummyHandler = jest.fn(() => 'dummyResponse');
       api.register('getPets', dummyHandler);
       await api.init();
@@ -183,6 +182,7 @@ describe('OpenAPIBackend', () => {
     });
 
     test('handles GET /unknown request with notFound handler', async () => {
+      const api = new OpenAPIBackend({ definition });
       const dummyHandler = jest.fn(() => 'dummyResponse');
       api.register('notFound', dummyHandler);
       await api.init();
@@ -198,8 +198,25 @@ describe('OpenAPIBackend', () => {
     });
 
     test('handles DELETE /pets request with methodNotAllowed handler', async () => {
+      const api = new OpenAPIBackend({ definition });
       const dummyHandler = jest.fn(() => 'dummyResponse');
       api.register('methodNotAllowed', dummyHandler);
+      await api.init();
+
+      const request = {
+        method: 'delete',
+        path: '/pets',
+        headers: {},
+      };
+      const res = await api.handleRequest(request);
+      expect(dummyHandler).toBeCalledTimes(1);
+      expect(res).toBe('dummyResponse');
+    });
+
+    test('handles DELETE /pets request with notFound handler if methodNotAllowed is not registered', async () => {
+      const api = new OpenAPIBackend({ definition });
+      const dummyHandler = jest.fn(() => 'dummyResponse');
+      api.register('notFound', dummyHandler);
       await api.init();
 
       const request = {

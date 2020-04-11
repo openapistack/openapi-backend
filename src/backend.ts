@@ -222,11 +222,7 @@ export class OpenAPIBackend {
       try {
         context.operation = this.router.matchOperation(req, true);
       } catch (err) {
-        let handler: Handler | undefined;
-        if (err.message.startsWith('404')) {
-          // 404 route not found
-          handler = this.handlers['404'] || this.handlers['notFound'];
-        }
+        let handler = this.handlers['404'] || this.handlers['notFound'];
         if (err.message.startsWith('405')) {
           // 405 method not allowed
           handler = this.handlers['405'] || this.handlers['methodNotAllowed'] || handler;
