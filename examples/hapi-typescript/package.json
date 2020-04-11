@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "hapi": "^17.8.4",
-    "openapi-backend": "^2.0.0",
+    "openapi-backend": "^3.0.0",
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
