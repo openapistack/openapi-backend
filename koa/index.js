@@ -79,18 +79,7 @@ const api = new OpenAPIBackend({
 api.init();
 
 // use as koa middleware
-app.use((ctx) =>
-  api.handleRequest(
-    {
-      method: ctx.request.method,
-      path: ctx.request.path,
-      body: ctx.request.body,
-      query: ctx.request.query,
-      headers: ctx.request.headers,
-    },
-    ctx,
-  ),
-);
+app.use((ctx) => api.handleRequest(ctx.request, ctx));
 
 // start server
 app.listen(9000, () => console.info('api listening at http://localhost:9000'));
