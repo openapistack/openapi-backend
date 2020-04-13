@@ -1,6 +1,6 @@
 {
   "name": "openapi-backend",
-  "description": "Build, Validate, Route, and Mock using OpenAPI specification. Framework-agnostic",
+  "description": "Build, Validate, Route, Authenticate and Mock using OpenAPI definitions. Framework-agnostic",
   "version": "3.2.1",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "license": "MIT",
