@@ -22,19 +22,19 @@ describe('express example', () => {
       client.defaults.headers.common['Authorization'] = null;
     });
 
-    test('GET /pets returns 200 with matched operation', async () => {
+    test('GET /pets returns 401 error', async () => {
       const res = await client.get('/pets');
       expect(res.status).toBe(401);
       expect(res.data).toHaveProperty('err');
     });
 
-    test('GET /pets/1 returns 200 with matched operation', async () => {
+    test('GET /pets/1 returns 401 error', async () => {
       const res = await client.get('/pets/1');
       expect(res.status).toBe(401);
       expect(res.data).toHaveProperty('err');
     });
 
-    test('GET /pets/1a returns 400 with validation error', async () => {
+    test('GET /pets/1a returns 401 error', async () => {
       const res = await client.get('/pets/1a');
       expect(res.status).toBe(401);
       expect(res.data).toHaveProperty('err');
@@ -72,19 +72,19 @@ describe('express example', () => {
       client.defaults.headers.common['Authorization'] = token;
     });
 
-    test('GET /pets returns 200 with matched operation', async () => {
+    test('GET /pets returns 401 error', async () => {
       const res = await client.get('/pets');
       expect(res.status).toBe(401);
       expect(res.data).toHaveProperty('err');
     });
 
-    test('GET /pets/1 returns 200 with matched operation', async () => {
+    test('GET /pets/1 returns 401 error', async () => {
       const res = await client.get('/pets/1');
       expect(res.status).toBe(401);
       expect(res.data).toHaveProperty('err');
     });
 
-    test('GET /pets/1a returns 400 with validation error', async () => {
+    test('GET /pets/1a returns 401 error', async () => {
       const res = await client.get('/pets/1a');
       expect(res.status).toBe(401);
       expect(res.data).toHaveProperty('err');
