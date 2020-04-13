@@ -302,6 +302,26 @@ describe('OpenAPIBackend', () => {
         expect(context.security).toHaveProperty('basicAuth');
         expect(context.security?.basicAuth).toBe('dummyResponse');
       });
+
+      test('sets security handler results to undefined if no handler is registered', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security).toHaveProperty('basicAuth');
+        expect(context.security?.basicAuth).toBe(undefined);
+      });
     });
   });
 
