@@ -154,11 +154,6 @@ const api = new OpenAPIBackend({
   validate: true,
   ajvOpts: { unknownFormats: true },
   customizeAjv: () => new Ajv(),
-  handlers: {
-    getPets: (req, res) => res.json({ result: ['pet1', 'pet2'] }),
-    notFound: (req, res) => res.status(404).json({ err: 'not found' }),
-    validationFail: (err, req, res) => res.status(404).json({ err }),
-  },
 });
 ```
 
@@ -889,8 +884,8 @@ api.register('notImplemented', notImplementedHandler);
 ### unauthorizedHandler Handler
 
 The `unauthorizedHandler` handler gets called by `.handleRequest()` if security
-requirements are not met, using the registered [security handlers'](#security-handlers)
-return values for checking.
+requirements are not met after checking [Security Requirements](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securityRequirementObject)
+and calling their [Security Sandlers'](#security-handlers).
 
 HINT: You should probably return a 401 or 403 code from this handler and
 instruct the client to authenticate.
@@ -903,6 +898,10 @@ function unauthorizedHandler(c, req, res) {
 }
 api.register('unauthorizedHandler', unauthorizedHandler);
 ```
+
+If no `unauthorizedHandler` is registered, the Security Handlers will still be 
+called and their output and the authorization status for the request can be
+checked in operation handlers via the [`context.security` property](#context-object).
 
 ### postResponseHandler Handler
 
@@ -934,6 +933,22 @@ These get called with the `.handleRequest()` method after routing if the
 matched operation, or the root OpenAPI document includes the security scheme in
 a [Security Requirement Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securityRequirementObject)
 
+Example handler for JWT auth:
+```javascript
+const jwt = require('jsonwebtoken');
+
+function jwtHandler(c, req, res) {
+  const authHeader = c.headers['authorization'];
+  if (!authHeader) {
+    throw new Error('Missing authorization header');
+  }
+  const token = authHeader.replace('Bearer ', '');
+  return jwt.verify(token, 'secret'); 
+}
+
+api.registerSecurityHandler('jwt', jwtHandler);
+```
+
 The first argument of the handler is the [Context object](#context-object) and rest are passed from `.handleRequest()`
 arguments, starting from the second one.
 
@@ -946,22 +961,6 @@ success, unless the return value is an object containing an `error` property.
 All falsy return values are interpreted as auth fail.
 
 Throwing an error from the security handler also gets interpreted as auth fail. The error is available in `context.security[name].error`.
-
-Example handler for JWT auth:
-```javascript
-const jwt = require('jsonwebtoken');
-
-function jwtHandler(c, req, res) {
-   const authHeader = c.headers['authorization'];
-  if (!authHeader) {
-    throw new Error('Missing authorization header');
-  }
-  const token = authHeader.replace('Bearer ', '');
-  return jwt.verify(token, 'secret'); 
-}
-
-api.registerSecurityHandler('jwt', jwtHandler);
-```
 
 ## Interfaces
 

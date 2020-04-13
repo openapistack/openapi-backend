@@ -308,7 +308,7 @@ security:
 ```javascript
 api.registerSecurityHandler('ApiKey', (c) => {
   const authorized = c.headers['x-api-key'] === 'SuperSecretPassword123';
-  // any truthy value is interpreted as auth success
+  // truthy return values are interpreted as auth success
   // you can also add any auth information to the return value
   return authorized; 
 });
@@ -320,7 +320,9 @@ You can also register an [`unauthorizedHandler`](https://github.com/anttiviljami
 to automatically handle requests where security requirements are not met.
 
 ```javascript
-api.register('unauthorizedHandler', (c, req, res) => res.status(401).json({ err: 'unauthorized' }));
+api.register('unauthorizedHandler', (c, req, res) => {
+  return res.status(401).json({ err: 'unauthorized' })
+});
 ```
 
 ## Mocking API responses
