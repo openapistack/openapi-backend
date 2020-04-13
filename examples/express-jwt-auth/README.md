@@ -13,7 +13,7 @@ npm start # API running at http://localhost:9000
 Try the endpoints:
 
 ```bash
-curl -i http://localhost:9000/pets
-curl -i http://localhost:9000/pets/1
+curl -i http://localhost:9000/login
+curl -i http://localhost:9000/me -H "Authorization: <token>"
 ```
 

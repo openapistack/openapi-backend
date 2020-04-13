@@ -3,25 +3,48 @@ info:
   title: 'My API'
   version: 1.0.0
 paths:
-  '/pets':
+  '/me':
     get:
-      operationId: getPets
+      operationId: me
       responses:
         '200':
-          description: ok
-  '/pets/{id}':
+          description: Token data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenData'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenData'
+  '/login':
     get:
-      operationId: getPetById
+      operationId: login
+      security: [] # no auth needed
       responses:
         '200':
-          description: ok
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
+          description: Logged in succesfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenData'
 components:
+  schemas:
+    TokenData:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        iat:
+          type: integer
+          example: 1516239022
   securitySchemes:
     jwtAuth:
       type: http

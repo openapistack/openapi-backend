@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 jest.setTimeout(30000);
 
-describe('express example', () => {
+describe('express jwt example', () => {
   let start;
   let client;
 
@@ -17,77 +17,53 @@ describe('express example', () => {
 
   afterAll(() => process.kill(-start.pid));
 
-  describe('without auth headers', () => {
+  describe('with valid jwt token', () => {
+    const payload = { user: 'John Doe' };
+    const token = jwt.sign(payload, 'secret');
+    beforeAll(() => {
+      client.defaults.headers.common['Authorization'] = token;
+    });
+
+    test('GET /me returns 200 with token data', async () => {
+      const res = await client.get('/me');
+      expect(res.status).toBe(200);
+      expect(res.data.user).toEqual(payload.user);
+    });
+  });
+
+  describe('without authorization header', () => {
     beforeAll(() => {
       client.defaults.headers.common['Authorization'] = null;
     });
 
-    test('GET /pets returns 401 error', async () => {
-      const res = await client.get('/pets');
+    test('GET /me returns 401', async () => {
+      const res = await client.get('/me');
       expect(res.status).toBe(401);
       expect(res.data).toHaveProperty('err');
     });
 
-    test('GET /pets/1 returns 401 error', async () => {
-      const res = await client.get('/pets/1');
-      expect(res.status).toBe(401);
-      expect(res.data).toHaveProperty('err');
-    });
-
-    test('GET /pets/1a returns 401 error', async () => {
-      const res = await client.get('/pets/1a');
-      expect(res.status).toBe(401);
-      expect(res.data).toHaveProperty('err');
+    test('GET /login returns 200 with new jwt token', async () => {
+      const res = await client.get('/login');
+      expect(res.status).toBe(200);
+      expect(res.data).toHaveProperty('token');
     });
   });
 
-  describe('with valid jwt token', () => {
+  describe('with invalid jwt token', () => {
     beforeAll(() => {
-      const token = jwt.sign({ id: 1 }, 'secret');
-      client.defaults.headers.common['Authorization'] = token;
+      client.defaults.headers.common['Authorization'] = '<invalid token>';
     });
 
-    test('GET /pets returns 200 with matched operation', async () => {
-      const res = await client.get('/pets');
+    test('GET /me returns 401', async () => {
+      const res = await client.get('/me');
+      expect(res.status).toBe(401);
+      expect(res.data).toHaveProperty('err');
+    });
+
+    test('GET /login returns 200 with new jwt token', async () => {
+      const res = await client.get('/login');
       expect(res.status).toBe(200);
-      expect(res.data).toEqual({ operationId: 'getPets' });
-    });
-
-    test('GET /pets/1 returns 200 with matched operation', async () => {
-      const res = await client.get('/pets/1');
-      expect(res.status).toBe(200);
-      expect(res.data).toEqual({ operationId: 'getPetById' });
-    });
-
-    test('GET /pets/1a returns 400 with validation error', async () => {
-      const res = await client.get('/pets/1a');
-      expect(res.status).toBe(400);
-      expect(res.data).toHaveProperty('err');
-    });
-  });
-
-  describe('with invalid token', () => {
-    beforeAll(() => {
-      const token = 'this is not a jwt token';
-      client.defaults.headers.common['Authorization'] = token;
-    });
-
-    test('GET /pets returns 401 error', async () => {
-      const res = await client.get('/pets');
-      expect(res.status).toBe(401);
-      expect(res.data).toHaveProperty('err');
-    });
-
-    test('GET /pets/1 returns 401 error', async () => {
-      const res = await client.get('/pets/1');
-      expect(res.status).toBe(401);
-      expect(res.data).toHaveProperty('err');
-    });
-
-    test('GET /pets/1a returns 401 error', async () => {
-      const res = await client.get('/pets/1a');
-      expect(res.status).toBe(401);
-      expect(res.data).toHaveProperty('err');
+      expect(res.data).toHaveProperty('token');
     });
   });
 });
