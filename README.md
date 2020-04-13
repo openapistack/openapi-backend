@@ -23,10 +23,10 @@ and importing them via YAML or JSON files or just passing an object
 to route requests in your favourite Node.js backend
 - [x] Use [JSON Schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#data-types) to validate
 API requests and/or responses. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
+- [x] Register Auth / Security Handlers for [OpenAPI Security Schemes](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securitySchemeObject)
+to authorize API requests
 - [x] Mock API responses using [OpenAPI examples objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#example-object)
 or [JSON Schema definitions](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#schema-object)
-- [x] Use [OpenAPI Security Requirement Definitions](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securityRequirementObject)
-to authorize API requests
 - [x] TypeScript types included
 
 (Currently only OpenAPI v3.0.0+ is supported)
@@ -291,8 +291,7 @@ api.register({
 ## Auth / Security Handlers
 
 If your OpenAPI definition contains [Security Schemes](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securitySchemeObject)
-you can register security handlers that will be processed for each request that
-requires the security scheme.
+you can register security handlers to handle authorization for your API:
 
 ```yaml
 components:
@@ -314,10 +313,11 @@ api.registerSecurityHandler('ApiKey', (c) => {
 });
 ```
 
-The return value of each security handler can be accessed via the [Context Object](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#context-object)
+The authorization status and return values of each security handler can be
+accessed via the [Context Object](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#context-object)
 
-You can also register an [`unauthorizedHandler`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#unauthorizedhandler)
-to automatically handle requests where security requirements are not met.
+You can also register an [`unauthorizedHandler`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#unauthorizedhandler-handler)
+to handle unauthorized requests.
 
 ```javascript
 api.register('unauthorizedHandler', (c, req, res) => {
