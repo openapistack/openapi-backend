@@ -1,0 +1,21 @@
+{
+  "name": "openapi-backend-express-jwt-auth",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
+  "license": "MIT",
+  "keywords": [],
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "openapi-backend": "^3.3.0"
+  },
+  "devDependencies": {
+    "axios": "^0.18.1",
+    "jest": "^23.6.0",
+    "wait-on": "^3.2.0"
+  }
+}
