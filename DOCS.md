@@ -399,7 +399,7 @@ Registers a security handler for a security scheme.
 Example usage:
 ```javascript
 api.registerSecurityHandler('ApiKey', (c) => {
-  const authorized = c.headers['x-api-key'] === 'SuperSecretPassword123';
+  const authorized = c.request.headers['x-api-key'] === 'SuperSecretPassword123';
   return authorized; 
 });
 ```
@@ -938,7 +938,7 @@ Example handler for JWT auth:
 const jwt = require('jsonwebtoken');
 
 function jwtHandler(c, req, res) {
-  const authHeader = c.headers['authorization'];
+  const authHeader = c.request.headers['authorization'];
   if (!authHeader) {
     throw new Error('Missing authorization header');
   }

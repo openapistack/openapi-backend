@@ -304,7 +304,7 @@ security:
 
 ```javascript
 api.registerSecurityHandler('ApiKey', (c) => {
-  const authorized = c.headers['x-api-key'] === 'SuperSecretPassword123';
+  const authorized = c.request.headers['x-api-key'] === 'SuperSecretPassword123';
   // truthy return values are interpreted as auth success
   // you can also add any auth information to the return value
   return authorized; 
@@ -322,6 +322,8 @@ api.register('unauthorizedHandler', (c, req, res) => {
   return res.status(401).json({ err: 'unauthorized' })
 });
 ```
+
+[See full example with JWT authorization on Express](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-jwt-auth)
 
 ## Mocking API responses
 
