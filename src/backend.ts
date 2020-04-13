@@ -10,7 +10,15 @@ import { OpenAPIValidator, ValidationResult, AjvCustomizer } from './validation'
 import OpenAPIUtils from './utils';
 
 // alias Document to OpenAPIV3.Document
-type Document = OpenAPIV3.Document;
+export type Document = OpenAPIV3.Document;
+
+// alias SecurityRequirement
+export type SecurityRequirement = OpenAPIV3.SecurityRequirementObject;
+
+export type SecurityHandlerResult = any;
+export interface SecurityHandlerResults {
+  [name: string]: SecurityHandlerResult;
+}
 
 /**
  * Passed context built for request. Passed as first argument for all handlers.
@@ -23,6 +31,7 @@ export interface Context {
   request: ParsedRequest;
   operation: Operation;
   validation: ValidationResult;
+  security: SecurityHandlerResults;
   response: any;
 }
 
@@ -75,6 +84,8 @@ export class OpenAPIBackend {
     'postResponseHandler',
   ];
 
+  public securityHandlers: { [name: string]: Handler };
+
   public router: OpenAPIRouter;
   public validator: OpenAPIValidator;
 
@@ -105,6 +116,9 @@ export class OpenAPIBackend {
       validationFail?: Handler;
       [handler: string]: Handler | undefined;
     };
+    securityHandlers?: {
+
+    };
   }) {
     const optsWithDefaults = {
       apiRoot: '/',
@@ -113,6 +127,7 @@ export class OpenAPIBackend {
       quick: false,
       ajvOpts: {},
       handlers: {},
+      securityHandlers: {},
       ...opts,
     };
     this.apiRoot = optsWithDefaults.apiRoot;
@@ -121,6 +136,7 @@ export class OpenAPIBackend {
     this.quick = optsWithDefaults.quick;
     this.validate = optsWithDefaults.validate;
     this.handlers = optsWithDefaults.handlers;
+    this.securityHandlers = optsWithDefaults.securityHandlers;
     this.ajvOpts = optsWithDefaults.ajvOpts;
     this.customizeAjv = optsWithDefaults.customizeAjv;
   }
@@ -189,6 +205,13 @@ export class OpenAPIBackend {
       this.register(this.handlers);
     }
 
+    // register all handlers
+    if (this.securityHandlers) {
+      _.entries(this.securityHandlers).map(([name, handler]) => {
+        this.registerSecurityHandler(name, handler);
+      });
+    }
+
     // return this instance
     return this;
   }
@@ -218,7 +241,7 @@ export class OpenAPIBackend {
       // parse request
       context.request = this.router.parseRequest(req);
 
-      // match operation
+      // match operation (routing)
       try {
         context.operation = this.router.matchOperation(req, true);
       } catch (err) {
@@ -232,11 +255,34 @@ export class OpenAPIBackend {
         }
         return handler(context as Context, ...handlerArgs);
       }
+
       const operationId = context.operation.operationId as string;
       const path = context.operation.path;
 
       // parse request again now with matched path
       context.request = this.router.parseRequest(req, path);
+
+      // get security requirements for the matched operation
+      // global requirements are already included in the router
+      const securityRequirements = context.operation.security || [];
+      const securitySchemes = _.flatMap(securityRequirements, _.keys);
+
+      // run registered security handlers for all security requirements
+      const securityHandlerResults: SecurityHandlerResults = {};
+      await Promise.all(securitySchemes.map((name) => {
+        securityHandlerResults[name] = undefined;
+        if (this.securityHandlers[name]) {
+          // return a promise that will set the security handler result
+          return Promise.resolve()
+            .then(async () => await this.securityHandlers[name](context as Context, ...handlerArgs))
+            .then((result) => { securityHandlerResults[name] = result; });
+        } else {
+          // if no handler is found for scheme, set to undefined
+          securityHandlerResults[name] = undefined;
+        }
+      }));
+      // add the results to the context object
+      context.security = securityHandlerResults;
 
       // check whether this request should be validated
       const validate =
@@ -355,6 +401,37 @@ export class OpenAPIBackend {
         }
       }
     }
+  }
+
+  /**
+   * Registers a security handler for a security scheme
+   *
+   * @param {string} name - security scheme name
+   * @param {Handler} handler - security handler
+   * @memberof OpenAPIBackend
+   */
+  public registerSecurityHandler(name: string, handler: Handler): void {
+    // make sure we are registering a function and not anything else
+    if (typeof handler !== 'function') {
+      throw new Error('Security handler should be a function');
+    }
+
+    // if initialized, check that operation matches a security scheme
+    if (this.initalized) {
+      const securitySchemes = this.definition.components?.securitySchemes || {};
+      if (!securitySchemes[name]) {
+        const err = `Unknown security scheme ${name}`;
+        // in strict mode, throw Error, otherwise just emit a warning
+        if (this.strict) {
+          throw new Error(`${err}. Refusing to register security handler`);
+        } else {
+          console.warn(err);
+        }
+      }
+    }
+
+    // register the handler
+    this.securityHandlers[name] = handler;
   }
 
   /**
