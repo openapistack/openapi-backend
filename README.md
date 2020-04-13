@@ -3,6 +3,7 @@
 [![CI](https://github.com/anttiviljami/openapi-backend/workflows/CI/badge.svg)](https://github.com/anttiviljami/openapi-backend/actions?query=workflow%3ACI)
 [![Dependencies](https://david-dm.org/anttiviljami/openapi-backend.svg)](https://david-dm.org/anttiviljami/openapi-backend)
 [![npm version](https://img.shields.io/npm/v/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
+[![npm downloads](https://img.shields.io/npm/dw/openapi-backend)](https://www.npmjs.com/package/openapi-backend)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/anttiviljami/openapi-backend.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/anttiviljami/openapi-backend/alerts/)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/anttiviljami/openapi-backend.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/anttiviljami/openapi-backend/context:javascript)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/anttiviljami/openapi-backend/blob/master/LICENSE)
@@ -15,17 +16,16 @@
 
 ## Features
 
-- [x] Build APIs by describing them in [OpenAPI document specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
-and importing them via YAML or JSON files or just passing an object
+- [x] Build APIs by describing them in [OpenAPI specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
 - [x] Register handlers for [operationIds](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#fixed-fields-8)
 to route requests in your favourite Node.js backend
 - [x] Use [JSON Schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#data-types) to validate
 API requests and/or responses. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
 - [x] Register Auth / Security Handlers for [OpenAPI Security Schemes](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securitySchemeObject)
 to authorize API requests
-- [x] Mock API responses using [OpenAPI examples objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#example-object)
+- [x] Auto-mock API responses using [OpenAPI examples objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#example-object)
 or [JSON Schema definitions](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#schema-object)
-- [x] TypeScript types included
+- [x] Built with TypeScript, types included
 
 (Currently only OpenAPI v3.0.0+ is supported)
 
