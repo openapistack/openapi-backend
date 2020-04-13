@@ -298,7 +298,7 @@ components:
       type: apiKey
       in: header
       name: x-api-key
-security: 
+security:
   - ApiKey: []
 ```
 
@@ -307,7 +307,7 @@ api.registerSecurityHandler('ApiKey', (c) => {
   const authorized = c.request.headers['x-api-key'] === 'SuperSecretPassword123';
   // truthy return values are interpreted as auth success
   // you can also add any auth information to the return value
-  return authorized; 
+  return authorized;
 });
 ```
 
@@ -323,7 +323,9 @@ api.register('unauthorizedHandler', (c, req, res) => {
 });
 ```
 
-[See full example with JWT authorization on Express](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-jwt-auth)
+See examples:
+- [API Key auth (express)](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-apikey-auth)
+- [JWT auth (express)](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-jwt-auth)
 
 ## Mocking API responses
 

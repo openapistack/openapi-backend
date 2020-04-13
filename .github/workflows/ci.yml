@@ -15,6 +15,7 @@ jobs:
         project_dir:
           - .
           - examples/express
+          - examples/express-apikey-auth
           - examples/express-jwt-auth
           - examples/express-ts-mock
           - examples/express-typescript
