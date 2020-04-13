@@ -25,6 +25,8 @@ to route requests in your favourite Node.js backend
 API requests and/or responses. OpenAPI Backend uses the [AJV](https://ajv.js.org/) library under the hood for performant validation
 - [x] Mock API responses using [OpenAPI examples objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#example-object)
 or [JSON Schema definitions](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#schema-object)
+- [x] Use [OpenAPI Security Requirement Definitions](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securityRequirementObject)
+to authorize API requests
 - [x] TypeScript types included
 
 (Currently only OpenAPI v3.0.0+ is supported)
@@ -283,6 +285,43 @@ api.register({
     }
     return res.status(200).json(c.response);
   },
+});
+```
+
+## Auth / Security Handlers
+
+If your OpenAPI definition contains [Security Schemes](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securitySchemeObject)
+you can register security handlers that will be processed for each request that
+requires the security scheme.
+
+```yaml
+components:
+  securitySchemes:
+  - ApiKey:
+      type: apiKey
+      in: header
+      name: x-api-key
+security: 
+  - ApiKey: []
+```
+
+```javascript
+api.registerSecurityHandler('ApiKey', (c) => {
+  const authorized = c.headers['x-api-key'] === 'SuperSecretPassword123';
+  // truthy return values are interpreted as auth success
+  // you can also add any auth information to the return value
+  return authorized; 
+});
+```
+
+The return value of each security handler can be accessed via the [Context Object](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#context-object)
+
+You can also register an [`unauthorizedHandler`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#unauthorizedhandler)
+to automatically handle requests where security requirements are not met.
+
+```javascript
+api.register('unauthorizedHandler', (c, req, res) => {
+  return res.status(401).json({ err: 'unauthorized' })
 });
 ```
 

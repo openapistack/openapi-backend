@@ -6,7 +6,7 @@ import { parse as parseQuery } from 'qs';
 import { Parameters } from 'bath-es5/_/types';
 
 // alias Document to OpenAPIV3.Document
-export type Document = OpenAPIV3.Document;
+type Document = OpenAPIV3.Document;
 
 /**
  * OAS Operation Object containing the path and method so it can be placed in a flat array of operations
@@ -151,11 +151,13 @@ export class OpenAPIRouter {
             ...op,
             path,
             method,
-            // add the path base object's operations to the operation's parameters
+            // append the path base object's parameters to the operation's parameters
             parameters: [
               ...((op.parameters as OpenAPIV3.ParameterObject[]) || []),
-              ...((pathBaseObject.parameters as OpenAPIV3.ParameterObject[]) || []),
+              ...((pathBaseObject.parameters as OpenAPIV3.ParameterObject[]) || []), // path base object parameters
             ],
+            // operation-specific security requirement override global requirements
+            security: op.security || this.definition.security || [],
           };
         });
       })

@@ -34,6 +34,9 @@
     - [Parameter: opts.responseStatus](#parameter-optsresponsestatus)
     - [Parameter: opts.mediaType](#parameter-optsmediatype)
     - [Parameter: opts.example](#parameter-optsexample)
+  - [.registerSecurityHandler(name, handler)](#registersecurityhandlername-handler)
+    - [Parameter: name](#parameter-name)
+    - [Parameter: handler](#parameter-handler)
   - [.router](#router)
   - [.validator](#validator)
 - [Class OpenAPIRouter](#class-openapirouter)
@@ -74,7 +77,9 @@
   - [notFound Handler](#notfound-handler)
   - [methodNotAllowed Handler](#methodnotallowed-handler)
   - [notImplemented Handler](#notimplemented-handler)
+  - [unauthorizedHandler Handler](#unauthorizedhandler-handler)
   - [postResponseHandler Handler](#postresponsehandler-handler)
+- [Security Handlers](#security-handlers)
 - [Interfaces](#interfaces)
   - [Document Object](#document-object)
   - [Operation Object](#operation-object)
@@ -149,11 +154,6 @@ const api = new OpenAPIBackend({
   validate: true,
   ajvOpts: { unknownFormats: true },
   customizeAjv: () => new Ajv(),
-  handlers: {
-    getPets: (req, res) => res.json({ result: ['pet1', 'pet2'] }),
-    notFound: (req, res) => res.status(404).json({ err: 'not found' }),
-    validationFail: (err, req, res) => res.status(404).json({ err }),
-  },
 });
 ```
 
@@ -311,7 +311,7 @@ Registers a handler for an operation.
 
 Example usage:
 ```javascript
-api.registerHandler('getPets', function (req, res) {
+api.register('getPets', function (c, req, res) {
   return {
     status: 200,
     body: JSON.stringify(['pet1', 'pet2']),
@@ -391,6 +391,34 @@ Type: `string`
 Optional. The specific example to use (if operation has multiple examples)
 
 Type: `string`
+
+### .registerSecurityHandler(name, handler)
+
+Registers a security handler for a security scheme.
+
+Example usage:
+```javascript
+api.registerSecurityHandler('ApiKey', (c) => {
+  const authorized = c.headers['x-api-key'] === 'SuperSecretPassword123';
+  return authorized; 
+});
+```
+
+See [Security Handlers](#security-handlers)
+
+
+#### Parameter: name
+
+The name of the [Security Scheme](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securitySchemeObject)
+to register a handler for.
+
+Type: `string`
+
+#### Parameter: handler
+
+The security handler.
+
+Type: `Handler | ErrorHandler`
 
 ### .router
 
@@ -791,6 +819,7 @@ There are two different ways to register operation handlers:
 
 In addition to the operationId handlers, you should also specify special handlers for different situtations:
 
+
 ### validationFail Handler
 
 The `validationFail` handler gets called by `.handleRequest()` if the input validation fails for a request.
@@ -852,6 +881,28 @@ function notImplementedHandler(c, req, res) {
 api.register('notImplemented', notImplementedHandler);
 ```
 
+### unauthorizedHandler Handler
+
+The `unauthorizedHandler` handler gets called by `.handleRequest()` if security
+requirements are not met after checking [Security Requirements](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securityRequirementObject)
+and calling their [Security Sandlers'](#security-handlers).
+
+HINT: You should probably return a 401 or 403 code from this handler and
+instruct the client to authenticate.
+
+Example handler:
+
+```javascript
+function unauthorizedHandler(c, req, res) {
+  return res.status(401).json({ status: 401, err: 'Please authenticate first' });
+}
+api.register('unauthorizedHandler', unauthorizedHandler);
+```
+
+If no `unauthorizedHandler` is registered, the Security Handlers will still be 
+called and their output and the authorization status for the request can be
+checked in operation handlers via the [`context.security` property](#context-object).
+
 ### postResponseHandler Handler
 
 The `postResponseHandler` handler gets called by `.handleRequest()` after resolving the response handler.
@@ -872,6 +923,44 @@ function postResponseHandler(c, req, res) {
 }
 api.register('postResponseHandler', postResponseHandler);
 ```
+
+## Security Handlers
+
+You can register *Security Handlers* for [Security Schemas](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securitySchemeObject)
+specified by your OpenAPI document.
+
+These get called with the `.handleRequest()` method after routing if the
+matched operation, or the root OpenAPI document includes the security scheme in
+a [Security Requirement Object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securityRequirementObject)
+
+Example handler for JWT auth:
+```javascript
+const jwt = require('jsonwebtoken');
+
+function jwtHandler(c, req, res) {
+  const authHeader = c.headers['authorization'];
+  if (!authHeader) {
+    throw new Error('Missing authorization header');
+  }
+  const token = authHeader.replace('Bearer ', '');
+  return jwt.verify(token, 'secret'); 
+}
+
+api.registerSecurityHandler('jwt', jwtHandler);
+```
+
+The first argument of the handler is the [Context object](#context-object) and rest are passed from `.handleRequest()`
+arguments, starting from the second one.
+
+The return value of each security handler is added as a key-value mapping to 
+`security` property of the [Context object](#context-object).
+
+Truthy return values from security handlers are generally interpreted as auth 
+success, unless the return value is an object containing an `error` property.
+
+All falsy return values are interpreted as auth fail.
+
+Throwing an error from the security handler also gets interpreted as auth fail. The error is available in `context.security[name].error`.
 
 ## Interfaces
 
@@ -988,8 +1077,9 @@ const operation: Operation = {
 
 The `Context` object gets passed to [Operation Handlers](#operation-handlers) as the first argument.
 
-It contains useful information like the [parsed request](#parsedrequest-object), the matched
-[operation](#operation-object) and input validation results for the request.
+It contains useful information like the [parsed request](#parsedrequest-object),
+the matched [operation](#operation-object), [security handler](#security-handlers)
+results and input validation results for the request.
 
 The context object also contains a reference to the OpenAPIBackend instance in `api` property for easy access to
 instance methods inside handlers.
@@ -1056,6 +1146,16 @@ const context: Context = {
   validation: {
     valid: true,
     errors: null,
+  },
+  // Security handlers results for request
+  security: {
+    authorized: true,
+    jwt: {
+      name: 'John Doe',
+      email: 'john@example.com',
+      iat: 1516239022,
+    },
+    basicAuth: false,
   },
   // Return value from operation handler (only passed to postResponseHandler)
   response: {

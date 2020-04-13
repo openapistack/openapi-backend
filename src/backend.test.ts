@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { OpenAPIBackend } from './backend';
+import { OpenAPIBackend, Context } from './backend';
 import { OpenAPIV3 } from 'openapi-types';
 
 const testsDir = path.join(__dirname, '..', '__tests__');
@@ -74,6 +74,19 @@ describe('OpenAPIBackend', () => {
         },
       },
     },
+    components: {
+      securitySchemes: {
+        basicAuth: {
+          type: 'http',
+          scheme: 'basic',
+        },
+      },
+    },
+    security: [
+      {
+        basicAuth: [],
+      },
+    ],
   };
 
   test('can be initalised with a valid OpenAPI document as JS Object', async () => {
@@ -163,70 +176,210 @@ describe('OpenAPIBackend', () => {
     });
   });
 
+  describe('.registerSecurityHandler', () => {
+    const api = new OpenAPIBackend({ definition });
+    beforeAll(() => api.init());
+
+    const dummyHandler = jest.fn();
+
+    test('registers a single handler with .registerSecurityHandler', async () => {
+      api.registerSecurityHandler('basicAuth', dummyHandler);
+      expect(api.securityHandlers['basicAuth']).toBe(dummyHandler);
+    });
+
+    test('refuses to register a handler for an unknown security scheme in strict mode', async () => {
+      api.strict = true;
+      expect(() => api.registerSecurityHandler('unknown', dummyHandler)).toThrowError();
+      expect(api.securityHandlers['unknown']).not.toBe(dummyHandler);
+    });
+  });
+
   describe('.handleRequest', () => {
-    test('handles GET /pets request with getPets handler', async () => {
-      const api = new OpenAPIBackend({ definition });
-      const dummyHandler = jest.fn(() => 'dummyResponse');
-      api.register('getPets', dummyHandler);
-      await api.init();
+    describe('routing', () => {
+      test('handles GET /pets request with getPets handler', async () => {
+        const api = new OpenAPIBackend({ definition });
+        const dummyHandler = jest.fn(() => 'dummyResponse');
+        api.register('getPets', dummyHandler);
+        await api.init();
 
-      const request = {
-        method: 'get',
-        path: '/pets',
-        headers: {},
-      };
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
 
-      const res = await api.handleRequest(request);
-      expect(dummyHandler).toBeCalledTimes(1);
-      expect(res).toBe('dummyResponse');
+        const res = await api.handleRequest(request);
+        expect(dummyHandler).toBeCalledTimes(1);
+        expect(res).toBe('dummyResponse');
+      });
+
+      test('handles GET /unknown request with notFound handler', async () => {
+        const api = new OpenAPIBackend({ definition });
+        const dummyHandler = jest.fn(() => 'dummyResponse');
+        api.register('notFound', dummyHandler);
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/unknown',
+          headers: {},
+        };
+        const res = await api.handleRequest(request);
+        expect(dummyHandler).toBeCalledTimes(1);
+        expect(res).toBe('dummyResponse');
+      });
+
+      test('handles DELETE /pets request with methodNotAllowed handler', async () => {
+        const api = new OpenAPIBackend({ definition });
+        const dummyHandler = jest.fn(() => 'dummyResponse');
+        api.register('methodNotAllowed', dummyHandler);
+        await api.init();
+
+        const request = {
+          method: 'delete',
+          path: '/pets',
+          headers: {},
+        };
+        const res = await api.handleRequest(request);
+        expect(dummyHandler).toBeCalledTimes(1);
+        expect(res).toBe('dummyResponse');
+      });
+
+      test('handles DELETE /pets request with notFound handler if methodNotAllowed is not registered', async () => {
+        const api = new OpenAPIBackend({ definition });
+        const dummyHandler = jest.fn(() => 'dummyResponse');
+        api.register('notFound', dummyHandler);
+        await api.init();
+
+        const request = {
+          method: 'delete',
+          path: '/pets',
+          headers: {},
+        };
+        const res = await api.handleRequest(request);
+        expect(dummyHandler).toBeCalledTimes(1);
+        expect(res).toBe('dummyResponse');
+      });
     });
 
-    test('handles GET /unknown request with notFound handler', async () => {
-      const api = new OpenAPIBackend({ definition });
-      const dummyHandler = jest.fn(() => 'dummyResponse');
-      api.register('notFound', dummyHandler);
-      await api.init();
+    describe('auth', () => {
+      test('calls registered security handlers', async () => {
+        const api = new OpenAPIBackend({ definition });
+        api.register('notImplemented', () => 'dummyResponse');
 
-      const request = {
-        method: 'get',
-        path: '/unknown',
-        headers: {},
-      };
-      const res = await api.handleRequest(request);
-      expect(dummyHandler).toBeCalledTimes(1);
-      expect(res).toBe('dummyResponse');
-    });
+        const dummyHandler = jest.fn(() => 'dummyResponse');
+        api.registerSecurityHandler('basicAuth', dummyHandler);
+        await api.init();
 
-    test('handles DELETE /pets request with methodNotAllowed handler', async () => {
-      const api = new OpenAPIBackend({ definition });
-      const dummyHandler = jest.fn(() => 'dummyResponse');
-      api.register('methodNotAllowed', dummyHandler);
-      await api.init();
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
 
-      const request = {
-        method: 'delete',
-        path: '/pets',
-        headers: {},
-      };
-      const res = await api.handleRequest(request);
-      expect(dummyHandler).toBeCalledTimes(1);
-      expect(res).toBe('dummyResponse');
-    });
+        expect(dummyHandler).toBeCalledTimes(1);
+      });
 
-    test('handles DELETE /pets request with notFound handler if methodNotAllowed is not registered', async () => {
-      const api = new OpenAPIBackend({ definition });
-      const dummyHandler = jest.fn(() => 'dummyResponse');
-      api.register('notFound', dummyHandler);
-      await api.init();
+      test('adds security handler results to the context object', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
 
-      const request = {
-        method: 'delete',
-        path: '/pets',
-        headers: {},
-      };
-      const res = await api.handleRequest(request);
-      expect(dummyHandler).toBeCalledTimes(1);
-      expect(res).toBe('dummyResponse');
+        const dummyHandler = jest.fn(() => 'dummyResponse');
+        api.registerSecurityHandler('basicAuth', dummyHandler);
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security).toHaveProperty('basicAuth');
+        expect(context.security?.basicAuth).toBe('dummyResponse');
+      });
+
+      test('sets security handler results to undefined if no handler is registered', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security).toHaveProperty('basicAuth');
+        expect(context.security?.basicAuth).toBe(undefined);
+      });
+
+      test('sets context.security.authorized=true if security requirements are met', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        api.registerSecurityHandler('basicAuth', () => 1); // truthy values are interpreted as auth success
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security?.authorized).toBe(true);
+      });
+
+      test('sets context.security.authorized=false if security requirements not met', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        api.registerSecurityHandler('basicAuth', () => null); // falsy values are interpreted as failed auth
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security?.authorized).toBe(false);
+      });
+
+      test('calls unauthorizedHandler on failed auth', async () => {
+        const api = new OpenAPIBackend({ definition });
+        const dummyHandler = jest.fn(() => 'failedAuthResponse');
+        api.register('unauthorizedHandler', dummyHandler);
+        api.registerSecurityHandler('basicAuth', () => false); // falsy values are interpreted as failed auth
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        const res = await api.handleRequest(request);
+        expect(dummyHandler).toBeCalledTimes(1);
+        expect(res).toBe('failedAuthResponse');
+      });
     });
   });
 
