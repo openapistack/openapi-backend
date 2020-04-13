@@ -2,7 +2,6 @@ import OpenAPIUtils from './utils';
 
 describe('OpenAPIUtils', () => {
   describe('.findStatusCodeMatch', () => {
-
     test('mismatches', async () => {
       const value = OpenAPIUtils.findStatusCodeMatch(302, {
         '200': 'OK',
@@ -39,7 +38,7 @@ describe('OpenAPIUtils', () => {
     test('matches 500 (not string)', async () => {
       const value = OpenAPIUtils.findStatusCodeMatch(500, {
         '200': 'OK',
-        '500': [ 'a', { test: 'it works' }, 'b' ],
+        '500': ['a', { test: 'it works' }, 'b'],
         '201': 'Created',
       });
       expect(value[1].test).toEqual('it works');
@@ -96,7 +95,7 @@ describe('OpenAPIUtils', () => {
     test('not matches default (on pattern when default present)', async () => {
       const value = OpenAPIUtils.findStatusCodeMatch(402, {
         '200': 'OK',
-        'default': 'Default value',
+        default: 'Default value',
         '401': 'Unauthorized',
         '4XX': 'Error (patterned)',
         '400': 'Bad Request',
@@ -107,7 +106,7 @@ describe('OpenAPIUtils', () => {
     test('matches default', async () => {
       const value = OpenAPIUtils.findStatusCodeMatch(500, {
         '200': 'OK',
-        'default': 'Default value',
+        default: 'Default value',
         '401': 'Unauthorized',
         '4XX': 'Error (patterned)',
         '400': 'Bad Request',
@@ -124,7 +123,6 @@ describe('OpenAPIUtils', () => {
       });
       expect(value).toEqual(undefined);
     });
-
   });
 
   describe('.findDefaultStatusCodeMatch', () => {
@@ -155,7 +153,7 @@ describe('OpenAPIUtils', () => {
 
     test('matches 201 with default fallback', async () => {
       const value = OpenAPIUtils.findDefaultStatusCodeMatch({
-        'default': 'default',
+        default: 'default',
         '201': '201',
         '2XX': '2XX',
         '300': '300',
@@ -174,7 +172,7 @@ describe('OpenAPIUtils', () => {
     test('matches 2XX with default fallback', async () => {
       const value = OpenAPIUtils.findDefaultStatusCodeMatch({
         '2XX': '2XX',
-        'default': 'default',
+        default: 'default',
       });
       expect(value.res).toEqual('2XX');
     });

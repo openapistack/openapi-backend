@@ -122,9 +122,7 @@ export class OpenAPIBackend {
       validationFail?: Handler;
       [handler: string]: Handler | undefined;
     };
-    securityHandlers?: {
-
-    };
+    securityHandlers?: {};
   }) {
     const optsWithDefaults = {
       apiRoot: '/',
@@ -275,27 +273,37 @@ export class OpenAPIBackend {
 
       // run registered security handlers for all security requirements
       const securityHandlerResults: SecurityHandlerResults = {};
-      await Promise.all(securitySchemes.map((name) => {
-        securityHandlerResults[name] = undefined;
-        if (this.securityHandlers[name]) {
-          // return a promise that will set the security handler result
-          return Promise.resolve()
-            .then(async () => await this.securityHandlers[name](context as Context, ...handlerArgs))
-            .then((result) => { securityHandlerResults[name] = result; });
-        } else {
-          // if no handler is found for scheme, set to undefined
+      await Promise.all(
+        securitySchemes.map((name) => {
           securityHandlerResults[name] = undefined;
-        }
-      }));
+          if (this.securityHandlers[name]) {
+            // return a promise that will set the security handler result
+            return (
+              Promise.resolve()
+                .then(async () => await this.securityHandlers[name](context as Context, ...handlerArgs))
+                .then((result) => {
+                  securityHandlerResults[name] = result;
+                })
+                // save error as result, if thrown
+                .catch((error) => {
+                  securityHandlerResults[name] = { error };
+                })
+            );
+          } else {
+            // if no handler is found for scheme, set to undefined
+            securityHandlerResults[name] = undefined;
+          }
+        }),
+      );
 
       // auth logic
-      const requirementsSatisfied = securityRequirements.map(requirementObject => {
+      const requirementsSatisfied = securityRequirements.map((requirementObject) => {
         /*
-        * Security Requirement Objects that contain multiple schemes require
-        * that all schemes MUST be satisfied for a request to be authorized.
-        */
+         * Security Requirement Objects that contain multiple schemes require
+         * that all schemes MUST be satisfied for a request to be authorized.
+         */
         for (const requirement of _.keys(requirementObject)) {
-          if (!Boolean(securityHandlerResults[requirement])) {
+          if (!Boolean(securityHandlerResults[requirement]) || Boolean(securityHandlerResults[requirement]?.error)) {
             return false;
           }
         }
@@ -312,13 +320,13 @@ export class OpenAPIBackend {
       context.security = {
         authorized,
         ...securityHandlerResults,
-      }
+      };
 
       // call unauthorizedHandler handler if auth fails
       if (!authorized && securityRequirements.length > 0) {
         const unauthorizedHandler: Handler = this.handlers['unauthorizedHandler'];
         if (unauthorizedHandler) {
-            return unauthorizedHandler(context as Context, ...handlerArgs);
+          return unauthorizedHandler(context as Context, ...handlerArgs);
         }
       }
 
