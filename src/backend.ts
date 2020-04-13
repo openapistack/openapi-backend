@@ -15,9 +15,14 @@ export type Document = OpenAPIV3.Document;
 // alias SecurityRequirement
 export type SecurityRequirement = OpenAPIV3.SecurityRequirementObject;
 
-export type SecurityHandlerResult = any;
-export interface SecurityHandlerResults {
-  [name: string]: SecurityHandlerResult;
+/**
+ * Security / Authorization context for requests
+ */
+interface SecurityHandlerResults {
+  [name: string]: any;
+}
+export interface SecurityContext extends SecurityHandlerResults {
+  authorized: boolean;
 }
 
 /**
@@ -81,6 +86,7 @@ export class OpenAPIBackend {
     'notImplemented',
     '400',
     'validationFail',
+    'unauthorizedHandler',
     'postResponseHandler',
   ];
 
@@ -281,8 +287,40 @@ export class OpenAPIBackend {
           securityHandlerResults[name] = undefined;
         }
       }));
-      // add the results to the context object
-      context.security = securityHandlerResults;
+
+      // auth logic
+      const requirementsSatisfied = securityRequirements.map(requirementObject => {
+        /*
+        * Security Requirement Objects that contain multiple schemes require
+        * that all schemes MUST be satisfied for a request to be authorized.
+        */
+        for (const requirement of _.keys(requirementObject)) {
+          if (!Boolean(securityHandlerResults[requirement])) {
+            return false;
+          }
+        }
+        return true;
+      });
+      /*
+       * When a list of Security Requirement Objects is defined on the Open API
+       * object or Operation Object, only one of Security Requirement Objects
+       * in the list needs to be satisfied to authorize the request.
+       */
+      const authorized = _.includes(requirementsSatisfied, true);
+
+      // add the results and authorized state to the context object
+      context.security = {
+        authorized,
+        ...securityHandlerResults,
+      }
+
+      // call unauthorizedHandler handler if auth fails
+      if (!authorized && securityRequirements.length > 0) {
+        const unauthorizedHandler: Handler = this.handlers['unauthorizedHandler'];
+        if (unauthorizedHandler) {
+            return unauthorizedHandler(context as Context, ...handlerArgs);
+        }
+      }
 
       // check whether this request should be validated
       const validate =

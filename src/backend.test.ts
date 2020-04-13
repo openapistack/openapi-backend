@@ -322,6 +322,64 @@ describe('OpenAPIBackend', () => {
         expect(context.security).toHaveProperty('basicAuth');
         expect(context.security?.basicAuth).toBe(undefined);
       });
+
+      test('sets context.security.authorized=true if security requirements are met', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        api.registerSecurityHandler('basicAuth', () => 1); // truthy values are interpreted as auth success
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security?.authorized).toBe(true);
+      });
+
+      test('sets context.security.authorized=false if security requirements not met', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        api.registerSecurityHandler('basicAuth', () => null); // falsy values are interpreted as failed auth
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security?.authorized).toBe(false);
+      });
+
+      test('calls unauthorizedHandler on failed auth', async () => {
+        const api = new OpenAPIBackend({ definition });
+        const dummyHandler = jest.fn(() => 'failedAuthResponse');
+        api.register('unauthorizedHandler', dummyHandler);
+        api.registerSecurityHandler('basicAuth', () => false); // falsy values are interpreted as failed auth
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        const res = await api.handleRequest(request);
+        expect(dummyHandler).toBeCalledTimes(1);
+        expect(res).toBe('failedAuthResponse');
+      });
     });
   });
 
