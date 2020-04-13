@@ -184,13 +184,7 @@ const app = new Koa();
 app.use(bodyparser());
 app.use((ctx) =>
   api.handleRequest(
-    {
-      method: ctx.request.method,
-      path: ctx.request.path,
-      body: ctx.request.body,
-      query: ctx.request.query,
-      headers: ctx.request.headers,
-    },
+    ctx.request,
     ctx,
   ),
 );
