@@ -8,16 +8,13 @@ app.use(express.json());
 // define api
 const api = new OpenAPIBackend({ definition: './openapi.yml' });
 
-// register handlers
+// register default handlers
 api.register({
-  getPets: async (c, req, res) => res.status(200).json({ operationId: c.operation.operationId }),
-  getPetById: async (c, req, res) => res.status(200).json({ operationId: c.operation.operationId }),
-  validationFail: async (c, req, res) => res.status(400).json({ err: c.validation.errors }),
   notFound: async (c, req, res) => res.status(404).json({ err: 'not found' }),
   unauthorizedHandler: async (c, req, res) => res.status(401).json({ err: 'unauthorized' }),
 });
 
-// register security handler
+// register security handler for jwt auth
 api.registerSecurityHandler('jwtAuth', (c, req, res) => {
   const authHeader = c.request.headers['authorization'];
   if (!authHeader) {
@@ -25,6 +22,20 @@ api.registerSecurityHandler('jwtAuth', (c, req, res) => {
   }
   const token = authHeader.replace('Bearer ', '');
   return jwt.verify(token, 'secret');
+});
+
+// register operation handlers
+api.register({
+  // GET /me
+  me: async (c, req, res) => {
+    const tokenData = c.security.jwtAuth;
+    return res.status(200).json(tokenData);
+  },
+  // GET /login
+  login: async (c, req, res) => {
+    const token = jwt.sign({ name: 'John Doe', email: 'john@example.com' }, 'secret');
+    return res.status(200).json({ token });
+  },
 });
 
 api.init();
