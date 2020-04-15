@@ -108,7 +108,7 @@ export class OpenAPIRouter {
     // check with path templates
     const templatePathMatches = _.filter(this.getOperations(), ({ path }) => {
       // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
-      const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/:]+')}$`;
+      const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/]+')}$`;
       return Boolean(normalizedPath.match(new RegExp(pathPattern, 'g')));
     });
 
@@ -121,6 +121,9 @@ export class OpenAPIRouter {
       }
     }
 
+    // order matches by length (specificity)
+    _.orderBy(templatePathMatches, (op) => op.path.length, 'desc');
+
     // then check if one of the matched operations matches the method
     const match = _.find(templatePathMatches, ({ method }) => method === req.method);
     if (!match) {
@@ -130,6 +133,7 @@ export class OpenAPIRouter {
         return undefined;
       }
     }
+
     return match;
   }
 
