@@ -121,11 +121,14 @@ export class OpenAPIRouter {
       }
     }
 
-    // order matches by length (specificity)
-    _.orderBy(templatePathMatches, (op) => op.path.length, 'desc');
+    // find matching operation
+    const match = _.chain(templatePathMatches)
+      // order matches by length (specificity)
+      .orderBy((op) => op.path.length, 'desc')
+      // then check if one of the matched operations matches the method
+      .find(({ method }) => method === req.method)
+      .value();
 
-    // then check if one of the matched operations matches the method
-    const match = _.find(templatePathMatches, ({ method }) => method === req.method);
     if (!match) {
       if (strict) {
         throw Error('405-methodNotAllowed: this method is not registered for the route');
