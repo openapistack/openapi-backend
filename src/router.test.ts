@@ -103,6 +103,117 @@ const definition: OpenAPIV3.Document = {
 };
 
 describe('OpenAPIRouter', () => {
+  describe('.parseRequest', () => {
+    const api = new OpenAPIRouter({ definition });
+
+    test('parses requests', () => {
+      const request = { path: '/', method: 'get', headers };
+
+      const parsedRequest = api.parseRequest(request);
+
+      expect(parsedRequest.path).toEqual('/');
+      expect(parsedRequest.method).toEqual('get');
+      expect(parsedRequest.query).toEqual({});
+      expect(parsedRequest.headers).toEqual(headers);
+    });
+
+    test('parses request body passed as object', () => {
+      const payload = { horse: 1 };
+      const request = { path: '/pets', method: 'post', body: payload, headers };
+
+      const parsedRequest = api.parseRequest(request);
+
+      expect(parsedRequest.requestBody).toEqual(payload);
+    });
+
+    test('parses request body passed as JSON', () => {
+      const payload = { horse: 1 };
+      const request = { path: '/pets', method: 'post', body: JSON.stringify(payload), headers };
+
+      const parsedRequest = api.parseRequest(request);
+
+      expect(parsedRequest.requestBody).toEqual(payload);
+    });
+
+    test('parses path parameters', () => {
+      const request = { path: '/pets/123', method: 'get', headers };
+      const operation = api.getOperation('getPetById');
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.params).toEqual({ id: '123' });
+    });
+
+    test('parses query string', () => {
+      const request = { path: '/pets?limit=10', method: 'get', headers };
+
+      const parsedRequest = api.parseRequest(request);
+
+      expect(parsedRequest.query).toEqual({ limit: '10' });
+    });
+
+    test('parses query string arrays', () => {
+      const request = { path: '/pets?limit=10&limit=20', method: 'get', headers };
+
+      const parsedRequest = api.parseRequest(request);
+
+      expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
+    });
+
+    test('parses query string arrays', () => {
+      const request = { path: '/pets?limit=10&limit=20', method: 'get', headers };
+      const parsedRequest = api.parseRequest(request);
+      expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
+    });
+
+    test('parses query string arrays when style=form, explode=false', () => {
+      const request = { path: '/pets?limit=10,20', method: 'get', headers };
+      const operation = api.getOperation('createPet') as Operation;
+      operation.parameters = [
+        {
+          in: 'query',
+          name: 'limit',
+          style: 'form',
+          explode: false,
+        },
+      ];
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
+    });
+
+    test('parses query string arrays when style=spaceDelimited, explode=false', () => {
+      const request = { path: '/pets?limit=10%2020', method: 'get', headers };
+      const operation = api.getOperation('createPet') as Operation;
+      operation.parameters = [
+        {
+          in: 'query',
+          name: 'limit',
+          style: 'spaceDelimited',
+          explode: false,
+        },
+      ];
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
+    });
+
+    test('parses query string arrays when style=pipeDelimited, explode=false', () => {
+      const request = { path: '/pets?limit=10|20', method: 'get', headers };
+      const operation = api.getOperation('createPet') as Operation;
+      operation.parameters = [
+        {
+          in: 'query',
+          name: 'limit',
+          style: 'pipeDelimited',
+          explode: false,
+        },
+      ];
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
+    });
+  });
+
   describe('.matchOperation', () => {
     const api = new OpenAPIRouter({ definition });
 

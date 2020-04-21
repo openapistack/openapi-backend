@@ -168,7 +168,7 @@ export class OpenAPIValidator {
     const validators = this.getRequestValidatorsForOperation(operationId);
 
     // build a parameter object to validate
-    const { params, query, headers, cookies, requestBody } = this.router.parseRequest(req, operation.path);
+    const { params, query, headers, cookies, requestBody } = this.router.parseRequest(req, operation);
 
     // convert singular query parameters to arrays if specified as array in operation parametes
     if (query) {

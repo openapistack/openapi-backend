@@ -261,10 +261,9 @@ export class OpenAPIBackend {
       }
 
       const operationId = context.operation.operationId as string;
-      const path = context.operation.path;
 
-      // parse request again now with matched path
-      context.request = this.router.parseRequest(req, path);
+      // parse request again now with matched operation
+      context.request = this.router.parseRequest(req, context.operation);
 
       // get security requirements for the matched operation
       // global requirements are already included in the router
