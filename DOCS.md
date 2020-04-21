@@ -49,9 +49,9 @@
   - [.getOperations()](#getoperations)
   - [.getOperation(operationId)](#getoperationoperationid)
     - [Parameter: operationId](#parameter-operationid)
-  - [.parseRequest(req, path?)](#parserequestreq-path)
+  - [.parseRequest(req, operation?)](#parserequestreq-operation)
     - [Parameter: req](#parameter-req)
-    - [Parameter: path](#parameter-path)
+    - [Parameter: operation](#parameter-operation)
 - [Class OpenAPIValidator](#class-openapivalidator)
   - [new OpenAPIValidator(opts)](#new-openapivalidatoropts)
     - [Parameter: opts](#parameter-opts)
@@ -529,7 +529,7 @@ The operationId of the operation to get.
 
 Type: `string`
 
-### .parseRequest(req, path?)
+### .parseRequest(req, operation?)
 
 Parses and normalizes a request.
 
@@ -538,21 +538,21 @@ This method used to construct the parsed request for [Context objects](#context-
 1. Parses body into an object
 1. Parses query parameters from query string
 1. Parses cookies from the cookie header
-1. Parses path parameters from the request uri and passed path template parameter
+1. Parses path parameters from the request uri and passed operation path template
 1. Strips apiRoot from path
 
 ```javascript
 const parsedRequest = api.router.parseRequest({
   method: 'GET',
-  path: '/v1/pet/8?fields=name',
+  path: '/v1/pet/8?fields=id,name',
   headers: {
     accept: 'application/json',
     cookie: 'token=abc123;path=/',
   },
-}, '/pet/{id}');
+}, api.getOperation('getPetById'));
 
 assert(parsedRequest.method, 'get');
-assert(parsedRequest.query.fields, 'name');
+assert(parsedRequest.query.fields, ['id', 'name']);
 assert(parsedRequest.cookies.token, 'abc123');
 assert(parsedRequest.path, '/pet/8');
 assert(parsedRequest.params.id, '8');
@@ -564,9 +564,9 @@ A request to parse.
 
 Type: [`Request`](#request-object)
 
-#### Parameter: path
+#### Parameter: operation
 
-Optional. Path template string to parse path parameters from.
+Optional. An operation object to match the request with. Used to parse path and query parameters according to operation spec.
 
 Type: `string`
 
