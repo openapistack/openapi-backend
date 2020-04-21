@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
-import bath, { names } from 'bath-es5';
+import bath from 'bath-es5';
 import * as cookie from 'cookie';
 import { parse as parseQuery } from 'qs';
 import { Parameters } from 'bath-es5/_/types';
