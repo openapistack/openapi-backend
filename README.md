@@ -44,49 +44,15 @@ npm install --save openapi-backend
 ```javascript
 import OpenAPIBackend from 'openapi-backend';
 
-const api = new OpenAPIBackend({
-  definition: {
-    openapi: '3.0.1',
-    info: {
-      title: 'My API',
-      version: '1.0.0',
-    },
-    paths: {
-      '/pets': {
-        get: {
-          operationId: 'getPets',
-          responses: {
-            200: { description: 'ok' },
-          },
-        },
-      },
-      '/pets/{id}': {
-        get: {
-          operationId: 'getPetById',
-          responses: {
-            200: { description: 'ok' },
-          },
-        },
-        parameters: [
-          {
-            name: 'id',
-            in: 'path',
-            required: true,
-            schema: {
-              type: 'integer',
-            },
-          },
-        ],
-      },
-    },
-  },
-  handlers: {
-    // your platform specific request handlers here
-    getPets: (c, req, res) => res.status(200).json({ result: 'ok' }),
-    getPetById: (c, req, res) => res.status(200).json({ result: 'ok' }),
-    validationFail: (c, req, res) => res.status(400).json({ err: c.validation.errors }),
-    notFound: (c, req, res) => res.status(404).json({ err: 'not found' }),
-  },
+// create api with your definition file or object
+const api = new OpenAPIBackend({ definition: './petstore.yml' });
+
+// register your framework specific request handlers here
+api.register({
+  getPets: (c, req, res) => res.status(200).json({ result: 'ok' }),
+  getPetById: (c, req, res) => res.status(200).json({ result: 'ok' }),
+  validationFail: (c, req, res) => res.status(400).json({ err: c.validation.errors }),
+  notFound: (c, req, res) => res.status(404).json({ err: 'not found' }),
 });
 
 // initalize the backend
