@@ -306,6 +306,80 @@ describe('OpenAPIValidator', () => {
         expect(valid.errors).toHaveLength(1);
       });
     });
+    
+    describe('query params in operation object specified as schema object', () => {
+      const validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPets',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  {
+                    name: 'params',
+                    in: 'query',
+                    style: 'form',
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        q: {
+                          type: 'array',
+                          items: {
+                            type: 'string',
+                          },
+                        },
+                        limit: {
+                          type: 'integer',
+                          minimum: 1,
+                          maximum: 100,
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+      });
+
+      test('passes validation for GET /pets?limit=10', async () => {
+        const valid = validator.validateRequest({ path: '/pets?limit=10', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation for GET /pets?limit=10&limit=20', async () => {
+        const valid = validator.validateRequest({ path: '/pets?unknownparam=1', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+
+      test('passes validation for GET /pets?q=search', async () => {
+        const valid = validator.validateRequest({ path: '/pets?q=search', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for GET /pets?q=search1&q=search2', async () => {
+        const valid = validator.validateRequest({ path: '/pets?q=search1&q=search2', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for GET /pets?q[]=search1&q[]=search2', async () => {
+        const valid = validator.validateRequest({ path: '/pets?q[]=search1&q[]=search2', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for GET /pets?q[0]=search1&q[1]=search2', async () => {
+        const valid = validator.validateRequest({ path: '/pets?q[0]=search1&q[1]=search2', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation for GET /pets?unknownparam=1', async () => {
+        const valid = validator.validateRequest({ path: '/pets?unknownparam=1', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+    });
 
     describe('headers', () => {
       const validator = new OpenAPIValidator({
