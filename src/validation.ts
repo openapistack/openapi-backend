@@ -73,6 +73,53 @@ export type AjvCustomizer = (
 ) => Ajv.Ajv;
 
 /**
+ * Returns a function that validates that a signed number is within the given bit range
+ * @param {number} bits
+ */
+function getBitRangeValidator(bits: number) {
+  const max = Math.pow(2, bits - 1);
+
+  return (value: number) => value >= -max && value < max;
+}
+
+// Formats defined by the OAS
+const defaultFormats: Record<string, Ajv.FormatDefinition> = {
+  int32: {
+    // signed 32 bits
+    type: 'number',
+    validate: getBitRangeValidator(32)
+  },
+  int64: {
+    // signed 64 bits (a.k.a long)
+    type: 'number',
+    validate: getBitRangeValidator(64)
+  },
+  float: {
+    type: 'number',
+    validate: () => true
+  },
+  double: {
+    type: 'number',
+    validate: () => true
+  },
+  byte: {
+    // base64 encoded characters
+    type: 'string',
+    validate: /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
+  },
+  binary: {
+    // any sequence of octets
+    type: 'string',
+    validate: () => true
+  },
+  password: {
+    // A hint to UIs to obscure input.
+    type: 'string',
+    validate: () => true
+  }
+};
+
+/**
  * Class that handles JSON schema validation
  *
  * @export
@@ -372,13 +419,19 @@ export class OpenAPIValidator {
   /**
    * Get Ajv options
    *
+   * @param {ValidationContext} validationContext
    * @param {Ajv.Options} [opts={}]
-   * @returns
+   * @returns Ajv
    * @memberof OpenAPIValidator
    */
   public getAjv(validationContext: ValidationContext, opts: Ajv.Options = {}) {
     const ajvOpts = { ...this.ajvOpts, ...opts };
     const ajv = new Ajv(ajvOpts);
+
+    for (const [name, format] of Object.entries(defaultFormats)) {
+      ajv.addFormat(name, format);
+    }
+
     if (this.customizeAjv) {
       return this.customizeAjv(ajv, ajvOpts, validationContext);
     }
