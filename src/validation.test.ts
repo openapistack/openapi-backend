@@ -1119,6 +1119,151 @@ describe('OpenAPIValidator', () => {
     });
   });
 
+  describe('OAS formats', () => {
+    describe('in request', () => {
+      const paths: OpenAPIV3.PathObject = {
+        '/pets': {
+          post: {
+            operationId: 'createPet',
+            responses: { 201: { description: 'ok' } },
+            requestBody: {
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      int32: {
+                        type: 'integer',
+                        format: 'int32', // openapi specific format
+                      },
+                      int64: {
+                        type: 'integer',
+                        format: 'int64', // openapi specific format
+                      },
+                      float: {
+                        type: 'number',
+                        format: 'float', // openapi specific format
+                      },
+                      double: {
+                        type: 'number',
+                        format: 'double', // openapi specific format
+                      },
+                      byte: {
+                        type: 'string',
+                        format: 'byte', // openapi specific format
+                      },
+                      binary: {
+                        type: 'string',
+                        format: 'binary', // openapi specific format
+                      },
+                      password: {
+                        type: 'string',
+                        format: 'password', // openapi specific format
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      };
+
+      test('default Ajv should not warn about OAS formats in requestBody', () => {
+        const warn = console.warn;
+        console.warn = jest.fn();
+        const construct = () =>
+          new OpenAPIValidator({
+            definition: {
+              ...meta,
+              paths
+            },
+          });
+        expect(construct()).toBeInstanceOf(OpenAPIValidator);
+        expect(console.warn).not.toBeCalled();
+        console.warn = warn; // reset console.warn
+      });
+
+      test('passes validation for POST /pets with full object using valid OAS formats', async () => {
+        const validator = new OpenAPIValidator({
+          definition: {
+            ...meta,
+            paths
+          }
+        });
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'post',
+          headers,
+          body: {
+            int32: 32,
+            int64: 64,
+            float: 2.0,
+            double: 2.0,
+            byte: 'VGVzdA==',
+            binary: 'BLOB',
+            password: 'shhh'
+          },
+        });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation for POST /pets with invalid int32 property', async () => {
+        const validator = new OpenAPIValidator({
+          definition: {
+            ...meta,
+            paths
+          }
+        });
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'post',
+          headers,
+          body: {
+            int32: Math.pow(2, 31),
+          },
+        });
+        expect(valid.errors).toBeTruthy();
+      });
+
+      test('fails validation for POST /pets with invalid int64 property', async () => {
+        const validator = new OpenAPIValidator({
+          definition: {
+            ...meta,
+            paths
+          }
+        });
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'post',
+          headers,
+          body: {
+            int64: Math.pow(2, 63),
+          },
+        });
+        expect(valid.errors).toBeTruthy();
+      });
+
+      test('fails validation for POST /pets with invalid byte property', async () => {
+        const validator = new OpenAPIValidator({
+          definition: {
+            ...meta,
+            paths
+          }
+        });
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'post',
+          headers,
+          body: {
+            byte: 'NOT BASE64',
+          },
+        });
+        expect(valid.errors).toBeTruthy();
+      });
+    });
+  });
+
   describe('customizeAjv', () => {
     describe('using custom formats', () => {
       const paths: OpenAPIV3.PathObject = {
@@ -1133,7 +1278,7 @@ describe('OpenAPIValidator', () => {
                 required: true,
                 schema: {
                   type: 'integer',
-                  format: 'int64', // openapi specific format
+                  format: 'custom',
                 },
               },
             ],
@@ -1150,9 +1295,9 @@ describe('OpenAPIValidator', () => {
                     schema: {
                       type: 'object',
                       properties: {
-                        int64: {
+                        custom: {
                           type: 'integer',
-                          format: 'int64', // openapi specific format
+                          format: 'custom',
                         },
                       },
                     },
@@ -1170,9 +1315,9 @@ describe('OpenAPIValidator', () => {
                   schema: {
                     type: 'object',
                     properties: {
-                      int64: {
+                      custom: {
                         type: 'integer',
-                        format: 'int64', // openapi specific format
+                        format: 'custom',
                       },
                     },
                   },
@@ -1190,7 +1335,7 @@ describe('OpenAPIValidator', () => {
         }
         if (context === ValidationContext.Params) {
           // return overridden custom formats
-          return new Ajv({ ...ajvOpts, unknownFormats: ['int64'] });
+          return new Ajv({ ...ajvOpts, unknownFormats: ['custom'] });
         }
         // otherwise return original ajv
         return ajv;
