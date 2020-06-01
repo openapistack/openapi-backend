@@ -56,6 +56,29 @@ export enum SetMatchType {
 }
 
 /**
+ * Constructor options
+ *
+ * @export
+ * @interface Options
+ */
+export interface Options {
+  definition: Document | string;
+  apiRoot?: string;
+  strict?: boolean;
+  quick?: boolean;
+  validate?: boolean | BoolPredicate;
+  ajvOpts?: Ajv.Options;
+  customizeAjv?: AjvCustomizer;
+  handlers?: {
+    notFound?: Handler;
+    notImplemented?: Handler;
+    validationFail?: Handler;
+    [handler: string]: Handler | undefined;
+  };
+  securityHandlers?: {};
+}
+
+/**
  * Main class and the default export of the 'openapi-backend' module
  *
  * @export
@@ -108,22 +131,7 @@ export class OpenAPIBackend {
    * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
    * @memberof OpenAPIBackend
    */
-  constructor(opts: {
-    definition: Document | string;
-    apiRoot?: string;
-    strict?: boolean;
-    quick?: boolean;
-    validate?: boolean | BoolPredicate;
-    ajvOpts?: Ajv.Options;
-    customizeAjv?: AjvCustomizer;
-    handlers?: {
-      notFound?: Handler;
-      notImplemented?: Handler;
-      validationFail?: Handler;
-      [handler: string]: Handler | undefined;
-    };
-    securityHandlers?: {};
-  }) {
+  constructor(opts: Options) {
     const optsWithDefaults = {
       apiRoot: '/',
       validate: true,
