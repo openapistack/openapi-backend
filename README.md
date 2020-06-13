@@ -90,7 +90,9 @@ module.exports.handler = (event, context) =>
   );
 ```
 
-[See full Serverless Lambda example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/aws-sam)
+[See full AWS SAM example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/aws-sam)
+
+[See full Serverless Framework example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/serverless-framework)
 
 ### Azure Function
 
