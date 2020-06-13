@@ -5,6 +5,10 @@ Example project using [openapi-backend](https://github.com/anttiviljami/openapi-
 
 ## QuickStart
 
+Requirements:
+- [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html#serverless-sam-cli)
+- [Docker](https://docs.docker.com/get-docker/)
+
 ```
 npm install
 npm start # API running at http://localhost:3000
