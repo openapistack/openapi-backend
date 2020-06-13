@@ -90,7 +90,7 @@ module.exports.handler = (event, context) =>
   );
 ```
 
-[See full Serverless Lambda example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/serverless-aws)
+[See full Serverless Lambda example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/aws-sam)
 
 ### Azure Function
 
@@ -109,7 +109,7 @@ module.exports = (context, req) =>
   );
 ```
 
-[See full Azure Function example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/serverless-azure)
+[See full Azure Function example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/azure-function)
 
 ### Hapi
 
