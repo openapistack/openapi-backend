@@ -21,8 +21,9 @@ jobs:
           - examples/express-typescript
           - examples/hapi-typescript
           - examples/koa
-          - examples/serverless-aws
-          - examples/serverless-azure
+          - examples/serverless-framework
+          - examples/azure-function
+          - examples/aws-sam
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1

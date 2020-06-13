@@ -1,0 +1,32 @@
+{
+  "name": "openapi-backend-aws-sam",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
+  "license": "MIT",
+  "keywords": [],
+  "scripts": {
+    "postinstall": "npm run build",
+    "build": "tsc",
+    "watch-build": "tsc -w",
+    "start": "sam local start-api",
+    "watch-start": "nodemon --delay 2 -w serverless.yml -w dist/ -x 'npm run start'",
+    "dev": "concurrently -k -p '[{name}]' -n 'typescript,api' -c 'yellow.bold,cyan.bold' npm:watch-build npm:watch-start",
+    "lint": "tslint --format prose --project .",
+    "test": "jest"
+  },
+  "dependencies": {
+    "openapi-backend": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.56",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.13",
+    "@types/wait-on": "^4.0.0",
+    "axios": "^0.18.1",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.9.5",
+    "wait-on": "^3.3.0"
+  }
+}
