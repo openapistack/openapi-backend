@@ -1,5 +1,5 @@
 {
-  "name": "openapi-backend-serverless-azure",
+  "name": "openapi-backend-azure-function",
   "version": "1.0.0",
   "description": "",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",

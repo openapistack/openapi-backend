@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: openapi-backend-aws-sam
+Transform:
+- AWS::Serverless-2016-10-31
+Resources:
+  api:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/index.handler
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Events:
+        Root:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+        Api:
+          Type: Api
+          Properties:
+            Path: /{path+}
+            Method: ANY
+Outputs:
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
