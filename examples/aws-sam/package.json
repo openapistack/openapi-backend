@@ -13,7 +13,7 @@
     "watch-start": "nodemon --delay 2 -w serverless.yml -w dist/ -x 'npm run start'",
     "dev": "concurrently -k -p '[{name}]' -n 'typescript,api' -c 'yellow.bold,cyan.bold' npm:watch-build npm:watch-start",
     "lint": "tslint --format prose --project .",
-    "test": "jest"
+    "test": "jest -i"
   },
   "dependencies": {
     "openapi-backend": "^3.0.0"
@@ -27,6 +27,6 @@
     "jest": "^23.6.0",
     "ts-jest": "^23.10.5",
     "typescript": "^3.9.5",
-    "wait-on": "^3.3.0"
+    "wait-on": "^5.0.1"
   }
 }

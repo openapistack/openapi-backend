@@ -2,7 +2,7 @@ import { spawn, ChildProcess } from 'child_process';
 import axios, { AxiosInstance } from 'axios';
 import waitOn from 'wait-on';
 
-jest.setTimeout(15000);
+jest.setTimeout(90000);
 
 describe('aws sam example', () => {
   let start: ChildProcess;
@@ -10,7 +10,7 @@ describe('aws sam example', () => {
 
   beforeAll(async () => {
     client = axios.create({ baseURL: 'http://localhost:3000', validateStatus: () => true });
-    start = spawn('npm', ['start'], { cwd: __dirname, detached: true });
+    start = spawn('npm', ['start'], { cwd: __dirname, detached: true, stdio: 'inherit' });
     await waitOn({ resources: ['tcp:localhost:3000'] });
   });
 

@@ -27,10 +27,12 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
+      - run: pip install aws-sam-cli
+        if: matrix.project_dir == 'examples/aws-sam'
       - run: npm ci
         working-directory: ${{ matrix.project_dir }}
       - run: npm link ../../
-        if: matrix.project_dir != '.'
+        if: matrix.project_dir != '.' && matrix.project_dir != 'examples/aws-sam'
         working-directory: ${{ matrix.project_dir }}
       - run: npm run lint
         if: matrix.project_dir == '.'
