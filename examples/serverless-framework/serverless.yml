@@ -11,10 +11,7 @@ functions:
     handler: dist/index.handler
     events:
       - http:
-          path: /
-          method: ANY
-      - http:
-          path: /{path+}
+          path: /{proxy+}
           method: ANY
 
 plugins:

@@ -11,15 +11,10 @@ Resources:
       MemorySize: 128
       Timeout: 100
       Events:
-        Root:
-          Type: Api
-          Properties:
-            Path: /
-            Method: ANY
         Api:
           Type: Api
           Properties:
-            Path: /{path+}
+            Path: /{proxy+}
             Method: ANY
 Outputs:
   WebEndpoint:
