@@ -171,12 +171,10 @@ export class OpenAPIBackend {
     try {
       // parse the document
       if (this.quick) {
-        // we don't care when the document is ready
-        SwaggerParser.parse(this.inputDocument).then((doc) => {
-          this.document = doc;
-        });
+        // in quick mode we don't care when the document is ready
+        this.loadDocument();
       } else {
-        this.document = await SwaggerParser.parse(this.inputDocument);
+        await this.loadDocument();
       }
 
       if (!this.quick) {
@@ -217,15 +215,25 @@ export class OpenAPIBackend {
       this.register(this.handlers);
     }
 
-    // register all handlers
+    // register all security handlers
     if (this.securityHandlers) {
-      _.entries(this.securityHandlers).map(([name, handler]) => {
+      for (const [name, handler] of Object.entries(this.securityHandlers)) {
         this.registerSecurityHandler(name, handler);
-      });
+      }
     }
 
     // return this instance
     return this;
+  }
+
+  /**
+   * Loads the input document asynchronously and sets this.document
+   *
+   * @memberof OpenAPIBackend
+   */
+  public async loadDocument() {
+    this.document = await SwaggerParser.parse(this.inputDocument);
+    return this.document;
   }
 
   /**
