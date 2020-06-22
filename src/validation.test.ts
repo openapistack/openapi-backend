@@ -550,6 +550,22 @@ describe('OpenAPIValidator', () => {
         expect(valid.errors).toBeFalsy();
       });
 
+      test('fails validation for correctly formed multipart/form-data payloads containing an invalid JSON part', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'patch',
+          body: {
+            payload: {
+              name: 'Garfield',
+              hello: 'world',
+            },
+            gravatarUrl: 'http://gravatar.io/123',
+          },
+          headers: { ...headers, 'content-type': 'multipart/form-data' },
+        });
+        expect(valid.errors).toHaveLength(1);
+      });
+
       test('fails validation for multipart/form-data payloads with additional parts', async () => {
         const valid = validator.validateRequest({
           path: '/pets',
