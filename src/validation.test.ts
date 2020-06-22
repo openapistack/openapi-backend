@@ -404,6 +404,36 @@ describe('OpenAPIValidator', () => {
                     'application/xml': {
                       example: '<Pet><name>string</name></Pet>',
                     },
+                    'multipart/form-data': {
+                      schema: {
+                        type: 'object',
+                        properties: {
+                          payload: petSchema,
+                          gravatarUrl: {
+                            type: 'string',
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              patch: {
+                operationId: 'modifyPet',
+                responses: { 200: { description: 'ok' } },
+                requestBody: {
+                  content: {
+                    'multipart/form-data': {
+                      schema: {
+                        type: 'object',
+                        properties: {
+                          payload: petSchema,
+                          gravatarUrl: {
+                            type: 'string',
+                          },
+                        },
+                      },
+                    },
                   },
                 },
               },
@@ -501,6 +531,53 @@ describe('OpenAPIValidator', () => {
           method: 'put',
           body: '<XML>',
           headers,
+        });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for correctly formed multipart/form-data payloads', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'patch',
+          body: {
+            payload: {
+              name: 'Garfield',
+            },
+            gravatarUrl: 'http://gravatar.io/123',
+          },
+          headers: { ...headers, 'content-type': 'multipart/form-data' },
+        });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation for multipart/form-data payloads with additional parts', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'patch',
+          body: {
+            payload: {
+              name: 'Garfield',
+            },
+            gravatarUrl: 'http://gravatar.io/123',
+            hello: 'world',
+          },
+          headers: { ...headers, 'content-type': 'multipart/form-data' },
+        });
+        expect(valid.errors).toHaveLength(1);
+      });
+
+      test('correctly validates multipart/form-data payloads when application/json is also an accepted media type', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'put',
+          body: {
+            payload: {
+              name: 'Garfield',
+              age: null,
+            },
+            gravatarUrl: 'http://gravatar.io/123',
+          },
+          headers: { ...headers, 'content-type': 'multipart/form-data' },
         });
         expect(valid.errors).toBeFalsy();
       });
@@ -1176,7 +1253,7 @@ describe('OpenAPIValidator', () => {
           new OpenAPIValidator({
             definition: {
               ...meta,
-              paths
+              paths,
             },
           });
         expect(construct()).toBeInstanceOf(OpenAPIValidator);
@@ -1188,8 +1265,8 @@ describe('OpenAPIValidator', () => {
         const validator = new OpenAPIValidator({
           definition: {
             ...meta,
-            paths
-          }
+            paths,
+          },
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1202,7 +1279,7 @@ describe('OpenAPIValidator', () => {
             double: 2.0,
             byte: 'VGVzdA==',
             binary: 'BLOB',
-            password: 'shhh'
+            password: 'shhh',
           },
         });
         expect(valid.errors).toBeFalsy();
@@ -1212,8 +1289,8 @@ describe('OpenAPIValidator', () => {
         const validator = new OpenAPIValidator({
           definition: {
             ...meta,
-            paths
-          }
+            paths,
+          },
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1230,8 +1307,8 @@ describe('OpenAPIValidator', () => {
         const validator = new OpenAPIValidator({
           definition: {
             ...meta,
-            paths
-          }
+            paths,
+          },
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1248,8 +1325,8 @@ describe('OpenAPIValidator', () => {
         const validator = new OpenAPIValidator({
           definition: {
             ...meta,
-            paths
-          }
+            paths,
+          },
         });
         const valid = validator.validateRequest({
           path: '/pets',
