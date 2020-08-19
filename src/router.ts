@@ -124,7 +124,7 @@ export class OpenAPIRouter {
     // find matching operation
     const match = _.chain(templatePathMatches)
       // order matches by length (specificity)
-      .orderBy((op) => op.path.length, 'desc')
+      .orderBy((op) => op.path.replace(RegExp(/\{.*?\}/g), '').length, 'desc')
       // then check if one of the matched operations matches the method
       .find(({ method }) => method === req.method)
       .value();
