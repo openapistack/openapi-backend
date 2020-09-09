@@ -27,6 +27,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
       - run: pip install aws-sam-cli
         if: matrix.project_dir == 'examples/aws-sam'
       - run: npm ci
