@@ -25,5 +25,6 @@ declare module 'swagger-parser' {
   function parse(api: string | Document, options?: Options): Promise<Document>;
   function validate(api: string | Document, options?: Options): Promise<Document>;
   function dereference(api: string | Document, options?: Options): Promise<Document>;
+  function dereference(basePath: string, api: string | Document, options?: Options): Promise<Document>;
   function bundle(api: string | Document, options?: Options): Promise<Document>;
 }
