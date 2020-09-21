@@ -130,6 +130,27 @@ describe('OpenAPIBackend', () => {
     expect(api.router.getOperations()).toHaveLength(0);
   });
 
+  test('copies objects passed to constructor', async () => {
+    // Create an OpenAPIBackend and pass handlers and securityHandlers which must not be mutated.
+    // This avoids overwriting shared default handlers if creating multiple instances of OpenAPIBackend.
+    const handlers = Object.freeze({}) as any;
+    const securityHandlers = Object.freeze({}) as any;
+    const dummyHandler = jest.fn();
+
+    const api = new OpenAPIBackend({ definition, handlers, securityHandlers });
+    await api.init();
+
+    // Verify that passed handlers object is not mutated (even though using Object.freeze already verifies this)
+    api.registerHandler('getPets', dummyHandler);
+    expect(api.handlers['getPets']).toBeDefined();
+    expect(handlers['getPets']).toBeUndefined();
+
+    // Verify that passed securityHandlers object is not mutated (even though using Object.freeze already verifies this)
+    api.registerSecurityHandler('basicAuth', dummyHandler)
+    expect(api.securityHandlers['basicAuth']).toBeDefined();
+    expect(securityHandlers['basicAuth']).toBeUndefined();
+  });
+
   describe('.register', () => {
     const api = new OpenAPIBackend({ definition });
     beforeAll(() => api.init());

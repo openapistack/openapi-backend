@@ -147,8 +147,8 @@ export class OpenAPIBackend {
     this.strict = optsWithDefaults.strict;
     this.quick = optsWithDefaults.quick;
     this.validate = optsWithDefaults.validate;
-    this.handlers = optsWithDefaults.handlers;
-    this.securityHandlers = optsWithDefaults.securityHandlers;
+    this.handlers = {...optsWithDefaults.handlers}; // Copy to avoid mutating passed object
+    this.securityHandlers = {...optsWithDefaults.securityHandlers}; // Copy to avoid mutating passed object
     this.ajvOpts = optsWithDefaults.ajvOpts;
     this.customizeAjv = optsWithDefaults.customizeAjv;
   }
