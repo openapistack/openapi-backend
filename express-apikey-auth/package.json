@@ -1,5 +1,5 @@
 {
-  "name": "openapi-backend-express-jwt-auth",
+  "name": "openapi-backend-express-apikey-auth",
   "version": "1.0.0",
   "description": "",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
