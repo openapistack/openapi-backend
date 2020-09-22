@@ -1121,7 +1121,7 @@ describe('OpenAPIValidator', () => {
 
   describe('OAS formats', () => {
     describe('in request', () => {
-      const paths: OpenAPIV3.PathObject = {
+      const paths: OpenAPIV3.PathsObject = {
         '/pets': {
           post: {
             operationId: 'createPet',
@@ -1176,7 +1176,7 @@ describe('OpenAPIValidator', () => {
           new OpenAPIValidator({
             definition: {
               ...meta,
-              paths
+              paths,
             },
           });
         expect(construct()).toBeInstanceOf(OpenAPIValidator);
@@ -1188,8 +1188,8 @@ describe('OpenAPIValidator', () => {
         const validator = new OpenAPIValidator({
           definition: {
             ...meta,
-            paths
-          }
+            paths,
+          },
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1202,7 +1202,7 @@ describe('OpenAPIValidator', () => {
             double: 2.0,
             byte: 'VGVzdA==',
             binary: 'BLOB',
-            password: 'shhh'
+            password: 'shhh',
           },
         });
         expect(valid.errors).toBeFalsy();
@@ -1212,8 +1212,8 @@ describe('OpenAPIValidator', () => {
         const validator = new OpenAPIValidator({
           definition: {
             ...meta,
-            paths
-          }
+            paths,
+          },
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1230,8 +1230,8 @@ describe('OpenAPIValidator', () => {
         const validator = new OpenAPIValidator({
           definition: {
             ...meta,
-            paths
-          }
+            paths,
+          },
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1248,8 +1248,8 @@ describe('OpenAPIValidator', () => {
         const validator = new OpenAPIValidator({
           definition: {
             ...meta,
-            paths
-          }
+            paths,
+          },
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1266,7 +1266,7 @@ describe('OpenAPIValidator', () => {
 
   describe('customizeAjv', () => {
     describe('using custom formats', () => {
-      const paths: OpenAPIV3.PathObject = {
+      const paths: OpenAPIV3.PathsObject = {
         '/pets/{id}': {
           get: {
             operationId: 'getPet',
