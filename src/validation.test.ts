@@ -1358,6 +1358,7 @@ describe('OpenAPIValidator', () => {
             customizeAjv,
           });
         expect(construct).toThrow();
+        console.warn = warn; // reset console.warn
       });
 
       test('customised Ajv should ignore unknown formats in params', () => {
