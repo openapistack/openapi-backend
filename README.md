@@ -1,4 +1,4 @@
-<h1 align="center">OpenAPI Backend</h1>
+<h1 align="center"><img alt="openapi-backend" src="./header.png" style="max-width:50rem"></h1>
 
 [![CI](https://github.com/anttiviljami/openapi-backend/workflows/CI/badge.svg)](https://github.com/anttiviljami/openapi-backend/actions?query=workflow%3ACI)
 [![Dependencies](https://david-dm.org/anttiviljami/openapi-backend.svg)](https://david-dm.org/anttiviljami/openapi-backend)
