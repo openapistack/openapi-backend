@@ -45,7 +45,7 @@
     "cookie": "^0.4.0",
     "lodash": "^4.17.15",
     "mock-json-schema": "^1.0.7",
-    "openapi-schema-validation": "^0.4.2",
+    "openapi-schema-validator": "^7.0.1",
     "openapi-types": "^7.0.1",
     "qs": "^6.9.3",
     "swagger-parser": "^10.0.2"

@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import * as Ajv from 'ajv';
-import { validate as validateOpenAPI } from 'openapi-schema-validation';
+import OpenAPISchemaValidator from 'openapi-schema-validator';
 import * as SwaggerParser from 'swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
 import { mock } from 'mock-json-schema';
@@ -147,8 +147,8 @@ export class OpenAPIBackend {
     this.strict = optsWithDefaults.strict;
     this.quick = optsWithDefaults.quick;
     this.validate = optsWithDefaults.validate;
-    this.handlers = {...optsWithDefaults.handlers}; // Copy to avoid mutating passed object
-    this.securityHandlers = {...optsWithDefaults.securityHandlers}; // Copy to avoid mutating passed object
+    this.handlers = { ...optsWithDefaults.handlers }; // Copy to avoid mutating passed object
+    this.securityHandlers = { ...optsWithDefaults.securityHandlers }; // Copy to avoid mutating passed object
     this.ajvOpts = optsWithDefaults.ajvOpts;
     this.customizeAjv = optsWithDefaults.customizeAjv;
   }
@@ -591,8 +591,9 @@ export class OpenAPIBackend {
    * @memberof OpenAPIBackend
    */
   public validateDefinition() {
-    const { valid, errors } = validateOpenAPI(this.document, 3);
-    if (!valid) {
+    const validateOpenAPI = new OpenAPISchemaValidator({ version: 3 });
+    const { errors } = validateOpenAPI.validate(this.document);
+    if (errors.length) {
       const prettyErrors = JSON.stringify(errors, null, 2);
       throw new Error(`Document is not valid OpenAPI. ${errors.length} validation errors:\n${prettyErrors}`);
     }
