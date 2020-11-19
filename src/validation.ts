@@ -87,36 +87,36 @@ const defaultFormats: Record<string, Ajv.FormatDefinition> = {
   int32: {
     // signed 32 bits
     type: 'number',
-    validate: getBitRangeValidator(32)
+    validate: getBitRangeValidator(32),
   },
   int64: {
     // signed 64 bits (a.k.a long)
     type: 'number',
-    validate: getBitRangeValidator(64)
+    validate: getBitRangeValidator(64),
   },
   float: {
     type: 'number',
-    validate: () => true
+    validate: () => true,
   },
   double: {
     type: 'number',
-    validate: () => true
+    validate: () => true,
   },
   byte: {
     // base64 encoded characters
     type: 'string',
-    validate: /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
+    validate: /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/,
   },
   binary: {
     // any sequence of octets
     type: 'string',
-    validate: () => true
+    validate: () => true,
   },
   password: {
     // A hint to UIs to obscure input.
     type: 'string',
-    validate: () => true
-  }
+    validate: () => true,
+  },
 };
 
 /**
@@ -528,7 +528,7 @@ export class OpenAPIValidator {
           paramsSchema.required = _.uniq([...(paramsSchema.required as string[]), param.in]);
         }
         target.properties = target.properties || {};
-        
+
         if (param.content && param.content['application/json']) {
           target.properties[normalizedParamName] = param.content['application/json'].schema as OpenAPIV3.SchemaObject;
         } else {

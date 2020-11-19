@@ -45,18 +45,18 @@ const queryFilter: OpenAPIV3.ParameterObject = {
         type: 'object',
         properties: {
           hasOwner: {
-            type: 'boolean'
+            type: 'boolean',
           },
           age: {
-            type: 'integer'
+            type: 'integer',
           },
           name: {
-            type: 'string'
-          }
-        }
+            type: 'string',
+          },
+        },
       },
-    }
-  }
+    },
+  },
 };
 
 const definition: OpenAPIV3.Document = {
@@ -174,14 +174,14 @@ describe('OpenAPIRouter', () => {
       expect(parsedRequest.query).toEqual({ limit: '10' });
     });
 
-    test('parses query string content \'application/json\' as JSON', () => {
-      const filterValue = {age: 4, hasOwner: true, name: "Spot"};
-      const encoded = encodeURI(JSON.stringify(filterValue))
+    test("parses query string content 'application/json' as JSON", () => {
+      const filterValue = { age: 4, hasOwner: true, name: 'Spot' };
+      const encoded = encodeURI(JSON.stringify(filterValue));
       const request = { path: `/pets?filter=${encoded}`, method: 'get', headers };
 
       const operation = api.getOperation('getPets') as Operation;
       const parsedRequest = api.parseRequest(request, operation);
-      
+
       expect(parsedRequest.query.filter).toEqual(filterValue);
     });
 

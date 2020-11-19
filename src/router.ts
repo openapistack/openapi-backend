@@ -272,7 +272,7 @@ export class OpenAPIRouter {
             });
             if (parameter) {
               if (parameter.content && parameter.content['application/json']) {
-                query[queryParam] = JSON.parse(query[queryParam]); 
+                query[queryParam] = JSON.parse(query[queryParam]);
               } else if (parameter.explode === false) {
                 let commaQueryString = queryString;
                 if (parameter.style === 'spaceDelimited') {
