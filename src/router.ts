@@ -262,7 +262,6 @@ export class OpenAPIRouter {
       // parse path params if path is given
       const pathParams = bath(operation.path);
       params = pathParams.params(normalizedPath) || {};
-
       // parse query parameters with specified style for parameter
       if (typeof req.query !== 'object' && queryString) {
         for (const queryParam in query) {
@@ -271,17 +270,21 @@ export class OpenAPIRouter {
               name: queryParam,
               in: 'query',
             });
-            if (parameter && parameter.explode === false) {
-              let commaQueryString = queryString;
-              if (parameter.style === 'spaceDelimited') {
-                commaQueryString = commaQueryString.replace(/\ /g, ',').replace(/\%20/g, ',');
+            if (parameter) {
+              if (parameter.content && parameter.content['application/json']) {
+                query[queryParam] = JSON.parse(query[queryParam]); 
+              } else if (parameter.explode === false) {
+                let commaQueryString = queryString;
+                if (parameter.style === 'spaceDelimited') {
+                  commaQueryString = commaQueryString.replace(/\ /g, ',').replace(/\%20/g, ',');
+                }
+                if (parameter.style === 'pipeDelimited') {
+                  commaQueryString = commaQueryString.replace(/\|/g, ',').replace(/\%7C/g, ',');
+                }
+                // use comma parsing e.g. &a=1,2,3
+                const commaParsed = parseQuery(commaQueryString, { comma: true });
+                query[queryParam] = commaParsed[queryParam];
               }
-              if (parameter.style === 'pipeDelimited') {
-                commaQueryString = commaQueryString.replace(/\|/g, ',').replace(/\%7C/g, ',');
-              }
-              // use comma parsing e.g. &a=1,2,3
-              const commaParsed = parseQuery(commaQueryString, { comma: true });
-              query[queryParam] = commaParsed[queryParam];
             }
           }
         }

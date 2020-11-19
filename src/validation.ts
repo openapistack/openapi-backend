@@ -528,7 +528,12 @@ export class OpenAPIValidator {
           paramsSchema.required = _.uniq([...(paramsSchema.required as string[]), param.in]);
         }
         target.properties = target.properties || {};
-        target.properties[normalizedParamName] = param.schema as OpenAPIV3.SchemaObject;
+        
+        if (param.content && param.content['application/json']) {
+          target.properties[normalizedParamName] = param.content['application/json'].schema as OpenAPIV3.SchemaObject;
+        } else {
+          target.properties[normalizedParamName] = param.schema as OpenAPIV3.SchemaObject;
+        }
       });
     }
 
