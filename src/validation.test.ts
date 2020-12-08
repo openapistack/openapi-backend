@@ -448,7 +448,7 @@ describe('OpenAPIValidator', () => {
 					},
 				});
 			})
-      
+
       test('passes validation for POST /pets with full object', async () => {
         const valid = validator.validateRequest({
           path: '/pets',

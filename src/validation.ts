@@ -460,7 +460,7 @@ export class OpenAPIValidator {
     return (function derez(value, path) {
       // The derez function recurses through the object, producing the deep copy.
 
-      let old_path; // The path of an earlier occurance of value
+      let oldPath; // The path of an earlier occurance of value
       let nu: any; // The new object or array
 
       // typeof null === "object", so go on if this value is really an object but not
@@ -479,9 +479,9 @@ export class OpenAPIValidator {
         // encountered it. If so, return a {"$ref":PATH} object. This uses an
         // ES6 WeakMap.
 
-        old_path = objects.get(value);
-        if (old_path !== undefined) {
-          return { $ref: old_path };
+        oldPath = objects.get(value);
+        if (oldPath !== undefined) {
+          return { $ref: oldPath };
         }
 
         // Otherwise, accumulate the unique value and its path.
@@ -492,13 +492,13 @@ export class OpenAPIValidator {
 
         if (Array.isArray(value)) {
           nu = [];
-          value.forEach(function (element, i) {
+          value.forEach((element, i) => {
             nu[i] = derez(element, path + '/' + i);
           });
         } else {
           // If it is an object, replicate the object.
           nu = {};
-          Object.keys(value).forEach(function (name) {
+          Object.keys(value).forEach((name) => {
             nu[name] = derez(value[name], path + '/' + name);
           });
         }
