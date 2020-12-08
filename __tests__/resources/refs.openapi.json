@@ -1,0 +1,73 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Circular References",
+    "description": "API with circular references",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/trees": {
+			"post": {
+				"operationId": "createTree",
+				"responses": { 
+					"200": { 
+						"description": "ok" 
+					} 
+				},
+				"requestBody": { 
+					"$ref": "#/components/requestBodies/CreateTree" 
+				}
+			},
+			"get": {
+				"operationId": "getTrees",
+				"responses": { 
+					"200": { 
+						"$ref": "#/components/schemas/BinTree"
+					} 
+				},
+				"parameters": [
+					{
+						"name": "subtree",
+						"in": "query",
+						"description": "Filter trees by existance of a subtree",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/BinTree"
+						}
+					}
+				]
+			}
+    }
+  },
+  "components": {
+    "schemas": {
+			"BinTree": {
+				"title": "BinTree",
+				"type": "object",
+				"nullable": true,
+				"properties": {
+					"left": { 
+						"nullable": true,
+						"allOf": [{ "$ref": "#/components/schemas/BinTree" }]
+					},
+					"right": { 
+						"nullable": true,
+						"allOf": [{ "$ref": "#/components/schemas/BinTree" }]
+					},
+					"value": {
+						"type": "number"
+					}
+				}
+			}
+		},
+		"requestBodies": {
+			"CreateTree": {
+				"content": {
+					"application/json": {
+						"schema": { "$ref": "#/components/schemas/BinTree" }
+					}
+				}
+			}
+		}
+  }
+}

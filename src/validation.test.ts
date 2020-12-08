@@ -4,6 +4,12 @@ import { OpenAPIV3 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
 import { SetMatchType } from './backend';
 import { ValidationContext } from './validation';
+import SwaggerParser = require('swagger-parser');
+import * as path from 'path';
+import * as _ from 'lodash';
+import { before } from 'lodash';
+const testsDir = path.join(__dirname, '..', '__tests__');
+const circularRefPath = path.join(testsDir, 'resources', 'refs.openapi.json');
 
 const headers = { accept: 'application/json' };
 
@@ -14,6 +20,34 @@ const meta = {
     version: '1.0.0',
   },
 };
+
+const validBTree = {
+  left: {
+    left: null,
+    right: null,
+    value: 0,
+  },
+  right: {
+    left: null,
+    right: {
+      left: null,
+      right: null,
+      value: 3,
+    },
+    value: 2,
+  },
+  value: 1,
+};
+const invalidBTree = {
+  left: null,
+  right: null,
+  value: 'not a number',
+};
+
+let circularRefDefinition: OpenAPIV3.Document;
+beforeAll(async () => {
+  circularRefDefinition = await SwaggerParser.dereference(circularRefPath);
+});
 
 describe('OpenAPIValidator', () => {
   describe('.validateRequest', () => {
@@ -362,6 +396,7 @@ describe('OpenAPIValidator', () => {
     });
 
     describe('request payloads', () => {
+			let validator: OpenAPIValidator;
       const petSchema: SchemaLike = {
         type: 'object',
         additionalProperties: false,
@@ -376,42 +411,44 @@ describe('OpenAPIValidator', () => {
         },
         required: ['name'],
       };
-
-      const validator = new OpenAPIValidator({
-        definition: {
-          ...meta,
-          paths: {
-            '/pets': {
-              post: {
-                operationId: 'createPet',
-                responses: { 200: { description: 'ok' } },
-                requestBody: {
-                  content: {
-                    'application/json': {
-                      schema: petSchema,
-                    },
-                  },
-                },
-              },
-              put: {
-                operationId: 'replacePet',
-                responses: { 200: { description: 'ok' } },
-                requestBody: {
-                  content: {
-                    'application/json': {
-                      schema: petSchema,
-                    },
-                    'application/xml': {
-                      example: '<Pet><name>string</name></Pet>',
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      });
-
+			beforeAll(() => {
+				validator = new OpenAPIValidator({
+					definition: {
+						...meta,
+						paths: {
+							'/pets': {
+								post: {
+									operationId: 'createPet',
+									responses: { 200: { description: 'ok' } },
+									requestBody: {
+										content: {
+											'application/json': {
+												schema: petSchema,
+											},
+										},
+									},
+								},
+								put: {
+									operationId: 'replacePet',
+									responses: { 200: { description: 'ok' } },
+									requestBody: {
+										content: {
+											'application/json': {
+												schema: petSchema,
+											},
+											'application/xml': {
+												example: '<Pet><name>string</name></Pet>',
+											},
+										},
+									},
+								},
+							},
+							...circularRefDefinition.paths,
+						},
+					},
+				});
+			})
+      
       test('passes validation for POST /pets with full object', async () => {
         const valid = validator.validateRequest({
           path: '/pets',
@@ -435,6 +472,26 @@ describe('OpenAPIValidator', () => {
           },
         });
         expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for POST /trees with tree of numbers (recursive structure)', async () => {
+        const valid = validator.validateRequest({
+          path: '/trees',
+          method: 'post',
+          headers,
+          body: validBTree,
+        });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation for POST /trees with tree of strings (recursive structure)', async () => {
+        const valid = validator.validateRequest({
+          path: '/trees',
+          method: 'post',
+          headers,
+          body: invalidBTree,
+        });
+        expect(valid.errors).toHaveLength(1);
       });
 
       test('passes validation for POST /pets with nullable age', async () => {
