@@ -249,7 +249,7 @@ export class OpenAPIRouter {
 
     // get query string from path
     const queryString = req.path.split('?')[1];
-    const query = typeof req.query === 'object' ? req.query : parseQuery(queryString);
+    const query = typeof req.query === 'object' ? _.cloneDeep(req.query) : parseQuery(queryString);
 
     // normalize
     req = this.normalizeRequest(req);
@@ -262,16 +262,17 @@ export class OpenAPIRouter {
       // parse path params if path is given
       const pathParams = bath(operation.path);
       params = pathParams.params(normalizedPath) || {};
-
       // parse query parameters with specified style for parameter
-      if (typeof req.query !== 'object' && queryString) {
-        for (const queryParam in query) {
-          if (query[queryParam]) {
-            const parameter = _.find((operation.parameters as OpenAPIV3.ParameterObject[]) || [], {
-              name: queryParam,
-              in: 'query',
-            });
-            if (parameter && parameter.explode === false) {
+      for (const queryParam in query) {
+        if (query[queryParam]) {
+          const parameter = _.find((operation.parameters as OpenAPIV3.ParameterObject[]) || [], {
+            name: queryParam,
+            in: 'query',
+          });
+          if (parameter) {
+            if (parameter.content && parameter.content['application/json']) {
+              query[queryParam] = JSON.parse(query[queryParam]);
+            } else if (parameter.explode === false && queryString) {
               let commaQueryString = queryString;
               if (parameter.style === 'spaceDelimited') {
                 commaQueryString = commaQueryString.replace(/\ /g, ',').replace(/\%20/g, ',');

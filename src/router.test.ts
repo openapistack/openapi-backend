@@ -36,6 +36,29 @@ const queryLimit: OpenAPIV3.ParameterObject = {
   },
 };
 
+const queryFilter: OpenAPIV3.ParameterObject = {
+  name: 'filter',
+  in: 'query',
+  content: {
+    'application/json': {
+      schema: {
+        type: 'object',
+        properties: {
+          hasOwner: {
+            type: 'boolean',
+          },
+          age: {
+            type: 'integer',
+          },
+          name: {
+            type: 'string',
+          },
+        },
+      },
+    },
+  },
+};
+
 const definition: OpenAPIV3.Document = {
   openapi: '3.0.0',
   info: {
@@ -58,7 +81,7 @@ const definition: OpenAPIV3.Document = {
         operationId: 'createPet',
         responses,
       },
-      parameters: [queryLimit],
+      parameters: [queryLimit, queryFilter],
     },
     '/pets/{id}': {
       get: {
@@ -151,12 +174,15 @@ describe('OpenAPIRouter', () => {
       expect(parsedRequest.query).toEqual({ limit: '10' });
     });
 
-    test('parses query string arrays', () => {
-      const request = { path: '/pets?limit=10&limit=20', method: 'get', headers };
+    test("parses query string content 'application/json' as JSON", () => {
+      const filterValue = { age: 4, hasOwner: true, name: 'Spot' };
+      const encoded = encodeURI(JSON.stringify(filterValue));
+      const request = { path: `/pets?filter=${encoded}`, method: 'get', headers };
 
-      const parsedRequest = api.parseRequest(request);
+      const operation = api.getOperation('getPets') as Operation;
+      const parsedRequest = api.parseRequest(request, operation);
 
-      expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
+      expect(parsedRequest.query.filter).toEqual(filterValue);
     });
 
     test('parses query string arrays', () => {
