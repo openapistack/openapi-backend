@@ -23,7 +23,7 @@
     "@types/jest": "^26.0.0",
     "@types/node": "^14.0.13",
     "@types/wait-on": "^4.0.0",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.5",
     "typescript": "^3.9.5",
