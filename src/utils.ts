@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { Operation } from './router';
 
 export default class OpenAPIUtils {
   /**
@@ -72,5 +73,21 @@ export default class OpenAPIUtils {
       status: Number(code),
       res: obj[code],
     };
+  }
+
+  /**
+   * Get operationId, (or generate one) for an operation
+   *
+   * @static
+   * @param {Operation} operation
+   * @returns {string} OperationId of the given operation
+   * @memberof OpenAPIUtils
+   */
+  public static getOperationId(operation: Operation): string {
+    if (!operation?.operationId) {
+      // TODO: generate a default substitute for operationId
+      return `unknown`;
+    }
+    return operation.operationId;
   }
 }
