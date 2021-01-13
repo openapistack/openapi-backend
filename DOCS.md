@@ -58,6 +58,7 @@
     - [Parameter: opts.definition](#parameter-optsdefinition)
     - [Parameter: opts.ajvOpts](#parameter-optsajvopts)
     - [Parameter: opts.router](#parameter-optsrouter)
+    - [Parameter: opts.lazyCompileValidators](#parameter-optslazycompilevalidators)
     - [Parameter: opts.customizeAjv(originalAjv, ajvOpts, validationContext)](#parameter-optscustomizeajvoriginalajv-ajvopts-validationcontext)
   - [.validateRequest(req, operation?)](#validaterequestreq-operation)
     - [Parameter: req](#parameter-req)
@@ -588,6 +589,7 @@ const validator = new OpenAPIValidator({
   definition: api.document,
   router: new OpenAPIRouter()
   ajvOpts: { unknownFormats: true },
+  lazyCompileValidators: false,
   customizeAjv: (originalAjv, ajvOpts, validationContext) => new Ajv(),
 });
 ```
@@ -629,6 +631,14 @@ Type: `Ajv.Options`
 Optional. Passed instance of OpenAPIRouter. Will create new instance from definition object if not passed.
 
 Type: [`OpenAPIRouter`](#class-openapirouter)
+
+#### Parameter: opts.lazyCompileValidators
+
+Optional. When set to `true` skips precompiling Ajv validators and compiles only when needed. Useful for optimizing for init time e.g. in Lambda.
+
+This option is applied when the [OpenAPIBackend `quick` parameter](#parameter-optsquick) is set to `true`.
+
+Type: `Boolean`
 
 #### Parameter: opts.customizeAjv(originalAjv, ajvOpts, validationContext)
 

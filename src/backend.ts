@@ -208,6 +208,7 @@ export class OpenAPIBackend {
         ajvOpts: this.ajvOpts,
         customizeAjv: this.customizeAjv,
         router: this.router,
+        lazyCompileValidators: Boolean(this.quick), // optimise startup by lazily compiling Ajv validators
       });
     }
 
