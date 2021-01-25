@@ -1,0 +1,7 @@
+##
+# Classify files under examples/ as example code so they aren't included in the
+# LGTM analysis
+##
+path_classifiers:
+  examples:
+    - examples/
