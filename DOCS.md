@@ -184,7 +184,7 @@ Type: `boolean`
 
 Optional. Quick startup. Attempts to optimize startup time by skipping and deferring some parts.
 
-Warning: might break things. (default: false)
+This setting is recommended to optimize cold starts in Serverless Function environments such as AWS Lambda / Azure Functions / GCP Cloud Functions.
 
 Type: `boolean`
 
