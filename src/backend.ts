@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as Ajv from 'ajv';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
-import * as SwaggerParser from 'swagger-parser';
+import { parse as parseJSONSchema, dereference } from '@apidevtools/json-schema-ref-parser';
 import { OpenAPIV3 } from 'openapi-types';
 import { mock } from 'mock-json-schema';
 
@@ -184,9 +184,9 @@ export class OpenAPIBackend {
 
       // dereference the document into definition (make sure not to copy)
       if (typeof this.inputDocument === 'string') {
-        this.definition = await SwaggerParser.dereference(this.inputDocument, this.document || this.inputDocument);
+        this.definition = (await dereference(this.inputDocument)) as Document;
       } else {
-        this.definition = await SwaggerParser.dereference(this.document || this.inputDocument);
+        this.definition = (await dereference(this.document || this.inputDocument)) as Document;
       }
     } catch (err) {
       if (this.strict) {
@@ -237,7 +237,7 @@ export class OpenAPIBackend {
    * @memberof OpenAPIBackend
    */
   public async loadDocument() {
-    this.document = await SwaggerParser.parse(this.inputDocument);
+    this.document = await parseJSONSchema(this.inputDocument);
     return this.document;
   }
 
