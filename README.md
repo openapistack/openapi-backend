@@ -183,7 +183,7 @@ api.register({
 
 Operation handlers are passed a special [Context object](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#context-object)
 as the first argument, which contains the parsed request, the
-matched API operation and input validation results. The other arguments in the example aboce are Express-specific
+matched API operation and input validation results. The other arguments in the example above are Express-specific
 handler arguments.
 
 ## Request validation
