@@ -237,7 +237,7 @@ export class OpenAPIBackend {
    * @memberof OpenAPIBackend
    */
   public async loadDocument() {
-    this.document = await parseJSONSchema(this.inputDocument);
+    this.document = (await parseJSONSchema(this.inputDocument)) as Document;
     return this.document;
   }
 
