@@ -402,7 +402,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
     });
 
     describe('request payloads', () => {
-			let validator: OpenAPIValidator;
+      let validator: OpenAPIValidator;
       const petSchema: SchemaLike = {
         type: 'object',
         additionalProperties: false,
@@ -417,46 +417,44 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
         },
         required: ['name'],
       };
-			beforeAll(() => {
-				validator = new OpenAPIValidator({
-					definition: {
-						...meta,
-						paths: {
-							'/pets': {
-								post: {
-									operationId: 'createPet',
-									responses: { 200: { description: 'ok' } },
-									requestBody: {
-										content: {
-											'application/json': {
-												schema: petSchema,
-											},
-										},
-									},
-								},
-								put: {
-									operationId: 'replacePet',
-									responses: { 200: { description: 'ok' } },
-									requestBody: {
-										content: {
-											'application/json': {
-												schema: petSchema,
-											},
-											'application/xml': {
-												example: '<Pet><name>string</name></Pet>',
-											},
-										},
-									},
-								},
-							},
-							...circularRefDefinition.paths,
+      beforeAll(() => {
+        validator = new OpenAPIValidator({
+          definition: {
+            ...meta,
+            paths: {
+              '/pets': {
+                post: {
+                  operationId: 'createPet',
+                  responses: { 200: { description: 'ok' } },
+                  requestBody: {
+                    content: {
+                      'application/json': {
+                        schema: petSchema,
+                      },
+                    },
+                  },
+                },
+                put: {
+                  operationId: 'replacePet',
+                  responses: { 200: { description: 'ok' } },
+                  requestBody: {
+                    content: {
+                      'application/json': {
+                        schema: petSchema,
+                      },
+                      'application/xml': {
+                        example: '<Pet><name>string</name></Pet>',
+                      },
+                    },
+                  },
+                },
+              },
+              ...circularRefDefinition.paths,
             },
             ...constructorOpts,
-
           },
-          
-				});
-			})
+        });
+      });
 
       test('passes validation for POST /pets with full object', async () => {
         const valid = validator.validateRequest({
