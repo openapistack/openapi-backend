@@ -146,7 +146,7 @@ describe('OpenAPIBackend', () => {
     expect(handlers['getPets']).toBeUndefined();
 
     // Verify that passed securityHandlers object is not mutated (even though using Object.freeze already verifies this)
-    api.registerSecurityHandler('basicAuth', dummyHandler)
+    api.registerSecurityHandler('basicAuth', dummyHandler);
     expect(api.securityHandlers['basicAuth']).toBeDefined();
     expect(securityHandlers['basicAuth']).toBeUndefined();
   });

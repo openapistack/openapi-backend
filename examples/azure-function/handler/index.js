@@ -75,6 +75,7 @@ const api = new OpenAPIBackend({
       };
     },
   },
+  quick: true,
 });
 
 api.init();

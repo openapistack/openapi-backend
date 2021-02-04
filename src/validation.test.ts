@@ -50,6 +50,7 @@ beforeAll(async () => {
 });
 
 describe('OpenAPIValidator', () => {
+describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts %j', (constructorOpts) => {
   describe('.validateRequest', () => {
     describe('path params in path base object', () => {
       const validator = new OpenAPIValidator({
@@ -79,6 +80,7 @@ describe('OpenAPIValidator', () => {
             },
           },
         },
+        ...constructorOpts,
       });
 
       test('passes validation for GET /pets/1', async () => {
@@ -146,6 +148,7 @@ describe('OpenAPIValidator', () => {
             },
           },
         },
+        ...constructorOpts,
       });
 
       test('passes validation for GET /pets/1', async () => {
@@ -186,6 +189,7 @@ describe('OpenAPIValidator', () => {
       const validator = new OpenAPIValidator({
         definition,
         router: new OpenAPIRouter({ definition, apiRoot: '/v1' }),
+        ...constructorOpts,
       });
 
       test('passes validation for GET /v1/pets/1', async () => {
@@ -226,6 +230,7 @@ describe('OpenAPIValidator', () => {
             },
           },
         },
+        ...constructorOpts,
       });
 
       test('passes validation for GET /pets', async () => {
@@ -303,6 +308,7 @@ describe('OpenAPIValidator', () => {
             },
           },
         },
+        ...constructorOpts,
       });
 
       test('passes validation for GET /pets?limit=10', async () => {
@@ -365,6 +371,7 @@ describe('OpenAPIValidator', () => {
             },
           },
         },
+        ...constructorOpts,
       });
 
       test('passes validation for GET /secret, x-api-key:abcd0123', async () => {
@@ -444,8 +451,11 @@ describe('OpenAPIValidator', () => {
 								},
 							},
 							...circularRefDefinition.paths,
-						},
-					},
+            },
+            ...constructorOpts,
+
+          },
+          
 				});
 			})
 
@@ -651,6 +661,7 @@ describe('OpenAPIValidator', () => {
           },
         },
       },
+      ...constructorOpts,
     });
 
     test('passes validation with valid 200 response object and operationId getPetById', async () => {
@@ -916,6 +927,7 @@ describe('OpenAPIValidator', () => {
           },
         },
       },
+      ...constructorOpts,
     });
 
     test('passes validation with valid header object and operationId listPets, no options', async () => {
@@ -1235,6 +1247,7 @@ describe('OpenAPIValidator', () => {
               ...meta,
               paths,
             },
+            ...constructorOpts,
           });
         expect(construct()).toBeInstanceOf(OpenAPIValidator);
         expect(console.warn).not.toBeCalled();
@@ -1247,6 +1260,7 @@ describe('OpenAPIValidator', () => {
             ...meta,
             paths,
           },
+          ...constructorOpts,
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1271,6 +1285,7 @@ describe('OpenAPIValidator', () => {
             ...meta,
             paths,
           },
+          ...constructorOpts,
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1289,6 +1304,7 @@ describe('OpenAPIValidator', () => {
             ...meta,
             paths,
           },
+          ...constructorOpts,
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1307,6 +1323,7 @@ describe('OpenAPIValidator', () => {
             ...meta,
             paths,
           },
+          ...constructorOpts,
         });
         const valid = validator.validateRequest({
           path: '/pets',
@@ -1320,7 +1337,9 @@ describe('OpenAPIValidator', () => {
       });
     });
   });
+});
 
+describe('OpenAPIValidator', () => {
   describe('customizeAjv', () => {
     describe('using custom formats', () => {
       const paths: OpenAPIV3.PathsObject = {

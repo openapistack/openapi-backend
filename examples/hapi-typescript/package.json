@@ -24,7 +24,7 @@
     "@types/hapi": "^17.8.5",
     "@types/jest": "^25.2.1",
     "@types/node": "^10.12.26",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "concurrently": "^4.1.0",
     "jest": "^23.6.0",
     "nodemon": "^1.18.10",

@@ -7,7 +7,7 @@ const headers = {
 };
 
 // create api from definition
-const api = new OpenAPIBackend({ definition: './openapi.yml' });
+const api = new OpenAPIBackend({ definition: './openapi.yml', quick: true });
 
 // register some handlers
 api.register({

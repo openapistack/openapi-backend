@@ -1,7 +1,7 @@
 {
   "name": "openapi-backend",
   "description": "Build, Validate, Route, Authenticate and Mock using OpenAPI definitions. Framework-agnostic",
-  "version": "3.6.3",
+  "version": "3.8.0",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
   "license": "MIT",
   "keywords": [
@@ -40,6 +40,7 @@
     "!*.config.js"
   ],
   "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.7",
     "ajv": "^6.10.0",
     "bath-es5": "^3.0.3",
     "cookie": "^0.4.0",
@@ -47,16 +48,15 @@
     "mock-json-schema": "^1.0.7",
     "openapi-schema-validator": "^7.0.1",
     "openapi-types": "^7.0.1",
-    "qs": "^6.9.3",
-    "swagger-parser": "^10.0.2"
+    "qs": "^6.9.3"
   },
   "devDependencies": {
     "@types/cookie": "^0.3.2",
     "@types/jest": "^25.2.1",
+    "@types/json-schema": "^7.0.7",
     "@types/lodash": "^4.14.122",
     "@types/node": "^13.11.1",
     "@types/qs": "^6.9.1",
-    "@types/swagger-parser": "^7.0.1",
     "jest": "^25.3.0",
     "markdown-toc": "^1.2.0",
     "prettier": "^2.0.4",
