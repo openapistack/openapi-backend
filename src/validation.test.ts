@@ -4,7 +4,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
 import { SetMatchType } from './backend';
 import { ValidationContext } from './validation';
-import SwaggerParser = require('swagger-parser');
+import { dereference } from '@apidevtools/json-schema-ref-parser';
 import * as path from 'path';
 import * as _ from 'lodash';
 import { before } from 'lodash';
@@ -44,12 +44,11 @@ const invalidBTree = {
   value: 'not a number',
 };
 
-let circularRefDefinition: OpenAPIV3.Document;
+let circularRefDefinition: any;
 beforeAll(async () => {
-  circularRefDefinition = await SwaggerParser.dereference(circularRefPath);
+  circularRefDefinition = await dereference(circularRefPath);
 });
 
-describe('OpenAPIValidator', () => {
 describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts %j', (constructorOpts) => {
   describe('.validateRequest', () => {
     describe('path params in path base object', () => {
