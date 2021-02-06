@@ -454,6 +454,76 @@ export class OpenAPIValidator {
   }
 
   /**
+   * Compiles a schema with Ajv instance and handles circular references.
+   *
+   * @param ajv The Ajv instance
+   * @param schema The schema to compile
+   */
+  private static compileSchema(ajv: Ajv.Ajv, schema: any): Ajv.ValidateFunction {
+    const decycledSchema = this.decycle(schema);
+    return ajv.compile(decycledSchema);
+  }
+
+  /**
+   * Produces a deep clone which replaces object reference cycles with JSONSchema refs.
+   * This function is based on [cycle.js]{@link https://github.com/douglascrockford/JSON-js/blob/master/cycle.js}, which was referred by
+   * the [MDN]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value}.
+   * @param object An object for which to remove cycles
+   */
+  private static decycle(object: any): any {
+    const objects = new WeakMap(); // object to path mappings
+    return (function derez(value, path) {
+      // The derez function recurses through the object, producing the deep copy.
+
+      let oldPath; // The path of an earlier occurance of value
+      let nu: any; // The new object or array
+
+      // typeof null === "object", so go on if this value is really an object but not
+      // one of the weird builtin objects.
+
+      if (
+        typeof value === 'object' &&
+        value !== null &&
+        !(value instanceof Boolean) &&
+        !(value instanceof Date) &&
+        !(value instanceof Number) &&
+        !(value instanceof RegExp) &&
+        !(value instanceof String)
+      ) {
+        // If the value is an object or array, look to see if we have already
+        // encountered it. If so, return a {"$ref":PATH} object. This uses an
+        // ES6 WeakMap.
+
+        oldPath = objects.get(value);
+        if (oldPath !== undefined) {
+          return { $ref: oldPath };
+        }
+
+        // Otherwise, accumulate the unique value and its path.
+
+        objects.set(value, path);
+
+        // If it is an array, replicate the array.
+
+        if (Array.isArray(value)) {
+          nu = [];
+          value.forEach((element, i) => {
+            nu[i] = derez(element, path + '/' + i);
+          });
+        } else {
+          // If it is an object, replicate the object.
+          nu = {};
+          Object.keys(value).forEach((name) => {
+            nu[name] = derez(value[name], path + '/' + name);
+          });
+        }
+        return nu;
+      }
+      return value;
+    })(object, '#');
+  }
+
+  /**
    * Builds Ajv request validation functions for an operation and registers them to requestValidators
    *
    * @param {Operation} operation
@@ -490,7 +560,7 @@ export class OpenAPIValidator {
 
         // add compiled params schema to schemas for this operation id
         const requestBodyValidator = this.getAjv(ValidationContext.RequestBody);
-        validators.push(requestBodyValidator.compile(requestBodySchema));
+        validators.push(OpenAPIValidator.compileSchema(requestBodyValidator, requestBodySchema));
       }
     }
 
@@ -554,7 +624,7 @@ export class OpenAPIValidator {
 
     // add compiled params schema to requestValidators for this operation id
     const paramsValidator = this.getAjv(ValidationContext.Params, { coerceTypes: true });
-    validators.push(paramsValidator.compile(paramsSchema));
+    validators.push(OpenAPIValidator.compileSchema(paramsValidator, paramsSchema));
     return validators;
   }
 
@@ -608,7 +678,7 @@ export class OpenAPIValidator {
     // compile the validator function and register to responseValidators
     const schema = { oneOf: responseSchemas };
     const responseValidator = this.getAjv(ValidationContext.Response);
-    return responseValidator.compile(schema);
+    return OpenAPIValidator.compileSchema(responseValidator, schema);
   }
 
   /**
@@ -651,7 +721,7 @@ export class OpenAPIValidator {
       const response = res as OpenAPIV3.ResponseObject;
       if (response.content && response.content['application/json'] && response.content['application/json'].schema) {
         const validateFn = response.content['application/json'].schema;
-        responseValidators[status] = validator.compile(validateFn);
+        responseValidators[status] = OpenAPIValidator.compileSchema(validator, validateFn);
       }
       return null;
     });
@@ -710,7 +780,7 @@ export class OpenAPIValidator {
         return null;
       });
 
-      validateFns[SetMatchType.Any] = validator.compile({
+      validateFns[SetMatchType.Any] = OpenAPIValidator.compileSchema(validator, {
         type: 'object',
         properties: {
           headers: {
@@ -722,7 +792,7 @@ export class OpenAPIValidator {
         },
       });
 
-      validateFns[SetMatchType.Superset] = validator.compile({
+      validateFns[SetMatchType.Superset] = OpenAPIValidator.compileSchema(validator, {
         type: 'object',
         properties: {
           headers: {
@@ -734,7 +804,7 @@ export class OpenAPIValidator {
         },
       });
 
-      validateFns[SetMatchType.Subset] = validator.compile({
+      validateFns[SetMatchType.Subset] = OpenAPIValidator.compileSchema(validator, {
         type: 'object',
         properties: {
           headers: {
@@ -746,7 +816,7 @@ export class OpenAPIValidator {
         },
       });
 
-      validateFns[SetMatchType.Exact] = validator.compile({
+      validateFns[SetMatchType.Exact] = OpenAPIValidator.compileSchema(validator, {
         type: 'object',
         properties: {
           headers: {
