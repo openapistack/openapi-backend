@@ -22,7 +22,6 @@ jobs:
           - examples/hapi-typescript
           - examples/koa
           - examples/serverless-framework
-          - examples/azure-function
           - examples/aws-sam
     steps:
       - uses: actions/checkout@v1
