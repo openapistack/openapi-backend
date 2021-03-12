@@ -166,8 +166,24 @@ describe('OpenAPIRouter', () => {
       expect(parsedRequest.params).toEqual({ id: '123' });
     });
 
-    test('parses query string', () => {
+    test('parses query string from path prop', () => {
       const request = { path: '/pets?limit=10', method: 'get', headers };
+
+      const parsedRequest = api.parseRequest(request);
+
+      expect(parsedRequest.query).toEqual({ limit: '10' });
+    });
+
+    test('parses query string from query prop', () => {
+      const request = { path: '/pets', query: 'limit=10', method: 'get', headers };
+
+      const parsedRequest = api.parseRequest(request);
+
+      expect(parsedRequest.query).toEqual({ limit: '10' });
+    });
+
+    test('parses query string from query prop starting with ?', () => {
+      const request = { path: '/pets', query: '?limit=10', method: 'get', headers };
 
       const parsedRequest = api.parseRequest(request);
 
