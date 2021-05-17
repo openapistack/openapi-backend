@@ -234,7 +234,7 @@ Initalizes the OpenAPIBackend instace for use.
 1. Marks member property `initalized` to true
 1. Registers all [Operation Handlers](#operation-handlers) passed in constructor options
 
-The `init()` method should be caAled right after creating a new instance of OpenAPIBackend. Although for ease of use,
+The `init()` method should be called right after creating a new instance of OpenAPIBackend. Although for ease of use,
 some methods like `handleRequest()` will call the method if the initalized member property is set to false.
 
 Returns the initalized OpenAPI backend instance.
