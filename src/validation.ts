@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import Ajv, { Options as AjvOpts, ErrorObject, FormatDefinition, ValidateFunction } from 'ajv';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 import { OpenAPIRouter, Request, Operation } from './router';
 import OpenAPIUtils from './utils';
 import { SetMatchType } from './backend';

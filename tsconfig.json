@@ -9,6 +9,7 @@
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
+    "skipLibCheck": true,
     "baseUrl": ".",
     "rootDir": "src/",
     "outDir": "",

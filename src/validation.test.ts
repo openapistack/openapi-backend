@@ -1,13 +1,11 @@
-import Ajv, { Options as AjvOpts } from 'ajv';
+import Ajv from 'ajv';
 import { OpenAPIRouter, OpenAPIValidator } from './index';
 import { OpenAPIV3 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
 import { SetMatchType } from './backend';
-import { ValidationContext } from './validation';
 import { dereference } from '@apidevtools/json-schema-ref-parser';
 import * as path from 'path';
 import * as _ from 'lodash';
-import { before } from 'lodash';
 const testsDir = path.join(__dirname, '..', '__tests__');
 const circularRefPath = path.join(testsDir, 'resources', 'refs.openapi.json');
 
@@ -1431,7 +1429,7 @@ describe('OpenAPIValidator', () => {
                 '/pets/{id}': { get: getPet },
               },
             },
-            customizeAjv: (_, ajvOpts) => new Ajv({ ...ajvOpts, formats: { custom: true } }),
+            customizeAjv: (_ajv, ajvOpts) => new Ajv({ ...ajvOpts, formats: { custom: true } }),
           });
         expect(construct()).toBeInstanceOf(OpenAPIValidator);
         expect(console.warn).toBeCalledTimes(0);
@@ -1450,7 +1448,7 @@ describe('OpenAPIValidator', () => {
                 '/pets': { post: createPet },
               },
             },
-            customizeAjv: (_, ajvOpts) => new Ajv({ ...ajvOpts }),
+            customizeAjv: (_ajv, ajvOpts) => new Ajv({ ...ajvOpts }),
           });
         expect(construct()).toBeInstanceOf(OpenAPIValidator);
         expect(console.warn).toBeCalled();

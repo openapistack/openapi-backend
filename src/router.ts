@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 import bath from 'bath-es5';
 import * as cookie from 'cookie';
 import { parse as parseQuery } from 'qs';
