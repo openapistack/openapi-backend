@@ -482,7 +482,7 @@ describe('OpenAPIBackend', () => {
       expect(dummyHandlers['getPets']).toBeCalled();
 
       const contextArg = dummyHandlers['getPets'].mock.calls.slice(-1)[0][0];
-      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', headers });
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets/', headers });
       expect(contextArg.operation.operationId).toEqual('getPets');
       expect(contextArg.validation.errors).toBeFalsy();
     });
@@ -493,7 +493,7 @@ describe('OpenAPIBackend', () => {
       expect(dummyHandlers['getPets']).toBeCalled();
 
       const contextArg = dummyHandlers['getPets'].mock.calls.slice(-1)[0][0];
-      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', query: { limit: '10' }, headers });
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets/', query: { limit: '10' }, headers });
       expect(contextArg.operation.operationId).toEqual('getPets');
       expect(contextArg.validation.errors).toBeFalsy();
     });
