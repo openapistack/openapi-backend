@@ -194,15 +194,25 @@ export class OpenAPIRouter {
    * @returns {Request}
    */
   public normalizeRequest(req: Request): Request {
-    return {
-      ...req,
-      path: (req.path || '')
-        .trim()
-        .split('?')[0] // remove query string
-        .replace(/\/+$/, '') // remove trailing slash
-        .replace(/^\/*/, '/'), // add leading slash
-      method: req.method.trim().toLowerCase(),
-    };
+    let path = req.path?.trim() || '';
+
+    // add leading prefix to path
+    if (!path.startsWith('/')) {
+      path = `/${path}`;
+    }
+
+    // remove query string from path
+    path = path.split('?')[0];
+
+    // remove trailing slashes from path
+    while (path.length > 1 && path.endsWith('/')) {
+      path = path.substr(0, path.length - 1);
+    }
+
+    // normalize method to lowercase
+    const method = req.method.trim().toLowerCase();
+
+    return { ...req, path, method };
   }
 
   /**
