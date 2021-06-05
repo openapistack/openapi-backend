@@ -198,7 +198,7 @@ Type: `boolean`
 
 Optional. The default AJV options to use for validation. See [available options](https://ajv.js.org/#options)
 
-Type: `Ajv.Options`
+Type: `AjvOpts`
 
 #### Parameter: opts.customizeAjv(originalAjv, ajvOpts, validationContext)
 
@@ -624,7 +624,7 @@ Type: `Document`
 
 Optional. The default AJV options to use for validation. See [available options](https://ajv.js.org/#options)
 
-Type: `Ajv.Options`
+Type: `AjvOpts`
 
 #### Parameter: opts.router
 

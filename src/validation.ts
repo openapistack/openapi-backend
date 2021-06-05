@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import * as Ajv from 'ajv';
+import Ajv, { Options as AjvOpts, ErrorObject, FormatDefinition, ValidateFunction } from 'ajv';
 import { OpenAPIV3 } from 'openapi-types';
 import { OpenAPIRouter, Request, Operation } from './router';
 import OpenAPIUtils from './utils';
@@ -16,7 +16,7 @@ type Document = OpenAPIV3.Document;
  */
 export interface ValidationResult {
   valid: boolean;
-  errors?: Ajv.ErrorObject[] | null;
+  errors?: ErrorObject[] | null;
 }
 
 /**
@@ -48,11 +48,11 @@ interface InputParameters {
 }
 
 interface ResponseHeadersValidateFunctionMap {
-  [statusCode: string]: { [setMatchType: string]: Ajv.ValidateFunction };
+  [statusCode: string]: { [setMatchType: string]: ValidateFunction };
 }
 
 interface StatusBasedResponseValidatorsFunctionMap {
-  [statusCode: string]: Ajv.ValidateFunction;
+  [statusCode: string]: ValidateFunction;
 }
 
 export enum ValidationContext {
@@ -63,10 +63,10 @@ export enum ValidationContext {
 }
 
 export type AjvCustomizer = (
-  originalAjv: Ajv.Ajv,
-  ajvOpts: Ajv.Options,
+  originalAjv: Ajv,
+  ajvOpts: AjvOpts,
   validationContext: ValidationContext,
-) => Ajv.Ajv;
+) => Ajv;
 
 /**
  * Returns a function that validates that a signed number is within the given bit range
@@ -79,7 +79,7 @@ function getBitRangeValidator(bits: number) {
 }
 
 // Formats defined by the OAS
-const defaultFormats: Record<string, Ajv.FormatDefinition> = {
+const defaultFormats: Record<string, FormatDefinition<any>> = {
   int32: {
     // signed 32 bits
     type: 'number',
@@ -123,12 +123,12 @@ const defaultFormats: Record<string, Ajv.FormatDefinition> = {
  */
 export class OpenAPIValidator {
   public definition: Document;
-  public ajvOpts: Ajv.Options;
+  public ajvOpts: AjvOpts;
   public lazyCompileValidators: boolean;
   public customizeAjv: AjvCustomizer | undefined;
 
-  public requestValidators: { [operationId: string]: Ajv.ValidateFunction[] | null };
-  public responseValidators: { [operationId: string]: Ajv.ValidateFunction | null };
+  public requestValidators: { [operationId: string]: ValidateFunction[] | null };
+  public responseValidators: { [operationId: string]: ValidateFunction | null };
   public statusBasedResponseValidators: { [operationId: string]: StatusBasedResponseValidatorsFunctionMap | null };
   public responseHeadersValidators: { [operationId: string]: ResponseHeadersValidateFunctionMap | null };
 
@@ -146,16 +146,14 @@ export class OpenAPIValidator {
    */
   constructor(opts: {
     definition: Document;
-    ajvOpts?: Ajv.Options;
+    ajvOpts?: AjvOpts;
     router?: OpenAPIRouter;
     lazyCompileValidators?: boolean;
     customizeAjv?: AjvCustomizer;
   }) {
     this.definition = opts.definition;
     this.ajvOpts = {
-      unknownFormats: 'ignore', // Ajv default behaviour is to throw an error when encountering an unknown format
-      nullable: true, // OpenAPI v3 JSON schema extension
-      // https://github.com/epoberezkin/ajv/commit/f2010f40f2046d5c2a9232d9e40601f1300a678d
+      strict: false,
       ...(opts.ajvOpts || {}),
     };
 
@@ -284,7 +282,7 @@ export class OpenAPIValidator {
         } catch (err) {
           result.errors.push({
             keyword: 'parse',
-            dataPath: '',
+            instancePath: '',
             schemaPath: '#/requestBody',
             params: [],
             message: err.message,
@@ -336,7 +334,7 @@ export class OpenAPIValidator {
 
     const { operationId } = op;
 
-    let validate: Ajv.ValidateFunction | null = null;
+    let validate: ValidateFunction | null = null;
     if (statusCode) {
       // use specific status code
       const validateMap = this.getStatusBasedResponseValidatorForOperation(operationId);
@@ -408,7 +406,7 @@ export class OpenAPIValidator {
     const validateMap = this.getResponseHeadersValidatorForOperation(operationId);
 
     if (validateMap) {
-      let validateForStatus: { [setMatchType: string]: Ajv.ValidateFunction };
+      let validateForStatus: { [setMatchType: string]: ValidateFunction };
       if (statusCode) {
         validateForStatus = OpenAPIUtils.findStatusCodeMatch(statusCode, validateMap);
       } else {
@@ -442,7 +440,7 @@ export class OpenAPIValidator {
    * Get an array of request validator functions for an operation by operationId
    *
    * @param {string} operationId
-   * @returns {*}  {(Ajv.ValidateFunction[] | null)}
+   * @returns {*}  {(ValidateFunction[] | null)}
    * @memberof OpenAPIValidator
    */
   public getRequestValidatorsForOperation(operationId: string) {
@@ -459,7 +457,7 @@ export class OpenAPIValidator {
    * @param ajv The Ajv instance
    * @param schema The schema to compile
    */
-  private static compileSchema(ajv: Ajv.Ajv, schema: any): Ajv.ValidateFunction {
+  private static compileSchema(ajv: Ajv, schema: any): ValidateFunction {
     const decycledSchema = this.decycle(schema);
     return ajv.compile(decycledSchema);
   }
@@ -527,17 +525,17 @@ export class OpenAPIValidator {
    * Builds Ajv request validation functions for an operation and registers them to requestValidators
    *
    * @param {Operation} operation
-   * @returns {*}  {(Ajv.ValidateFunction[] | null)}
+   * @returns {*}  {(ValidateFunction[] | null)}
    * @memberof OpenAPIValidator
    */
-  public buildRequestValidatorsForOperation(operation: Operation): Ajv.ValidateFunction[] | null {
+  public buildRequestValidatorsForOperation(operation: Operation): ValidateFunction[] | null {
     if (!operation?.operationId) {
       // no operationId, don't register a validator
       return null;
     }
 
     // validator functions for this operation
-    const validators: Ajv.ValidateFunction[] = [];
+    const validators: ValidateFunction[] = [];
 
     // schema for operation requestBody
     if (operation.requestBody) {
@@ -632,7 +630,7 @@ export class OpenAPIValidator {
    * Get response validator function for an operation by operationId
    *
    * @param {string} operationId
-   * @returns {*}  {(Ajv.ValidateFunction | null)}
+   * @returns {*}  {(ValidateFunction | null)}
    * @memberof OpenAPIValidator
    */
   public getResponseValidatorForOperation(operationId: string) {
@@ -647,10 +645,10 @@ export class OpenAPIValidator {
    * Builds an ajv response validator function for an operation and registers it to responseValidators
    *
    * @param {Operation} operation
-   * @returns {*}  {(Ajv.ValidateFunction | null)}
+   * @returns {*}  {(ValidateFunction | null)}
    * @memberof OpenAPIValidator
    */
-  public buildResponseValidatorForOperation(operation: Operation): Ajv.ValidateFunction | null {
+  public buildResponseValidatorForOperation(operation: Operation): ValidateFunction | null {
     if (!operation || !operation.operationId) {
       // no operationId, don't register a validator
       return null;
@@ -766,7 +764,7 @@ export class OpenAPIValidator {
 
     _.mapKeys(operation.responses, (res, status: string) => {
       const response = res as OpenAPIV3.ResponseObject;
-      const validateFns: { [setMatchType: string]: Ajv.ValidateFunction } = {};
+      const validateFns: { [setMatchType: string]: ValidateFunction } = {};
       const properties: { [headerName: string]: OpenAPIV3.SchemaObject } = {};
       const required: string[] = [];
 
@@ -839,11 +837,11 @@ export class OpenAPIValidator {
    * Get Ajv options
    *
    * @param {ValidationContext} validationContext
-   * @param {Ajv.Options} [opts={}]
+   * @param {AjvOpts} [opts={}]
    * @returns Ajv
    * @memberof OpenAPIValidator
    */
-  public getAjv(validationContext: ValidationContext, opts: Ajv.Options = {}) {
+  public getAjv(validationContext: ValidationContext, opts: AjvOpts = {}) {
     const ajvOpts = { ...this.ajvOpts, ...opts };
     const ajv = new Ajv(ajvOpts);
 

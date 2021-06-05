@@ -161,7 +161,7 @@ export class OpenAPIRouter {
             // append the path base object's parameters to the operation's parameters
             parameters: [
               ...((op.parameters as OpenAPIV3.ParameterObject[]) || []),
-              ...((pathBaseObject.parameters as OpenAPIV3.ParameterObject[]) || []), // path base object parameters
+              ...((pathBaseObject?.parameters as OpenAPIV3.ParameterObject[]) || []), // path base object parameters
             ],
             // operation-specific security requirement override global requirements
             security: op.security || this.definition.security || [],

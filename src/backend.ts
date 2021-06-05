@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import * as Ajv from 'ajv';
+import type { Options as AjvOpts } from 'ajv';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import { parse as parseJSONSchema, dereference } from '@apidevtools/json-schema-ref-parser';
 import { OpenAPIV3 } from 'openapi-types';
@@ -67,7 +67,7 @@ export interface Options {
   strict?: boolean;
   quick?: boolean;
   validate?: boolean | BoolPredicate;
-  ajvOpts?: Ajv.Options;
+  ajvOpts?: AjvOpts;
   customizeAjv?: AjvCustomizer;
   handlers?: {
     notFound?: Handler;
@@ -96,7 +96,7 @@ export class OpenAPIBackend {
   public quick: boolean;
   public validate: boolean | BoolPredicate;
 
-  public ajvOpts: Ajv.Options;
+  public ajvOpts: AjvOpts;
   public customizeAjv: AjvCustomizer | undefined;
 
   public handlers: { [operationId: string]: Handler };

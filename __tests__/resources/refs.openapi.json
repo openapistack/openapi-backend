@@ -47,11 +47,9 @@
 				"nullable": true,
 				"properties": {
 					"left": { 
-						"nullable": true,
 						"allOf": [{ "$ref": "#/components/schemas/BinTree" }]
 					},
 					"right": { 
-						"nullable": true,
 						"allOf": [{ "$ref": "#/components/schemas/BinTree" }]
 					},
 					"value": {

@@ -1,4 +1,4 @@
-import * as Ajv from 'ajv';
+import Ajv, { Options as AjvOpts } from 'ajv';
 import { OpenAPIRouter, OpenAPIValidator } from './index';
 import { OpenAPIV3 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
@@ -1401,23 +1401,8 @@ describe('OpenAPIValidator', () => {
         },
       };
 
-      const customizeAjv = (ajv: Ajv.Ajv, ajvOpts: Ajv.Options, context: ValidationContext) => {
-        if (context === ValidationContext.Response) {
-          // return vanilla Ajv for params validation
-          return new Ajv();
-        }
-        if (context === ValidationContext.Params) {
-          // return overridden custom formats
-          return new Ajv({ ...ajvOpts, unknownFormats: ['custom'] });
-        }
-        // otherwise return original ajv
-        return ajv;
-      };
-
       test('customised Ajv should throw error for unknown formats in response', () => {
-        const {
-          '/pets': { get: getPets },
-        } = paths;
+        const getPets = paths?.['/pets']?.get;
         const warn = console.warn;
         console.warn = jest.fn();
         const construct = () =>
@@ -1428,16 +1413,14 @@ describe('OpenAPIValidator', () => {
                 '/pets': { get: getPets },
               },
             },
-            customizeAjv,
+            customizeAjv: () => new Ajv({ strict: true }),
           });
         expect(construct).toThrow();
         console.warn = warn; // reset console.warn
       });
 
       test('customised Ajv should ignore unknown formats in params', () => {
-        const {
-          '/pets/{id}': { get: getPet },
-        } = paths;
+        const getPet = paths?.['/pets']?.get;
         const warn = console.warn;
         console.warn = jest.fn();
         const construct = () =>
@@ -1448,7 +1431,7 @@ describe('OpenAPIValidator', () => {
                 '/pets/{id}': { get: getPet },
               },
             },
-            customizeAjv,
+            customizeAjv: (_, ajvOpts) => new Ajv({ ...ajvOpts, formats: { custom: true } }),
           });
         expect(construct()).toBeInstanceOf(OpenAPIValidator);
         expect(console.warn).toBeCalledTimes(0);
@@ -1456,9 +1439,7 @@ describe('OpenAPIValidator', () => {
       });
 
       test('customised Ajv should warn about unknown formats in requestBody', () => {
-        const {
-          '/pets': { post: createPet },
-        } = paths;
+        const createPet = paths?.['/pets']?.post;
         const warn = console.warn;
         console.warn = jest.fn();
         const construct = () =>
@@ -1469,7 +1450,7 @@ describe('OpenAPIValidator', () => {
                 '/pets': { post: createPet },
               },
             },
-            customizeAjv,
+            customizeAjv: (_, ajvOpts) => new Ajv({ ...ajvOpts }),
           });
         expect(construct()).toBeInstanceOf(OpenAPIValidator);
         expect(console.warn).toBeCalled();
