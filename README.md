@@ -116,7 +116,7 @@ module.exports = (context, req) =>
 ### Hapi
 
 ```javascript
-import Hapi from 'hapi';
+import Hapi from '@hapi/hapi';
 
 const server = new Hapi.Server({ host: '0.0.0.0', port: 9000 });
 server.route({
