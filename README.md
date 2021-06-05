@@ -72,6 +72,8 @@ app.listen(9000);
 
 [See full Express example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express)
 
+[See full Express TypeScript example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-typescript)
+
 ### AWS Serverless (Lambda)
 
 ```javascript
