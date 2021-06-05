@@ -8,10 +8,13 @@ function main() {
   const filename = path.join(__dirname, '..', 'DOCS.md');
   const docs = fs.readFileSync(filename, 'utf8');
   const opts = {
+    maxdepth: 3,
     bullets: '-',
-    slugify: (text) => text.toLowerCase()
-      .replace(/\s/g, '-')
-      .replace(/[^\w-]/g, ''),
+    slugify: (text) =>
+      text
+        .toLowerCase()
+        .replace(/\s/g, '-')
+        .replace(/[^\w-]/g, ''),
   };
   const output = Toc.insert(docs, opts);
   fs.writeFileSync(filename, output);
@@ -21,4 +24,3 @@ function main() {
 if (require.main === module) {
   main();
 }
-
