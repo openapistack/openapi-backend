@@ -12,7 +12,8 @@
     "baseUrl": ".",
     "rootDir": ".",
     "outDir": "dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "skipLibCheck": true 
   },
   "include": [
     "**/*"

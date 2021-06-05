@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "openapi-backend": "^3.0.0"
+    "openapi-backend": "^4.0.0"
   },
   "devDependencies": {
     "axios": "^0.21.1",

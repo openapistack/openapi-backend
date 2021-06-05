@@ -13,6 +13,7 @@
     "rootDir": ".",
     "outDir": "dist",
     "sourceMap": true,
+    "skipLibCheck": true,
     "paths": {
       "*": [
         "node_modules/*",

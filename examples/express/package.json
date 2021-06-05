@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "express": "^4.16.4",
-    "openapi-backend": "^3.0.0"
+    "openapi-backend": "^4.0.0"
   },
   "devDependencies": {
     "axios": "^0.21.1",
-    "jest": "^23.6.0",
+    "jest": "^27.0.4",
     "wait-on": "^3.2.0"
   }
 }
