@@ -269,6 +269,11 @@ describe('OpenAPIRouter', () => {
       expect(operationId).toEqual('getPets');
     });
 
+    test('matches GET /pets/ with trailing slash', async () => {
+      const { operationId } = api.matchOperation({ path: '/pets/', method: 'get', headers }) as Operation;
+      expect(operationId).toEqual('getPets');
+    });
+
     test('matches POST /pets', async () => {
       const { operationId } = api.matchOperation({ path: '/pets', method: 'post', headers }) as Operation;
       expect(operationId).toEqual('createPet');
@@ -311,6 +316,25 @@ describe('OpenAPIRouter', () => {
 
     test('does not match GET /v2/pets', async () => {
       const operation = api.matchOperation({ path: '/v2/pets', method: 'get', headers }) as Operation;
+      expect(operation).toBe(undefined);
+    });
+  });
+
+  describe('.matchOperation with ignoreTrailingSlashes=false', () => {
+    const api = new OpenAPIRouter({ definition, ignoreTrailingSlashes: false });
+
+    test('matches GET /', async () => {
+      const { operationId } = api.matchOperation({ path: '/', method: 'get', headers }) as Operation;
+      expect(operationId).toEqual('apiRoot');
+    });
+
+    test('matches GET /pets', async () => {
+      const { operationId } = api.matchOperation({ path: '/pets', method: 'get', headers }) as Operation;
+      expect(operationId).toEqual('getPets');
+    });
+
+    test('does not match GET /pets/ with trailing slash', async () => {
+      const operation = api.matchOperation({ path: '/pets/', method: 'get', headers }) as Operation;
       expect(operation).toBe(undefined);
     });
   });

@@ -57,6 +57,8 @@ export class OpenAPIRouter {
   public definition: Document;
   public apiRoot: string;
 
+  private ignoreTrailingSlashes: boolean;
+
   /**
    * Creates an instance of OpenAPIRouter
    *
@@ -65,9 +67,10 @@ export class OpenAPIRouter {
    * @param {string} opts.apiRoot - the root URI of the api. all paths are matched relative to apiRoot
    * @memberof OpenAPIRouter
    */
-  constructor(opts: { definition: Document; apiRoot?: string }) {
+  constructor(opts: { definition: Document; apiRoot?: string; ignoreTrailingSlashes?: boolean }) {
     this.definition = opts.definition;
     this.apiRoot = opts.apiRoot || '/';
+    this.ignoreTrailingSlashes = opts.ignoreTrailingSlashes ?? true;
   }
 
   /**
@@ -185,9 +188,8 @@ export class OpenAPIRouter {
   /**
    * Normalises request:
    * - http method to lowercase
-   * - path leading slash 👍
-   * - path trailing slash 👎
-   * - path query string 👎
+   * - remove path leading slash
+   * - remove path query string
    *
    * @export
    * @param {Request} req
@@ -204,11 +206,6 @@ export class OpenAPIRouter {
     // remove query string from path
     path = path.split('?')[0];
 
-    // remove trailing slashes from path
-    while (path.length > 1 && path.endsWith('/')) {
-      path = path.substr(0, path.length - 1);
-    }
-
     // normalize method to lowercase
     const method = req.method.trim().toLowerCase();
 
@@ -216,14 +213,28 @@ export class OpenAPIRouter {
   }
 
   /**
-   * Normalises path for matching: strips apiRoot prefix from the path.
+   * Normalises path for matching: strips apiRoot prefix from the path
+   *
+   * Also depending on configuration, will remove trailing slashes
    *
    * @export
    * @param {string} path
    * @returns {string}
    */
-  public normalizePath(path: string) {
-    return path.replace(new RegExp(`^${this.apiRoot}/?`), '/');
+  public normalizePath(pathInput: string) {
+    let path = pathInput.trim();
+
+    // strip apiRoot from path
+    if (path.startsWith(this.apiRoot)) {
+      path = path.replace(new RegExp(`^${this.apiRoot}/?`), '/');
+    }
+
+    // remove trailing slashes from path if ignoreTrailingSlashes = true
+    while (this.ignoreTrailingSlashes && path.length > 1 && path.endsWith('/')) {
+      path = path.substr(0, path.length - 1);
+    }
+
+    return path;
   }
 
   /**

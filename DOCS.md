@@ -12,6 +12,7 @@
     - [Parameter: opts.strict](#parameter-optsstrict)
     - [Parameter: opts.quick](#parameter-optsquick)
     - [Parameter: opts.validate](#parameter-optsvalidate)
+    - [Parameter: opts.ignoreTrailingSlashes](#parameter-optsignoretrailingslashes)
     - [Parameter: opts.ajvOpts](#parameter-optsajvopts)
     - [Parameter: opts.customizeAjv(originalAjv, ajvOpts, validationContext)](#parameter-optscustomizeajvoriginalajv-ajvopts-validationcontext)
     - [Parameter: opts.handlers](#parameter-optshandlers)
@@ -44,6 +45,7 @@
     - [Parameter: opts](#parameter-opts)
     - [Parameter: opts.definition](#parameter-optsdefinition)
     - [Parameter: opts.apiRoot](#parameter-optsapiroot)
+    - [Parameter: opts.ignoreTrailingSlashes](#parameter-optsignoretrailingslashes)
   - [.matchOperation(req)](#matchoperationreq)
     - [Parameter: req](#parameter-req)
   - [.getOperations()](#getoperations)
@@ -153,6 +155,7 @@ const api = new OpenAPIBackend({
   strict: true,
   quick: false,
   validate: true,
+  ignoreTrailingSlashes: true,
   ajvOpts: { unknownFormats: true },
   customizeAjv: () => new Ajv(),
 });
@@ -191,6 +194,12 @@ Type: `boolean`
 #### Parameter: opts.validate
 
 Optional. Enable or disable request validation (default: true)
+
+Type: `boolean`
+
+#### Parameter: opts.ignoreTrailingSlashes
+
+Optional. Whether to ignore trailing slashes when routing (default: true)
 
 Type: `boolean`
 
@@ -465,6 +474,7 @@ Example:
 const router = new OpenAPIRouter({
   definition: api.document,
   apiRoot: '/',
+  ignoreTrailingSlashes: true,
 });
 ```
 
@@ -480,7 +490,13 @@ Type: `Document`
 
 #### Parameter: opts.apiRoot
 
-The root URI of your api. All paths will be matched relative to apiRoot (default: "/")
+Optional. The root URI of your api. All paths will be matched relative to apiRoot (default: "/")
+
+Type: `string`
+
+#### Parameter: opts.ignoreTrailingSlashes
+
+Optional. Whether to ignore trailing slashes when routing (default: true)
 
 Type: `string`
 

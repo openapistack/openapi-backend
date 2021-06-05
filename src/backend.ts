@@ -95,6 +95,7 @@ export class OpenAPIBackend {
   public strict: boolean;
   public quick: boolean;
   public validate: boolean | BoolPredicate;
+  public ignoreTrailingSlashes: boolean;
 
   public ajvOpts: AjvOpts;
   public customizeAjv: AjvCustomizer | undefined;
@@ -127,6 +128,7 @@ export class OpenAPIBackend {
    * @param {boolean} opts.strict - strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
    * @param {boolean} opts.quick - quick startup, attempts to optimise startup; might break things (default: false)
    * @param {boolean} opts.validate - whether to validate requests with Ajv (default: true)
+   * @param {boolean} opts.ignoreTrailingSlashes - whether to ignore trailing slashes when routing (default: true)
    * @param {boolean} opts.ajvOpts - default ajv opts to pass to the validator
    * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
    * @memberof OpenAPIBackend
@@ -137,6 +139,7 @@ export class OpenAPIBackend {
       validate: true,
       strict: false,
       quick: false,
+      ignoreTrailingSlashes: true,
       ajvOpts: {},
       handlers: {},
       securityHandlers: {},
@@ -147,6 +150,7 @@ export class OpenAPIBackend {
     this.strict = optsWithDefaults.strict;
     this.quick = optsWithDefaults.quick;
     this.validate = optsWithDefaults.validate;
+    this.ignoreTrailingSlashes = optsWithDefaults.ignoreTrailingSlashes;
     this.handlers = { ...optsWithDefaults.handlers }; // Copy to avoid mutating passed object
     this.securityHandlers = { ...optsWithDefaults.securityHandlers }; // Copy to avoid mutating passed object
     this.ajvOpts = optsWithDefaults.ajvOpts;
@@ -199,7 +203,11 @@ export class OpenAPIBackend {
     }
 
     // initalize router with dereferenced definition
-    this.router = new OpenAPIRouter({ definition: this.definition, apiRoot: this.apiRoot });
+    this.router = new OpenAPIRouter({
+      definition: this.definition,
+      apiRoot: this.apiRoot,
+      ignoreTrailingSlashes: this.ignoreTrailingSlashes,
+    });
 
     // initalize validator with dereferenced definition
     if (this.validate !== false) {
