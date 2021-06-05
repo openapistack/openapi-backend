@@ -11,7 +11,7 @@ describe('express jwt example', () => {
 
   beforeAll(async () => {
     client = axios.create({ baseURL: 'http://localhost:9000', validateStatus: () => true });
-    start = spawn('npm', ['start'], { cwd: __dirname, detached: true });
+    start = spawn('npm', ['start'], { cwd: __dirname, detached: true, stdio: 'inherit' });
     await waitOn({ resources: ['tcp:localhost:9000'] });
   });
 
