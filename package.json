@@ -55,7 +55,7 @@
     "@types/jest": "^26.0.23",
     "@types/json-schema": "^7.0.7",
     "@types/lodash": "^4.14.122",
-    "@types/node": "^13.11.1",
+    "@types/node": "^15.12.1",
     "@types/qs": "^6.9.1",
     "jest": "^27.0.4",
     "markdown-toc": "^1.2.0",
