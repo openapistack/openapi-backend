@@ -865,7 +865,7 @@ api.register('notImplemented', notImplementedHandler);
 
 The `unauthorizedHandler` handler gets called by `.handleRequest()` if security
 requirements are not met after checking [Security Requirements](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securityRequirementObject)
-and calling their [Security Sandlers'](#security-handlers).
+and calling their [Security Handlers](#security-handlers).
 
 HINT: You should probably return a 401 or 403 code from this handler and
 instruct the client to authenticate.
