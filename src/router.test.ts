@@ -1,14 +1,14 @@
 import { OpenAPIRouter, Operation } from './router';
 import { OpenAPIBackend, Context } from './backend';
-import { OpenAPIV3 } from 'openapi-types';
+import { OpenAPIV3_1 } from 'openapi-types';
 
 const headers = { accept: 'application/json' };
 
-const responses: OpenAPIV3.ResponsesObject = {
+const responses: OpenAPIV3_1.ResponsesObject = {
   200: { description: 'ok' },
 };
 
-const pathId: OpenAPIV3.ParameterObject = {
+const pathId: OpenAPIV3_1.ParameterObject = {
   name: 'id',
   in: 'path',
   required: true,
@@ -17,7 +17,7 @@ const pathId: OpenAPIV3.ParameterObject = {
   },
 };
 
-const hobbyId: OpenAPIV3.ParameterObject = {
+const hobbyId: OpenAPIV3_1.ParameterObject = {
   name: 'hobbyId',
   in: 'path',
   required: true,
@@ -26,7 +26,7 @@ const hobbyId: OpenAPIV3.ParameterObject = {
   },
 };
 
-const queryLimit: OpenAPIV3.ParameterObject = {
+const queryLimit: OpenAPIV3_1.ParameterObject = {
   name: 'limit',
   in: 'query',
   schema: {
@@ -36,7 +36,7 @@ const queryLimit: OpenAPIV3.ParameterObject = {
   },
 };
 
-const queryFilter: OpenAPIV3.ParameterObject = {
+const queryFilter: OpenAPIV3_1.ParameterObject = {
   name: 'filter',
   in: 'query',
   content: {
@@ -59,7 +59,7 @@ const queryFilter: OpenAPIV3.ParameterObject = {
   },
 };
 
-const definition: OpenAPIV3.Document = {
+const definition: OpenAPIV3_1.Document = {
   openapi: '3.0.0',
   info: {
     title: 'api',

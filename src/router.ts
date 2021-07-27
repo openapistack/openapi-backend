@@ -1,21 +1,21 @@
 import * as _ from 'lodash';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import bath from 'bath-es5';
 import * as cookie from 'cookie';
 import { parse as parseQuery } from 'qs';
 import { Parameters } from 'bath-es5/_/types';
 
-// alias Document to OpenAPIV3.Document
-type Document = OpenAPIV3.Document;
+// alias Document to OpenAPIV3_1.Document
+type Document = OpenAPIV3_1.Document;
 
 /**
  * OAS Operation Object containing the path and method so it can be placed in a flat array of operations
  *
  * @export
  * @interface Operation
- * @extends {OpenAPIV3.OperationObject}
+ * @extends {OpenAPIV3_1.OperationObject}
  */
-export interface Operation extends OpenAPIV3.OperationObject {
+export interface Operation extends OpenAPIV3_1.OperationObject {
   path: string;
   method: string;
 }
@@ -156,15 +156,15 @@ export class OpenAPIRouter {
       .flatMap(([path, pathBaseObject]) => {
         const methods = _.pick(pathBaseObject, ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']);
         return _.entries(methods).map(([method, operation]) => {
-          const op = operation as OpenAPIV3.OperationObject;
+          const op = operation as OpenAPIV3_1.OperationObject;
           return {
             ...op,
             path,
             method,
             // append the path base object's parameters to the operation's parameters
             parameters: [
-              ...((op.parameters as OpenAPIV3.ParameterObject[]) || []),
-              ...((pathBaseObject?.parameters as OpenAPIV3.ParameterObject[]) || []), // path base object parameters
+              ...((op.parameters as OpenAPIV3_1.ParameterObject[]) || []),
+              ...((pathBaseObject?.parameters as OpenAPIV3_1.ParameterObject[]) || []), // path base object parameters
             ],
             // operation-specific security requirement override global requirements
             security: op.security || this.definition.security || [],
@@ -286,7 +286,7 @@ export class OpenAPIRouter {
       // parse query parameters with specified style for parameter
       for (const queryParam in query) {
         if (query[queryParam]) {
-          const parameter = _.find((operation.parameters as OpenAPIV3.ParameterObject[]) || [], {
+          const parameter = _.find((operation.parameters as OpenAPIV3_1.ParameterObject[]) || [], {
             name: queryParam,
             in: 'query',
           });

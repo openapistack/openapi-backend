@@ -1,12 +1,12 @@
 import * as path from 'path';
 import { OpenAPIBackend, Context } from './backend';
-import { OpenAPIV3 } from 'openapi-types';
+import { OpenAPIV3_1 } from 'openapi-types';
 
 const testsDir = path.join(__dirname, '..', '__tests__');
 const examplePetAPIJSON = path.join(testsDir, 'resources', 'example-pet-api.openapi.json');
 const examplePetAPIYAML = path.join(testsDir, 'resources', 'example-pet-api.openapi.yml');
 
-const responses: OpenAPIV3.ResponsesObject = {
+const responses: OpenAPIV3_1.ResponsesObject = {
   200: { description: 'ok' },
 };
 
@@ -18,7 +18,7 @@ const meta = {
   },
 };
 
-const pathId: OpenAPIV3.ParameterObject = {
+const pathId: OpenAPIV3_1.ParameterObject = {
   name: 'id',
   in: 'path',
   required: true,
@@ -28,7 +28,7 @@ const pathId: OpenAPIV3.ParameterObject = {
 };
 
 describe('OpenAPIBackend', () => {
-  const definition: OpenAPIV3.Document = {
+  const definition: OpenAPIV3_1.Document = {
     ...meta,
     paths: {
       '/pets': {
@@ -555,7 +555,7 @@ describe('OpenAPIBackend', () => {
       },
     };
 
-    const api = new OpenAPIBackend({ definition: mockDefinition as OpenAPIV3.Document });
+    const api = new OpenAPIBackend({ definition: mockDefinition as OpenAPIV3_1.Document });
 
     test('mocks getPets with example object', async () => {
       const { paths } = mockDefinition;

@@ -1,12 +1,12 @@
 import * as _ from 'lodash';
 import Ajv, { Options as AjvOpts, ErrorObject, FormatDefinition, ValidateFunction } from 'ajv';
-import type { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3_1 } from 'openapi-types';
 import { OpenAPIRouter, Request, Operation } from './router';
 import OpenAPIUtils from './utils';
 import { SetMatchType } from './backend';
 
-// alias Document to OpenAPIV3.Document
-type Document = OpenAPIV3.Document;
+// alias Document to OpenAPIV3_1.Document
+type Document = OpenAPIV3_1.Document;
 
 /**
  * The output object for validationRequest. Contains the results for validation
@@ -29,7 +29,7 @@ interface InputValidationSchema {
   type: 'object';
   additionalProperties?: boolean;
   properties: {
-    [target: string]: OpenAPIV3.SchemaObject | OpenAPIV3.ArraySchemaObject | OpenAPIV3.NonArraySchemaObject;
+    [target: string]: OpenAPIV3_1.SchemaObject | OpenAPIV3_1.ArraySchemaObject | OpenAPIV3_1.NonArraySchemaObject;
   };
   required?: string[];
 }
@@ -62,11 +62,7 @@ export enum ValidationContext {
   ResponseHeaders = 'responseHeadersValidator',
 }
 
-export type AjvCustomizer = (
-  originalAjv: Ajv,
-  ajvOpts: AjvOpts,
-  validationContext: ValidationContext,
-) => Ajv;
+export type AjvCustomizer = (originalAjv: Ajv, ajvOpts: AjvOpts, validationContext: ValidationContext) => Ajv;
 
 /**
  * Returns a function that validates that a signed number is within the given bit range
@@ -254,8 +250,8 @@ export class OpenAPIValidator {
         if (typeof value === 'string') {
           const operationParameter = _.find(operation.parameters, { name, in: 'query' });
           if (operationParameter) {
-            const { schema } = operationParameter as OpenAPIV3.ParameterObject;
-            if (schema && (schema as OpenAPIV3.SchemaObject).type === 'array') {
+            const { schema } = operationParameter as OpenAPIV3_1.ParameterObject;
+            if (schema && (schema as OpenAPIV3_1.SchemaObject).type === 'array') {
               query[name] = [value];
             }
           }
@@ -417,7 +413,9 @@ export class OpenAPIValidator {
         const validate = validateForStatus[setMatchType];
 
         if (validate) {
-          headers = _.mapKeys(headers, (value: OpenAPIV3.HeaderObject, headerName: string) => headerName.toLowerCase());
+          headers = _.mapKeys(headers, (value: OpenAPIV3_1.HeaderObject, headerName: string) =>
+            headerName.toLowerCase(),
+          );
           validate({ headers });
           if (validate.errors) {
             result.errors.push(...validate.errors);
@@ -539,7 +537,7 @@ export class OpenAPIValidator {
 
     // schema for operation requestBody
     if (operation.requestBody) {
-      const requestBody = operation.requestBody as OpenAPIV3.RequestBodyObject;
+      const requestBody = operation.requestBody as OpenAPIV3_1.RequestBodyObject;
       const jsonbody = requestBody.content['application/json'];
       if (jsonbody && jsonbody.schema) {
         const requestBodySchema: InputValidationSchema = {
@@ -547,7 +545,7 @@ export class OpenAPIValidator {
           type: 'object',
           additionalProperties: true,
           properties: {
-            requestBody: jsonbody.schema as OpenAPIV3.SchemaObject,
+            requestBody: jsonbody.schema as OpenAPIV3_1.SchemaObject,
           },
         };
         requestBodySchema.required = [];
@@ -600,7 +598,7 @@ export class OpenAPIValidator {
     const { parameters } = operation;
     if (parameters) {
       parameters.map((parameter) => {
-        const param = parameter as OpenAPIV3.ParameterObject;
+        const param = parameter as OpenAPIV3_1.ParameterObject;
         const target = paramsSchema.properties[param.in];
         // Header params are case-insensitive according to https://tools.ietf.org/html/rfc7230#page-22, so they are
         // normalized to lower case and validated as such.
@@ -613,9 +611,9 @@ export class OpenAPIValidator {
         target.properties = target.properties || {};
 
         if (param.content && param.content['application/json']) {
-          target.properties[normalizedParamName] = param.content['application/json'].schema as OpenAPIV3.SchemaObject;
+          target.properties[normalizedParamName] = param.content['application/json'].schema as OpenAPIV3_1.SchemaObject;
         } else {
-          target.properties[normalizedParamName] = param.schema as OpenAPIV3.SchemaObject;
+          target.properties[normalizedParamName] = param.schema as OpenAPIV3_1.SchemaObject;
         }
       });
     }
@@ -658,12 +656,12 @@ export class OpenAPIValidator {
       return null;
     }
 
-    const responseSchemas: OpenAPIV3.SchemaObject[] = [];
+    const responseSchemas: OpenAPIV3_1.SchemaObject[] = [];
 
     _.mapKeys(operation.responses, (res, status) => {
-      const response = res as OpenAPIV3.ResponseObject;
+      const response = res as OpenAPIV3_1.ResponseObject;
       if (response.content && response.content['application/json'] && response.content['application/json'].schema) {
-        responseSchemas.push(response.content['application/json'].schema as OpenAPIV3.SchemaObject);
+        responseSchemas.push(response.content['application/json'].schema as OpenAPIV3_1.SchemaObject);
       }
       return null;
     });
@@ -716,7 +714,7 @@ export class OpenAPIValidator {
     const validator = this.getAjv(ValidationContext.Response);
 
     _.mapKeys(operation.responses, (res, status: string) => {
-      const response = res as OpenAPIV3.ResponseObject;
+      const response = res as OpenAPIV3_1.ResponseObject;
       if (response.content && response.content['application/json'] && response.content['application/json'].schema) {
         const validateFn = response.content['application/json'].schema;
         responseValidators[status] = OpenAPIValidator.compileSchema(validator, validateFn);
@@ -763,16 +761,16 @@ export class OpenAPIValidator {
     const validator = this.getAjv(ValidationContext.ResponseHeaders, { coerceTypes: true });
 
     _.mapKeys(operation.responses, (res, status: string) => {
-      const response = res as OpenAPIV3.ResponseObject;
+      const response = res as OpenAPIV3_1.ResponseObject;
       const validateFns: { [setMatchType: string]: ValidateFunction } = {};
-      const properties: { [headerName: string]: OpenAPIV3.SchemaObject } = {};
+      const properties: { [headerName: string]: OpenAPIV3_1.SchemaObject } = {};
       const required: string[] = [];
 
       _.mapKeys(response.headers, (h, headerName: string) => {
-        const header = h as OpenAPIV3.HeaderObject;
+        const header = h as OpenAPIV3_1.HeaderObject;
         headerName = headerName.toLowerCase();
         if (header.schema) {
-          properties[headerName] = header.schema as OpenAPIV3.SchemaObject;
+          properties[headerName] = header.schema as OpenAPIV3_1.SchemaObject;
           required.push(headerName);
         }
         return null;
