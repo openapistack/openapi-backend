@@ -292,7 +292,7 @@ export class OpenAPIBackend {
       const operationId = context.operation.operationId as string;
 
       // parse request again now with matched operation
-      context.request = this.router.parseRequest(req, context.operation);
+      context.request = this.router.parseRequest(context.request, context.operation);
 
       // get security requirements for the matched operation
       // global requirements are already included in the router
@@ -367,7 +367,7 @@ export class OpenAPIBackend {
       // validate request
       const validationFailHandler: Handler = this.handlers['validationFail'];
       if (validate) {
-        context.validation = this.validator.validateRequest(req, context.operation);
+        context.validation = this.validator.validateRequest(context.request, context.operation);
         if (context.validation.errors) {
           // 400 request validation fail
           if (validationFailHandler) {
