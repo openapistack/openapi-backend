@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 import { OpenAPIRouter, OpenAPIValidator } from './index';
-import { OpenAPIV3 } from 'openapi-types';
+import { OpenAPIV3_1 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
 import { SetMatchType } from './backend';
 import { dereference } from '@apidevtools/json-schema-ref-parser';
@@ -11,12 +11,13 @@ const circularRefPath = path.join(testsDir, 'resources', 'refs.openapi.json');
 
 const headers = { accept: 'application/json' };
 
-const meta = {
+const meta: OpenAPIV3_1.Document = {
   openapi: '3.0.0',
   info: {
     title: 'api',
     version: '1.0.0',
   },
+  paths: {},
 };
 
 const validBTree = {
@@ -160,7 +161,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
     });
 
     describe('path params with custom apiRoot', () => {
-      const definition: OpenAPIV3.Document = {
+      const definition: OpenAPIV3_1.Document = {
         ...meta,
         paths: {
           '/pets/{id}': {
@@ -401,7 +402,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
 
     describe('request payloads', () => {
       let validator: OpenAPIValidator;
-      const petSchema: SchemaLike = {
+      const petSchema: OpenAPIV3_1.SchemaObject = {
         type: 'object',
         additionalProperties: false,
         properties: {
@@ -409,8 +410,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
             type: 'string',
           },
           age: {
-            type: 'integer',
-            nullable: true,
+            type: ['integer', 'null'],
           },
         },
         required: ['name'],
@@ -1185,7 +1185,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
 
   describe('OAS formats', () => {
     describe('in request', () => {
-      const paths: OpenAPIV3.PathsObject = {
+      const paths: OpenAPIV3_1.PathsObject = {
         '/pets': {
           post: {
             operationId: 'createPet',
@@ -1337,7 +1337,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
 describe('OpenAPIValidator', () => {
   describe('customizeAjv', () => {
     describe('using custom formats', () => {
-      const paths: OpenAPIV3.PathsObject = {
+      const paths: OpenAPIV3_1.PathsObject = {
         '/pets/{id}': {
           get: {
             operationId: 'getPet',

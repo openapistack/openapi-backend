@@ -46,8 +46,8 @@
     "cookie": "^0.4.0",
     "lodash": "^4.17.15",
     "mock-json-schema": "^1.0.7",
-    "openapi-schema-validator": "^9.0.3",
-    "openapi-types": "^9.0.3",
+    "openapi-schema-validator": "^9.2.0",
+    "openapi-types": "^9.2.0",
     "qs": "^6.9.3"
   },
   "devDependencies": {

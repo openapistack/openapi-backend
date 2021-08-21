@@ -1,5 +1,5 @@
 declare module 'swagger-parser' {
-  type Document = import('openapi-types').OpenAPIV3.Document;
+  type Document = import('openapi-types').OpenAPIV3_1.Document;
   interface Options {
     allow?: {
       json?: boolean;

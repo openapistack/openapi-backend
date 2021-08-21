@@ -2,18 +2,18 @@ import * as _ from 'lodash';
 import type { Options as AjvOpts } from 'ajv';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import { parse as parseJSONSchema, dereference } from '@apidevtools/json-schema-ref-parser';
-import { OpenAPIV3 } from 'openapi-types';
-import { mock } from 'mock-json-schema';
+import { OpenAPIV3_1 } from 'openapi-types';
+import { mock, SchemaLike } from 'mock-json-schema';
 
 import { OpenAPIRouter, Request, ParsedRequest, Operation } from './router';
 import { OpenAPIValidator, ValidationResult, AjvCustomizer } from './validation';
 import OpenAPIUtils from './utils';
 
-// alias Document to OpenAPIV3.Document
-export type Document = OpenAPIV3.Document;
+// alias Document to OpenAPIV3_1.Document
+export type Document = OpenAPIV3_1.Document;
 
 // alias SecurityRequirement
-export type SecurityRequirement = OpenAPIV3.SecurityRequirementObject;
+export type SecurityRequirement = OpenAPIV3_1.SecurityRequirementObject;
 
 /**
  * Security / Authorization context for requests
@@ -537,12 +537,12 @@ export class OpenAPIBackend {
 
     // resolve status code
     const { responses } = operation;
-    let response: OpenAPIV3.ResponseObject;
+    let response: OpenAPIV3_1.ResponseObject;
 
     if (opts.code && responses[opts.code]) {
       // 1. check for provided code opt (default: 200)
       status = Number(opts.code);
-      response = responses[opts.code] as OpenAPIV3.ResponseObject;
+      response = responses[opts.code] as OpenAPIV3_1.ResponseObject;
     } else {
       // 2. check for a default response
       const res = OpenAPIUtils.findDefaultStatusCodeMatch(responses);
@@ -567,7 +567,7 @@ export class OpenAPIBackend {
 
     // if example argument was provided, locate and return its value
     if (opts.example && examples) {
-      const exampleObject = examples[opts.example] as OpenAPIV3.ExampleObject;
+      const exampleObject = examples[opts.example] as OpenAPIV3_1.ExampleObject;
       if (exampleObject && exampleObject.value) {
         return { status, mock: exampleObject.value };
       }
@@ -580,13 +580,13 @@ export class OpenAPIBackend {
 
     // pick the first example from examples
     if (examples) {
-      const exampleObject = examples[Object.keys(examples)[0]] as OpenAPIV3.ExampleObject;
+      const exampleObject = examples[Object.keys(examples)[0]] as OpenAPIV3_1.ExampleObject;
       return { status, mock: exampleObject.value };
     }
 
     // mock using json schema
     if (schema) {
-      return { status, mock: mock(schema as OpenAPIV3.SchemaObject) };
+      return { status, mock: mock(schema as SchemaLike) };
     }
 
     // we should never get here, schema or an example must be provided
