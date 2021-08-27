@@ -216,6 +216,94 @@ describe('OpenAPIBackend', () => {
   });
 
   describe('.handleRequest', () => {
+    describe('validation', () => {
+      test('should not failed', async () => {
+        const api = new OpenAPIBackend({
+          definition: {
+            ...meta,
+            paths: {
+              '/pets': {
+                get: {
+                  operationId: 'getPets',
+                  responses,
+                  parameters: [
+                    {
+                      name: 'ids',
+                      in: 'query',
+                      explode: false,
+                      schema: {
+                        type: 'array',
+                        items: {
+                          type: 'integer',
+                        },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        });
+        const dummyHandler = jest.fn((c) => c.request.query);
+        const dummyValidationHandler = jest.fn(() => 'dummyValidationResponse');
+        api.register('getPets', dummyHandler);
+        api.register('validationFail', dummyValidationHandler);
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+          query: '?ids=42,24',
+        };
+
+        const res = await api.handleRequest(request);
+        expect(dummyValidationHandler).toBeCalledTimes(0);
+        expect(dummyHandler).toBeCalledTimes(1);
+        expect(res).toStrictEqual({ ids: ['42', '24'] });
+      });
+      test('should failed', async () => {
+        const api = new OpenAPIBackend({
+          definition: {
+            ...meta,
+            paths: {
+              '/pets/{id}': {
+                get: {
+                  operationId: 'getPetsById',
+                  responses,
+                  parameters: [
+                    {
+                      name: 'id',
+                      in: 'path',
+                      required: true,
+                      schema: {
+                        type: 'string',
+                        pattern: '^(foo|bar):d+$',
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        });
+        const dummyHandler = jest.fn((c) => c.request.params);
+        const dummyValidationHandler = jest.fn(() => 'dummyValidationResponse');
+        api.register('getPetsById', dummyHandler);
+        api.register('validationFail', dummyValidationHandler);
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets/foo:bar',
+          headers: {},
+        };
+
+        const res = await api.handleRequest(request);
+        expect(dummyValidationHandler).toBeCalledTimes(1);
+        expect(res).toBe('dummyValidationResponse');
+      });
+    });
     describe('routing', () => {
       test('handles GET /pets request with getPets handler', async () => {
         const api = new OpenAPIBackend({ definition });
