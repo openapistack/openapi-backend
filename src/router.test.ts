@@ -60,7 +60,7 @@ const queryFilter: OpenAPIV3_1.ParameterObject = {
 };
 
 const definition: OpenAPIV3_1.Document = {
-  openapi: '3.0.0',
+  openapi: '3.1.0',
   info: {
     title: 'api',
     version: '1.0.0',
@@ -160,7 +160,7 @@ describe('OpenAPIRouter', () => {
 
     test('parses path parameters', () => {
       const request = { path: '/pets/123', method: 'get', headers };
-      const operation = api.getOperation('getPetById');
+      const operation = api.getOperation('getPetById')!;
 
       const parsedRequest = api.parseRequest(request, operation);
       expect(parsedRequest.params).toEqual({ id: '123' });
@@ -195,7 +195,7 @@ describe('OpenAPIRouter', () => {
       const encoded = encodeURI(JSON.stringify(filterValue));
       const request = { path: `/pets?filter=${encoded}`, method: 'get', headers };
 
-      const operation = api.getOperation('getPets') as Operation;
+      const operation = api.getOperation('getPets')!;
       const parsedRequest = api.parseRequest(request, operation);
 
       expect(parsedRequest.query.filter).toEqual(filterValue);
@@ -209,7 +209,7 @@ describe('OpenAPIRouter', () => {
 
     test('parses query string arrays when style=form, explode=false', () => {
       const request = { path: '/pets?limit=10,20', method: 'get', headers };
-      const operation = api.getOperation('createPet') as Operation;
+      const operation = api.getOperation('createPet')!;
       operation.parameters = [
         {
           in: 'query',
@@ -225,7 +225,7 @@ describe('OpenAPIRouter', () => {
 
     test('parses query string arrays when style=spaceDelimited, explode=false', () => {
       const request = { path: '/pets?limit=10%2020', method: 'get', headers };
-      const operation = api.getOperation('createPet') as Operation;
+      const operation = api.getOperation('createPet')!;
       operation.parameters = [
         {
           in: 'query',
@@ -241,7 +241,7 @@ describe('OpenAPIRouter', () => {
 
     test('parses query string arrays when style=pipeDelimited, explode=false', () => {
       const request = { path: '/pets?limit=10|20', method: 'get', headers };
-      const operation = api.getOperation('createPet') as Operation;
+      const operation = api.getOperation('createPet')!;
       operation.parameters = [
         {
           in: 'query',

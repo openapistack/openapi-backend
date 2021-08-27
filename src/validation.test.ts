@@ -12,7 +12,7 @@ const circularRefPath = path.join(testsDir, 'resources', 'refs.openapi.json');
 const headers = { accept: 'application/json' };
 
 const meta: OpenAPIV3_1.Document = {
-  openapi: '3.0.0',
+  openapi: '3.1.0',
   info: {
     title: 'api',
     version: '1.0.0',
