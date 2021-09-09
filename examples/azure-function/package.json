@@ -13,7 +13,7 @@
     "openapi-backend": "^4.0.0"
   },
   "devDependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "azure-functions-core-tools": "^2.4.317",
     "jest": "^23.6.0",
     "wait-on": "^3.2.0"
