@@ -51,7 +51,7 @@
     "qs": "^6.9.3"
   },
   "devDependencies": {
-    "@types/cookie": "^0.3.2",
+    "@types/cookie": "^0.4.1",
     "@types/jest": "^26.0.23",
     "@types/json-schema": "^7.0.7",
     "@types/lodash": "^4.14.122",
