@@ -1,5 +1,9 @@
 import * as _ from 'lodash';
+import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import { Operation } from './router';
+
+// alias Document to OpenAPIV3_1.Document
+type Document = OpenAPIV3_1.Document | OpenAPIV3.Document;
 
 export default class OpenAPIUtils {
   /**
@@ -79,11 +83,11 @@ export default class OpenAPIUtils {
    * Get operationId, (or generate one) for an operation
    *
    * @static
-   * @param {Operation} operation
+   * @param {Operation<D>} operation
    * @returns {string} OperationId of the given operation
    * @memberof OpenAPIUtils
    */
-  public static getOperationId(operation: Operation): string {
+  public static getOperationId<D extends Document = Document>(operation: Operation<D>): string {
     if (!operation?.operationId) {
       // TODO: generate a default substitute for operationId
       return `unknown`;

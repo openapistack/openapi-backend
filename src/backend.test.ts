@@ -11,7 +11,7 @@ const responses: OpenAPIV3_1.ResponsesObject = {
 };
 
 const meta = {
-  openapi: '3.0.0',
+  openapi: '3.1.0',
   info: {
     title: 'api',
     version: '1.0.0',
