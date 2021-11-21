@@ -24,7 +24,7 @@ jobs:
           - examples/serverless-framework
           - examples/aws-sam
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.4.0
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
@@ -51,7 +51,7 @@ jobs:
     needs:
       - test
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.4.0
       - uses: actions/setup-node@v1
         with:
           registry-url: https://registry.npmjs.org/
