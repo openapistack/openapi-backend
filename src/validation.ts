@@ -283,13 +283,15 @@ export class OpenAPIValidator<D extends Document = Document> {
         try {
           JSON.parse(`${req.body}`);
         } catch (err) {
-          result.errors.push({
-            keyword: 'parse',
-            instancePath: '',
-            schemaPath: '#/requestBody',
-            params: [],
-            message: err.message,
-          });
+          if (err instanceof Error) {
+            result.errors.push({
+              keyword: 'parse',
+              instancePath: '',
+              schemaPath: '#/requestBody',
+              params: [],
+              message: err.message,
+            });
+          }
         }
       }
     }

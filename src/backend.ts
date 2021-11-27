@@ -280,7 +280,7 @@ export class OpenAPIBackend<D extends Document = Document> {
         context.operation = this.router.matchOperation(req, true);
       } catch (err) {
         let handler = this.handlers['404'] || this.handlers['notFound'];
-        if (err.message.startsWith('405')) {
+        if (err instanceof Error && err.message.startsWith('405')) {
           // 405 method not allowed
           handler = this.handlers['405'] || this.handlers['methodNotAllowed'] || handler;
         }
