@@ -261,7 +261,7 @@ export class OpenAPIBackend<D extends Document = Document> {
    * @returns {Promise} handler return value
    * @memberof OpenAPIBackend
    */
-  public async handleRequest(req: Request, ...handlerArgs: any[]) {
+  public async handleRequest(req: Request, ...handlerArgs: any[]): Promise<any> {
     if (!this.initalized) {
       // auto-initalize if not yet initalized
       await this.init();
