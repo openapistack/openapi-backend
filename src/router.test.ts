@@ -36,6 +36,14 @@ const queryLimit: OpenAPIV3_1.ParameterObject = {
   },
 };
 
+const queryOwnerFilter: OpenAPIV3_1.ParameterObject = {
+  name: 'hasOwner',
+  in: 'query',
+  schema: {
+    type: 'boolean',
+  },
+};
+
 const queryFilter: OpenAPIV3_1.ParameterObject = {
   name: 'filter',
   in: 'query',
@@ -81,7 +89,7 @@ const definition: OpenAPIV3_1.Document = {
         operationId: 'createPet',
         responses,
       },
-      parameters: [queryLimit, queryFilter],
+      parameters: [queryLimit, queryFilter, queryOwnerFilter],
     },
     '/pets/{id}': {
       get: {
@@ -201,10 +209,46 @@ describe('OpenAPIRouter', () => {
       expect(parsedRequest.query.filter).toEqual(filterValue);
     });
 
+    test('parses query string when `limit` type=integer', () => {
+      const request = { path: '/pets?limit=10.3', method: 'get', headers, parameters: [queryLimit] };
+      const operation = api.getOperation('getPets');
+
+      const parsedRequest = api.parseRequest(request, operation);
+      // the limit schema is an integer so this would cause an input validation error but not a parsing error
+      expect(parsedRequest.query).toEqual({ limit: 10.3 });
+    });
+
     test('parses query string arrays', () => {
       const request = { path: '/pets?limit=10&limit=20', method: 'get', headers };
       const parsedRequest = api.parseRequest(request);
       expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
+    });
+
+    test('parses query string to boolean when `hasOwner` type=boolean', () => {
+      const request = { path: '/pets?hasOwner=false', method: 'get', parameters: [queryOwnerFilter], headers };
+      const operation = api.getOperation('getPets');
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.query).toEqual({ hasOwner: false });
+    });
+
+    test('parses query string arrays as integers when style=form, explode=false, type=integer', () => {
+      const request = { path: '/pets?limit=10,20', method: 'get', headers, parameters: [queryLimit] };
+      const operation = api.getOperation('createPet')!;
+      operation.parameters = [
+        {
+          in: 'query',
+          name: 'limit',
+          style: 'form',
+          explode: false,
+          schema: {
+            type: 'integer'
+          }
+        },
+      ];
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.query).toEqual({ limit: [10, 20] });
     });
 
     test('parses query string arrays when style=form, explode=false', () => {
@@ -493,7 +537,8 @@ describe('OpenAPIBackend', () => {
       expect(dummyHandlers['getPets']).toBeCalled();
 
       const contextArg = dummyHandlers['getPets'].mock.calls.slice(-1)[0][0];
-      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets/', query: { limit: '10' }, headers });
+      // the limit schema is an integer so it should be parsed as the number 10
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets/', query: { limit: 10 }, headers });
       expect(contextArg.operation.operationId).toEqual('getPets');
       expect(contextArg.validation.errors).toBeFalsy();
     });

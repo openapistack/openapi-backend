@@ -30,29 +30,31 @@ export type Operation<D extends Document = Document> = PickVersionElement<
   method: string;
 };
 
+type ParsedRequestKeys = string | number | boolean | (string | number | boolean)[];
+
 export interface Request {
   method: string;
   path: string;
   headers: {
-    [key: string]: string | string[];
+    [key: string]: ParsedRequestKeys;
   };
   query?:
     | {
-        [key: string]: string | string[];
-      }
+      [key: string]: ParsedRequestKeys;
+    }
     | string;
   body?: any;
 }
 
 export interface ParsedRequest extends Request {
   params: {
-    [key: string]: string | string[];
+    [key: string]: ParsedRequestKeys;
   };
   cookies: {
-    [key: string]: string | string[];
+    [key: string]: ParsedRequestKeys;
   };
   query: {
-    [key: string]: string | string[];
+    [key: string]: ParsedRequestKeys;
   };
   requestBody: any;
 }
@@ -324,6 +326,26 @@ export class OpenAPIRouter<D extends Document = Document> {
               // use comma parsing e.g. &a=1,2,3
               const commaParsed = parseQuery(commaQueryString, { comma: true });
               query[queryParam] = commaParsed[queryParam];
+            }
+            const schemaType = (parameter.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>)?.type;
+            if (Array.isArray(query[queryParam])) {
+              query[queryParam] = (query[queryParam] as any[]).map((par) => {
+                // coerce the input to the specified type
+                if (schemaType === 'boolean') {
+                  return par === 'false' ? false : Boolean(par);
+                } else if (schemaType === 'number' || schemaType === 'integer') {
+                  return Number(par);
+                } else {
+                  return par;
+                }
+              })
+            } else {
+              // coerce the input to the specified type
+              if (schemaType === 'boolean') {
+                query[queryParam] = query[queryParam] === 'false' ? false : Boolean(query[queryParam]);
+              } else if (schemaType === 'number' || schemaType === 'integer') {
+                query[queryParam] = Number(query[queryParam]);
+              }
             }
           }
         }
