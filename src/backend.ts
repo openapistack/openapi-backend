@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
 import type { Options as AjvOpts } from 'ajv';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
-import { parse as parseJSONSchema, dereference } from '@apidevtools/json-schema-ref-parser';
+import { parse as parseJSONSchema, dereference } from './refparser';
+
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import { mock, SchemaLike } from 'mock-json-schema';
 

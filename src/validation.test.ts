@@ -3,9 +3,10 @@ import { OpenAPIRouter, OpenAPIValidator } from './index';
 import { OpenAPIV3_1 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
 import { SetMatchType } from './backend';
-import { dereference } from '@apidevtools/json-schema-ref-parser';
 import * as path from 'path';
 import * as _ from 'lodash';
+import { dereference } from './refparser';
+
 const testsDir = path.join(__dirname, '..', '__tests__');
 const circularRefPath = path.join(testsDir, 'resources', 'refs.openapi.json');
 
