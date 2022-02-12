@@ -122,7 +122,7 @@ const definition: OpenAPIV3_1.Document = {
         operationId: 'getPetHobbies',
         responses,
       },
-      parameters: [pathId, hobbyId],
+      parameters: [pathId, hobbyId, queryLimit],
     },
     '/pets/meta': {
       get: {
@@ -171,7 +171,7 @@ describe('OpenAPIRouter', () => {
       const operation = api.getOperation('getPetById')!;
 
       const parsedRequest = api.parseRequest(request, operation);
-      expect(parsedRequest.params).toEqual({ id: '123' });
+      expect(parsedRequest.params).toEqual({ id: 123 });
     });
 
     test('parses query string from path prop', () => {
@@ -209,13 +209,21 @@ describe('OpenAPIRouter', () => {
       expect(parsedRequest.query.filter).toEqual(filterValue);
     });
 
-    test('parses query string when `limit` type=integer', () => {
+    test('parses query string without type coercion when `limit` type=integer with float input', () => {
       const request = { path: '/pets?limit=10.3', method: 'get', headers, parameters: [queryLimit] };
       const operation = api.getOperation('getPets');
 
       const parsedRequest = api.parseRequest(request, operation);
-      // the limit schema is an integer so this would cause an input validation error but not a parsing error
-      expect(parsedRequest.query).toEqual({ limit: 10.3 });
+      // the limit schema is an integer so this would cause an input validation error and not parse correctly and thus remain a string.
+      expect(parsedRequest.query).toEqual({ limit: '10.3' });
+    });
+
+    test('parses query string when `limit` type=integer', () => {
+      const request = { path: '/pets?limit=10', method: 'get', headers, parameters: [queryLimit] };
+      const operation = api.getOperation('getPets');
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.query).toEqual({ limit: 10 });
     });
 
     test('parses query string arrays', () => {
@@ -297,6 +305,15 @@ describe('OpenAPIRouter', () => {
 
       const parsedRequest = api.parseRequest(request, operation);
       expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
+    });
+
+    test('parses path parameters and query parameters /pets/{id}/hobbies/{hobbyId}?limit', async () => {
+      const request = { path: '/pets/1/hobbies/3?limit=5', method: 'get', headers, parameters: [pathId, hobbyId, queryLimit] };
+      const operation = api.getOperation('getPetHobbies');
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.query).toEqual({ limit: 5 });
+      expect(parsedRequest.params).toEqual({ hobbyId: 3, id: 1 });
     });
   });
 
@@ -484,7 +501,7 @@ describe('OpenAPIBackend', () => {
       expect(dummyHandlers['getPetById']).toBeCalled();
 
       const contextArg = dummyHandlers['getPetById'].mock.calls.slice(-1)[0][0];
-      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets/1', params: { id: '1' }, headers });
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets/1', params: { id: 1 }, headers });
       expect(contextArg.operation.operationId).toEqual('getPetById');
       expect(contextArg.validation.errors).toBeFalsy();
     });
@@ -495,7 +512,7 @@ describe('OpenAPIBackend', () => {
       expect(dummyHandlers['updatePetById']).toBeCalled();
 
       const contextArg = dummyHandlers['updatePetById'].mock.calls.slice(-1)[0][0];
-      expect(contextArg.request).toMatchObject({ method: 'patch', path: '/pets/1', params: { id: '1' }, headers });
+      expect(contextArg.request).toMatchObject({ method: 'patch', path: '/pets/1', params: { id: 1 }, headers });
       expect(contextArg.operation.operationId).toEqual('updatePetById');
       expect(contextArg.validation.errors).toBeFalsy();
     });
@@ -515,7 +532,7 @@ describe('OpenAPIBackend', () => {
       expect(dummyHandlers['notImplemented']).toBeCalled();
 
       const contextArg = dummyHandlers['notImplemented'].mock.calls.slice(-1)[0][0];
-      expect(contextArg.request).toMatchObject({ method: 'delete', path: '/pets/1', params: { id: '1' }, headers });
+      expect(contextArg.request).toMatchObject({ method: 'delete', path: '/pets/1', params: { id: 1 }, headers });
       expect(contextArg.operation.operationId).toEqual('deletePetById');
       expect(contextArg.validation.errors).toBeFalsy();
     });

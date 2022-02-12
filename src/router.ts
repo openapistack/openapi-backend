@@ -5,6 +5,7 @@ import * as cookie from 'cookie';
 import { parse as parseQuery } from 'qs';
 import { Parameters } from 'bath-es5/_/types';
 import { PickVersionElement } from './backend';
+import Ajv from 'ajv';
 
 // alias Document to OpenAPIV3_1.Document
 type Document = OpenAPIV3_1.Document | OpenAPIV3.Document;
@@ -288,7 +289,7 @@ export class OpenAPIRouter<D extends Document = Document> {
 
     // parse query
     const queryString = typeof req.query === 'string' ? req.query.replace('?', '') : req.path.split('?')[1];
-    const query = typeof req.query === 'object' ? _.cloneDeep(req.query) : parseQuery(queryString);
+    let query = typeof req.query === 'object' ? _.cloneDeep(req.query) : parseQuery(queryString);
 
     // normalize
     req = this.normalizeRequest(req);
@@ -302,53 +303,91 @@ export class OpenAPIRouter<D extends Document = Document> {
       const pathParams = bath(operation.path);
       params = pathParams.params(normalizedPath) || {};
       // parse query parameters with specified style for parameter
-      for (const queryParam in query) {
-        if (query[queryParam]) {
-          const parameter = _.find(
-            (operation.parameters as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>[]) || [],
-            {
-              name: queryParam,
-              in: 'query',
-            },
-          );
-          if (parameter) {
-            if (parameter.content && parameter.content['application/json']) {
-              query[queryParam] = JSON.parse(query[queryParam]);
-            } else if (parameter.explode === false && queryString) {
-              let commaQueryString = queryString;
-              if (parameter.style === 'spaceDelimited') {
-                commaQueryString = commaQueryString.replace(/\ /g, ',').replace(/\%20/g, ',');
-              }
-              if (parameter.style === 'pipeDelimited') {
-                commaQueryString = commaQueryString.replace(/\|/g, ',').replace(/\%7C/g, ',');
-              }
-              // use comma parsing e.g. &a=1,2,3
-              const commaParsed = parseQuery(commaQueryString, { comma: true });
-              query[queryParam] = commaParsed[queryParam];
-            }
-            const schemaType = (parameter.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>)?.type;
-            if (Array.isArray(query[queryParam])) {
-              query[queryParam] = (query[queryParam] as any[]).map((par) => {
-                // coerce the input to the specified type
-                if (schemaType === 'boolean') {
-                  return par === 'false' ? false : Boolean(par);
-                } else if (schemaType === 'number' || schemaType === 'integer') {
-                  return Number(par);
-                } else {
-                  return par;
+
+      /**
+       * Coerce the input parameters to be the correct type (if specified, otherwise it defaults to a string).
+       * @param inputObj The object with input parameters to coerce.
+       * @param location If the parameter is in the `path` or `query`
+       */
+      const coerceInputs = (inputObj: any, location: 'query' | 'path') => {
+        let coerced: any = _.cloneDeep(inputObj);
+        for (const queryParam in coerced) {
+          if (coerced[queryParam]) {
+            const parameter = _.find(
+              (operation.parameters as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>[]) || [],
+              {
+                name: queryParam,
+                in: location,
+              },
+            );
+            if (parameter) {
+              if (parameter.content && parameter.content['application/json']) {
+                // JSON.parse handles parsing to correct data types, no additional logic necessary.
+                coerced[queryParam] = JSON.parse(coerced[queryParam]);
+              } else if (parameter.explode === false && queryString) {
+                let commaQueryString = queryString;
+                if (parameter.style === 'spaceDelimited') {
+                  commaQueryString = commaQueryString.replace(/\ /g, ',').replace(/\%20/g, ',');
                 }
-              })
-            } else {
-              // coerce the input to the specified type
-              if (schemaType === 'boolean') {
-                query[queryParam] = query[queryParam] === 'false' ? false : Boolean(query[queryParam]);
-              } else if (schemaType === 'number' || schemaType === 'integer') {
-                query[queryParam] = Number(query[queryParam]);
+                if (parameter.style === 'pipeDelimited') {
+                  commaQueryString = commaQueryString.replace(/\|/g, ',').replace(/\%7C/g, ',');
+                }
+                // use comma parsing e.g. &a=1,2,3
+                const commaParsed = parseQuery(commaQueryString, { comma: true });
+                coerced[queryParam] = commaParsed[queryParam];
+              }
+              // If a schema is specified use Ajv type coercion.
+              if (parameter.schema) {
+                const ajv = new Ajv({ coerceTypes: 'array' });
+                /**
+                 * The full representation of the desired schema.
+                 * This allows for short-hand inputs of types like `type: integer`
+                 * then we expand it here so Ajv parses it correctly, otherwise we'll get an error.
+                 */
+                let parseSchema = parameter.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>
+                let queryData = coerced[queryParam];
+                const isArray = Array.isArray(queryData);
+                /** The specified schema type. */
+                const specifiedSchemaType = (parameter.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>)?.type;
+                // Even if the input is an array but not defined as an array still parse it as an array anyway.
+                if (isArray && specifiedSchemaType !== 'array') {
+                  parseSchema = {
+                    type: 'array',
+                    items: {
+                      ...parameter.schema
+                    }
+                  }
+                } else {
+                  // Expand short-hand to full schema.
+                  parseSchema = {
+                    type: 'object',
+                    properties: {
+                      [queryParam]: parameter.schema
+                    }
+                  }
+                  queryData = { [queryParam]: coerced[queryParam] }
+                }
+                const coerceData = ajv.compile(parseSchema);
+                // Set `queryData` to the type coerced value(s).
+                coerceData(queryData);
+                if (isArray && specifiedSchemaType !== 'array') {
+                  // Set the query array to the type-coerced array.
+                  coerced[queryParam] = queryData;
+                } else {
+                  // Set the query to the type-coerced value.
+                  coerced[queryParam] = queryData[queryParam];
+                }
               }
             }
           }
         }
+        return coerced;
       }
+
+      // Coerce the inputs to be the correct type and overwrite the request with the correct values.
+      params = coerceInputs(params, 'path');
+      query = coerceInputs(query, 'query');
+
     }
 
     return {
