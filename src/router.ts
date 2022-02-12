@@ -30,31 +30,31 @@ export type Operation<D extends Document = Document> = PickVersionElement<
   method: string;
 };
 
-type ParsedRequestKeys = string | number | boolean | (string | number | boolean)[];
+type ParamValue = string | number | boolean;
 
 export interface Request {
   method: string;
   path: string;
   headers: {
-    [key: string]: ParsedRequestKeys;
+    [key: string]: ParamValue | ParamValue[];
   };
   query?:
-    | {
-      [key: string]: ParsedRequestKeys;
-    }
-    | string;
+  | {
+    [key: string]: ParamValue | ParamValue[];
+  }
+  | string;
   body?: any;
 }
 
 export interface ParsedRequest extends Request {
   params: {
-    [key: string]: ParsedRequestKeys;
+    [key: string]: ParamValue | ParamValue[];
   };
   cookies: {
-    [key: string]: ParsedRequestKeys;
+    [key: string]: ParamValue | ParamValue[];
   };
   query: {
-    [key: string]: ParsedRequestKeys;
+    [key: string]: ParamValue | ParamValue[];
   };
   requestBody: any;
 }
@@ -305,8 +305,7 @@ export class OpenAPIRouter<D extends Document = Document> {
       for (const queryParam in query) {
         if (query[queryParam]) {
           const parameter = _.find(
-            (operation.parameters as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>[]) ||
-              [],
+            (operation.parameters as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>[]) || [],
             {
               name: queryParam,
               in: 'query',
