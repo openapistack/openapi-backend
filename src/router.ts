@@ -344,7 +344,7 @@ export class OpenAPIRouter<D extends Document = Document> {
                  * This allows for short-hand inputs of types like `type: integer`
                  * then we expand it here so Ajv parses it correctly, otherwise we'll get an error.
                  */
-                let parseSchema = parameter.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>
+                let parseSchema: PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>
                 let queryData = coerced[queryParam];
                 const isArray = Array.isArray(queryData);
                 /** The specified schema type. */
