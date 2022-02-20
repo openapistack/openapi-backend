@@ -110,16 +110,16 @@ export class OpenAPIRouter<D extends Document = Document> {
     const normalizedPath = this.normalizePath(req.path);
 
     // get all operations matching exact path
-    const exactPathMatches = _.filter(this.getOperations(), ({ path }) => path === normalizedPath);
+    const exactPathMatches = this.getOperations().filter(({ path }) => path === normalizedPath);
 
     // check if there's one with correct method and return if found
-    const exactMatch = _.find(exactPathMatches, ({ method }) => method === req.method);
+    const exactMatch = exactPathMatches.find(({ method }) => method === req.method);
     if (exactMatch) {
       return exactMatch;
     }
 
     // check with path templates
-    const templatePathMatches = _.filter(this.getOperations(), ({ path }) => {
+    const templatePathMatches = this.getOperations().filter(({ path }) => {
       // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
       const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/]+')}$`;
       return Boolean(normalizedPath.match(new RegExp(pathPattern, 'g')));
@@ -160,7 +160,7 @@ export class OpenAPIRouter<D extends Document = Document> {
    * @memberof OpenAPIRouter
    */
   public getOperations(): Operation<D>[] {
-    const paths = _.get(this.definition, 'paths', {});
+    const paths = this.definition?.paths || {};
     return _.chain(paths)
       .entries()
       .flatMap(([path, pathBaseObject]) => {
@@ -197,7 +197,7 @@ export class OpenAPIRouter<D extends Document = Document> {
    * @memberof OpenAPIRouter
    */
   public getOperation(operationId: string): Operation<D> | undefined {
-    return _.find(this.getOperations(), { operationId });
+    return this.getOperations().find((op) => op.operationId === operationId);
   }
 
   /**
@@ -302,14 +302,10 @@ export class OpenAPIRouter<D extends Document = Document> {
       // parse query parameters with specified style for parameter
       for (const queryParam in query) {
         if (query[queryParam]) {
-          const parameter = _.find(
-            (operation.parameters as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>[]) ||
-              [],
-            {
-              name: queryParam,
-              in: 'query',
-            },
-          );
+          const parameter = operation.parameters?.find(
+            (param) => !('$ref' in param) && param?.in === 'query' && param?.name === queryParam,
+          ) as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>;
+
           if (parameter) {
             if (parameter.content && parameter.content['application/json']) {
               query[queryParam] = JSON.parse(query[queryParam]);
