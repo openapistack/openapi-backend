@@ -3,9 +3,10 @@ import { OpenAPIRouter, OpenAPIValidator } from './index';
 import { OpenAPIV3_1 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
 import { SetMatchType } from './backend';
-import { dereference } from '@apidevtools/json-schema-ref-parser';
 import * as path from 'path';
 import * as _ from 'lodash';
+import { dereference } from './refparser';
+
 const testsDir = path.join(__dirname, '..', '__tests__');
 const circularRefPath = path.join(testsDir, 'resources', 'refs.openapi.json');
 
@@ -642,6 +643,28 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                 },
               },
             },
+            delete: {
+              operationId: 'deletePetById',
+              responses: {
+                204: {
+                  description: 'a pet',
+                },
+                default: {
+                  description: 'pet not found',
+                  content: {
+                    'application/json': {
+                      schema: {
+                        type: 'object',
+                        properties: {
+                          err: { type: 'string' },
+                        },
+                        required: ['err'],
+                      },
+                    },
+                  },
+                },
+              },
+            },
             parameters: [
               {
                 name: 'id',
@@ -809,6 +832,19 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
       );
       expect(valid.errors).toBeTruthy();
     });
+
+    test('passes validation with valid 204 containing no body when there is a default response', async () => {
+      const valid = validator.validateResponse(
+        null,
+        {
+          method: 'delete',
+          path: '/pets/{id}',
+          operationId: 'deletePetById',
+        },
+        204,
+      );
+      expect(valid.errors).toBeFalsy();
+    })
   });
 
   describe('.validateResponseHeaders', () => {

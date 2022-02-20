@@ -748,6 +748,17 @@ export class OpenAPIValidator<D extends Document = Document> {
         const validateFn = response.content['application/json'].schema;
         responseValidators[status] = OpenAPIValidator.compileSchema(validator, validateFn);
       }
+
+      if (!response.content && status === '204') {
+        const validateFn = {
+          type: 'null',
+          title: 'The root schema',
+          description: 'The root schema comprises the entire JSON document.',
+          default: null,
+        };
+        responseValidators[status] = OpenAPIValidator.compileSchema(validator, validateFn);
+      }
+
       return null;
     });
 

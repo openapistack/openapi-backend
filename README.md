@@ -1,7 +1,6 @@
 <h1 align="center"><img alt="openapi-backend" src="./header.png" style="max-width:50rem"></h1>
 
 [![CI](https://github.com/anttiviljami/openapi-backend/workflows/CI/badge.svg)](https://github.com/anttiviljami/openapi-backend/actions?query=workflow%3ACI)
-[![Dependencies](https://david-dm.org/anttiviljami/openapi-backend.svg)](https://david-dm.org/anttiviljami/openapi-backend)
 [![npm version](https://img.shields.io/npm/v/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
 [![npm downloads](https://img.shields.io/npm/dw/openapi-backend)](https://www.npmjs.com/package/openapi-backend)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/anttiviljami/openapi-backend.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/anttiviljami/openapi-backend/alerts/)

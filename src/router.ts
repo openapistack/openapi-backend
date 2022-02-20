@@ -40,10 +40,10 @@ export interface Request {
     [key: string]: ParamValue | ParamValue[];
   };
   query?:
-  | {
-    [key: string]: ParamValue | ParamValue[];
-  }
-  | string;
+    | {
+        [key: string]: ParamValue | ParamValue[];
+      }
+    | string;
   body?: any;
 }
 
@@ -113,16 +113,16 @@ export class OpenAPIRouter<D extends Document = Document> {
     const normalizedPath = this.normalizePath(req.path);
 
     // get all operations matching exact path
-    const exactPathMatches = _.filter(this.getOperations(), ({ path }) => path === normalizedPath);
+    const exactPathMatches = this.getOperations().filter(({ path }) => path === normalizedPath);
 
     // check if there's one with correct method and return if found
-    const exactMatch = _.find(exactPathMatches, ({ method }) => method === req.method);
+    const exactMatch = exactPathMatches.find(({ method }) => method === req.method);
     if (exactMatch) {
       return exactMatch;
     }
 
     // check with path templates
-    const templatePathMatches = _.filter(this.getOperations(), ({ path }) => {
+    const templatePathMatches = this.getOperations().filter(({ path }) => {
       // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
       const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/]+')}$`;
       return Boolean(normalizedPath.match(new RegExp(pathPattern, 'g')));
@@ -163,7 +163,7 @@ export class OpenAPIRouter<D extends Document = Document> {
    * @memberof OpenAPIRouter
    */
   public getOperations(): Operation<D>[] {
-    const paths = _.get(this.definition, 'paths', {});
+    const paths = this.definition?.paths || {};
     return _.chain(paths)
       .entries()
       .flatMap(([path, pathBaseObject]) => {
@@ -200,7 +200,7 @@ export class OpenAPIRouter<D extends Document = Document> {
    * @memberof OpenAPIRouter
    */
   public getOperation(operationId: string): Operation<D> | undefined {
-    return _.find(this.getOperations(), { operationId });
+    return this.getOperations().find((op) => op.operationId === operationId);
   }
 
   /**
@@ -313,13 +313,10 @@ export class OpenAPIRouter<D extends Document = Document> {
         let coerced: any = _.cloneDeep(inputObj);
         for (const queryParam in coerced) {
           if (coerced[queryParam]) {
-            const parameter = _.find(
-              (operation.parameters as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>[]) || [],
-              {
-                name: queryParam,
-                in: location,
-              },
-            );
+            const parameter = operation.parameters?.find(
+              (param) => !('$ref' in param) && param?.in === 'query' && param?.name === queryParam,
+            ) as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>;
+
             if (parameter) {
               if (parameter.content && parameter.content['application/json']) {
                 // JSON.parse handles parsing to correct data types, no additional logic necessary.
@@ -336,6 +333,7 @@ export class OpenAPIRouter<D extends Document = Document> {
                 const commaParsed = parseQuery(commaQueryString, { comma: true });
                 coerced[queryParam] = commaParsed[queryParam];
               }
+
               // If a schema is specified use Ajv type coercion.
               if (parameter.schema) {
                 const ajv = new Ajv({ coerceTypes: 'array' });
@@ -344,28 +342,30 @@ export class OpenAPIRouter<D extends Document = Document> {
                  * This allows for short-hand inputs of types like `type: integer`
                  * then we expand it here so Ajv parses it correctly, otherwise we'll get an error.
                  */
-                let parseSchema: PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>
+                let parseSchema: PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>;
                 let queryData = coerced[queryParam];
                 const isArray = Array.isArray(queryData);
                 /** The specified schema type. */
-                const specifiedSchemaType = (parameter.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>)?.type;
+                const specifiedSchemaType = (
+                  parameter.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>
+                )?.type;
                 // Even if the input is an array but not defined as an array still parse it as an array anyway.
                 if (isArray && specifiedSchemaType !== 'array') {
                   parseSchema = {
                     type: 'array',
                     items: {
-                      ...parameter.schema
-                    }
-                  }
+                      ...parameter.schema,
+                    },
+                  };
                 } else {
                   // Expand short-hand to full schema.
                   parseSchema = {
                     type: 'object',
                     properties: {
-                      [queryParam]: parameter.schema
-                    }
-                  }
-                  queryData = { [queryParam]: coerced[queryParam] }
+                      [queryParam]: parameter.schema,
+                    },
+                  };
+                  queryData = { [queryParam]: coerced[queryParam] };
                 }
                 const coerceData = ajv.compile(parseSchema);
                 // Set `queryData` to the type coerced value(s).
@@ -382,12 +382,11 @@ export class OpenAPIRouter<D extends Document = Document> {
           }
         }
         return coerced;
-      }
+      };
 
       // Coerce the inputs to be the correct type and overwrite the request with the correct values.
       params = coerceInputs(params, 'path');
       query = coerceInputs(query, 'query');
-
     }
 
     return {
