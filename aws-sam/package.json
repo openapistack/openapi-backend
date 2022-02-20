@@ -16,7 +16,7 @@
     "test": "jest -i"
   },
   "dependencies": {
-    "openapi-backend": "^4.0.0"
+    "openapi-backend": "^5.2.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.56",

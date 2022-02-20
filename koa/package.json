@@ -12,7 +12,7 @@
   "dependencies": {
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
-    "openapi-backend": "^4.0.0"
+    "openapi-backend": "^5.2.0"
   },
   "devDependencies": {
     "axios": "^0.21.1",
