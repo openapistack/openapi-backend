@@ -844,7 +844,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
         204,
       );
       expect(valid.errors).toBeFalsy();
-    })
+    });
   });
 
   describe('.validateResponseHeaders', () => {

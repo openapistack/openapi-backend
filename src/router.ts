@@ -310,7 +310,7 @@ export class OpenAPIRouter<D extends Document = Document> {
        * @param location If the parameter is in the `path` or `query`
        */
       const coerceInputs = (inputObj: any, location: 'query' | 'path') => {
-        let coerced: any = _.cloneDeep(inputObj);
+        const coerced: any = _.cloneDeep(inputObj);
         for (const queryParam in coerced) {
           if (coerced[queryParam]) {
             const parameter = operation.parameters?.find(

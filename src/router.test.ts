@@ -250,8 +250,8 @@ describe('OpenAPIRouter', () => {
           style: 'form',
           explode: false,
           schema: {
-            type: 'integer'
-          }
+            type: 'integer',
+          },
         },
       ];
 
@@ -308,7 +308,12 @@ describe('OpenAPIRouter', () => {
     });
 
     test('parses path parameters and query parameters /pets/{id}/hobbies/{hobbyId}?limit', async () => {
-      const request = { path: '/pets/1/hobbies/3?limit=5', method: 'get', headers, parameters: [pathId, hobbyId, queryLimit] };
+      const request = {
+        path: '/pets/1/hobbies/3?limit=5',
+        method: 'get',
+        headers,
+        parameters: [pathId, hobbyId, queryLimit],
+      };
       const operation = api.getOperation('getPetHobbies');
 
       const parsedRequest = api.parseRequest(request, operation);
