@@ -314,7 +314,7 @@ export class OpenAPIRouter<D extends Document = Document> {
         for (const queryParam in coerced) {
           if (coerced[queryParam]) {
             const parameter = operation.parameters?.find(
-              (param) => !('$ref' in param) && param?.in === 'query' && param?.name === queryParam,
+              (param) => !('$ref' in param) && param?.in === location && param?.name === queryParam,
             ) as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>;
 
             if (parameter) {
