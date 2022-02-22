@@ -8,6 +8,15 @@ const responses: OpenAPIV3_1.ResponsesObject = {
   200: { description: 'ok' },
 };
 
+const ownerHeader: OpenAPIV3_1.ParameterObject = {
+  in: 'header',
+  name: 'has-owner',
+  required: false,
+  schema: {
+    type: 'boolean',
+  },
+};
+
 const pathId: OpenAPIV3_1.ParameterObject = {
   name: 'id',
   in: 'path',
@@ -122,7 +131,7 @@ const definition: OpenAPIV3_1.Document = {
         operationId: 'getPetHobbies',
         responses,
       },
-      parameters: [pathId, hobbyId, queryLimit],
+      parameters: [pathId, hobbyId, queryLimit, ownerHeader],
     },
     '/pets/meta': {
       get: {
@@ -157,7 +166,7 @@ describe('OpenAPIRouter', () => {
       expect(parsedRequest.requestBody).toEqual(payload);
     });
 
-    test('parses request body passed as JSON', () => {
+    test('parses request body passed as JSON string', () => {
       const payload = { horse: 1 };
       const request = { path: '/pets', method: 'post', body: JSON.stringify(payload), headers };
 
@@ -311,12 +320,13 @@ describe('OpenAPIRouter', () => {
       const request = {
         path: '/pets/1/hobbies/3?limit=5',
         method: 'get',
-        headers,
-        parameters: [pathId, hobbyId, queryLimit],
+        headers: { ...headers, 'has-owner': 'false' },
+        parameters: [pathId, hobbyId, queryLimit, ownerHeader],
       };
       const operation = api.getOperation('getPetHobbies');
 
       const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.headers).toEqual({ ...headers, 'has-owner': false });
       expect(parsedRequest.query).toEqual({ limit: 5 });
       expect(parsedRequest.params).toEqual({ hobbyId: 3, id: 1 });
     });

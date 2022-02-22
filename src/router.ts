@@ -281,7 +281,7 @@ export class OpenAPIRouter<D extends Document = Document> {
     }
 
     // header keys are converted to lowercase, so Content-Type becomes content-type
-    const headers = _.mapKeys(req.headers, (val, header) => header.toLowerCase());
+    let headers = _.mapKeys(req.headers, (val, header) => header.toLowerCase());
 
     // parse cookie from headers
     const cookieHeader = headers['cookie'];
@@ -309,7 +309,7 @@ export class OpenAPIRouter<D extends Document = Document> {
        * @param inputObj The object with input parameters to coerce.
        * @param location If the parameter is in the `path` or `query`
        */
-      const coerceInputs = (inputObj: any, location: 'query' | 'path') => {
+      const coerceInputs = (inputObj: any, location: 'query' | 'path' | 'header') => {
         const coerced: any = _.cloneDeep(inputObj);
         for (const queryParam in coerced) {
           if (coerced[queryParam]) {
@@ -387,6 +387,7 @@ export class OpenAPIRouter<D extends Document = Document> {
       // Coerce the inputs to be the correct type and overwrite the request with the correct values.
       params = coerceInputs(params, 'path');
       query = coerceInputs(query, 'query');
+      headers = coerceInputs(headers, 'header');
     }
 
     return {
