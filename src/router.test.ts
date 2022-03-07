@@ -223,6 +223,22 @@ describe('OpenAPIRouter', () => {
       expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
     });
 
+    test('parses query string arrays with encoded commas when style=form, explode=false', () => {
+      const request = { path: '/pets?limit=10%2C20', method: 'get', headers };
+      const operation = api.getOperation('createPet')!;
+      operation.parameters = [
+        {
+          in: 'query',
+          name: 'limit',
+          style: 'form',
+          explode: false,
+        },
+      ];
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
+    });
+
     test('parses query string arrays when style=spaceDelimited, explode=false', () => {
       const request = { path: '/pets?limit=10%2020', method: 'get', headers };
       const operation = api.getOperation('createPet')!;

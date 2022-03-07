@@ -310,7 +310,7 @@ export class OpenAPIRouter<D extends Document = Document> {
             if (parameter.content && parameter.content['application/json']) {
               query[queryParam] = JSON.parse(query[queryParam]);
             } else if (parameter.explode === false && queryString) {
-              let commaQueryString = queryString;
+              let commaQueryString = queryString.replace(/\%2C/g, ',');
               if (parameter.style === 'spaceDelimited') {
                 commaQueryString = commaQueryString.replace(/\ /g, ',').replace(/\%20/g, ',');
               }
