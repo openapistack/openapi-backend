@@ -114,6 +114,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     'validationFail',
     'unauthorizedHandler',
     'postResponseHandler',
+    'preRequestHandler'
   ];
 
   public securityHandlers: { [name: string]: Handler };
@@ -388,6 +389,12 @@ export class OpenAPIBackend<D extends Document = Document> {
           throw Error(`501-notImplemented: ${operationId} no handler registered`);
         }
         return notImplementedHandler(context as Context<D>, ...handlerArgs);
+      }
+
+      // pre request handler
+      const preRequestHandler: Handler = this.handlers['preRequestHandler'];
+      if (preRequestHandler) {
+        preRequestHandler(context as Context<D>, ...handlerArgs);
       }
 
       // handle route
