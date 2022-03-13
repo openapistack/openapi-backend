@@ -42,6 +42,7 @@ export interface Context<D extends Document = Document> {
   response: any;
 }
 
+export type PreHandler = (context: Context, ...args: any[]) => void | Promise<void>;
 export type Handler = (context: Context, ...args: any[]) => any | Promise<any>;
 export type BoolPredicate = (context: Context, ...args: any[]) => boolean;
 
@@ -78,6 +79,7 @@ export interface Options<D extends Document = Document> {
     [handler: string]: Handler | undefined;
   };
   securityHandlers?: {};
+  preHandler?: PreHandler
 }
 
 /**
@@ -118,6 +120,7 @@ export class OpenAPIBackend<D extends Document = Document> {
 
   public securityHandlers: { [name: string]: Handler };
 
+  public preHandler?: PreHandler | null;
   public router: OpenAPIRouter<D>;
   public validator: OpenAPIValidator<D>;
 
@@ -133,6 +136,7 @@ export class OpenAPIBackend<D extends Document = Document> {
    * @param {boolean} opts.ignoreTrailingSlashes - whether to ignore trailing slashes when routing (default: true)
    * @param {boolean} opts.ajvOpts - default ajv opts to pass to the validator
    * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
+   * @param {PreHandler} opts.prehandler - function invoked before each handler if specified
    * @memberof OpenAPIBackend
    */
   constructor(opts: Options<D>) {
@@ -145,6 +149,7 @@ export class OpenAPIBackend<D extends Document = Document> {
       ajvOpts: {},
       handlers: {},
       securityHandlers: {},
+      preHandler: null,
       ...opts,
     };
     this.apiRoot = optsWithDefaults.apiRoot;
@@ -155,6 +160,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     this.ignoreTrailingSlashes = optsWithDefaults.ignoreTrailingSlashes;
     this.handlers = { ...optsWithDefaults.handlers }; // Copy to avoid mutating passed object
     this.securityHandlers = { ...optsWithDefaults.securityHandlers }; // Copy to avoid mutating passed object
+    this.preHandler = optsWithDefaults.preHandler;
     this.ajvOpts = optsWithDefaults.ajvOpts;
     this.customizeAjv = optsWithDefaults.customizeAjv;
   }
@@ -388,6 +394,11 @@ export class OpenAPIBackend<D extends Document = Document> {
           throw Error(`501-notImplemented: ${operationId} no handler registered`);
         }
         return notImplementedHandler(context as Context<D>, ...handlerArgs);
+      }
+
+      // invoke the preHandler if supplied
+      if (this.preHandler){
+        await this.preHandler(context as Context<D>, ...handlerArgs)
       }
 
       // handle route
