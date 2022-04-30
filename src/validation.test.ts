@@ -346,6 +346,63 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
       });
     });
 
+    describe('passes validation for free-form query parameters', () => {
+      let validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPetById',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  {
+                    name: 'freeFormInteger',
+                    in: 'query',
+                    schema: {
+                      type: 'object',
+                      // Sets additionalProperties to the schema of the desired free-form query parameters.
+                      additionalProperties: {
+                        type: 'integer'
+                      },
+                    },
+                    style: 'form'
+                  },
+                  {
+                    name: 'freeFormNumber',
+                    in: 'query',
+                    schema: {
+                      type: 'object',
+                      // Sets additionalProperties to the schema of the desired free-form query parameters.
+                      additionalProperties: {
+                        type: 'number'
+                      },
+                    },
+                    style: 'form'
+                  },
+                ],
+              },
+            },
+          },
+        },
+        ...constructorOpts,
+      });
+
+      test('passes validation for free-form schema of integer', async () => {
+        const valid = validator.validateRequest({ path: '/pets?arbitraryKeyInteger=4', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test('passes validation for free-form schema of number', async () => {
+        const valid = validator.validateRequest({ path: '/pets?arbitraryKeyNumber=4.7', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test(`fails validation for free-form value that's not one of the specified schemas`, async () => {
+        const valid = validator.validateRequest({ path: '/pets?arbitraryKeyString=string', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+    });
+
+
     describe('headers', () => {
       const validator = new OpenAPIValidator({
         definition: {

@@ -625,6 +625,15 @@ export class OpenAPIValidator<D extends Document = Document> {
         }
         target.properties = target.properties || {};
 
+        const paramSchema = param.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject> | undefined;
+
+        // Assign the target schema's additionalProperties to the param schema's additionalProperties if the param's additionalProperties is set.
+        // This is to support free-form query params where `additionalProperties` is an object.
+        // https://swagger.io/specification/?sbsearch=free%20form
+        if (paramSchema && paramSchema?.additionalProperties !== undefined) {
+          target.additionalProperties = paramSchema.additionalProperties;
+        }
+
         if (param.content && param.content['application/json']) {
           target.properties[normalizedParamName] = param.content['application/json'].schema as PickVersionElement<
             D,
