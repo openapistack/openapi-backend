@@ -642,7 +642,7 @@ Returns a [ValidationResult object](#validationresult-object).
 
 Example usage:
 ```javascript
-const valid = await api.validateRequest(
+const valid = api.validateRequest(
   {
     method: req.method,
     path: req.path,
@@ -683,14 +683,14 @@ Returns a [ValidationResult object](#validationresult-object).
 
 Example usage:
 ```javascript
-const valid = await api.validateResponse({ name: 'Garfield' }, 'getPetById');
+const valid = api.validateResponse({ name: 'Garfield' }, 'getPetById');
 if (valid.errors) {
   // there were errors
 }
 ```
 
 ```javascript
-const valid = await api.validateResponse({ name: 'Unknown' }, 'getPetById', 200);
+const valid = api.validateResponse({ name: 'Unknown' }, 'getPetById', 200);
 if (valid.errors) {
   // there were errors
 }
@@ -724,7 +724,7 @@ Returns a [ValidationResult object](#validationresult-object).
 
 Example usage:
 ```javascript
-const valid = await api.validateResponseHeaders(
+const valid = api.validateResponseHeaders(
   {
     'Content-Type': 'text/plain',
   },
