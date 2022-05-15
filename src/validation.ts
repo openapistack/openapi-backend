@@ -625,7 +625,9 @@ export class OpenAPIValidator<D extends Document = Document> {
         }
         target.properties = target.properties || {};
 
-        const paramSchema = param.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject> | undefined;
+        const paramSchema = param.schema as
+          | PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>
+          | undefined;
 
         // Assign the target schema's additionalProperties to the param schema's additionalProperties if the param's additionalProperties is set.
         // This is to support free-form query params where `additionalProperties` is an object.
