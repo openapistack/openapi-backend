@@ -1,12 +1,12 @@
 import 'source-map-support/register';
 import OpenAPIBackend from 'openapi-backend';
-import express from 'express';
+import Express from 'express';
 import morgan from 'morgan';
 
-import { Request, Response } from 'express';
+import type { Request } from 'openapi-backend';
 
-const app = express();
-app.use(express.json());
+const app = Express();
+app.use(Express.json());
 
 // define api
 const api = new OpenAPIBackend({
@@ -46,11 +46,13 @@ const api = new OpenAPIBackend({
     },
   },
   handlers: {
-    getPets: async (c, req: Request, res: Response) => res.status(200).json({ operationId: c.operation.operationId }),
-    getPetById: async (c, req: Request, res: Response) =>
+    getPets: async (c, req: Express.Request, res: Express.Response) =>
       res.status(200).json({ operationId: c.operation.operationId }),
-    validationFail: async (c, req: Request, res: Response) => res.status(400).json({ err: c.validation.errors }),
-    notFound: async (c, req: Request, res: Response) => res.status(404).json({ err: 'not found' }),
+    getPetById: async (c, req: Express.Request, res: Express.Response) =>
+      res.status(200).json({ operationId: c.operation.operationId }),
+    validationFail: async (c, req: Express.Request, res: Express.Response) =>
+      res.status(400).json({ err: c.validation.errors }),
+    notFound: async (c, req: Express.Request, res: Express.Response) => res.status(404).json({ err: 'not found' }),
   },
 });
 
@@ -60,7 +62,7 @@ api.init();
 app.use(morgan('combined'));
 
 // use as express middleware
-app.use((req, res) => api.handleRequest(req, req, res));
+app.use((req, res) => api.handleRequest(req as Request, req, res));
 
 // start server
 app.listen(9000, () => console.info('api listening at http://localhost:9000'));

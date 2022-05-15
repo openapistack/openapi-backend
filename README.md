@@ -25,6 +25,7 @@ to authorize API requests
 - [x] Auto-mock API responses using [OpenAPI examples objects](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#example-object)
 or [JSON Schema definitions](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#schema-object)
 - [x] Built with TypeScript, types included
+- [x] Optimised runtime routing and validation. **No generated code!**
 - [x] OpenAPI 3.1 support
 
 ## Documentation
