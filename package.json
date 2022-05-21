@@ -44,7 +44,7 @@
     "@apidevtools/json-schema-ref-parser": "^9.0.7",
     "ajv": "^8.6.2",
     "bath-es5": "^3.0.3",
-    "cookie": "^0.4.0",
+    "cookie": "^0.5.0",
     "lodash": "^4.17.15",
     "mock-json-schema": "^1.0.7",
     "openapi-schema-validator": "^10.0.0",
