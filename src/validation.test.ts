@@ -347,7 +347,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
     });
 
     describe('passes validation for free-form query parameters', () => {
-      let validator = new OpenAPIValidator({
+      const validator = new OpenAPIValidator({
         definition: {
           ...meta,
           paths: {
