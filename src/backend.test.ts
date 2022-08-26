@@ -428,7 +428,7 @@ describe('OpenAPIBackend', () => {
 
       test('does not call operation handler if requirements are not met and unauthorizedHandler is defined', async () => {
         const api = new OpenAPIBackend({ definition });
-        let context: Partial<Context> = {};
+        const context: Partial<Context> = {};
         const mockHandler = jest.fn()
         api.register('getPets', mockHandler)
         api.register('unauthorizedHandler', () => null);
@@ -448,7 +448,7 @@ describe('OpenAPIBackend', () => {
 
       test('calls operation handler if requirements are met and unauthorizedHandler is defined', async () => {
         const api = new OpenAPIBackend({ definition });
-        let context: Partial<Context> = {};
+        const context: Partial<Context> = {};
         const mockHandler = jest.fn()
         api.register('getPets', mockHandler)
         api.register('unauthorizedHandler', () => null);
