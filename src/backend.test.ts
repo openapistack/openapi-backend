@@ -302,27 +302,51 @@ describe('OpenAPIBackend', () => {
         expect(dummyHandler).toBeCalledTimes(1);
       });
 
-      test('adds security handler results to the context object', async () => {
-        const api = new OpenAPIBackend({ definition });
-        let context: Partial<Context> = {};
-        api.register('notImplemented', (c) => {
-          context = c;
+      describe('with sync security handler', () => {
+        test('adds security handler results to the context object', async () => {
+          const api = new OpenAPIBackend({ definition });
+          let context: Partial<Context> = {};
+          api.register('notImplemented', (c) => {
+            context = c;
+          });
+
+          api.registerSecurityHandler('basicAuth', () => 'dummyHandlerResult');
+          await api.init();
+
+          const request = {
+            method: 'get',
+            path: '/pets',
+            headers: {},
+          };
+          await api.handleRequest(request);
+
+          expect(context.security).toHaveProperty('basicAuth');
+          expect(context.security?.basicAuth).toBe('dummyHandlerResult');
         });
+      })
 
-        const dummyHandler = jest.fn(() => 'dummyResponse');
-        api.registerSecurityHandler('basicAuth', dummyHandler);
-        await api.init();
+      describe('with async security handler', () => {
+        test('adds security handler results to the context object', async () => {
+          const api = new OpenAPIBackend({ definition });
+          let context: Partial<Context> = {};
+          api.register('notImplemented', (c) => {
+            context = c;
+          });
 
-        const request = {
-          method: 'get',
-          path: '/pets',
-          headers: {},
-        };
-        await api.handleRequest(request);
+          api.registerSecurityHandler('basicAuth', async () => await Promise.resolve('dummyHandlerResult'));
+          await api.init();
 
-        expect(context.security).toHaveProperty('basicAuth');
-        expect(context.security?.basicAuth).toBe('dummyResponse');
-      });
+          const request = {
+            method: 'get',
+            path: '/pets',
+            headers: {},
+          };
+          await api.handleRequest(request);
+
+          expect(context.security).toHaveProperty('basicAuth');
+          expect(context.security?.basicAuth).toBe('dummyHandlerResult');
+        });
+      })
 
       test('sets security handler results to undefined if no handler is registered', async () => {
         const api = new OpenAPIBackend({ definition });
@@ -350,7 +374,7 @@ describe('OpenAPIBackend', () => {
         api.register('notImplemented', (c) => {
           context = c;
         });
-        api.registerSecurityHandler('basicAuth', () => 1); // truthy values are interpreted as auth success
+        api.registerSecurityHandler('basicAuth', async () => 1); // truthy values are interpreted as auth success
 
         await api.init();
 
@@ -401,6 +425,47 @@ describe('OpenAPIBackend', () => {
         expect(dummyHandler).toBeCalledTimes(1);
         expect(res).toBe('failedAuthResponse');
       });
+
+      test('does not call operation handler if requirements are not met and unauthorizedHandler is defined', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        const mockHandler = jest.fn()
+        api.register('getPets', mockHandler)
+        api.register('unauthorizedHandler', () => null);
+        api.registerSecurityHandler('basicAuth', async () => false); // falsy values are interpreted as failed auth
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(mockHandler).not.toBeCalled();
+      });
+
+      test('calls operation handler if requirements are met and unauthorizedHandler is defined', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        const mockHandler = jest.fn()
+        api.register('getPets', mockHandler)
+        api.register('unauthorizedHandler', () => null);
+        api.registerSecurityHandler('basicAuth', async () => Promise.resolve(true)); // truthy values are interpreted as succeeded auth
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(mockHandler).toBeCalled();
+      });
+
     });
   });
 

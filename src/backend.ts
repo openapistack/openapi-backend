@@ -304,21 +304,19 @@ export class OpenAPIBackend<D extends Document = Document> {
       // run registered security handlers for all security requirements
       const securityHandlerResults: SecurityHandlerResults = {};
       await Promise.all(
-        securitySchemes.map((name) => {
+        securitySchemes.map(async (name) => {
           securityHandlerResults[name] = undefined;
           if (this.securityHandlers[name]) {
             // return a promise that will set the security handler result
-            return (
-              Promise.resolve()
-                .then(async () => await this.securityHandlers[name](context as Context<D>, ...handlerArgs))
-                .then((result) => {
-                  securityHandlerResults[name] = result;
-                })
-                // save error as result, if thrown
-                .catch((error) => {
-                  securityHandlerResults[name] = { error };
-                })
-            );
+            return await Promise.resolve()
+              .then(() => this.securityHandlers[name](context as Context<D>, ...handlerArgs))
+              .then((result: unknown) => {
+                securityHandlerResults[name] = result;
+              })
+              // save rejected error as result, if thrown
+              .catch((error: unknown) => {
+                securityHandlerResults[name] = { error };
+              });
           } else {
             // if no handler is found for scheme, set to undefined
             securityHandlerResults[name] = undefined;
@@ -332,19 +330,28 @@ export class OpenAPIBackend<D extends Document = Document> {
          * Security Requirement Objects that contain multiple schemes require
          * that all schemes MUST be satisfied for a request to be authorized.
          */
-        for (const requirement of _.keys(requirementObject)) {
-          if (!Boolean(securityHandlerResults[requirement]) || Boolean(securityHandlerResults[requirement]?.error)) {
+        for (const requirement of Object.keys(requirementObject)) {
+          const requirementResult = securityHandlerResults[requirement];
+
+          // falsy return values are treated as auth fail
+          if (Boolean(requirementResult) === false) {
+            return false;
+          }
+
+          // handle error object passed earlier
+          if (typeof requirementResult === 'object' && Object.keys(requirementResult).includes('error') && Object.keys(requirementResult).length === 1) {
             return false;
           }
         }
         return true;
       });
+
       /*
        * When a list of Security Requirement Objects is defined on the Open API
        * object or Operation Object, only one of Security Requirement Objects
        * in the list needs to be satisfied to authorize the request.
        */
-      const authorized = _.includes(requirementsSatisfied, true);
+      const authorized = requirementsSatisfied.some((securityResult) => securityResult === true)
 
       // add the results and authorized state to the context object
       context.security = {

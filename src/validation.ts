@@ -763,7 +763,7 @@ export class OpenAPIValidator<D extends Document = Document> {
           type: 'null',
           title: 'The root schema',
           description: 'The root schema comprises the entire JSON document.',
-          default: null,
+          default: null as null,
         };
         responseValidators[status] = OpenAPIValidator.compileSchema(validator, validateFn);
       }
