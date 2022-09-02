@@ -339,7 +339,11 @@ export class OpenAPIBackend<D extends Document = Document> {
           }
 
           // handle error object passed earlier
-          if (typeof requirementResult === 'object' && Object.keys(requirementResult).includes('error') && Object.keys(requirementResult).length === 1) {
+          if (
+            typeof requirementResult === 'object' &&
+            Object.keys(requirementResult).includes('error') &&
+            Object.keys(requirementResult).length === 1
+          ) {
             return false;
           }
         }
@@ -351,7 +355,7 @@ export class OpenAPIBackend<D extends Document = Document> {
        * object or Operation Object, only one of Security Requirement Objects
        * in the list needs to be satisfied to authorize the request.
        */
-      const authorized = requirementsSatisfied.some((securityResult) => securityResult === true)
+      const authorized = requirementsSatisfied.some((securityResult) => securityResult === true);
 
       // add the results and authorized state to the context object
       context.security = {
