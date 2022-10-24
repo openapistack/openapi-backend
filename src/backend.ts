@@ -40,6 +40,7 @@ export interface Context<D extends Document = Document> {
   validation: ValidationResult;
   security: SecurityHandlerResults;
   response: any;
+  thrownError?: Error;
 }
 
 export type Handler = (context: Context, ...args: any[]) => any | Promise<any>;
@@ -75,6 +76,7 @@ export interface Options<D extends Document = Document> {
     notFound?: Handler;
     notImplemented?: Handler;
     validationFail?: Handler;
+    errorHandler?: Handler;
     [handler: string]: Handler | undefined;
   };
   securityHandlers?: {};
@@ -114,6 +116,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     'validationFail',
     'unauthorizedHandler',
     'postResponseHandler',
+    'errorHandler'
   ];
 
   public securityHandlers: { [name: string]: Handler };
@@ -403,7 +406,13 @@ export class OpenAPIBackend<D extends Document = Document> {
 
       // handle route
       return routeHandler(context as Context<D>, ...handlerArgs);
-    }).bind(this)();
+    }).bind(this)().catch((error: Error) => {
+      if (this.handlers['errorHandler']) {
+        context.thrownError = error
+        return this.handlers['errorHandler'](context as Context<D>, ...handlerArgs);
+      }
+      throw error
+    });
 
     // post response handler
     const postResponseHandler: Handler = this.handlers['postResponseHandler'];

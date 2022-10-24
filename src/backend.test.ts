@@ -281,6 +281,33 @@ describe('OpenAPIBackend', () => {
         expect(dummyHandler).toBeCalledTimes(1);
         expect(res).toBe('dummyResponse');
       });
+
+      test('handles GET /pets request when an error is thrown with error handler', async () => {
+        const api = new OpenAPIBackend({ definition });
+        const expectedError = new Error('dummyError');
+        const context: Partial<Context> = {};
+
+        const dummyHandler = jest.fn(() => { throw expectedError });
+        const dummyErrorHandler = jest.fn((c) => {
+          context.thrownError = c.thrownError;
+          return 'dummyResponse';
+        });
+        api.register('getPets', dummyHandler);
+        api.register('errorHandler', dummyErrorHandler);
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+
+        const res = await api.handleRequest(request);
+        expect(dummyHandler).toBeCalledTimes(1);
+        expect(dummyErrorHandler).toBeCalledTimes(1);
+        expect(context.thrownError).toEqual(expectedError);
+        expect(res).toBe('dummyResponse');
+      });
     });
 
     describe('auth', () => {
