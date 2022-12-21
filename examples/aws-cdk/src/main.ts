@@ -1,11 +1,11 @@
-import { App, CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-import * as apigwv2 from "@aws-cdk/aws-apigatewayv2-alpha";
-import { CorsHttpMethod, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
-import { resolve } from "path";
-import { Architecture, Runtime } from "aws-cdk-lib/aws-lambda";
-import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
+import { App, CfnOutput, Duration, Stack, StackProps } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as apigwv2 from '@aws-cdk/aws-apigatewayv2-alpha';
+import { CorsHttpMethod, HttpMethod } from '@aws-cdk/aws-apigatewayv2-alpha';
+import { resolve } from 'path';
+import { Architecture, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
 
 const MAXIMUM_HTTP_API_INTEGRATION_TIMEOUT = Duration.seconds(29);
 
@@ -13,9 +13,9 @@ export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    const entrypointLambda = new NodejsFunction(this, "EntrypointLambda", {
-      entry: resolve(__dirname, "./lambdas/api-entrypoint.lambda.ts"),
-      description: "OpenAPI Backend Entrypoint Lambda",
+    const entrypointLambda = new NodejsFunction(this, 'EntrypointLambda', {
+      entry: resolve(__dirname, './lambdas/api-entrypoint.lambda.ts'),
+      description: 'OpenAPI Backend Entrypoint Lambda',
       // NodeJS LTS with AWS SDK v3
       runtime: Runtime.NODEJS_18_X,
       // Cost-effective Processor Architecture
@@ -36,16 +36,16 @@ export class MyStack extends Stack {
           ],
         },
         // Add bundled AWS SDK V3 and CDK dependencies to the externals
-        externalModules: ["@aws-sdk/*", "@aws-cdk/*"],
+        externalModules: ['@aws-sdk/*', '@aws-cdk/*'],
       },
     });
 
-    const httpApi = new apigwv2.HttpApi(this, "HttpApi", {
-      description: "OpenAPI Backend Http Api",
+    const httpApi = new apigwv2.HttpApi(this, 'HttpApi', {
+      description: 'OpenAPI Backend Http Api',
       corsPreflight: {
-        allowHeaders: ["content-type"],
+        allowHeaders: ['content-type'],
         allowMethods: [CorsHttpMethod.ANY],
-        allowOrigins: ["*"],
+        allowOrigins: ['*'],
       },
     });
 
@@ -53,26 +53,28 @@ export class MyStack extends Stack {
     // this way; `OPTIONS` requests will be handled by `HttpApi` instead of invoking your Lambda
     // You can opt in to use `defaultIntegration` and change `notFound` to return `204` for `OPTIONS` requests
     httpApi.addRoutes({
-      path: "/{proxy+}",
+      path: '/{proxy+}',
       // ALL methods expect OPTIONS / ANY should be handled by our Lambda
       methods: Object.values(HttpMethod).filter(
         (method) => method !== HttpMethod.OPTIONS && method !== HttpMethod.ANY
       ),
       integration: new HttpLambdaIntegration(
-        "OpenAPIBackendIntegration",
+        'OpenAPIBackendIntegration',
         entrypointLambda
       ),
     });
 
-    new CfnOutput(this, "OpenAPIBackendHttpApiEndpoint", {
+    /* tslint:disable-next-line no-unused-expression */
+    new CfnOutput(this, 'OpenAPIBackendHttpApiEndpoint', {
       value: httpApi.apiEndpoint,
-      description: "OpenAPI Backend Example HttpApi Endpoint",
+      description: 'OpenAPI Backend Example HttpApi Endpoint',
     });
   }
 }
 
 const app = new App();
 
-new MyStack(app, "openapi-backend-example");
+/* tslint:disable-next-line no-unused-expression */
+new MyStack(app, 'openapi-backend-example');
 
 app.synth();

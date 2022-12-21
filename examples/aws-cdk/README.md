@@ -1,4 +1,5 @@
 # OpenAPI Backend AWS CDK Example
+
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://anttiviljami.mit-license.org)
 
 Example project using [openapi-backend](https://github.com/anttiviljami/openapi-backend) with [AWS CDK](https://aws.amazon.com/cdk/)
@@ -6,13 +7,16 @@ Example project using [openapi-backend](https://github.com/anttiviljami/openapi-
 ## QuickStart
 
 ### Requirements
+
 - NodeJS and NPM
 - AWS and AWS CDK
 
 #### AWS Authentication
+
 Make sure to set up your AWS authentication correctly. This example assume you are using AWS SSO profiles, make sure you are authenticated with the correct profile. E.g. `aws sso login --profile your-profile`
 
 #### CDK Bootstrap
+
 To use this example, you need to make sure CDK is bootstrapped for your AWS account and region.
 
 ```bash

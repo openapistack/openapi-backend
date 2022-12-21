@@ -1,52 +1,36 @@
-import "source-map-support/register";
-import type * as Lambda from "aws-lambda";
-import OpenAPIBackend from "openapi-backend";
+import 'source-map-support/register';
+import type * as Lambda from 'aws-lambda';
+import OpenAPIBackend from 'openapi-backend';
 
 const DEFAULT_HEADERS = {
-  "content-type": "application/json",
+  'content-type': 'application/json',
 };
 
 const openAPIBackend = new OpenAPIBackend({
   // spec file is put to the `process.cwd()/openapi.yml` by AWS CDK configuration
-  definition: "./openapi.yml",
+  definition: './openapi.yml',
   // recommended for optimizing cold start
   quick: true,
 });
 
 // register some handlers
 openAPIBackend.register({
-  notFound: async (
-    _c,
-    _event: Lambda.APIGatewayProxyEvent,
-    _context: Lambda.Context
-  ) => ({
+  notFound: async (_c, _event: Lambda.APIGatewayProxyEvent, _context: Lambda.Context) => ({
     statusCode: 404,
-    body: JSON.stringify({ err: "not found" }),
+    body: JSON.stringify({ err: 'not found' }),
     headers: DEFAULT_HEADERS,
   }),
-  validationFail: async (
-    c,
-    _event: Lambda.APIGatewayProxyEvent,
-    _context: Lambda.Context
-  ) => ({
+  validationFail: async (c, _event: Lambda.APIGatewayProxyEvent, _context: Lambda.Context) => ({
     statusCode: 400,
     body: JSON.stringify({ err: c.validation.errors }),
     headers: DEFAULT_HEADERS,
   }),
-  getPets: async (
-    c,
-    _event: Lambda.APIGatewayProxyEvent,
-    _context: Lambda.Context
-  ) => ({
+  getPets: async (c, _event: Lambda.APIGatewayProxyEvent, _context: Lambda.Context) => ({
     statusCode: 200,
     body: JSON.stringify({ operationId: c.operation.operationId }),
     headers: DEFAULT_HEADERS,
   }),
-  getPetById: async (
-    c,
-    _event: Lambda.APIGatewayProxyEvent,
-    _context: Lambda.Context
-  ) => ({
+  getPetById: async (c, _event: Lambda.APIGatewayProxyEvent, _context: Lambda.Context) => ({
     statusCode: 200,
     body: JSON.stringify({
       operationId: c.operation.operationId,
