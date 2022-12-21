@@ -1,63 +1,78 @@
-import { resolve } from 'path';
-import { App, Stack, StackProps } from 'aws-cdk-lib';
-import { ApiDefinition, SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
-import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { Runtime } from 'aws-cdk-lib/aws-lambda';
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { Construct } from 'constructs';
+import { App, CfnOutput, Duration, Stack, StackProps } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import * as apigwv2 from "@aws-cdk/aws-apigatewayv2-alpha";
+import { CorsHttpMethod, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
+import { resolve } from "path";
+import { Architecture, Runtime } from "aws-cdk-lib/aws-lambda";
+import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 
-import petStoreSpecJSON from './openapi.json';
-
-const petStoreSpec = petStoreSpecJSON as any;
+const MAXIMUM_HTTP_API_INTEGRATION_TIMEOUT = Duration.seconds(29);
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    const baseFunc = new NodejsFunction(this, 'baseFunc', {
-      runtime: Runtime.NODEJS_16_X,
-      handler: 'handler',
-      entry: resolve(__dirname, './lambdas/entrypoint.ts'),
-    });
-
-    Object.keys(petStoreSpec.paths).forEach(path => Object.keys(petStoreSpec.paths[path]).forEach(method => {
-      const operation = petStoreSpec.paths[path][method];
-
-      operation['x-amazon-apigateway-integration'] = {
-        uri: `arn:${this.partition}:apigateway:${this.region}:lambda:path/2015-03-31/functions/${baseFunc.functionArn}/invocations`,
-        responses: {
-          default: {
-            statusCode: '200',
-          },
+    const entrypointLambda = new NodejsFunction(this, "EntrypointLambda", {
+      entry: resolve(__dirname, "./lambdas/api-entrypoint.lambda.ts"),
+      description: "OpenAPI Backend Entrypoint Lambda",
+      // NodeJS LTS with AWS SDK v3
+      runtime: Runtime.NODEJS_18_X,
+      // Cost-effective Processor Architecture
+      architecture: Architecture.ARM_64,
+      // Maximum time a given endpoint Lambda invoke can take
+      timeout: MAXIMUM_HTTP_API_INTEGRATION_TIMEOUT,
+      // Lambda code bundling options
+      bundling: {
+        // Enable Source Map for better error logs
+        sourceMap: true,
+        // Hook into Commands for adding the OpenAPI Specification to Output
+        commandHooks: {
+          beforeBundling: () => [],
+          beforeInstall: () => [],
+          // Add the OpenAPI specification to the Lambda bundle
+          afterBundling: (inputDir: string, outputDir: string) => [
+            `cp "${inputDir}/openapi.yml" "${outputDir}/openapi.yml"`,
+          ],
         },
-        passthroughBehavior: 'when_no_match',
-        httpMethod: 'POST',
-        contentHandling: 'CONVERT_TO_TEXT',
-        type: 'aws_proxy',
-      };
-    }));
-
-    const specRestApi = new SpecRestApi(this, 'oapiSpecRestApi', {
-      restApiName: 'Open API Spec Rest API',
-      apiDefinition: ApiDefinition.fromInline(petStoreSpec),
+        // Add bundled AWS SDK V3 and CDK dependencies to the externals
+        externalModules: ["@aws-sdk/*", "@aws-cdk/*"],
+      },
     });
 
-    baseFunc.addPermission('PermitAPIGWInvocation', {
-      principal: new ServicePrincipal('apigateway.amazonaws.com'),
-      sourceArn: specRestApi.arnForExecuteApi('*'),
+    const httpApi = new apigwv2.HttpApi(this, "HttpApi", {
+      description: "OpenAPI Backend Http Api",
+      corsPreflight: {
+        allowHeaders: ["content-type"],
+        allowMethods: [CorsHttpMethod.ANY],
+        allowOrigins: ["*"],
+      },
+    });
+
+    // let's create a separate proxy integration instead of using `$default` integration of `HttpApi`
+    // this way; `OPTIONS` requests will be handled by `HttpApi` instead of invoking your Lambda
+    // You can opt in to use `defaultIntegration` and change `notFound` to return `204` for `OPTIONS` requests
+    httpApi.addRoutes({
+      path: "/{proxy+}",
+      // ALL methods expect OPTIONS / ANY should be handled by our Lambda
+      methods: Object.values(HttpMethod).filter(
+        (method) => method !== HttpMethod.OPTIONS && method !== HttpMethod.ANY
+      ),
+      integration: new HttpLambdaIntegration(
+        "OpenAPIBackendIntegration",
+        entrypointLambda
+      ),
+    });
+
+    new CfnOutput(this, "OpenAPIBackendHttpApiEndpoint", {
+      value: httpApi.apiEndpoint,
+      description: "OpenAPI Backend Example HttpApi Endpoint",
     });
   }
 }
 
-// for development, use account/region from cdk cli
-const devEnv = {
-  account: process.env.CDK_DEFAULT_ACCOUNT,
-  region: process.env.CDK_DEFAULT_REGION,
-};
-
 const app = new App();
 
-new MyStack(app, 'openapi-backend-aws-cdk-dev', { env: devEnv });
-// new MyStack(app, 'openapi-backend-aws-cdk-prod', { env: prodEnv });
+new MyStack(app, "openapi-backend-example");
 
 app.synth();
