@@ -59,11 +59,9 @@ export async function handler(
     {
       method: event.requestContext.http.method,
       path: event.requestContext.http.path,
-      // @ts-ignore
-      query: event.queryStringParameters,
+      query: event.queryStringParameters as Record<string, string | string[]>,
       body: event.body,
-      // @ts-ignore
-      headers: event.headers,
+      headers: event.headers as Record<string, string | string[]>,
     },
     event,
     context

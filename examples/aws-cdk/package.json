@@ -1,5 +1,5 @@
 {
-  "license": "Apache-2.0",
+  "license": "MIT",
   "name": "openapi-backend-example",
   "description": "OpenAPI Backend Example running on AWS",
   "version": "0.0.1",
