@@ -16,8 +16,9 @@ export class MyStack extends Stack {
     const entrypointLambda = new NodejsFunction(this, 'EntrypointLambda', {
       entry: resolve(__dirname, './lambdas/api-entrypoint.lambda.ts'),
       description: 'OpenAPI Backend Entrypoint Lambda',
-      // NodeJS LTS with AWS SDK v3
-      runtime: Runtime.NODEJS_18_X,
+      // Latest NodeJS version that AWS SAM supports at the moment
+      // Use NodeJS 18.X with V3 SDK if you don't need SAM or SAM starts supporting it
+      runtime: Runtime.NODEJS_16_X,
       // Cost-effective Processor Architecture
       architecture: Architecture.ARM_64,
       // Maximum time a given endpoint Lambda invoke can take
@@ -35,8 +36,8 @@ export class MyStack extends Stack {
             `cp "${inputDir}/openapi.yml" "${outputDir}/openapi.yml"`,
           ],
         },
-        // Add bundled AWS SDK V3 and CDK dependencies to the externals
-        externalModules: ['@aws-sdk/*', '@aws-cdk/*'],
+        // Add AWS SDK and CDK dependencies to the externals, just in case
+        externalModules: ['aws-sdk', 'aws-cdk', 'aws-cdk-lib', '@aws-cdk/*'],
       },
     });
 

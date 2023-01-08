@@ -10,6 +10,7 @@ Example project using [openapi-backend](https://github.com/anttiviljami/openapi-
 
 - NodeJS and NPM
 - AWS and AWS CDK
+- (optional) [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html#serverless-sam-cli) and [Docker](https://docs.docker.com/get-docker/) for local `npm start` and `npm test`
 
 #### AWS Authentication
 
