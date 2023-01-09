@@ -23,6 +23,7 @@ jobs:
           - examples/koa
           - examples/serverless-framework
           - examples/aws-sam
+          - examples/aws-cdk
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -32,7 +33,7 @@ jobs:
         with:
           python-version: '3.x'
       - run: pip install aws-sam-cli
-        if: matrix.project_dir == 'examples/aws-sam'
+        if: matrix.project_dir == 'examples/aws-sam' || matrix.project_dir == 'examples/aws-cdk'
       - run: npm ci
         working-directory: ${{ matrix.project_dir }}
       - run: npm link ../../
