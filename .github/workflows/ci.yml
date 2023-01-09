@@ -31,8 +31,8 @@ jobs:
           node-version: '16'
       - uses: actions/setup-python@v3
         with:
-          python-version: '3.x'
-      - run: pip install aws-sam-cli
+          python-version: '3.8'
+      - uses: aws-actions/setup-sam@v2
         if: matrix.project_dir == 'examples/aws-sam' || matrix.project_dir == 'examples/aws-cdk'
       - run: npm ci && npm run build
       - run: npm ci
