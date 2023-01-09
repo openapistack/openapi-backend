@@ -3,8 +3,6 @@
 [![CI](https://github.com/anttiviljami/openapi-backend/workflows/CI/badge.svg)](https://github.com/anttiviljami/openapi-backend/actions?query=workflow%3ACI)
 [![npm version](https://img.shields.io/npm/v/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
 [![npm downloads](https://img.shields.io/npm/dw/openapi-backend)](https://www.npmjs.com/package/openapi-backend)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/anttiviljami/openapi-backend.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/anttiviljami/openapi-backend/alerts/)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/anttiviljami/openapi-backend.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/anttiviljami/openapi-backend/context:javascript)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/anttiviljami/openapi-backend/blob/master/LICENSE)
 [![Buy me a coffee](https://img.shields.io/badge/donate-buy%20me%20a%20coffee-orange)](https://buymeacoff.ee/anttiviljami)
 [![Stake to support us](https://badge.devprotocol.xyz/0x5754027BF16BeEf077b1266699E45754b9a47b4D/descriptive)](https://stakes.social/0x5754027BF16BeEf077b1266699E45754b9a47b4D)
