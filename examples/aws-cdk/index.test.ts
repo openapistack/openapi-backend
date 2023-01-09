@@ -4,7 +4,7 @@ import waitOn from 'wait-on';
 
 jest.setTimeout(90000);
 
-describe('aws sam example', () => {
+describe('aws cdk example', () => {
   let start: ChildProcess;
   let client: AxiosInstance;
 
