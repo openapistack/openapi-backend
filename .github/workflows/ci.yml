@@ -34,6 +34,7 @@ jobs:
           python-version: '3.x'
       - run: pip install aws-sam-cli
         if: matrix.project_dir == 'examples/aws-sam' || matrix.project_dir == 'examples/aws-cdk'
+      - run: npm ci && npm run build
       - run: npm ci
         working-directory: ${{ matrix.project_dir }}
       - run: npm link ../../
