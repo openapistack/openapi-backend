@@ -5,7 +5,6 @@
 [![npm downloads](https://img.shields.io/npm/dw/openapi-backend)](https://www.npmjs.com/package/openapi-backend)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/anttiviljami/openapi-backend/blob/master/LICENSE)
 [![Buy me a coffee](https://img.shields.io/badge/donate-buy%20me%20a%20coffee-orange)](https://buymeacoff.ee/anttiviljami)
-[![Stake to support us](https://badge.devprotocol.xyz/0x5754027BF16BeEf077b1266699E45754b9a47b4D/descriptive)](https://stakes.social/0x5754027BF16BeEf077b1266699E45754b9a47b4D)
 
 <p align="center"><b>Build, Validate, Route, Authenticate, and Mock using OpenAPI definitions.</b></p>
 
