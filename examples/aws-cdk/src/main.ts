@@ -20,6 +20,7 @@ export class MyStack extends Stack {
       runtime: Runtime.NODEJS_16_X,
       // Cost-effective Processor Architecture
       // architecture: Architecture.ARM_64,
+      architecture: Architecture.X86_64,
       // Maximum time a given endpoint Lambda invoke can take
       timeout: MAXIMUM_HTTP_API_INTEGRATION_TIMEOUT,
       // Lambda code bundling options
