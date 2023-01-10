@@ -17,10 +17,9 @@ export class MyStack extends Stack {
       entry: resolve(__dirname, './lambdas/api-entrypoint.lambda.ts'),
       description: 'OpenAPI Backend Entrypoint Lambda',
       // NodeJS LTS with AWS SDK v3
-      // runtime: Runtime.NODEJS_18_X,
-      runtime: Runtime.NODEJS_16_X,
+      runtime: Runtime.NODEJS_18_X,
       // Cost-effective Processor Architecture
-      architecture: Architecture.ARM_64,
+      // architecture: Architecture.ARM_64,
       // Maximum time a given endpoint Lambda invoke can take
       timeout: MAXIMUM_HTTP_API_INTEGRATION_TIMEOUT,
       // Lambda code bundling options
