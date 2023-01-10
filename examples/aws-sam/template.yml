@@ -7,7 +7,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: dist/index.handler
-      Runtime: nodejs18.x
+      Runtime: nodejs16.x
       # Architectures: 
       #  - arm64
       MemorySize: 128
