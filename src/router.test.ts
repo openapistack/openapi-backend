@@ -1,10 +1,10 @@
 import { OpenAPIRouter, Operation } from './router';
 import { OpenAPIBackend, Context } from './backend';
-import { OpenAPIV3_1 } from 'openapi-types';
+import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 
 const headers = { accept: 'application/json' };
 
-const responses: OpenAPIV3_1.ResponsesObject = {
+const responses: OpenAPIV3.ResponsesObject & OpenAPIV3_1.ResponsesObject = {
   200: { description: 'ok' },
 };
 
