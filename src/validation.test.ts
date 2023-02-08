@@ -470,6 +470,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
           age: {
             type: ['integer', 'null'],
           },
+          unknownValue: {}, // this property should accept `any` value, including null
         },
         required: ['name'],
       };
@@ -624,6 +625,25 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
         });
         expect(valid.errors).toBeFalsy();
       });
+
+      test.each([
+        ['something'], // string
+        [123], // number
+        [{ hello: 'world' }], // object
+        [['1', '2']], // array
+        [null], // null
+      ])('allows %s, when schema is an empty object', (unknownValue: unknown) => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'put',
+          headers,
+          body: {
+            name: 'Garfield',
+            unknownValue,
+          }
+        });
+        expect(valid.errors).toBeFalsy();
+      })
     });
   });
 
