@@ -320,6 +320,15 @@ export class OpenAPIRouter<D extends Document = Document> {
               // use comma parsing e.g. &a=1,2,3
               const commaParsed = parseQuery(commaQueryString, { comma: true });
               query[queryParam] = commaParsed[queryParam];
+            } else if(parameter.explode === false) {
+              let decoded = query[queryParam].replace(/\%2C/g, ',');
+              if (parameter.style === 'spaceDelimited') {
+                decoded = decoded.replace(/\ /g, ',').replace(/\%20/g, ',');
+              }
+              if (parameter.style === 'pipeDelimited') {
+                decoded = decoded.replace(/\|/g, ',').replace(/\%7C/g, ',');
+              }
+              query[queryParam] = decoded.split(',');
             }
           }
         }
