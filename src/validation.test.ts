@@ -363,10 +363,10 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                       type: 'object',
                       // Sets additionalProperties to the schema of the desired free-form query parameters.
                       additionalProperties: {
-                        type: 'integer'
+                        type: 'integer',
                       },
                     },
-                    style: 'form'
+                    style: 'form',
                   },
                   {
                     name: 'freeFormNumber',
@@ -375,10 +375,10 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                       type: 'object',
                       // Sets additionalProperties to the schema of the desired free-form query parameters.
                       additionalProperties: {
-                        type: 'number'
+                        type: 'number',
                       },
                     },
-                    style: 'form'
+                    style: 'form',
                   },
                 ],
               },
@@ -401,7 +401,6 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
         expect(valid.errors).toHaveLength(1);
       });
     });
-
 
     describe('headers', () => {
       const validator = new OpenAPIValidator({
@@ -640,10 +639,10 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
           body: {
             name: 'Garfield',
             unknownValue,
-          }
+          },
         });
         expect(valid.errors).toBeFalsy();
-      })
+      });
     });
   });
 
@@ -921,7 +920,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
         204,
       );
       expect(valid.errors).toBeFalsy();
-    })
+    });
   });
 
   describe('.validateResponseHeaders', () => {

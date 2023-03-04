@@ -323,7 +323,7 @@ describe('OpenAPIBackend', () => {
           expect(context.security).toHaveProperty('basicAuth');
           expect(context.security?.basicAuth).toBe('dummyHandlerResult');
         });
-      })
+      });
 
       describe('with async security handler', () => {
         test('adds security handler results to the context object', async () => {
@@ -346,7 +346,7 @@ describe('OpenAPIBackend', () => {
           expect(context.security).toHaveProperty('basicAuth');
           expect(context.security?.basicAuth).toBe('dummyHandlerResult');
         });
-      })
+      });
 
       test('sets security handler results to undefined if no handler is registered', async () => {
         const api = new OpenAPIBackend({ definition });
@@ -429,8 +429,8 @@ describe('OpenAPIBackend', () => {
       test('does not call operation handler if requirements are not met and unauthorizedHandler is defined', async () => {
         const api = new OpenAPIBackend({ definition });
         const context: Partial<Context> = {};
-        const mockHandler = jest.fn()
-        api.register('getPets', mockHandler)
+        const mockHandler = jest.fn();
+        api.register('getPets', mockHandler);
         api.register('unauthorizedHandler', () => null);
         api.registerSecurityHandler('basicAuth', async () => false); // falsy values are interpreted as failed auth
 
@@ -449,8 +449,8 @@ describe('OpenAPIBackend', () => {
       test('calls operation handler if requirements are met and unauthorizedHandler is defined', async () => {
         const api = new OpenAPIBackend({ definition });
         const context: Partial<Context> = {};
-        const mockHandler = jest.fn()
-        api.register('getPets', mockHandler)
+        const mockHandler = jest.fn();
+        api.register('getPets', mockHandler);
         api.register('unauthorizedHandler', () => null);
         api.registerSecurityHandler('basicAuth', async () => Promise.resolve(true)); // truthy values are interpreted as succeeded auth
 
@@ -465,7 +465,6 @@ describe('OpenAPIBackend', () => {
 
         expect(mockHandler).toBeCalled();
       });
-
     });
   });
 

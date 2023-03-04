@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 import type { Options as AjvOpts } from 'ajv';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
 import { parse as parseJSONSchema, dereference } from './refparser';
+import { dereferenceSync } from 'dereference-json-schema'
 
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import { mock, SchemaLike } from 'mock-json-schema';
@@ -191,6 +192,9 @@ export class OpenAPIBackend<D extends Document = Document> {
       // dereference the document into definition (make sure not to copy)
       if (typeof this.inputDocument === 'string') {
         this.definition = (await dereference(this.inputDocument)) as D;
+      } else if (this.quick && typeof this.inputDocument === 'object') {
+        // use sync dereference in quick mode
+        this.definition = dereferenceSync(this.inputDocument) as D
       } else {
         this.definition = (await dereference(this.document || this.inputDocument)) as D;
       }
