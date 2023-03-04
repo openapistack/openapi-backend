@@ -27,7 +27,7 @@ or [JSON Schema definitions](https://github.com/OAI/OpenAPI-Specification/blob/m
 
 ## Documentation
 
-**New!** OpenAPI-backend documentation is now found on [openapistack.co](https://openapistack.co)
+**New!** OpenAPI Backend documentation is now found on [openapistack.co](https://openapistack.co)
 
 https://openapistack.co/docs/openapi-backend/intro
 
