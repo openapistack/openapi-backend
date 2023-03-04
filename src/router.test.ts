@@ -598,7 +598,7 @@ describe('OpenAPIBackend', () => {
 
     test('handles GET / and passes response to postResponseHandler', async () => {
       const postResponseHandler = jest.fn((c: Context) => c && c.response);
-      await api.register({ postResponseHandler });
+      api.register({ postResponseHandler });
 
       const res = await api.handleRequest({ method: 'GET', path: '/', headers });
       expect(dummyHandlers['apiRoot']).toBeCalled();
@@ -612,7 +612,7 @@ describe('OpenAPIBackend', () => {
 
     test('handles GET /pets and passes response to postResponseHandler', async () => {
       const postResponseHandler = jest.fn((c: Context) => c && c.response);
-      await api.register({ postResponseHandler });
+      api.register({ postResponseHandler });
 
       const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });
       expect(dummyHandlers['getPets']).toBeCalled();
@@ -626,7 +626,7 @@ describe('OpenAPIBackend', () => {
 
     test('handles GET /pets and allows postResponseHandler to intercept response', async () => {
       const postResponseHandler = jest.fn((ctx) => ({ you: 'have been intercepted' }));
-      await api.register({ postResponseHandler });
+      api.register({ postResponseHandler });
 
       const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });
       expect(dummyHandlers['getPets']).toBeCalled();
