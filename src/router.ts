@@ -44,17 +44,25 @@ export interface Request {
   body?: any;
 }
 
-export interface ParsedRequest extends Request {
-  params: {
-    [key: string]: string | string[];
-  };
-  cookies: {
-    [key: string]: string | string[];
-  };
-  query: {
-    [key: string]: string | string[];
-  };
-  requestBody: any;
+export type UnknownParams = {
+  [key: string]: string | string[];
+};
+
+export interface ParsedRequest<
+  RequestBody = any,
+  Params = UnknownParams,
+  Query = UnknownParams,
+  Headers = UnknownParams,
+  Cookies = UnknownParams
+> {
+  method: string;
+  path: string;
+  requestBody: RequestBody;
+  params: Params;
+  query: Query;
+  headers: Headers;
+  cookies: Cookies;
+  body?: any;
 }
 
 /**

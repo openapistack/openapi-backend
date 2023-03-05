@@ -7,7 +7,7 @@ import { dereferenceSync } from 'dereference-json-schema'
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import { mock, SchemaLike } from 'mock-json-schema';
 
-import { OpenAPIRouter, Request, ParsedRequest, Operation } from './router';
+import { OpenAPIRouter, Request, ParsedRequest, Operation, UnknownParams } from './router';
 import { OpenAPIValidator, ValidationResult, AjvCustomizer } from './validation';
 import OpenAPIUtils from './utils';
 
@@ -30,20 +30,35 @@ export interface SecurityContext extends SecurityHandlerResults {
 
 /**
  * Passed context built for request. Passed as first argument for all handlers.
- *
- * @export
- * @interface Context
  */
-export interface Context<D extends Document = Document> {
+export interface Context<
+  RequestBody = any,
+  Params = UnknownParams,
+  Query = UnknownParams,
+  Headers = UnknownParams,
+  Cookies = UnknownParams,
+  D extends Document = Document,
+> {
   api: OpenAPIBackend<D>;
-  request: ParsedRequest;
+  request: ParsedRequest<RequestBody, Params, Query, Headers, Cookies>;
   operation: Operation<D>;
   validation: ValidationResult;
   security: SecurityHandlerResults;
   response: any;
 }
 
-export type Handler = (context: Context, ...args: any[]) => any | Promise<any>;
+/**
+ * A handler for an operation with request Context and passed arguments from handleRequest
+ */
+export type Handler<
+  RequestBody = any,
+  Params = UnknownParams,
+  Query = UnknownParams,
+  Headers = UnknownParams,
+  Cookies = UnknownParams,
+  D extends Document = Document,
+> = (context: Context<RequestBody, Params, Query, Headers, Cookies, D>, ...args: any[]) => any | Promise<any>;
+
 export type BoolPredicate = (context: Context, ...args: any[]) => boolean;
 
 /**
@@ -273,7 +288,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     }
 
     // initalize context object with a reference to this OpenAPIBackend instance
-    const context: Partial<Context<D>> = { api: this };
+    const context: Partial<Context<any,any,any,any,any,D>> = { api: this };
 
     // handle request with correct handler
     const response: any = await (async () => {
