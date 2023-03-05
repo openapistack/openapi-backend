@@ -37,7 +37,7 @@ export class MyStack extends Stack {
           ],
         },
         // Add bundled AWS SDK V3 and CDK dependencies to the externals
-        externalModules: ['@aws-sdk/*', '@aws-cdk/*', 'aws-cdk', 'aws-cdk-lib'],
+        externalModules: ['@aws-sdk/*', '@aws-cdk/*', 'aws-cdk', 'aws-cdk-lib', 'node-fetch'],
       },
     });
 
