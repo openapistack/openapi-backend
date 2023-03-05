@@ -19,7 +19,7 @@
     "lambda",
     "azure"
   ],
-  "homepage": "https://github.com/anttiviljami/openapi-backend",
+  "homepage": "https://openapistack.co",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anttiviljami/openapi-backend.git"
