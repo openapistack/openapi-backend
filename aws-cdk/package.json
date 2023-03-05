@@ -8,7 +8,7 @@
     "destroy": "npx cdk destroy",
     "start": "npx cdk synth && sam local start-api -t ./cdk.out/openapi-backend-example.template.json",
     "lint": "tslint --format prose --project .",
-    "test": "jest -i"
+    "test": "jest -i --forceExit"
   },
   "dependencies": {
     "@aws-cdk/aws-apigatewayv2-alpha": "^2.55.1-alpha.0",
