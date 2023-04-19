@@ -1,5 +1,5 @@
 {
-  "name": "openapi-backend-express",
+  "name": "openapi-backend-fastify",
   "version": "1.0.0",
   "description": "",
   "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
