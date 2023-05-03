@@ -1,0 +1,21 @@
+{
+  "name": "openapi-backend-fastify",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
+  "license": "MIT",
+  "keywords": [],
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "fastify": "^4.15.0",
+    "openapi-backend": "^5.2.0"
+  },
+  "devDependencies": {
+    "axios": "^0.21.1",
+    "jest": "^29.3.1",
+    "wait-on": "^3.2.0"
+  }
+}
