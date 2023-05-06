@@ -115,6 +115,32 @@ module.exports = (context, req) =>
 
 [See full Azure Function example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/azure-function)
 
+### Fastify
+
+```ts
+import fastify from 'fastify';
+
+fastify.route({
+  method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  url: '/*',
+  handler: async (request, reply) =>
+    api.handleRequest(
+      {
+        method: request.method,
+        path: request.url,
+        body: request.body,
+        query: request.query,
+        headers: request.headers,
+      },
+      request,
+      reply,
+    ),
+});
+fastify.listen();
+```
+
+[See full Fastify example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/fastify)
+
 ### Hapi
 
 ```javascript
