@@ -19,6 +19,7 @@ jobs:
           - examples/express-jwt-auth
           - examples/express-ts-mock
           - examples/express-typescript
+          - examples/fastify
           - examples/hapi-typescript
           - examples/koa
           - examples/serverless-framework
