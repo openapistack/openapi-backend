@@ -402,6 +402,52 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
       });
     });
 
+    describe('query params with exploded objects', () => {
+      const validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPetById',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  {
+                    name: 'query-parameter',
+                    in: 'query',
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        breed: {
+                          type: 'string'
+                        },
+                        age: {
+                          type: 'integer'
+                        }
+                      },
+                      additionalProperties: false,
+                    },
+                    explode: true,
+                    style: 'form',
+                  },
+                ],
+              },
+            },
+          },
+        },
+        ...constructorOpts,
+      });
+
+      test('passes validation for properties of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?age=4&breed=pug', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test(`fails validation for additional properties`, async () => {
+        const valid = validator.validateRequest({ path: '/pets?query-parameter=something', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+    });
+
     describe('headers', () => {
       const validator = new OpenAPIValidator({
         definition: {

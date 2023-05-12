@@ -636,7 +636,16 @@ export class OpenAPIValidator<D extends Document = Document> {
           target.additionalProperties = paramSchema.additionalProperties;
         }
 
-        if (param.content && param.content['application/json']) {
+        // exploded form
+        if (param.explode && param.style === 'form') {
+          Object.keys(paramSchema.properties).forEach(property => {
+            target.properties[property] = paramSchema.properties[property] as PickVersionElement<
+              D,
+              OpenAPIV3.SchemaObject,
+              OpenAPIV3_1.SchemaObject
+              >;
+          })
+        } else if (param.content && param.content['application/json']) {
           target.properties[normalizedParamName] = param.content['application/json'].schema as PickVersionElement<
             D,
             OpenAPIV3.SchemaObject,
