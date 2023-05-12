@@ -421,7 +421,7 @@ export class OpenAPIBackend<D extends Document = Document> {
       }
 
       // handle route
-      return routeHandler(context as Context<D>, ...handlerArgs);
+      return routeHandler(context as Context<D>, req, ...handlerArgs);
     }).bind(this)();
 
     // post response handler
