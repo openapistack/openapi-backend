@@ -62,7 +62,7 @@
     "@types/qs": "^6.9.1",
     "jest": "^27.0.4",
     "markdown-toc": "^1.2.0",
-    "prettier": "^2.0.4",
+    "prettier": "^3.0.0",
     "source-map-support": "^0.5.10",
     "ts-jest": "^27.0.2",
     "tslint": "^6.1.1",
