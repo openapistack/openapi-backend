@@ -1,0 +1,19 @@
+{
+  "name": "@openapi-backend-sst-sample/functions",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "sst bind vitest",
+    "typecheck": "tsc -noEmit"
+  },
+  "dependencies": {
+    "openapi-backend": "^5.10.0",
+    "@openapi-backend-sst-sample/core": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.2",
+    "@types/aws-lambda": "^8.10.123",
+    "vitest": "^0.34.6",
+    "sst": "^2.26.11"
+  }
+}

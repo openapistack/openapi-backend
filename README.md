@@ -94,6 +94,8 @@ module.exports.handler = (event, context) =>
 
 [See full AWS CDK example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/aws-cdk)
 
+[See full SST example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/aws-sst)
+
 [See full Serverless Framework example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/serverless-framework)
 
 ### Azure Function
