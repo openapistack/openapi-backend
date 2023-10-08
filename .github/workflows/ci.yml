@@ -1,10 +1,10 @@
 name: CI
 on:
   push:
-    branches: ['master']
-    tags: ['*']
+    branches: ["main"]
+    tags: ["*"]
   pull_request:
-    branches: ['master']
+    branches: ["main"]
 
 jobs:
   test:
@@ -29,10 +29,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: "16"
       - uses: actions/setup-python@v3
         with:
-          python-version: '3.8'
+          python-version: "3.8"
       - uses: aws-actions/setup-sam@v2
         if: matrix.project_dir == 'examples/aws-sam' || matrix.project_dir == 'examples/aws-cdk'
       - run: npm ci && npm run build
@@ -57,7 +57,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm publish || true

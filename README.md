@@ -1,9 +1,9 @@
 <h1 align="center"><img alt="openapi-backend" src="./header.png" style="max-width:50rem"></h1>
 
-[![CI](https://github.com/anttiviljami/openapi-backend/workflows/CI/badge.svg)](https://github.com/anttiviljami/openapi-backend/actions?query=workflow%3ACI)
+[![CI](https://github.com/openapistack/openapi-backend/workflows/CI/badge.svg)](https://github.com/openapistack/openapi-backend/actions?query=workflow%3ACI)
 [![npm version](https://img.shields.io/npm/v/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
 [![npm downloads](https://img.shields.io/npm/dw/openapi-backend)](https://www.npmjs.com/package/openapi-backend)
-[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/anttiviljami/openapi-backend/blob/master/LICENSE)
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/openapistack/openapi-backend/blob/master/LICENSE)
 [![Buy me a coffee](https://img.shields.io/badge/donate-buy%20me%20a%20coffee-orange)](https://buymeacoff.ee/anttiviljami)
 
 <p align="center"><b>Build, Validate, Route, Authenticate, and Mock using OpenAPI definitions.</b></p>
@@ -33,7 +33,7 @@ https://openapistack.co/docs/openapi-backend/intro
 
 ## Quick Start
 
-Full [example projects](https://github.com/anttiviljami/openapi-backend/tree/master/examples) included in the repo
+Full [example projects](https://github.com/openapistack/openapi-backend/tree/master/examples) included in the repo
 
 ```
 npm install --save openapi-backend
@@ -68,9 +68,9 @@ app.use((req, res) => api.handleRequest(req, req, res));
 app.listen(9000);
 ```
 
-[See full Express example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express)
+[See full Express example](https://github.com/openapistack/openapi-backend/tree/master/examples/express)
 
-[See full Express TypeScript example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-typescript)
+[See full Express TypeScript example](https://github.com/openapistack/openapi-backend/tree/master/examples/express-typescript)
 
 ### AWS Serverless (Lambda)
 
@@ -90,13 +90,13 @@ module.exports.handler = (event, context) =>
   );
 ```
 
-[See full AWS SAM example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/aws-sam)
+[See full AWS SAM example](https://github.com/openapistack/openapi-backend/tree/master/examples/aws-sam)
 
-[See full AWS CDK example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/aws-cdk)
+[See full AWS CDK example](https://github.com/openapistack/openapi-backend/tree/master/examples/aws-cdk)
 
-[See full SST example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/aws-sst)
+[See full SST example](https://github.com/openapistack/openapi-backend/tree/master/examples/aws-sst)
 
-[See full Serverless Framework example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/serverless-framework)
+[See full Serverless Framework example](https://github.com/openapistack/openapi-backend/tree/master/examples/serverless-framework)
 
 ### Azure Function
 
@@ -115,7 +115,7 @@ module.exports = (context, req) =>
   );
 ```
 
-[See full Azure Function example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/azure-function)
+[See full Azure Function example](https://github.com/openapistack/openapi-backend/tree/master/examples/azure-function)
 
 ### Fastify
 
@@ -141,7 +141,7 @@ fastify.route({
 fastify.listen();
 ```
 
-[See full Fastify example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/fastify)
+[See full Fastify example](https://github.com/openapistack/openapi-backend/tree/master/examples/fastify)
 
 ### Hapi
 
@@ -168,7 +168,7 @@ server.route({
 server.start();
 ```
 
-[See full Hapi example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/hapi-typescript)
+[See full Hapi example](https://github.com/openapistack/openapi-backend/tree/master/examples/hapi-typescript)
 
 
 ### Koa
@@ -189,13 +189,13 @@ app.use((ctx) =>
 app.listen(9000);
 ```
 
-[See full Koa example](https://github.com/anttiviljami/openapi-backend/tree/master/examples/koa)
+[See full Koa example](https://github.com/openapistack/openapi-backend/tree/master/examples/koa)
 
 ## Registering Handlers for Operations
 
 Handlers are registered for [`operationIds`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#fixed-fields-8)
-found in the OpenAPI definitions. You can register handlers as shown above with [`new OpenAPIBackend()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#parameter-optshandlers)
-constructor opts, or using the [`register()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#registeroperationid-handler)
+found in the OpenAPI definitions. You can register handlers as shown above with [`new OpenAPIBackend()`](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#parameter-optshandlers)
+constructor opts, or using the [`register()`](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#registeroperationid-handler)
 method.
 
 ```javascript
@@ -211,14 +211,14 @@ api.register({
 });
 ```
 
-Operation handlers are passed a special [Context object](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#context-object)
+Operation handlers are passed a special [Context object](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#context-object)
 as the first argument, which contains the parsed request, the
 matched API operation and input validation results. The other arguments in the example above are Express-specific
 handler arguments.
 
 ## Request validation
 
-The easiest way to enable request validation in your API is to register a [`validationFail`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validationfail-handler)
+The easiest way to enable request validation in your API is to register a [`validationFail`](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#validationfail-handler)
 handler.
 
 ```javascript
@@ -231,13 +231,13 @@ api.register('validationFail', validationFailHandler);
 Once registered, this handler gets called if any JSON Schemas in either operation parameters (in: path, query, header,
 cookie) or requestPayload don't match the request.
 
-The context object `c` gets a `validation` property with the [validation result](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validationresult-object).
+The context object `c` gets a `validation` property with the [validation result](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#validationresult-object).
 
 ## Response validation
 
 OpenAPIBackend doesn't automatically perform response validation for your handlers, but you can register a
-[`postResponseHandler`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#postresponsehandler-handler)
-to add a response validation step using [`validateResponse`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validateresponseres-operation).
+[`postResponseHandler`](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#postresponsehandler-handler)
+to add a response validation step using [`validateResponse`](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#validateresponseres-operation).
 
 ```javascript
 api.register({
@@ -256,7 +256,7 @@ api.register({
 });
 ```
 
-It's also possible to validate the response headers using [`validateResponseHeaders`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#validateresponseheadersheaders-operation-opts).
+It's also possible to validate the response headers using [`validateResponseHeaders`](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#validateresponseheadersheaders-operation-opts).
 
 ```javascript
 api.register({
@@ -304,9 +304,9 @@ api.registerSecurityHandler('ApiKey', (c) => {
 ```
 
 The authorization status and return values of each security handler can be
-accessed via the [Context Object](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#context-object)
+accessed via the [Context Object](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#context-object)
 
-You can also register an [`unauthorizedHandler`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#unauthorizedhandler-handler)
+You can also register an [`unauthorizedHandler`](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#unauthorizedhandler-handler)
 to handle unauthorized requests.
 
 ```javascript
@@ -316,13 +316,13 @@ api.register('unauthorizedHandler', (c, req, res) => {
 ```
 
 See examples:
-- [API Key auth (express)](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-apikey-auth)
-- [JWT auth (express)](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-jwt-auth)
+- [API Key auth (express)](https://github.com/openapistack/openapi-backend/tree/master/examples/express-apikey-auth)
+- [JWT auth (express)](https://github.com/openapistack/openapi-backend/tree/master/examples/express-jwt-auth)
 
 ## Mocking API responses
 
-Mocking APIs just got really easy with OpenAPI Backend! Register a [`notImplemented`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md#notimplemented-handler)
-handler and use [`mockResponseForOperation()`](https://github.com/anttiviljami/openapi-backend/blob/master/DOCS.md##mockresponseforoperationoperationid-opts)
+Mocking APIs just got really easy with OpenAPI Backend! Register a [`notImplemented`](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md#notimplemented-handler)
+handler and use [`mockResponseForOperation()`](https://github.com/openapistack/openapi-backend/blob/master/DOCS.md##mockresponseforoperationoperationid-opts)
 to generate mock responses for operations with no custom handlers specified yet:
 
 ```javascript
@@ -381,7 +381,7 @@ api.mockResponseForOperation('getPets'); // => { status: 200, mock: [{ id: 1, na
 api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, name: 'Garfield' }}
 ```
 
-[See full Mock API example on Express](https://github.com/anttiviljami/openapi-backend/tree/master/examples/express-ts-mock)
+[See full Mock API example on Express](https://github.com/openapistack/openapi-backend/tree/master/examples/express-ts-mock)
 
 ## Contributing
 

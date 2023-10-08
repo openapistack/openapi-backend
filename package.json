@@ -22,10 +22,10 @@
   "homepage": "https://openapistack.co",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anttiviljami/openapi-backend.git"
+    "url": "git+https://github.com/openapistack/openapi-backend.git"
   },
   "bugs": {
-    "url": "https://github.com/anttiviljami/openapi-backend/issues"
+    "url": "https://github.com/openapistack/openapi-backend/issues"
   },
   "main": "index.js",
   "types": "index.d.ts",

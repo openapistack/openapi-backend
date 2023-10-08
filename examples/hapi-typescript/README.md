@@ -1,7 +1,7 @@
 # OpenAPI Backend Hapi Example
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://anttiviljami.mit-license.org)
 
-Example project using [openapi-backend](https://github.com/anttiviljami/openapi-backend) on [Hapi](https://hapijs.com/)
+Example project using [openapi-backend](https://github.com/openapistack/openapi-backend) on [Hapi](https://hapijs.com/)
 
 ## QuickStart
 
