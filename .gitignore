@@ -11,6 +11,7 @@
 
 # include jest config
 !jest.config.js
+!.eslintrc.js
 
 # npm
 node_modules

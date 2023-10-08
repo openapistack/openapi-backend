@@ -1,3 +1,6 @@
+// library code, any is fine
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import * as _ from 'lodash';
 import Ajv, { Options as AjvOpts, ErrorObject, FormatDefinition, ValidateFunction } from 'ajv';
 import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
@@ -692,7 +695,7 @@ export class OpenAPIValidator<D extends Document = Document> {
 
     const responseSchemas: PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>[] = [];
 
-    _.mapKeys(operation.responses, (res, status) => {
+    _.mapKeys(operation.responses, (res, _status) => {
       const response = res as PickVersionElement<D, OpenAPIV3.ResponseObject, OpenAPIV3_1.ResponseObject>;
       if (response.content && response.content['application/json'] && response.content['application/json'].schema) {
         responseSchemas.push(

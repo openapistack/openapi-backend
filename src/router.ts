@@ -30,6 +30,9 @@ export type Operation<D extends Document = Document> = PickVersionElement<
   method: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyRequestBody = any
+
 export interface Request {
   method: string;
   path: string;
@@ -41,7 +44,7 @@ export interface Request {
         [key: string]: string | string[];
       }
     | string;
-  body?: any;
+  body?: AnyRequestBody;
 }
 
 export type UnknownParams = {
@@ -49,7 +52,7 @@ export type UnknownParams = {
 };
 
 export interface ParsedRequest<
-  RequestBody = any,
+  RequestBody = AnyRequestBody,
   Params = UnknownParams,
   Query = UnknownParams,
   Headers = UnknownParams,
@@ -62,7 +65,7 @@ export interface ParsedRequest<
   query: Query;
   headers: Headers;
   cookies: Cookies;
-  body?: any;
+  body?: AnyRequestBody;
 }
 
 /**
@@ -318,23 +321,23 @@ export class OpenAPIRouter<D extends Document = Document> {
             if (parameter.content && parameter.content['application/json']) {
               query[queryParam] = JSON.parse(query[queryParam]);
             } else if (parameter.explode === false && queryString) {
-              let commaQueryString = queryString.replace(/\%2C/g, ',');
+              let commaQueryString = queryString.replace(/%2C/g, ',');
               if (parameter.style === 'spaceDelimited') {
-                commaQueryString = commaQueryString.replace(/\ /g, ',').replace(/\%20/g, ',');
+                commaQueryString = commaQueryString.replace(/ /g, ',').replace(/%20/g, ',');
               }
               if (parameter.style === 'pipeDelimited') {
-                commaQueryString = commaQueryString.replace(/\|/g, ',').replace(/\%7C/g, ',');
+                commaQueryString = commaQueryString.replace(/\|/g, ',').replace(/%7C/g, ',');
               }
               // use comma parsing e.g. &a=1,2,3
               const commaParsed = parseQuery(commaQueryString, { comma: true });
               query[queryParam] = commaParsed[queryParam];
             } else if (parameter.explode === false) {
-              let decoded = query[queryParam].replace(/\%2C/g, ',');
+              let decoded = query[queryParam].replace(/%2C/g, ',');
               if (parameter.style === 'spaceDelimited') {
-                decoded = decoded.replace(/\ /g, ',').replace(/\%20/g, ',');
+                decoded = decoded.replace(/ /g, ',').replace(/%20/g, ',');
               }
               if (parameter.style === 'pipeDelimited') {
-                decoded = decoded.replace(/\|/g, ',').replace(/\%7C/g, ',');
+                decoded = decoded.replace(/\|/g, ',').replace(/%7C/g, ',');
               }
               query[queryParam] = decoded.split(',');
             }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { OpenAPIRouter, Operation } from './router';
 import { OpenAPIBackend, Context } from './backend';
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
@@ -625,7 +627,7 @@ describe('OpenAPIBackend', () => {
     });
 
     test('handles GET /pets and allows postResponseHandler to intercept response', async () => {
-      const postResponseHandler = jest.fn((ctx) => ({ you: 'have been intercepted' }));
+      const postResponseHandler = jest.fn((_ctx) => ({ you: 'have been intercepted' }));
       api.register({ postResponseHandler });
 
       const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });

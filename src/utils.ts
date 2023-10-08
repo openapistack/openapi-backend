@@ -1,3 +1,6 @@
+// library code, any is fine
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import * as _ from 'lodash';
 import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import { Operation } from './router';

@@ -4,7 +4,6 @@ import { OpenAPIV3_1 } from 'openapi-types';
 import { SchemaLike } from 'mock-json-schema';
 import { SetMatchType } from './backend';
 import * as path from 'path';
-import * as _ from 'lodash';
 import { dereference } from './refparser';
 
 const testsDir = path.join(__dirname, '..', '__tests__');
@@ -44,7 +43,8 @@ const invalidBTree = {
   value: 'not a number',
 };
 
-let circularRefDefinition: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let circularRefDefinition: any
 beforeAll(async () => {
   circularRefDefinition = await dereference(circularRefPath);
 });

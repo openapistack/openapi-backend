@@ -1,3 +1,6 @@
+// library code, any is fine
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import * as _ from 'lodash';
 import type { Options as AjvOpts } from 'ajv';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
@@ -93,7 +96,9 @@ export interface Options<D extends Document = Document> {
     validationFail?: Handler;
     [handler: string]: Handler | undefined;
   };
-  securityHandlers?: {};
+  securityHandlers?: {
+    [handler: string]: Handler | undefined;
+  };
 }
 
 /**
