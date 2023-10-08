@@ -44,7 +44,7 @@ const invalidBTree = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let circularRefDefinition: any
+let circularRefDefinition: any;
 beforeAll(async () => {
   circularRefDefinition = await dereference(circularRefPath);
 });

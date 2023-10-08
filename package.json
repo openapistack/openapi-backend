@@ -74,7 +74,7 @@
     "build": "tsc",
     "watch-build": "tsc -w",
     "lint": "eslint src/ --ext ts",
-    "prettier": "prettier --write src/** __tests__/**",
+    "prettier": "prettier --write src/**",
     "toc": "./scripts/generate-toc.js",
     "prepublishOnly": "npm run build && npm run toc",
     "test": "NODE_ENV=test jest"

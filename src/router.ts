@@ -31,7 +31,7 @@ export type Operation<D extends Document = Document> = PickVersionElement<
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnyRequestBody = any
+export type AnyRequestBody = any;
 
 export interface Request {
   method: string;
@@ -56,7 +56,7 @@ export interface ParsedRequest<
   Params = UnknownParams,
   Query = UnknownParams,
   Headers = UnknownParams,
-  Cookies = UnknownParams
+  Cookies = UnknownParams,
 > {
   method: string;
   path: string;
