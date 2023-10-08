@@ -1,7 +1,7 @@
 # OpenAPI Backend Express Mock API Example
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://anttiviljami.mit-license.org)
 
-Example mock API project using [openapi-backend](https://github.com/anttiviljami/openapi-backend) on [Express](https://expressjs.com/)
+Example mock API project using [openapi-backend](https://github.com/openapistack/openapi-backend) on [Express](https://expressjs.com/)
 
 ## QuickStart
 

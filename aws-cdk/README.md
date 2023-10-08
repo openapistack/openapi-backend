@@ -2,7 +2,7 @@
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://anttiviljami.mit-license.org)
 
-Example project using [openapi-backend](https://github.com/anttiviljami/openapi-backend) with [AWS CDK](https://aws.amazon.com/cdk/)
+Example project using [openapi-backend](https://github.com/openapistack/openapi-backend) with [AWS CDK](https://aws.amazon.com/cdk/)
 
 ## QuickStart
 
