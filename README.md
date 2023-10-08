@@ -4,7 +4,7 @@
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/openapistack/openapi-backend/blob/main/LICENSE)
 [![npm version](https://img.shields.io/npm/v/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
 [![npm downloads](https://img.shields.io/npm/dw/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
-[![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/openapi-backend.svg)]()
+[![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend?activeTab=dependencies)
 ![npm type definitions](https://img.shields.io/npm/types/openapi-backend.svg)
 [![Buy me a coffee](https://img.shields.io/badge/donate-buy%20me%20a%20coffee-orange)](https://buymeacoff.ee/anttiviljami)
 
