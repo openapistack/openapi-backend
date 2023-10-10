@@ -307,6 +307,10 @@ export class OpenAPIValidator<D extends Document = Document> {
       if (validate.errors) {
         result.errors.push(...validate.errors);
       }
+      else {
+        // set Ajv validator coerced query to request
+        req.query = parameters.query
+      }
     }
 
     if (_.isEmpty(result.errors)) {
