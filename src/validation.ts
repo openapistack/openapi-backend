@@ -109,6 +109,14 @@ const defaultFormats: Record<string, FormatDefinition<any>> = {
     type: 'string',
     validate: () => true,
   },
+  uuid: {
+    type: 'string',
+    validate: /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/,
+  },
+  email: {
+    type: 'string',
+    validate: /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/,
+  },
 };
 
 /**
