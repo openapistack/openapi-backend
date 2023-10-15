@@ -387,6 +387,10 @@ api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, 
 
 [See full Mock API example on Express](https://github.com/openapistack/openapi-backend/tree/main/examples/express-ts-mock)
 
+## Commercial support
+
+For assistance with integrating openapi-backend in your company, reach out at support@openapistack.co.
+
 ## Contributing
 
 OpenAPI Backend is Free and Open Source Software. Issues and pull requests are more than welcome!
