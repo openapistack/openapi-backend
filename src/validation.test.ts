@@ -402,6 +402,247 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
       });
     });
 
+    describe('query params with exploded objects', () => {
+      const validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPetById',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  {
+                    name: 'query-parameter',
+                    in: 'query',
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        breed: {
+                          type: 'string'
+                        },
+                        age: {
+                          type: 'integer'
+                        }
+                      },
+                      additionalProperties: false,
+                    },
+                    explode: true,
+                    style: 'form',
+                  },
+                ],
+              },
+            },
+          },
+        },
+        ...constructorOpts,
+      });
+
+      test('passes validation for properties of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?age=4&breed=pug', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test(`fails validation for additional properties`, async () => {
+        const valid = validator.validateRequest({ path: '/pets?query-parameter=something', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+    });
+
+    describe('query params with exploded oneOf objects', () => {
+      const validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPetById',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  {
+                    name: 'query-parameter',
+                    in: 'query',
+                    schema: {
+                      oneOf: [{
+                        type: 'object',
+                        properties: {
+                          breed: {
+                            type: 'string'
+                          },
+                          age: {
+                            type: 'integer'
+                          }
+                        },
+                        additionalProperties: false,
+                      },
+                        {
+                          type: 'object',
+                          properties: {
+                            name: {
+                              type: 'string'
+                            }
+                          },
+                          additionalProperties: false,
+                        }
+                      ],
+                    },
+                    explode: true,
+                    style: 'form',
+                  },
+                ],
+              },
+            },
+          },
+        },
+        ...constructorOpts,
+      });
+
+      test('passes validation for properties of type A of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?age=4&breed=pug', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test('passes validation for properties of type B of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?name=spot', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test(`fails validation for additional properties`, async () => {
+        const valid = validator.validateRequest({ path: '/pets?query-parameter=something', method: 'get', headers });
+        expect(valid.errors).toHaveLength(3);
+      });
+    })
+
+    describe('query params with exploded allOf objects', () => {
+      const validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPetById',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  {
+                    name: 'filter',
+                    in: 'query',
+                    schema: {
+                      allOf: [{
+                        type: 'object',
+                        additionalProperties: true,
+                        properties: {
+                          from: { type: 'number' },
+                          take: { type: 'string' },
+                        },
+                        required: ['from', 'take']
+                      }, {
+                        type: 'object',
+                        additionalProperties: true,
+                        properties: {
+                          from: { type: 'number' },
+                          to: { type: 'number' },
+                        },
+                        required: ['from', 'to']
+                      }]
+                    },
+                    explode: true,
+                    style: 'form',
+                  },
+                ],
+              },
+            },
+          },
+        },
+        ...constructorOpts,
+      });
+
+      test('passes validation for properties of type A and B of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?from=5&to=4&take=all', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test('fails validation for properties of type A of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?from=5&take=all', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+      test('fails validation for properties of type B of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?from=5&to=3', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+      test(`fails validation for additional properties`, async () => {
+        const valid = validator.validateRequest({ path: '/pets?query-parameter=something', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+    })
+
+    describe('query params with exploded anyOf objects', () => {
+      const validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPetById',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  {
+                    name: 'filter',
+                    in: 'query',
+                    schema: {
+                      anyOf: [{
+                        type: 'object',
+                        additionalProperties: false,
+                        properties: {
+                          from: { type: 'number' },
+                          take: { type: 'string' },
+                        },
+                        required: ['from', 'take']
+                      }, {
+                        type: 'object',
+                        additionalProperties: false,
+                        properties: {
+                          from: { type: 'number' },
+                          to: { type: 'number' },
+                        },
+                        required: ['from', 'to']
+                      }, {
+                        type: 'object',
+                        additionalProperties: true,
+                        properties: {
+                          from: { type: 'number' },
+                        },
+                        required: ['from'],
+                      }]
+                    },
+                    explode: true,
+                    style: 'form',
+                  },
+                ],
+              },
+            },
+          },
+        },
+        ...constructorOpts,
+      });
+
+      test('passes validation for properties of type A, B and C of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?from=5&to=4&take=all', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test('passes validation for properties of type A and C of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?from=5&take=all', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test('passes validation for properties of type B and C of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?from=5&to=3', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test('passes validation for properties of C of the query object', async () => {
+        const valid = validator.validateRequest({ path: '/pets?from=5', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+      test(`fails validation for additional properties`, async () => {
+        const valid = validator.validateRequest({ path: '/pets?extra=something', method: 'get', headers });
+        expect(valid.errors).toHaveLength(4);
+      });
+    })
+
     describe('headers', () => {
       const validator = new OpenAPIValidator({
         definition: {
