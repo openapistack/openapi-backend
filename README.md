@@ -387,6 +387,12 @@ api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, 
 
 [See full Mock API example on Express](https://github.com/openapistack/openapi-backend/tree/main/examples/express-ts-mock)
 
+## Sponsors
+
+The openapi-backend project is supported by:
+
+<a href="www.devmark.ai/fern/?utm_source=openapistack-openapibackend&utm_loc=readme&utm_type=logo"><img alt="Fern" src="./static/img/sponsors/fern_logo_tagline.png" height="80"></a>
+
 ## Commercial support
 
 For assistance with integrating openapi-backend in your company, reach out at support@openapistack.co.
