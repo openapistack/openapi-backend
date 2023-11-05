@@ -391,7 +391,7 @@ api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, 
 
 The openapi-backend project is supported by:
 
-<a href="www.devmark.ai/fern/?utm_source=openapistack-openapibackend&utm_loc=readme&utm_type=logo"><img alt="Fern" src="https://github.com/openapistack/docs/blob/main/static/img/sponsors/fern_logo_tagline.png?raw=true" height="80"></a>
+<a href="https://www.devmark.ai/fern/?utm_source=openapistack-openapibackend&utm_loc=readme&utm_type=logo"><img alt="Fern" src="https://github.com/openapistack/docs/blob/main/static/img/sponsors/fern_logo_tagline.png?raw=true" height="80"></a>
 
 ## Commercial support
 
