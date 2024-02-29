@@ -20,3 +20,6 @@ npm_debug.log*
 # vscode
 .vscode
 
+# idea
+.idea
+
