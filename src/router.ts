@@ -30,8 +30,10 @@ export type Operation<D extends Document = Document> = PickVersionElement<
   method: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type AnyRequestBody = any;
+export type UnknownParams = any;
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 export interface Request {
   method: string;
@@ -47,9 +49,6 @@ export interface Request {
   body?: AnyRequestBody;
 }
 
-export type UnknownParams = {
-  [key: string]: string | string[];
-};
 
 export interface ParsedRequest<
   RequestBody = AnyRequestBody,

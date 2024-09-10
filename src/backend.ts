@@ -62,6 +62,11 @@ export type Handler<
   D extends Document = Document,
 > = (context: Context<RequestBody, Params, Query, Headers, Cookies, D>, ...args: any[]) => any | Promise<any>;
 
+/**
+ * Map of operation handlers
+ */
+export type HandlerMap = { [operationId: string]: Handler | undefined };
+
 export type BoolPredicate = (context: Context, ...args: any[]) => boolean;
 
 /**
@@ -90,15 +95,13 @@ export interface Options<D extends Document = Document> {
   validate?: boolean | BoolPredicate;
   ajvOpts?: AjvOpts;
   customizeAjv?: AjvCustomizer;
-  handlers?: {
+  handlers?: HandlerMap & {
     notFound?: Handler;
     notImplemented?: Handler;
     validationFail?: Handler;
-    [handler: string]: Handler | undefined;
   };
-  securityHandlers?: {
-    [handler: string]: Handler | undefined;
-  };
+  securityHandlers?: HandlerMap;
+  ignoreTrailingSlashes?: boolean;
 }
 
 /**
@@ -123,7 +126,7 @@ export class OpenAPIBackend<D extends Document = Document> {
   public ajvOpts: AjvOpts;
   public customizeAjv: AjvCustomizer | undefined;
 
-  public handlers: { [operationId: string]: Handler };
+  public handlers: HandlerMap;
   public allowedHandlers = [
     '404',
     'notFound',
@@ -137,7 +140,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     'postResponseHandler',
   ];
 
-  public securityHandlers: { [name: string]: Handler };
+  public securityHandlers: HandlerMap;
 
   public router: OpenAPIRouter<D>;
   public validator: OpenAPIValidator<D>;
@@ -157,26 +160,25 @@ export class OpenAPIBackend<D extends Document = Document> {
    * @memberof OpenAPIBackend
    */
   constructor(opts: Options<D>) {
-    const optsWithDefaults = {
+    const optsWithDefaults: Options<D> = {
       apiRoot: '/',
       validate: true,
       strict: false,
       quick: false,
       ignoreTrailingSlashes: true,
-      ajvOpts: {},
-      handlers: {},
-      securityHandlers: {},
+      handlers: {} as HandlerMap,
+      securityHandlers: {} as HandlerMap,
       ...opts,
     };
-    this.apiRoot = optsWithDefaults.apiRoot;
+    this.apiRoot = optsWithDefaults.apiRoot ?? '/';
     this.inputDocument = optsWithDefaults.definition;
-    this.strict = optsWithDefaults.strict;
-    this.quick = optsWithDefaults.quick;
-    this.validate = optsWithDefaults.validate;
-    this.ignoreTrailingSlashes = optsWithDefaults.ignoreTrailingSlashes;
-    this.handlers = { ...optsWithDefaults.handlers }; // Copy to avoid mutating passed object
+    this.strict = !!optsWithDefaults.strict;
+    this.quick = !!optsWithDefaults.quick;
+    this.validate = !!optsWithDefaults.validate;
+    this.ignoreTrailingSlashes = !!optsWithDefaults.ignoreTrailingSlashes;
+    this.handlers = { ...optsWithDefaults.handlers  }; // Copy to avoid mutating passed object
     this.securityHandlers = { ...optsWithDefaults.securityHandlers }; // Copy to avoid mutating passed object
-    this.ajvOpts = optsWithDefaults.ajvOpts;
+    this.ajvOpts = optsWithDefaults.ajvOpts ?? {};
     this.customizeAjv = optsWithDefaults.customizeAjv;
   }
 
@@ -257,7 +259,9 @@ export class OpenAPIBackend<D extends Document = Document> {
     // register all security handlers
     if (this.securityHandlers) {
       for (const [name, handler] of Object.entries(this.securityHandlers)) {
-        this.registerSecurityHandler(name, handler);
+        if (handler) {
+          this.registerSecurityHandler(name, handler);
+        }
       }
     }
 
@@ -331,9 +335,10 @@ export class OpenAPIBackend<D extends Document = Document> {
         securitySchemes.map(async (name) => {
           securityHandlerResults[name] = undefined;
           if (this.securityHandlers[name]) {
+            const securityHandler = this.securityHandlers[name];
             // return a promise that will set the security handler result
             return await Promise.resolve()
-              .then(() => this.securityHandlers[name](context as Context<D>, ...handlerArgs))
+              .then(() => securityHandler(context as Context<D>, ...handlerArgs))
               .then((result: unknown) => {
                 securityHandlerResults[name] = result;
               })
@@ -389,7 +394,7 @@ export class OpenAPIBackend<D extends Document = Document> {
 
       // call unauthorizedHandler handler if auth fails
       if (!authorized && securityRequirements.length > 0) {
-        const unauthorizedHandler: Handler = this.handlers['unauthorizedHandler'];
+        const unauthorizedHandler = this.handlers['unauthorizedHandler'];
         if (unauthorizedHandler) {
           return unauthorizedHandler(context as Context<D>, ...handlerArgs);
         }
@@ -402,7 +407,7 @@ export class OpenAPIBackend<D extends Document = Document> {
           : Boolean(this.validate);
 
       // validate request
-      const validationFailHandler: Handler = this.handlers['validationFail'];
+      const validationFailHandler = this.handlers['validationFail'];
       if (validate) {
         context.validation = this.validator.validateRequest(req, context.operation);
         if (context.validation.errors) {
@@ -415,7 +420,7 @@ export class OpenAPIBackend<D extends Document = Document> {
       }
 
       // get operation handler
-      const routeHandler: Handler = this.handlers[operationId];
+      const routeHandler = this.handlers[operationId];
       if (!routeHandler) {
         // 501 not implemented
         const notImplementedHandler = this.handlers['501'] || this.handlers['notImplemented'];
@@ -430,7 +435,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     }).bind(this)();
 
     // post response handler
-    const postResponseHandler: Handler = this.handlers['postResponseHandler'];
+    const postResponseHandler = this.handlers['postResponseHandler'];
     if (postResponseHandler) {
       // pass response to postResponseHandler
       context.response = response;
@@ -478,7 +483,7 @@ export class OpenAPIBackend<D extends Document = Document> {
    * @param {{ [operationId: string]: Handler }} handlers
    * @memberof OpenAPIBackend
    */
-  public register(handlers: { [operationId: string]: Handler }): void;
+  public register<Handlers extends HandlerMap = HandlerMap>(handlers: Handlers): void;
 
   /**
    * Registers a handler for an operation
