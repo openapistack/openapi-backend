@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.20.0",
     "openapi-backend": "^5.2.0"
   },
   "devDependencies": {
