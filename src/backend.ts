@@ -494,7 +494,7 @@ export class OpenAPIBackend<D extends Document = Document> {
    * @param {Handler} handler
    * @memberof OpenAPIBackend
    */
-  public register(operationId: string, handler: Handler): void;
+  public register<OperationHandler = Handler>(operationId: string, handler: OperationHandler): void;
 
   /**
    * Overloaded register() implementation
