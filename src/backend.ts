@@ -4,8 +4,8 @@
 import * as _ from 'lodash';
 import type { Options as AjvOpts } from 'ajv';
 import OpenAPISchemaValidator from 'openapi-schema-validator';
-import { parse as parseJSONSchema, dereference } from './refparser';
-import { dereferenceSync } from 'dereference-json-schema';
+import { parse as parseJSONSchema } from './refparser';
+import { bundle, bundleFromString, createConfig } from '@redocly/openapi-core';
 
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import { mock, SchemaLike } from 'mock-json-schema';
@@ -176,7 +176,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     this.quick = !!optsWithDefaults.quick;
     this.validate = !!optsWithDefaults.validate;
     this.ignoreTrailingSlashes = !!optsWithDefaults.ignoreTrailingSlashes;
-    this.handlers = { ...optsWithDefaults.handlers  }; // Copy to avoid mutating passed object
+    this.handlers = { ...optsWithDefaults.handlers }; // Copy to avoid mutating passed object
     this.securityHandlers = { ...optsWithDefaults.securityHandlers }; // Copy to avoid mutating passed object
     this.ajvOpts = optsWithDefaults.ajvOpts ?? {};
     this.customizeAjv = optsWithDefaults.customizeAjv;
@@ -211,14 +211,26 @@ export class OpenAPIBackend<D extends Document = Document> {
         this.validateDefinition();
       }
 
-      // dereference the document into definition (make sure not to copy)
-      if (typeof this.inputDocument === 'string') {
-        this.definition = (await dereference(this.inputDocument)) as D;
-      } else if (this.quick && typeof this.inputDocument === 'object') {
-        // use sync dereference in quick mode
-        this.definition = dereferenceSync(this.inputDocument) as D;
+      const config = await createConfig({});
+      const promisedBundle =
+        typeof this.inputDocument === 'string'
+          ? bundle({
+              ref: this.inputDocument,
+              dereference: true,
+              config,
+            })
+          : bundleFromString({
+              source: JSON.stringify(this.inputDocument),
+              dereference: true,
+              config,
+            });
+
+      if (this.quick) {
+        promisedBundle.then(({ bundle }) => {
+          this.definition = bundle.parsed;
+        });
       } else {
-        this.definition = (await dereference(this.document || this.inputDocument)) as D;
+        this.definition = (await promisedBundle).bundle.parsed;
       }
     } catch (err) {
       if (this.strict) {

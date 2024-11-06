@@ -76,7 +76,20 @@
             "description": "Pet object corresponding to id"
           },
           "404": {
-            "description": "Pet not found"
+            "description": "Pet not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "fourOhFour": {
+                    "summary": "Example 404 response",
+                    "value": "Four Oh Four"
+                  }
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -103,7 +116,19 @@
             "description": "Pet replaced succesfully"
           },
           "404": {
-            "description": "Pet not found"
+            "description": "Pet not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "fourOhFour": {
+                    "$ref": "#/paths/~1pets~1%7Bid%7D~1get/responses/404/content/application~1json/examples/fourOhFour"
+                  }
+                }
+              }
+            }
           }
         },
         "parameters": [
