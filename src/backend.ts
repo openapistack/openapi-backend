@@ -176,7 +176,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     this.quick = !!optsWithDefaults.quick;
     this.validate = !!optsWithDefaults.validate;
     this.ignoreTrailingSlashes = !!optsWithDefaults.ignoreTrailingSlashes;
-    this.handlers = { ...optsWithDefaults.handlers  }; // Copy to avoid mutating passed object
+    this.handlers = { ...optsWithDefaults.handlers }; // Copy to avoid mutating passed object
     this.securityHandlers = { ...optsWithDefaults.securityHandlers }; // Copy to avoid mutating passed object
     this.ajvOpts = optsWithDefaults.ajvOpts ?? {};
     this.customizeAjv = optsWithDefaults.customizeAjv;
@@ -431,7 +431,7 @@ export class OpenAPIBackend<D extends Document = Document> {
       }
 
       // handle route
-      return routeHandler(context as Context<D>, ...handlerArgs);
+      return routeHandler(context as Context<D>, req, ...handlerArgs);
     }).bind(this)();
 
     // post response handler

@@ -247,7 +247,7 @@ export class OpenAPIValidator<D extends Document = Document> {
     // build a parameter object to validate
     const { params, query, headers, cookies, requestBody } = this.router.parseRequest(req, operation);
 
-    // convert singular query parameters to arrays if specified as array in operation parametes
+    // convert singular query parameters to arrays if specified as array in operation parameters
     if (query) {
       for (const [name, value] of _.entries(query)) {
         if (typeof value === 'string') {
@@ -309,6 +309,8 @@ export class OpenAPIValidator<D extends Document = Document> {
       validate(parameters);
       if (validate.errors) {
         result.errors.push(...validate.errors);
+      } else {
+        req.query = parameters.query;
       }
     }
 
