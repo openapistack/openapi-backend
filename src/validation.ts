@@ -125,6 +125,7 @@ export class OpenAPIValidator<D extends Document = Document> {
   public ajvOpts: AjvOpts;
   public lazyCompileValidators: boolean;
   public customizeAjv: AjvCustomizer | undefined;
+  public coerceTypes: boolean;
 
   public requestValidators: { [operationId: string]: ValidateFunction[] | null };
   public responseValidators: { [operationId: string]: ValidateFunction | null };
@@ -141,6 +142,7 @@ export class OpenAPIValidator<D extends Document = Document> {
    * @param {object} opts.ajvOpts - default ajv constructor opts (default: { unknownFormats: 'ignore' })
    * @param {OpenAPIRouter} opts.router - passed instance of OpenAPIRouter. Will create own child if no passed
    * @param {boolean} opts.lazyCompileValidators - skips precompiling Ajv validators and compiles only when needed
+   * @param {boolean} opts.coerceTypes - coerce types in request query and path parameters
    * @memberof OpenAPIRequestValidator
    */
   constructor(opts: {
@@ -149,6 +151,7 @@ export class OpenAPIValidator<D extends Document = Document> {
     router?: OpenAPIRouter<D>;
     lazyCompileValidators?: boolean;
     customizeAjv?: AjvCustomizer;
+    coerceTypes?: boolean;
   }) {
     this.definition = opts.definition;
     this.ajvOpts = {
@@ -157,6 +160,7 @@ export class OpenAPIValidator<D extends Document = Document> {
     };
 
     this.customizeAjv = opts.customizeAjv;
+    this.coerceTypes = opts.coerceTypes || false;
 
     // initalize router
     this.router = opts.router || new OpenAPIRouter({ definition: this.definition });
@@ -309,6 +313,9 @@ export class OpenAPIValidator<D extends Document = Document> {
       validate(parameters);
       if (validate.errors) {
         result.errors.push(...validate.errors);
+      } else if (this.coerceTypes) {
+        req.query = parameters.query;
+        req.params = parameters.path;
       }
     }
 

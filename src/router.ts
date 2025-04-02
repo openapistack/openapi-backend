@@ -47,8 +47,10 @@ export interface Request {
       }
     | string;
   body?: AnyRequestBody;
+  params?: {
+    [key: string]: string;
+  };
 }
-
 
 export interface ParsedRequest<
   RequestBody = AnyRequestBody,
