@@ -47,6 +47,30 @@ describe('OpenAPIBackend', () => {
         get: {
           operationId: 'getPetById',
           responses,
+          parameters: [
+            {
+              name: 'id',
+              in: 'path',
+              required: true,
+              schema: {
+                type: 'string',
+              },
+            },
+            {
+              name: 'breed',
+              in: 'query',
+              schema: {
+                type: 'string',
+              },
+            },
+            {
+              name: 'age',
+              in: 'query',
+              schema: {
+                type: 'integer',
+              },
+            },
+          ],
         },
         put: {
           operationId: 'replacePetById',
@@ -465,6 +489,52 @@ describe('OpenAPIBackend', () => {
 
         expect(mockHandler).toBeCalled();
       });
+    });
+  });
+
+  describe('types coercion', () => {
+    test('coerces query types', async () => {
+      const api = new OpenAPIBackend({ definition, coerceTypes: true });
+      const dummyHandler = jest.fn((context, req, ...rest) => req);
+      api.register('getPetById', dummyHandler);
+      await api.init();
+
+      const request = {
+        method: 'get',
+        path: '/pets/1',
+        headers: {},
+        query: {
+          breed: 'corgi',
+          age: '5',
+        },
+      };
+
+      const res = await api.handleRequest(request);
+      expect(dummyHandler).toHaveBeenCalledTimes(1);
+
+      expect(res.query).toStrictEqual({ breed: 'corgi', age: 5 });
+    });
+
+    test('coerces query types disabled by default', async () => {
+      const api = new OpenAPIBackend({ definition });
+      const dummyHandler = jest.fn((context, req, ...rest) => req);
+      api.register('getPetById', dummyHandler);
+      await api.init();
+
+      const request = {
+        method: 'get',
+        path: '/pets/1',
+        headers: {},
+        query: {
+          breed: 'corgi',
+          age: '5',
+        },
+      };
+
+      const res = await api.handleRequest(request);
+      expect(dummyHandler).toHaveBeenCalledTimes(1);
+
+      expect(res.query).toStrictEqual({ breed: 'corgi', age: '5' });
     });
   });
 
