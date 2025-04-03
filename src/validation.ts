@@ -17,9 +17,10 @@ type Document = OpenAPIV3_1.Document | OpenAPIV3.Document;
  * @export
  * @interface ValidationStatus
  */
-export interface ValidationResult {
+export interface ValidationResult<T = any> {
   valid: boolean;
   errors?: ErrorObject[] | null;
+  coerced?: T;
 }
 
 /**
@@ -230,8 +231,8 @@ export class OpenAPIValidator<D extends Document = Document> {
    * @returns {ValidationResult}
    * @memberof OpenAPIRequestValidator
    */
-  public validateRequest(req: Request, operation?: Operation<D> | string): ValidationResult {
-    const result: ValidationResult = { valid: true };
+  public validateRequest(req: Request, operation?: Operation<D> | string): ValidationResult<Request> {
+    const result: ValidationResult = { valid: true, coerced: { ...req } };
     result.errors = [];
 
     if (!operation) {
@@ -314,8 +315,8 @@ export class OpenAPIValidator<D extends Document = Document> {
       if (validate.errors) {
         result.errors.push(...validate.errors);
       } else if (this.coerceTypes) {
-        req.query = parameters.query;
-        req.params = parameters.path;
+        result.coerced.query = parameters.query;
+        result.coerced.params = parameters.path;
       }
     }
 

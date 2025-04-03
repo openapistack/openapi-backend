@@ -426,7 +426,7 @@ export class OpenAPIBackend<D extends Document = Document> {
 
         // parse request again now with coerced types, if needed
         if (this.validator.coerceTypes) {
-          context.request = this.router.parseRequest(req, context.operation);
+          context.request = this.router.parseRequest(context.validation.coerced, context.operation);
         }
       }
 
