@@ -495,7 +495,7 @@ describe('OpenAPIBackend', () => {
   describe('types coercion', () => {
     test('coerces query types', async () => {
       const api = new OpenAPIBackend({ definition, coerceTypes: true });
-      const dummyHandler = jest.fn((context, req, ...rest) => req);
+      const dummyHandler = jest.fn((c) => c.request);
       api.register('getPetById', dummyHandler);
       await api.init();
 
@@ -517,7 +517,7 @@ describe('OpenAPIBackend', () => {
 
     test('coerces query types disabled by default', async () => {
       const api = new OpenAPIBackend({ definition });
-      const dummyHandler = jest.fn((context, req, ...rest) => req);
+      const dummyHandler = jest.fn((c) => c.request);
       api.register('getPetById', dummyHandler);
       await api.init();
 

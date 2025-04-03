@@ -423,6 +423,11 @@ export class OpenAPIBackend<D extends Document = Document> {
           }
           // if no validation handler is specified, just ignore it and proceed to route handler
         }
+
+        // parse request again now with coerced types, if needed
+        if (this.validator.coerceTypes) {
+          context.request = this.router.parseRequest(req, context.operation);
+        }
       }
 
       // get operation handler
