@@ -282,6 +282,34 @@ api.register({
 });
 ```
 
+## Pre-request Middleware with preResponseHandler
+
+You can register a [`preResponseHandler`](https://github.com/openapistack/openapi-backend/blob/main/DOCS.md#preresponsehandler-handler) that runs before route handlers but after validation and authentication.
+
+```javascript
+api.register({
+  preResponseHandler: (c, req, res) => {
+    // Modify context before it reaches operation handlers
+    c.customData = 'Available to all route handlers';
+    
+    // Return a response to short-circuit execution
+    if (someCondition) {
+      return { status: 400, error: 'Invalid request' };
+    }
+    
+    // Return nothing to continue normal execution
+  }
+});
+```
+
+Key capabilities:
+- **Custom validation**: Implement business rules that complement JSON Schema
+- **Context modification**: Add data available to all handlers
+- **Early responses**: Return values are sent immediately to the client, skipping operation handlers
+- **Request transformation**: Normalize or enrich data before it reaches handlers
+
+When a value is returned from `preResponseHandler`, normal execution is bypassed and the response is sent directly to the client.
+
 ## Auth / Security Handlers
 
 If your OpenAPI definition contains [Security Schemes](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#securitySchemeObject)

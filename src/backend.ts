@@ -48,6 +48,7 @@ export interface Context<
   validation: ValidationResult;
   security: SecurityHandlerResults;
   response: any;
+  error?: any;
 }
 
 /**
@@ -139,6 +140,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     '400',
     'validationFail',
     'unauthorizedHandler',
+    'preResponseHandler',
     'postResponseHandler',
   ];
 
@@ -427,6 +429,18 @@ export class OpenAPIBackend<D extends Document = Document> {
         // parse request again now with coerced types, if needed
         if (this.validator.coerceTypes) {
           context.request = this.router.parseRequest(context.validation.coerced, context.operation);
+        }
+      }
+
+      // execute preResponseHandler before route handler if it exists
+      const preResponseHandler = this.handlers['preResponseHandler'];
+      if (preResponseHandler) {
+        // modify context through preResponseHandler
+        const preResponseResult = await preResponseHandler(context as Context<D>, ...handlerArgs);
+        
+        // If preResponseHandler returns a value, use it as the response and skip further processing
+        if (preResponseResult !== undefined) {
+          return preResponseResult;
         }
       }
 

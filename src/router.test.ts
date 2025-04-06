@@ -3,6 +3,7 @@
 import { OpenAPIRouter, Operation } from './router';
 import { OpenAPIBackend, Context } from './backend';
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
+import { cloneDeep } from 'lodash';
 
 const headers = { accept: 'application/json' };
 
@@ -638,6 +639,350 @@ describe('OpenAPIBackend', () => {
       const contextArg = postResponseHandler.mock.calls.slice(-1)[0][0];
       expect(contextArg.response).toMatchObject({ operationId: 'getPets' });
       expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', headers });
+    });
+  });
+
+  // Extension for context in preResponseHandler tests
+  interface TestContext extends Context {
+    contextModified?: any;
+  }
+
+  describe('.handleRequest preResponseHandler', () => {
+    const dummyHandlers: { [operationId: string]: jest.Mock<any> } = {};
+    const dummyHandler = (operationId: string) => 
+      (dummyHandlers[operationId] = jest.fn((c) => ({ operationId, contextModified: c.contextModified })));
+    
+    const api = new OpenAPIBackend({
+      definition,
+      handlers: {
+        apiRoot: dummyHandler('apiRoot'),
+        getPets: dummyHandler('getPets'),
+        getPetById: dummyHandler('getPetById'),
+        createPet: dummyHandler('createPet'),
+        notImplemented: dummyHandler('notImplemented'),
+        notFound: dummyHandler('notFound'),
+      },
+    });
+    
+    beforeAll(() => api.init());
+    
+    beforeEach(() => {
+      // Reset call counts before each test
+      Object.values(dummyHandlers).forEach(handler => handler.mockClear());
+    });
+
+    test('calls preResponseHandler before route handler', async () => {
+      const preResponseHandler = jest.fn((c: TestContext) => {
+        c.contextModified = true;
+      });
+      api.register({ preResponseHandler });
+
+      const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });
+      expect(preResponseHandler).toBeCalled();
+      expect(dummyHandlers['getPets']).toBeCalled();
+      expect(res).toEqual({ operationId: 'getPets', contextModified: true });
+
+      // Verify preResponseHandler was called before route handler
+      expect(preResponseHandler.mock.invocationCallOrder[0]).toBeLessThan(
+        dummyHandlers['getPets'].mock.invocationCallOrder[0]
+      );
+      
+      // Check context passed to route handler
+      const contextArg = dummyHandlers['getPets'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ method: 'get', path: '/pets', headers });
+      expect(contextArg.operation.operationId).toEqual('getPets');
+      expect(contextArg.contextModified).toBe(true);
+    });
+
+    test('allows preResponseHandler to modify the context before route handler', async () => {
+      const preResponseHandler = jest.fn((c: TestContext) => {
+        c.contextModified = 'middleware was here';
+      });
+      api.register({ preResponseHandler });
+
+      const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });
+      expect(preResponseHandler).toBeCalled();
+      expect(dummyHandlers['getPets']).toBeCalled();
+      expect(res).toEqual({ operationId: 'getPets', contextModified: 'middleware was here' });
+      
+      // Check modified context passed to route handler
+      const contextArg = dummyHandlers['getPets'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.contextModified).toBe('middleware was here');
+    });
+
+    test('preResponseHandler works with auth and validation handlers', async () => {
+      // Create a new API instance with security definitions
+      const apiDefinition = cloneDeep(definition);
+      // Add security scheme
+      apiDefinition.components = apiDefinition.components || {};
+      apiDefinition.components.securitySchemes = {
+        basicAuth: {
+          type: 'http',
+          scheme: 'basic'
+        }
+      };
+      // Add security requirement to the get pets operation
+      if (apiDefinition.paths['/pets'] && apiDefinition.paths['/pets'].get) {
+        apiDefinition.paths['/pets'].get.security = [{ basicAuth: [] }];
+      }
+
+      const api = new OpenAPIBackend({
+        definition: apiDefinition,
+        handlers: {
+          getPets: dummyHandler('getPets'),
+          notFound: dummyHandler('notFound')
+        }
+      });
+      await api.init();
+
+      // Register security handler
+      const securityHandler = jest.fn(() => true);
+      api.registerSecurityHandler('basicAuth', securityHandler);
+      
+      // Register handlers
+      const preResponseHandler = jest.fn((c: TestContext) => {
+        c.contextModified = 'after auth and validation';
+      });
+      api.register({ preResponseHandler });
+
+      const res = await api.handleRequest({ method: 'GET', path: '/pets', headers });
+      
+      expect(securityHandler).toBeCalled();
+      expect(preResponseHandler).toBeCalled();
+      expect(res).toEqual({ operationId: 'getPets', contextModified: 'after auth and validation' });
+      
+      // Verify call order: security handler -> preResponseHandler -> route handler
+      expect(securityHandler.mock.invocationCallOrder[0]).toBeLessThan(
+        preResponseHandler.mock.invocationCallOrder[0]
+      );
+    });
+
+    test('handles GET /pets/{id} and passes modified context to route handler', async () => {
+      const preResponseHandler = jest.fn((c: TestContext) => {
+        c.contextModified = 'id parameter available';
+      });
+      api.register({ preResponseHandler });
+
+      const res = await api.handleRequest({ method: 'GET', path: '/pets/123', headers });
+      expect(preResponseHandler).toBeCalled();
+      expect(dummyHandlers['getPetById']).toBeCalled();
+      expect(res).toEqual({ operationId: 'getPetById', contextModified: 'id parameter available' });
+      
+      // Check context passed to getPetById handler
+      const contextArg = dummyHandlers['getPetById'].mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ 
+        method: 'get', 
+        path: '/pets/123', 
+        params: { id: '123' }, 
+        headers 
+      });
+      expect(contextArg.operation.operationId).toEqual('getPetById');
+      expect(contextArg.contextModified).toBe('id parameter available');
+    });
+
+    test('preResponseHandler is not called for non-matching routes', async () => {
+      const preResponseHandler = jest.fn();
+      const notFoundHandler = jest.fn(() => ({ operationId: 'notFound', contextModified: undefined }));
+      
+      // Reset the handlers and add our mocks
+      api.register({
+        preResponseHandler,
+        notFound: notFoundHandler
+      });
+
+      const res = await api.handleRequest({ method: 'GET', path: '/unknown', headers });
+      
+      // Main test assertions
+      expect(preResponseHandler).not.toBeCalled();
+      expect(notFoundHandler).toBeCalled();
+      expect(res).toEqual({ operationId: 'notFound', contextModified: undefined });
+    });
+
+    test('works with both pre and post response handlers in correct order', async () => {
+      // Create a new API instance for this test to avoid interference
+      const testApi = new OpenAPIBackend({
+        definition,
+        handlers: {
+          getPets: jest.fn((c: TestContext) => ({ 
+            operationId: 'getPets', 
+            contextModified: c.contextModified 
+          })),
+        },
+      });
+      await testApi.init();
+      
+      const callOrder: string[] = [];
+      
+      const preResponseHandler = jest.fn((c: TestContext) => {
+        callOrder.push('pre');
+        c.contextModified = 'pre-handler executed';
+      });
+      
+      const postResponseHandler = jest.fn((c: TestContext) => {
+        callOrder.push('post');
+        return { ...c.response, postModified: true };
+      });
+      
+      testApi.register({ 
+        preResponseHandler,
+        postResponseHandler
+      });
+
+      const res = await testApi.handleRequest({ method: 'GET', path: '/pets', headers });
+      
+      // Verify correct execution order
+      expect(callOrder).toEqual(['pre', 'post']);
+      
+      // Verify handler calls
+      expect(preResponseHandler).toBeCalled();
+      expect(postResponseHandler).toBeCalled();
+      
+      // Verify response contains modifications from both handlers
+      expect(res).toEqual({ 
+        operationId: 'getPets', 
+        contextModified: 'pre-handler executed', 
+        postModified: true 
+      });
+      
+      // Check arguments passed to postResponseHandler
+      const postContextArg = postResponseHandler.mock.calls.slice(-1)[0][0];
+      expect(postContextArg.request).toMatchObject({ method: 'get', path: '/pets', headers });
+      expect(postContextArg.operation.operationId).toEqual('getPets');
+      expect(postContextArg.contextModified).toEqual('pre-handler executed');
+      expect(postContextArg.response).toEqual({ 
+        operationId: 'getPets', 
+        contextModified: 'pre-handler executed' 
+      });
+    });
+
+    test('preResponseHandler can access operation and request information', async () => {
+      // Create a fresh API instance for this test
+      const testApi = new OpenAPIBackend({
+        definition,
+        handlers: {
+          getPetById: jest.fn((c: TestContext) => ({ 
+            operationId: 'getPetById', 
+            contextModified: c.contextModified 
+          })),
+        },
+      });
+      await testApi.init();
+      
+      const preResponseHandler = jest.fn((c: TestContext) => {
+        c.contextModified = {
+          operationId: c.operation.operationId,
+          method: c.request.method,
+          path: c.request.path
+        };
+      });
+      testApi.register({ preResponseHandler });
+
+      const res = await testApi.handleRequest({ method: 'GET', path: '/pets/123', headers });
+      
+      // Verify handler was called
+      expect(preResponseHandler).toBeCalled();
+      
+      // Verify response contains the expected data
+      expect(res).toEqual({ 
+        operationId: 'getPetById', 
+        contextModified: {
+          operationId: 'getPetById',
+          method: 'get',
+          path: '/pets/123'
+        }
+      });
+      
+      // Check context passed to preResponseHandler
+      const contextArg = preResponseHandler.mock.calls.slice(-1)[0][0];
+      expect(contextArg.request).toMatchObject({ 
+        method: 'get', 
+        path: '/pets/123',
+        params: { id: '123' },
+        headers 
+      });
+      expect(contextArg.operation.operationId).toEqual('getPetById');
+    });
+
+    test('preResponseHandler can return response directly and short-circuit execution', async () => {
+      // Create mock response object with Express-like interface
+      const mockRes = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockImplementation(data => data)
+      };
+      
+      // Create a test API instance with mock handlers
+      const createPetHandler = jest.fn(() => ({ success: true, message: 'Pet created' }));
+      
+      const testApi = new OpenAPIBackend({
+        definition,
+        handlers: {
+          createPet: createPetHandler
+        }
+      });
+      await testApi.init();
+      
+      // Register preResponseHandler that validates pet names and returns a response
+      const preResponseHandler = jest.fn((c, _req, res) => {
+        // Check if this is a createPet operation with a request body
+        if (c.operation.operationId === 'createPet' && c.request.requestBody) {
+          const pet = c.request.requestBody;
+          
+          // Validate that pet name starts with 'A'
+          if (!pet.name || !pet.name.startsWith('A')) {
+            // Return a 400 error response directly, preventing the route handler from executing
+            return res.status(400).json({
+              error: 'Name validation failed', 
+              message: "Pet name must start with 'A'"
+            });
+          }
+        }
+      });
+      
+      testApi.register({ preResponseHandler });
+      
+      // Test with invalid name (doesn't start with 'A')
+      const invalidRes = await testApi.handleRequest(
+        {
+          method: 'POST',
+          path: '/pets',
+          headers,
+          body: { name: 'Buddy', type: 'dog' }
+        },
+        null, // req
+        mockRes // res
+      );
+      
+      // Verify handlers were called correctly
+      expect(preResponseHandler).toBeCalled();
+      expect(createPetHandler).not.toBeCalled();
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({
+        error: 'Name validation failed',
+        message: "Pet name must start with 'A'"
+      });
+      
+      // Reset mocks
+      preResponseHandler.mockClear();
+      createPetHandler.mockClear();
+      mockRes.status.mockClear();
+      mockRes.json.mockClear();
+      
+      // Test with valid name (starts with 'A')
+      const validRes = await testApi.handleRequest(
+        {
+          method: 'POST',
+          path: '/pets',
+          headers,
+          body: { name: 'Astro', type: 'dog' }
+        },
+        null, // req
+        mockRes // res
+      );
+      
+      // Verify handlers were called correctly
+      expect(preResponseHandler).toBeCalled();
+      expect(createPetHandler).toBeCalled();
+      expect(validRes).toEqual({ success: true, message: 'Pet created' });
     });
   });
 });
