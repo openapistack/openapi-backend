@@ -473,6 +473,20 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
         },
         required: ['name'],
       };
+      const petScheduleSchema: OpenAPIV3_1.SchemaObject = {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          title: {
+            type: 'string',
+          },
+          file: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+        required: ['title', 'file'],
+      };
       beforeAll(() => {
         validator = new OpenAPIValidator({
           definition: {
@@ -500,6 +514,19 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                       },
                       'application/xml': {
                         example: '<Pet><name>string</name></Pet>',
+                      },
+                    },
+                  },
+                },
+              },
+              '/pets/schedule': {
+                post: {
+                  operationId: 'createPetSchedule',
+                  responses: { 200: { description: 'ok' } },
+                  requestBody: {
+                    content: {
+                      'multipart/form-data': {
+                        schema: petScheduleSchema,
                       },
                     },
                   },
@@ -623,6 +650,37 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
           headers,
         });
         expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for PUT /pets with multipart/form-data', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets/schedule',
+          method: 'post',
+          body: {
+            title: 'Garfield Schedule',
+          },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation for PUT /pets with multipart/form-data and missing required field', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets/schedule',
+          method: 'post',
+          body: {
+            ages: [1, 2, 3],
+          },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        expect(valid.errors).toHaveLength(1);
+        expect(valid.errors?.[0]?.params?.missingProperty).toBe('title');
       });
 
       test.each([

@@ -564,7 +564,10 @@ export class OpenAPIValidator<D extends Document = Document> {
         OpenAPIV3.RequestBodyObject,
         OpenAPIV3_1.RequestBodyObject
       >;
-      const jsonbody = requestBody.content['application/json'];
+      const jsonbody =
+        requestBody.content['application/json'] ||
+        requestBody.content['multipart/form-data'] ||
+        requestBody.content['application/x-www-form-urlencoded'];
       if (jsonbody && jsonbody.schema) {
         const requestBodySchema: InputValidationSchema = {
           title: 'Request',
@@ -582,6 +585,7 @@ export class OpenAPIValidator<D extends Document = Document> {
 
         // add compiled params schema to schemas for this operation id
         const requestBodyValidator = this.getAjv(ValidationContext.RequestBody);
+        this.removeBinaryPropertiesFromRequired(requestBodySchema);
         validators.push(OpenAPIValidator.compileSchema(requestBodyValidator, requestBodySchema));
       }
     }
@@ -667,6 +671,49 @@ export class OpenAPIValidator<D extends Document = Document> {
     const paramsValidator = this.getAjv(ValidationContext.Params, { coerceTypes: true });
     validators.push(OpenAPIValidator.compileSchema(paramsValidator, paramsSchema));
     return validators;
+  }
+
+  /**
+   * Removes binary properties from the required array in JSON schema, since they cannot be validated.
+   *
+   * @param {any} schema
+   * @memberof OpenAPIValidator
+   */
+  private removeBinaryPropertiesFromRequired(schema: any): void {
+    if (typeof schema !== 'object' || !schema?.required) {
+      return;
+    }
+
+    // If this is a schema with properties
+    if (schema.properties && schema.required && Array.isArray(schema.required)) {
+      // Find properties with binary format to exclude from required
+      const binaryProperties = Object.keys(schema.properties).filter((propName) => {
+        const prop = schema.properties[propName];
+        return prop && prop.type === 'string' && prop.format === 'binary';
+      });
+
+      // Remove binary properties from required array
+      if (binaryProperties.length > 0) {
+        schema.required = schema.required.filter((prop: string) => !binaryProperties.includes(prop));
+      }
+    }
+
+    // Recursively process nested objects and arrays
+    if (schema.properties) {
+      Object.values(schema.properties).forEach((prop) => this.removeBinaryPropertiesFromRequired(prop));
+    }
+
+    // Handle array items
+    if (schema.items) {
+      this.removeBinaryPropertiesFromRequired(schema.items);
+    }
+
+    // Handle allOf, anyOf, oneOf
+    ['allOf', 'anyOf', 'oneOf'].forEach((key) => {
+      if (Array.isArray(schema[key])) {
+        schema[key].forEach((subSchema: any) => this.removeBinaryPropertiesFromRequired(subSchema));
+      }
+    });
   }
 
   /**
