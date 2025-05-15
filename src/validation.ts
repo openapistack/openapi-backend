@@ -676,7 +676,7 @@ export class OpenAPIValidator<D extends Document = Document> {
   /**
    * Removes binary properties from the required array in JSON schema, since they cannot be validated.
    *
-   * @param {any} schema
+   * @param {OpenAPIV3_1.SchemaObject} schema
    * @memberof OpenAPIValidator
    */
   private removeBinaryPropertiesFromRequired(schema: OpenAPIV3_1.SchemaObject): void {
