@@ -3,7 +3,7 @@
 
 import * as _ from 'lodash';
 import Ajv, { Options as AjvOpts, ErrorObject, FormatDefinition, ValidateFunction } from 'ajv';
-import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
+import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import { OpenAPIRouter, Request, Operation } from './router';
 import OpenAPIUtils from './utils';
 import { PickVersionElement, SetMatchType } from './backend';
@@ -679,7 +679,7 @@ export class OpenAPIValidator<D extends Document = Document> {
    * @param {any} schema
    * @memberof OpenAPIValidator
    */
-  private removeBinaryPropertiesFromRequired(schema: any): void {
+  private removeBinaryPropertiesFromRequired(schema: OpenAPIV3_1.SchemaObject): void {
     if (typeof schema !== 'object' || !schema?.required) {
       return;
     }
@@ -688,7 +688,7 @@ export class OpenAPIValidator<D extends Document = Document> {
     if (schema.properties && schema.required && Array.isArray(schema.required)) {
       // Find properties with binary format to exclude from required
       const binaryProperties = Object.keys(schema.properties).filter((propName) => {
-        const prop = schema.properties[propName];
+        const prop: OpenAPIV3_1.SchemaObject = schema.properties[propName];
         return prop && prop.type === 'string' && prop.format === 'binary';
       });
 
@@ -701,11 +701,6 @@ export class OpenAPIValidator<D extends Document = Document> {
     // Recursively process nested objects and arrays
     if (schema.properties) {
       Object.values(schema.properties).forEach((prop) => this.removeBinaryPropertiesFromRequired(prop));
-    }
-
-    // Handle array items
-    if (schema.items) {
-      this.removeBinaryPropertiesFromRequired(schema.items);
     }
 
     // Handle allOf, anyOf, oneOf
