@@ -684,15 +684,12 @@ export class OpenAPIValidator<D extends Document = Document> {
       return;
     }
 
-    // If this is a schema with properties
     if (schema.properties && schema.required && Array.isArray(schema.required)) {
-      // Find properties with binary format to exclude from required
       const binaryProperties = Object.keys(schema.properties).filter((propName) => {
         const prop: OpenAPIV3_1.SchemaObject = schema.properties[propName];
         return prop && prop.type === 'string' && prop.format === 'binary';
       });
 
-      // Remove binary properties from required array
       if (binaryProperties.length > 0) {
         schema.required = schema.required.filter((prop: string) => !binaryProperties.includes(prop));
       }
@@ -703,7 +700,6 @@ export class OpenAPIValidator<D extends Document = Document> {
       Object.values(schema.properties).forEach((prop) => this.removeBinaryPropertiesFromRequired(prop));
     }
 
-    // Handle allOf, anyOf, oneOf
     ['allOf', 'anyOf', 'oneOf'].forEach((key) => {
       if (Array.isArray(schema[key])) {
         schema[key].forEach((subSchema: any) => this.removeBinaryPropertiesFromRequired(subSchema));
