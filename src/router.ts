@@ -297,7 +297,8 @@ export class OpenAPIRouter<D extends Document = Document> {
     const cookies = cookie.parse(_.flatten([cookieHeader]).join('; '));
 
     // parse query
-    const queryString = typeof req.query === 'string' ? req.query.replace('?', '') : req.path.split('?')[1];
+    const qs = typeof req.query === 'object' ? new URLSearchParams(req.query).toString() : req.query;
+    const queryString = typeof qs === 'string' ? qs.replace('?', '') : req.path.split('?')[1];
     const query = typeof req.query === 'object' ? _.cloneDeep(req.query) : parseQuery(queryString);
 
     // normalize
