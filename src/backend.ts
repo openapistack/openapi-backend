@@ -139,6 +139,10 @@ export class OpenAPIBackend<D extends Document = Document> {
     '400',
     'validationFail',
     'unauthorizedHandler',
+    'preRoutingHandler',
+    'postRoutingHandler',
+    'postSecurityHandler',
+    'preOperationHandler',
     'postResponseHandler',
   ];
 
@@ -310,10 +314,22 @@ export class OpenAPIBackend<D extends Document = Document> {
       // parse request
       context.request = this.router.parseRequest(req);
 
+      // preRoutingHandler
+      const preRoutingHandler = this.handlers['preRoutingHandler'];
+      if (preRoutingHandler) {
+        await preRoutingHandler(context as Context<D>, ...handlerArgs);
+      }
+
       // match operation (routing)
       try {
         context.operation = this.router.matchOperation(req, true);
       } catch (err) {
+        // postRoutingHandler on routing failure
+        const postRoutingHandler = this.handlers['postRoutingHandler'];
+        if (postRoutingHandler) {
+          await postRoutingHandler(context as Context<D>, ...handlerArgs);
+        }
+
         let handler = this.handlers['404'] || this.handlers['notFound'];
         if (err instanceof Error && err.message.startsWith('405')) {
           // 405 method not allowed
@@ -329,6 +345,12 @@ export class OpenAPIBackend<D extends Document = Document> {
 
       // parse request again now with matched operation
       context.request = this.router.parseRequest(req, context.operation);
+
+      // postRoutingHandler on routing success
+      const postRoutingHandler = this.handlers['postRoutingHandler'];
+      if (postRoutingHandler) {
+        await postRoutingHandler(context as Context<D>, ...handlerArgs);
+      }
 
       // get security requirements for the matched operation
       // global requirements are already included in the router
@@ -398,6 +420,12 @@ export class OpenAPIBackend<D extends Document = Document> {
         ...securityHandlerResults,
       };
 
+      // postSecurityHandler
+      const postSecurityHandler = this.handlers['postSecurityHandler'];
+      if (postSecurityHandler) {
+        await postSecurityHandler(context as Context<D>, ...handlerArgs);
+      }
+
       // call unauthorizedHandler handler if auth fails
       if (!authorized && securityRequirements.length > 0) {
         const unauthorizedHandler = this.handlers['unauthorizedHandler'];
@@ -430,9 +458,15 @@ export class OpenAPIBackend<D extends Document = Document> {
         }
       }
 
+      // preOperationHandler – runs just before the operation handler
+      const preOperationHandler = this.handlers['preOperationHandler'];
+      if (preOperationHandler) {
+        await preOperationHandler(context as Context<D>, ...handlerArgs);
+      }
+
       // get operation handler
-      const routeHandler = this.handlers[operationId];
-      if (!routeHandler) {
+      const operationHandler = this.handlers[operationId];
+      if (!operationHandler) {
         // 501 not implemented
         const notImplementedHandler = this.handlers['501'] || this.handlers['notImplemented'];
         if (!notImplementedHandler) {
@@ -442,7 +476,7 @@ export class OpenAPIBackend<D extends Document = Document> {
       }
 
       // handle route
-      return routeHandler(context as Context<D>, ...handlerArgs);
+      return operationHandler(context as Context<D>, ...handlerArgs);
     }).bind(this)();
 
     // post response handler
