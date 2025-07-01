@@ -2,6 +2,7 @@
 
 import * as path from 'path';
 import { OpenAPIBackend, Context } from './backend';
+import type { Request } from './router';
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 
 const testsDir = path.join(__dirname, '..', '__tests__');
@@ -766,6 +767,122 @@ describe('OpenAPIBackend', () => {
       const { status, mock } = api.mockResponseForOperation('createPet');
       expect(status).toBe(201);
       expect(mock).toMatchObject(exampleGarfield);
+    });
+  });
+
+  describe('lifecycle handlers', () => {
+    const definition = {
+      openapi: '3.1.0',
+      info: {
+        title: 'api',
+        version: '1.0.0',
+      },
+      paths: {
+        '/pets': {
+          get: {
+            operationId: 'getPets',
+            responses: {
+              200: { description: 'ok' },
+            },
+          },
+        },
+      },
+      security: [
+        {
+          basicAuth: [],
+        },
+      ],
+      components: {
+        securitySchemes: {
+          basicAuth: {
+            type: 'http',
+            scheme: 'basic',
+          },
+        },
+      },
+    } as OpenAPIV3_1.Document;
+
+    let api: OpenAPIBackend<OpenAPIV3_1.Document>;
+    let request: Request;
+    let resultOrder: string[];
+
+    beforeEach(async () => {
+      api = new OpenAPIBackend({
+        definition,
+      });
+
+      resultOrder = [];
+      request = {
+        method: 'get',
+        path: '/pets',
+        headers: {},
+      };
+
+      const addToResultOrder = (name: string) => jest.fn(async () => resultOrder.push(name));
+
+      api.register('getPets', addToResultOrder('operationHandler'));
+      api.register('notFound', addToResultOrder('notFoundHandler'));
+      api.register('methodNotAllowed', addToResultOrder('methodNotAllowedHandler'));
+      api.register('unauthorizedHandler', addToResultOrder('unauthorizedHandler'));
+      api.register('preRoutingHandler', addToResultOrder('preRoutingHandler'));
+      api.register('postRoutingHandler', addToResultOrder('postRoutingHandler'));
+      api.register('postSecurityHandler', addToResultOrder('postSecurityHandler'));
+      api.register('preOperationHandler', addToResultOrder('preOperationHandler'));
+      api.register('postResponseHandler', addToResultOrder('postResponseHandler'));
+      api.registerSecurityHandler('basicAuth', () => true);
+
+      await api.init();
+    });
+
+    test('should execute handlers in the correct order for a valid request', async () => {
+      await api.handleRequest(request);
+
+      expect(resultOrder).toEqual([
+        'preRoutingHandler',
+        'postRoutingHandler',
+        'postSecurityHandler',
+        'preOperationHandler',
+        'operationHandler',
+        'postResponseHandler',
+      ]);
+    });
+
+    test('should execute handlers in the correct order when route is not found', async () => {
+      request.path = '/unknown';
+      await api.handleRequest(request);
+
+      expect(resultOrder).toEqual([
+        'preRoutingHandler',
+        'postRoutingHandler',
+        'notFoundHandler',
+        'postResponseHandler',
+      ]);
+    });
+
+    test('should execute handlers in the correct order when method is not allowed', async () => {
+      request.method = 'post'; // No POST handler defined in this path
+      await api.handleRequest(request);
+
+      expect(resultOrder).toEqual([
+        'preRoutingHandler',
+        'postRoutingHandler',
+        'methodNotAllowedHandler',
+        'postResponseHandler',
+      ]);
+    });
+
+    test('should execute handlers in the correct order when unauthorized', async () => {
+      api.registerSecurityHandler('basicAuth', () => false);
+
+      await api.handleRequest(request);
+
+      expect(resultOrder).toEqual([
+        'preRoutingHandler',
+        'postRoutingHandler',
+        'postSecurityHandler',
+        'unauthorizedHandler',
+        'postResponseHandler',
+      ]);
     });
   });
 });
