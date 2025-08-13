@@ -322,19 +322,10 @@ export class OpenAPIRouter<D extends Document = Document> {
           if (parameter) {
             if (parameter.content && parameter.content['application/json']) {
               query[queryParam] = JSON.parse(query[queryParam]);
-            } else if (parameter.explode === false && queryString) {
-              let commaQueryString = queryString.replace(/%2C/g, ',');
-              if (parameter.style === 'spaceDelimited') {
-                commaQueryString = commaQueryString.replace(/ /g, ',').replace(/%20/g, ',');
-              }
-              if (parameter.style === 'pipeDelimited') {
-                commaQueryString = commaQueryString.replace(/\|/g, ',').replace(/%7C/g, ',');
-              }
-              // use comma parsing e.g. &a=1,2,3
-              const commaParsed = parseQuery(commaQueryString, { comma: true });
-              query[queryParam] = commaParsed[queryParam];
             } else if (parameter.explode === false) {
-              let decoded = query[queryParam].replace(/%2C/g, ',');
+              // Handle parameter parsing for non-exploded arrays
+              const value = Array.isArray(query[queryParam]) ? query[queryParam][0] : query[queryParam];
+              let decoded = value.replace(/%2C/g, ',');
               if (parameter.style === 'spaceDelimited') {
                 decoded = decoded.replace(/ /g, ',').replace(/%20/g, ',');
               }
