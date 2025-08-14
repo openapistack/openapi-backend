@@ -16,7 +16,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.21.0",
     "morgan": "^1.9.1",
     "openapi-backend": "^5.2.0",
     "source-map-support": "^0.5.10"
