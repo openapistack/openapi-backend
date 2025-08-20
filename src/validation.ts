@@ -3,7 +3,7 @@
 
 import * as _ from 'lodash';
 import Ajv, { Options as AjvOpts, ErrorObject, FormatDefinition, ValidateFunction } from 'ajv';
-import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
+import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import { OpenAPIRouter, Request, Operation } from './router';
 import OpenAPIUtils from './utils';
 import { PickVersionElement, SetMatchType } from './backend';
@@ -564,7 +564,10 @@ export class OpenAPIValidator<D extends Document = Document> {
         OpenAPIV3.RequestBodyObject,
         OpenAPIV3_1.RequestBodyObject
       >;
-      const jsonbody = requestBody.content['application/json'];
+      const jsonbody =
+        requestBody.content['application/json'] ||
+        requestBody.content['multipart/form-data'] ||
+        requestBody.content['application/x-www-form-urlencoded'];
       if (jsonbody && jsonbody.schema) {
         const requestBodySchema: InputValidationSchema = {
           title: 'Request',
@@ -582,6 +585,7 @@ export class OpenAPIValidator<D extends Document = Document> {
 
         // add compiled params schema to schemas for this operation id
         const requestBodyValidator = this.getAjv(ValidationContext.RequestBody);
+        this.removeBinaryPropertiesFromRequired(requestBodySchema);
         validators.push(OpenAPIValidator.compileSchema(requestBodyValidator, requestBodySchema));
       }
     }
@@ -667,6 +671,40 @@ export class OpenAPIValidator<D extends Document = Document> {
     const paramsValidator = this.getAjv(ValidationContext.Params, { coerceTypes: true });
     validators.push(OpenAPIValidator.compileSchema(paramsValidator, paramsSchema));
     return validators;
+  }
+
+  /**
+   * Removes binary properties from the required array in JSON schema, since they cannot be validated.
+   *
+   * @param {OpenAPIV3_1.SchemaObject} schema
+   * @memberof OpenAPIValidator
+   */
+  private removeBinaryPropertiesFromRequired(schema: OpenAPIV3_1.SchemaObject): void {
+    if (typeof schema !== 'object' || !schema?.required) {
+      return;
+    }
+
+    if (schema.properties && schema.required && Array.isArray(schema.required)) {
+      const binaryProperties = Object.keys(schema.properties).filter((propName) => {
+        const prop: OpenAPIV3_1.SchemaObject = schema.properties[propName];
+        return prop && prop.type === 'string' && prop.format === 'binary';
+      });
+
+      if (binaryProperties.length > 0) {
+        schema.required = schema.required.filter((prop: string) => !binaryProperties.includes(prop));
+      }
+    }
+
+    // Recursively process nested objects and arrays
+    if (schema.properties) {
+      Object.values(schema.properties).forEach((prop) => this.removeBinaryPropertiesFromRequired(prop));
+    }
+
+    ['allOf', 'anyOf', 'oneOf'].forEach((key) => {
+      if (Array.isArray(schema[key])) {
+        schema[key].forEach((subSchema: any) => this.removeBinaryPropertiesFromRequired(subSchema));
+      }
+    });
   }
 
   /**
