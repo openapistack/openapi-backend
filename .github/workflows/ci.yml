@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "16"
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.8"
       - uses: aws-actions/setup-sam@v2
