@@ -1,7 +1,7 @@
 {
   "name": "openapi-backend",
   "description": "Build, Validate, Route, Authenticate and Mock using OpenAPI definitions. Framework-agnostic",
-  "version": "5.15.0",
+  "version": "5.16.0",
   "author": "Viljami Kuosmanen <viljami@viljami.io>",
   "funding": "https://github.com/sponsors/anttiviljami",
   "license": "MIT",
@@ -78,6 +78,6 @@
     "test": "NODE_ENV=test jest"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=20.0.0"
   }
 }

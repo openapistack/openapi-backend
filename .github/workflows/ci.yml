@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: ["main"]
 
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
+
 jobs:
   test:
     name: Test
@@ -27,9 +31,9 @@ jobs:
           - examples/aws-cdk
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: "16"
+          node-version: "20"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.8"
@@ -55,11 +59,9 @@ jobs:
       - test
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: "18"
+          node-version: "24"
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm publish || true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm publish
