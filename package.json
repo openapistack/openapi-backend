@@ -51,7 +51,7 @@
     "mock-json-schema": "^1.0.7",
     "openapi-schema-validator": "^12.0.0",
     "openapi-types": "^12.0.2",
-    "qs": "^6.9.3"
+    "qs": "^6.15.0"
   },
   "devDependencies": {
     "@types/cookie": "^1.0.0",
@@ -59,7 +59,7 @@
     "@types/json-schema": "^7.0.7",
     "@types/lodash": "^4.14.122",
     "@types/node": "^20.0.0",
-    "@types/qs": "^6.9.1",
+    "@types/qs": "^6.14.0",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "eslint": "^8.51.0",
