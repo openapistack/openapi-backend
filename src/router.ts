@@ -321,7 +321,10 @@ export class OpenAPIRouter<D extends Document = Document> {
 
           if (parameter) {
             if (parameter.content && parameter.content['application/json']) {
-              query[queryParam] = JSON.parse(query[queryParam]);
+              const rawValue = query[queryParam];
+              if (typeof rawValue === 'string') {
+                query[queryParam] = JSON.parse(rawValue);
+              }
             } else if (parameter.explode === false) {
               // Handle parameter parsing for non-exploded arrays
               const value = Array.isArray(query[queryParam]) ? query[queryParam][0] : query[queryParam];
