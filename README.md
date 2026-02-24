@@ -8,6 +8,7 @@
 [![npm downloads](https://img.shields.io/npm/dw/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
 [![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend?activeTab=dependencies)
 ![npm type definitions](https://img.shields.io/npm/types/openapi-backend.svg)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/openapistack/openapi-backend)
 [![Buy me a coffee](https://img.shields.io/badge/donate-buy%20me%20a%20coffee-orange)](https://buymeacoff.ee/anttiviljami)
 
 <p align="center"><b>Build, Validate, Route, Authenticate, and Mock using OpenAPI definitions.</b></p>
