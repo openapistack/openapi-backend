@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "koa": "^2.15.4",
+    "koa": "^3.1.2",
     "koa-bodyparser": "^4.2.1",
     "openapi-backend": "^5.2.0"
   },
