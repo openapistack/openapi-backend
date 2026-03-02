@@ -68,6 +68,10 @@ export type Handler<
 export type HandlerMap = { [operationId: string]: Handler | undefined };
 
 export type ContextPredicate = (context: Context, ...args: any[]) => boolean;
+/**
+ * @deprecated Use ContextPredicate instead.
+ */
+export type BoolPredicate = ContextPredicate;
 
 /**
  * The different possibilities for set matching.
