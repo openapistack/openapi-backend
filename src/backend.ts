@@ -67,7 +67,7 @@ export type Handler<
  */
 export type HandlerMap = { [operationId: string]: Handler | undefined };
 
-export type BoolPredicate = (context: Context, ...args: any[]) => boolean;
+export type ContextPredicate = (context: Context, ...args: any[]) => boolean;
 
 /**
  * The different possibilities for set matching.
@@ -92,7 +92,7 @@ export interface Options<D extends Document = Document> {
   apiRoot?: string;
   strict?: boolean;
   quick?: boolean;
-  validate?: boolean | BoolPredicate;
+  validate?: boolean | ContextPredicate;
   ajvOpts?: AjvOpts;
   customizeAjv?: AjvCustomizer;
   handlers?: HandlerMap & {
@@ -121,7 +121,7 @@ export class OpenAPIBackend<D extends Document = Document> {
 
   public strict: boolean;
   public quick: boolean;
-  public validate: boolean | BoolPredicate;
+  public validate: boolean | ContextPredicate;
   public ignoreTrailingSlashes: boolean;
 
   public ajvOpts: AjvOpts;
@@ -159,7 +159,7 @@ export class OpenAPIBackend<D extends Document = Document> {
    * @param {string} opts.apiRoot - the root URI of the api. all paths are matched relative to apiRoot
    * @param {boolean} opts.strict - strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
    * @param {boolean} opts.quick - quick startup, attempts to optimise startup; might break things (default: false)
-   * @param {boolean} opts.validate - whether to validate requests with Ajv (default: true)
+   * @param {boolean | ContextPredicate} opts.validate - whether to validate requests with Ajv (default: true)
    * @param {boolean} opts.ignoreTrailingSlashes - whether to ignore trailing slashes when routing (default: true)
    * @param {boolean} opts.ajvOpts - default ajv opts to pass to the validator
    * @param {boolean} opts.coerceTypes - enable coerce typing of request path and query parameters. Requires validate to be enabled. (default: false)
@@ -182,7 +182,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     this.inputDocument = optsWithDefaults.definition;
     this.strict = !!optsWithDefaults.strict;
     this.quick = !!optsWithDefaults.quick;
-    this.validate = !!optsWithDefaults.validate;
+    this.validate = optsWithDefaults.validate ?? true;
     this.ignoreTrailingSlashes = !!optsWithDefaults.ignoreTrailingSlashes;
     this.handlers = { ...optsWithDefaults.handlers }; // Copy to avoid mutating passed object
     this.securityHandlers = { ...optsWithDefaults.securityHandlers }; // Copy to avoid mutating passed object
