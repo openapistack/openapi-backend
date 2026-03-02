@@ -59,6 +59,22 @@ interface StatusBasedResponseValidatorsFunctionMap {
   [statusCode: string]: ValidateFunction;
 }
 
+// TODO: The requestBody can contain custom headers
+// https://swagger.io/docs/specification/v3_0/describing-request-body/multipart-requests/#specifying-custom-headers
+interface RequestBodyValidator {
+  requestBody?: ValidateFunction;
+  // customHeaders?: ValidateFunction;
+}
+
+interface RequestContentTypeValidateFunctionMap {
+  [contentType: string]: RequestBodyValidator;
+}
+
+interface RequestValidator {
+  requestBodyValidators: RequestContentTypeValidateFunctionMap;
+  otherParameters?: ValidateFunction;
+}
+
 export enum ValidationContext {
   RequestBody = 'requestBodyValidator',
   Params = 'paramsValidator',
@@ -128,7 +144,7 @@ export class OpenAPIValidator<D extends Document = Document> {
   public customizeAjv: AjvCustomizer | undefined;
   public coerceTypes: boolean;
 
-  public requestValidators: { [operationId: string]: ValidateFunction[] | null };
+  public requestValidators: { [operationId: string]: RequestValidator | null };
   public responseValidators: { [operationId: string]: ValidateFunction | null };
   public statusBasedResponseValidators: { [operationId: string]: StatusBasedResponseValidatorsFunctionMap | null };
   public responseHeadersValidators: { [operationId: string]: ResponseHeadersValidateFunctionMap | null };
@@ -247,7 +263,7 @@ export class OpenAPIValidator<D extends Document = Document> {
 
     // get pre-compiled ajv schemas for operation
     const { operationId } = operation;
-    const validators = this.getRequestValidatorsForOperation(operationId) || [];
+    const validators = this.getRequestValidatorsForOperation(operationId);
 
     // build a parameter object to validate
     const { params, query, headers, cookies, requestBody } = this.router.parseRequest(req, operation);
@@ -296,7 +312,7 @@ export class OpenAPIValidator<D extends Document = Document> {
               keyword: 'parse',
               instancePath: '',
               schemaPath: '#/requestBody',
-              params: [],
+              params: {},
               message: err.message,
             });
           }
@@ -304,16 +320,36 @@ export class OpenAPIValidator<D extends Document = Document> {
       }
     }
 
-    if (typeof requestBody === 'object' || headers['content-type'] === 'application/json') {
-      // include request body in validation if an object is provided
-      parameters.requestBody = requestBody;
+    // validate requestBody
+    const opRequestBody = operation.requestBody as PickVersionElement<D, OpenAPIV3.RequestBodyObject, OpenAPIV3_1.RequestBodyObject>;
+    const mediaType = matchMediaType(Object.keys(validators.requestBodyValidators), headers['content-type']);
+    const isBodyRequired = opRequestBody && opRequestBody.required;
+    if (isBodyRequired && !requestBody) {
+      result.errors.push({
+        keyword: 'required',
+        instancePath: '',
+        schemaPath: '#/required',
+        params: {},
+        message: 'requestBody is required',
+      });
+    }
+    if (mediaType in validators.requestBodyValidators) {
+      const validator = validators.requestBodyValidators[mediaType];
+      if (validator) {
+        if (typeof validator.requestBody === 'function') {
+          validator.requestBody(requestBody);
+        }
+        if (validator.requestBody.errors) {
+          result.errors.push(...validator.requestBody.errors);
+        }
+      }
     }
 
-    // validate parameters against each pre-compiled schema
-    for (const validate of validators) {
-      validate(parameters);
-      if (validate.errors) {
-        result.errors.push(...validate.errors);
+    // validate path, header, query, cookie parameters
+    if (validators.otherParameters) {
+      validators.otherParameters(parameters);
+      if (validators.otherParameters.errors) {
+        result.errors.push(...validators.otherParameters.errors);
       } else if (this.coerceTypes) {
         result.coerced.query = parameters.query;
         result.coerced.params = parameters.path;
@@ -461,7 +497,7 @@ export class OpenAPIValidator<D extends Document = Document> {
    *
    * @param {string} operationId
    * @returns {*}  {(ValidateFunction[] | null)}
-   * @memberof OpenAPIValidator
+   * @memberof RequestValidator
    */
   public getRequestValidatorsForOperation(operationId: string) {
     if (this.requestValidators[operationId] === undefined) {
@@ -548,49 +584,39 @@ export class OpenAPIValidator<D extends Document = Document> {
    * @returns {*}  {(ValidateFunction[] | null)}
    * @memberof OpenAPIValidator
    */
-  public buildRequestValidatorsForOperation(operation: Operation<D>): ValidateFunction[] | null {
+  public buildRequestValidatorsForOperation(operation: Operation<D>): RequestValidator {
+    // validator functions for this operation
+    const validators: RequestValidator = {
+      requestBodyValidators: {}
+    };
+
     if (!operation?.operationId) {
-      // no operationId, don't register a validator
-      return null;
+      // no operationId
+      return validators;
     }
 
-    // validator functions for this operation
-    const validators: ValidateFunction[] = [];
-
-    // schema for operation requestBody
     if (operation.requestBody) {
-      const requestBody = operation.requestBody as PickVersionElement<
-        D,
-        OpenAPIV3.RequestBodyObject,
-        OpenAPIV3_1.RequestBodyObject
-      >;
-      const jsonbody =
-        requestBody.content['application/json'] ||
-        requestBody.content['multipart/form-data'] ||
-        requestBody.content['application/x-www-form-urlencoded'];
-      if (jsonbody && jsonbody.schema) {
-        const requestBodySchema: InputValidationSchema = {
-          title: 'Request',
-          type: 'object',
-          additionalProperties: true,
-          properties: {
-            requestBody: jsonbody.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>,
-          },
-        };
-        requestBodySchema.required = [];
-        if (_.keys(requestBody.content).length === 1) {
-          // if application/json is the only specified format, it's required
-          requestBodySchema.required.push('requestBody');
-        }
+      const requestBody = operation.requestBody as PickVersionElement<D, OpenAPIV3.RequestBodyObject, OpenAPIV3_1.RequestBodyObject>;
+      const required = requestBody.required ? [ 'requestBody' ] : [];
+
+      for (const [contentType, contentBodyVx] of Object.entries(requestBody.content)) {
+        const contentBody = contentBodyVx as PickVersionElement<D, OpenAPIV3.MediaTypeObject, OpenAPIV3_1.MediaTypeObject>;
+        const requestBodySchema = contentBody.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>;
 
         // add compiled params schema to schemas for this operation id
         const requestBodyValidator = this.getAjv(ValidationContext.RequestBody);
         this.removeBinaryPropertiesFromRequired(requestBodySchema);
-        validators.push(OpenAPIValidator.compileSchema(requestBodyValidator, requestBodySchema));
+
+        if (!validators.requestBodyValidators) {
+          validators.requestBodyValidators = {} as RequestContentTypeValidateFunctionMap;
+        }
+        validators.requestBodyValidators[contentType] = {
+          requestBody: OpenAPIValidator.compileSchema(requestBodyValidator, requestBodySchema || {})
+        }
       }
     }
 
-    // schema for operation parameters in: path,query,header,cookie
+    // generate parameters validator for this operation
     const paramsSchema: InputValidationSchema = {
       title: 'Request',
       type: 'object',
@@ -669,7 +695,7 @@ export class OpenAPIValidator<D extends Document = Document> {
 
     // add compiled params schema to requestValidators for this operation id
     const paramsValidator = this.getAjv(ValidationContext.Params, { coerceTypes: true });
-    validators.push(OpenAPIValidator.compileSchema(paramsValidator, paramsSchema));
+    validators.otherParameters = OpenAPIValidator.compileSchema(paramsValidator, paramsSchema);
     return validators;
   }
 
@@ -958,4 +984,24 @@ export class OpenAPIValidator<D extends Document = Document> {
     }
     return ajv;
   }
+}
+
+function matchMediaType(mediaTypes: string[], contentType?: string) {
+  if (!mediaTypes.length) {
+    return '';
+  }
+  // NOTE: There is nothing in the OpenAPI spec that defaults the media-type
+  // if one is not provided. Currently, if there is one media type defined
+  // for the requestBody, then the first is picked. This is for compatibility.
+  // A strong argument could be made for returning "415 Unsupported Media Type",
+  // or at least an option to enable strict media type support.
+  if (!contentType && mediaTypes.length === 1) {
+    return mediaTypes[0];
+  }
+  // TODO: Implement matching on RFC 7231 media-range, e.g. "image/*", "*/*"
+  // see: https://swagger.io/specification/#request-body-object
+  if (mediaTypes.includes(contentType)) {
+    return contentType;
+  }
+  return '';
 }
