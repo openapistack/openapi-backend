@@ -491,6 +491,80 @@ describe('OpenAPIBackend', () => {
         expect(mockHandler).toBeCalled();
       });
     });
+
+    describe('validation option', () => {
+      const validationDefinition: OpenAPIV3_1.Document = {
+        ...meta,
+        paths: {
+          '/pets/{id}': {
+            get: {
+              operationId: 'getPetById',
+              responses,
+              parameters: [
+                {
+                  name: 'id',
+                  in: 'path',
+                  required: true,
+                  schema: {
+                    type: 'integer',
+                  },
+                },
+              ],
+            },
+          },
+        },
+      };
+
+      test('uses validate predicate and skips validation when predicate returns false', async () => {
+        let seenContext: Context | undefined;
+        let seenArg: string | undefined;
+        const validate = jest.fn((context: Context, arg: string) => {
+          seenContext = context;
+          seenArg = arg;
+          return false;
+        });
+        const api = new OpenAPIBackend({ definition: validationDefinition, validate });
+        const operationHandler = jest.fn(() => 'operation-response');
+        const validationFailHandler = jest.fn(() => 'validation-failed');
+        api.register('getPetById', operationHandler);
+        api.register('validationFail', validationFailHandler);
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets/not-an-integer',
+          headers: {},
+        };
+        const res = await api.handleRequest(request, 'handler-arg');
+
+        expect(validate).toBeCalledTimes(1);
+        expect(seenContext?.operation.operationId).toBe('getPetById');
+        expect(seenArg).toBe('handler-arg');
+        expect(validationFailHandler).not.toBeCalled();
+        expect(operationHandler).toBeCalledTimes(1);
+        expect(res).toBe('operation-response');
+      });
+
+      test('runs validation when validate predicate returns true', async () => {
+        const api = new OpenAPIBackend({ definition: validationDefinition, validate: () => true });
+        const operationHandler = jest.fn(() => 'operation-response');
+        const validationFailHandler = jest.fn(() => 'validation-failed');
+        api.register('getPetById', operationHandler);
+        api.register('validationFail', validationFailHandler);
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets/not-an-integer',
+          headers: {},
+        };
+        const res = await api.handleRequest(request);
+
+        expect(validationFailHandler).toBeCalledTimes(1);
+        expect(operationHandler).not.toBeCalled();
+        expect(res).toBe('validation-failed');
+      });
+    });
   });
 
   describe('types coercion', () => {
