@@ -327,7 +327,15 @@ export class OpenAPIRouter<D extends Document = Document> {
               }
             } else if (parameter.explode === false) {
               // Handle parameter parsing for non-exploded arrays
-              const value = Array.isArray(query[queryParam]) ? query[queryParam][0] : query[queryParam];
+              const rawValue = query[queryParam];
+              if (Array.isArray(rawValue) && rawValue.length > 1) {
+                // param has already been decoded (type coercion flow)
+                continue;
+              }
+              const value = Array.isArray(rawValue) ? rawValue[0] : rawValue;
+              if (typeof value !== 'string') {
+                continue;
+              }
               let decoded = value.replace(/%2C/g, ',');
               if (parameter.style === 'spaceDelimited') {
                 decoded = decoded.replace(/ /g, ',').replace(/%20/g, ',');
