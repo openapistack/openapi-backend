@@ -336,6 +336,38 @@ describe('OpenAPIRouter', () => {
       const parsedRequest = api.parseRequest(request, operation);
       expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
     });
+
+    test('parses already-coerced array query param with multiple string elements', () => {
+      const request = { path: '/pets', query: { keywords: ['hello', 'world'] }, method: 'get', headers };
+      const operation = api.getOperation('createPet')!;
+      operation.parameters = [
+        {
+          in: 'query',
+          name: 'keywords',
+          style: 'spaceDelimited',
+          explode: false,
+        },
+      ];
+
+      const parsedRequest = api.parseRequest(request as any, operation);
+      expect(parsedRequest.query).toEqual({ keywords: ['hello', 'world'] });
+    });
+
+    test('parses already-coerced array query param with a single non-string element', () => {
+      const request = { path: '/pets', query: { limit: [10] }, method: 'get', headers };
+      const operation = api.getOperation('createPet')!;
+      operation.parameters = [
+        {
+          in: 'query',
+          name: 'limit',
+          style: 'spaceDelimited',
+          explode: false,
+        },
+      ];
+
+      const parsedRequest = api.parseRequest(request as any, operation);
+      expect(parsedRequest.query).toEqual({ limit: [10] });
+    });
   });
 
   describe('.matchOperation', () => {
