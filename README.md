@@ -15,6 +15,8 @@
 
 <p align="center">OpenAPI Backend is a Framework-agnostic middleware tool for building beautiful APIs with <a href="https://github.com/OAI/OpenAPI-Specification">OpenAPI Specification</a>.</p>
 
+<p align="center"><i>Battle-tested in production. <a href="https://openapistack.co/users/">See who uses openapi-stack →</a></i></p>
+
 ## Features
 
 - [x] Build APIs by describing them in [OpenAPI specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md)
