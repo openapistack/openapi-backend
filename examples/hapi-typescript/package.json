@@ -16,7 +16,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@hapi/hapi": "^20.1.3",
+    "@hapi/hapi": "^21.4.9",
     "openapi-backend": "^5.2.0",
     "source-map-support": "^0.5.10"
   },
