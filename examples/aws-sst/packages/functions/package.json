@@ -13,7 +13,7 @@
   "devDependencies": {
     "@types/node": "^20.8.2",
     "@types/aws-lambda": "^8.10.123",
-    "vitest": "^0.34.6",
+    "vitest": "^4.1.0",
     "sst": "^2.26.11"
   }
 }
