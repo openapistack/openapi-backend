@@ -518,6 +518,30 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                     },
                   },
                 },
+                patch: {
+                  operationId: 'patchPet',
+                  responses: { 200: { description: 'ok' } },
+                  requestBody: {
+                    required: true,
+                    content: {
+                      'application/json': {
+                        schema: petSchema,
+                      },
+                      'multipart/form-data': {
+                        schema: {
+                          type: 'object',
+                          additionalProperties: false,
+                          properties: {
+                            image: {
+                              type: 'string'
+                            }
+                          },
+                          required: ['image']
+                        },
+                      },
+                    },
+                  },
+                },
               },
               '/pets/schedule': {
                 post: {
@@ -652,7 +676,36 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
         expect(valid.errors).toBeFalsy();
       });
 
-      test('passes validation for PUT /pets with multipart/form-data', async () => {
+      test('fails validation for PATCH form-data to /pets when missing required field', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'patch',
+          body: {},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        expect(valid.errors).toHaveLength(1);
+        expect(valid.errors && valid.errors[0].keyword).toBe('required');
+      });
+
+      test('passes validation for PATCH form-data to /pets', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'patch',
+          body: {
+            image: 'JPEG'
+          },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for POST /pets with multipart/form-data', async () => {
         const valid = validator.validateRequest({
           path: '/pets/schedule',
           method: 'post',
@@ -667,7 +720,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
         expect(valid.errors).toBeFalsy();
       });
 
-      test('fails validation for PUT /pets with multipart/form-data and missing required field', async () => {
+      test('fails validation for POST /pets with multipart/form-data and missing required field', async () => {
         const valid = validator.validateRequest({
           path: '/pets/schedule',
           method: 'post',
@@ -681,6 +734,22 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
 
         expect(valid.errors).toHaveLength(1);
         expect(valid.errors?.[0]?.params?.missingProperty).toBe('title');
+      });
+
+      test('fails validation for PATCH /pets when required body is not provided', async () => {
+        for (const contentType of ['multipart/form-data', 'application/json']) {
+          const valid = validator.validateRequest({
+            path: '/pets',
+            method: 'patch',
+            body: null,
+            headers: {
+              'Content-Type': contentType,
+            },
+          });
+          expect(valid.errors).toHaveLength(2);
+          expect(valid.errors?.[0]?.message).toBe('requestBody is required');
+          expect(valid.errors?.[1]?.message).toBe('must be object');
+        }
       });
 
       test.each([
