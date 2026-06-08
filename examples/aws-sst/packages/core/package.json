@@ -9,7 +9,7 @@
     "build": "pnpm openapi read ./openapi.yml --json > src/openapi.json"
   },
   "devDependencies": {
-    "vitest": "^0.34.6",
+    "vitest": "^3.2.6",
     "@types/node": "^20.8.2",
     "sst": "^2.26.11",
     "openapicmd": "^1.17.0"
