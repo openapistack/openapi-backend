@@ -8,3 +8,15 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+  # The examples/ projects are not actively maintained. Suppress both version
+  # and security update PRs for them. Security updates honor this block because
+  # `directories` matches the example manifest locations and no `target-branch`
+  # is set; `ignore: "*"` then opts every dependency out of updates.
+  - package-ecosystem: "npm"
+    directories:
+      - "/examples/*"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 0
+    ignore:
+      - dependency-name: "*"
