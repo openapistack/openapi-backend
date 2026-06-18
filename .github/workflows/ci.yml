@@ -30,7 +30,7 @@ jobs:
           - examples/aws-sam
           - examples/aws-cdk
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version: "20"
@@ -58,7 +58,7 @@ jobs:
     needs:
       - test
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v6
         with:
           node-version: "24"
