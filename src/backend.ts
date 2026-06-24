@@ -396,11 +396,9 @@ export class OpenAPIBackend<D extends Document = Document> {
           }
 
           // handle error object passed earlier
-          if (
-            typeof requirementResult === 'object' &&
-            Object.keys(requirementResult).includes('error') &&
-            Object.keys(requirementResult).length === 1
-          ) {
+          // any object carrying an `error` key is treated as a failed auth,
+          // regardless of whatever other properties it carries
+          if (requirementResult && typeof requirementResult === 'object' && 'error' in requirementResult) {
             return false;
           }
         }

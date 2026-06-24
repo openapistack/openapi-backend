@@ -435,6 +435,87 @@ describe('OpenAPIBackend', () => {
         expect(context.security?.authorized).toBe(false);
       });
 
+      test('sets context.security.authorized=false if handler returns a bare { error } object', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        // returning an object with an error key is interpreted as failed auth
+        api.registerSecurityHandler('basicAuth', () => ({ error: 'missing token' }));
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security?.authorized).toBe(false);
+      });
+
+      test('sets context.security.authorized=false if handler returns a multi-key { error, user } object', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        // an error object carrying additional properties must still fail auth
+        api.registerSecurityHandler('basicAuth', () => ({ error: 'missing token', user: null }));
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security?.authorized).toBe(false);
+      });
+
+      test('sets context.security.authorized=false if handler returns a multi-key { error, statusCode } object', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        api.registerSecurityHandler('basicAuth', () => ({ error: 'unauthorized', statusCode: 401 }));
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security?.authorized).toBe(false);
+      });
+
+      test('does not call operation handler if handler returns a multi-key error object', async () => {
+        const api = new OpenAPIBackend({ definition });
+        const mockHandler = jest.fn();
+        api.register('getPets', mockHandler);
+        api.register('unauthorizedHandler', () => null);
+        api.registerSecurityHandler('basicAuth', () => ({ error: 'missing token', user: null }));
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(mockHandler).not.toBeCalled();
+      });
+
       test('calls unauthorizedHandler on failed auth', async () => {
         const api = new OpenAPIBackend({ definition });
         const dummyHandler = jest.fn(() => 'failedAuthResponse');
