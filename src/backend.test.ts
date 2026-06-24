@@ -497,6 +497,27 @@ describe('OpenAPIBackend', () => {
         expect(context.security?.authorized).toBe(false);
       });
 
+      test('sets context.security.authorized=true if handler returns an object with a falsy error', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        // a falsy `error` (e.g. the "no error, here's the user" success pattern) is not a rejection
+        api.registerSecurityHandler('basicAuth', () => ({ error: null, user: { id: 1 } }));
+
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets',
+          headers: {},
+        };
+        await api.handleRequest(request);
+
+        expect(context.security?.authorized).toBe(true);
+      });
+
       test('does not call operation handler if handler returns a multi-key error object', async () => {
         const api = new OpenAPIBackend({ definition });
         const mockHandler = jest.fn();
