@@ -578,8 +578,7 @@ export class OpenAPIValidator<D extends Document = Document> {
           },
         };
         requestBodySchema.required = [];
-        if (_.keys(requestBody.content).length === 1) {
-          // if application/json is the only specified format, it's required
+        if (requestBody.required) {
           requestBodySchema.required.push('requestBody');
         }
 

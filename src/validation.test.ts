@@ -497,6 +497,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                   operationId: 'createPet',
                   responses: { 200: { description: 'ok' } },
                   requestBody: {
+                    required: true,
                     content: {
                       'application/json': {
                         schema: petSchema,
@@ -514,6 +515,19 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                       },
                       'application/xml': {
                         example: '<Pet><name>string</name></Pet>',
+                      },
+                    },
+                  },
+                },
+              },
+              '/optional-pets': {
+                post: {
+                  operationId: 'createOptionalPet',
+                  responses: { 200: { description: 'ok' } },
+                  requestBody: {
+                    content: {
+                      'application/json': {
+                        schema: petSchema,
                       },
                     },
                   },
@@ -640,6 +654,27 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
         });
         expect(valid.errors).toHaveLength(2);
         expect(valid.errors && valid.errors[0].keyword).toBe('parse');
+      });
+
+      test('passes validation when optional requestBody with one media type is omitted', async () => {
+        const valid = validator.validateRequest({
+          path: '/optional-pets',
+          method: 'post',
+          headers,
+        });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation when optional requestBody with one media type is provided but invalid', async () => {
+        const valid = validator.validateRequest({
+          path: '/optional-pets',
+          method: 'post',
+          headers,
+          body: {
+            age: 40,
+          },
+        });
+        expect(valid.errors).toHaveLength(1);
       });
 
       test('allows non-json data when application/json is not the only allowed media type', async () => {
