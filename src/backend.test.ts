@@ -415,6 +415,74 @@ describe('OpenAPIBackend', () => {
         expect(context.security?.authorized).toBe(true);
       });
 
+      test('sets context.security.authorized=true for an api key search operation', async () => {
+        const xquikDefinition: OpenAPIV3_1.Document = {
+          ...meta,
+          paths: {
+            '/api/v1/x/tweets/search': {
+              get: {
+                operationId: 'searchTweets',
+                parameters: [
+                  {
+                    name: 'q',
+                    in: 'query',
+                    required: true,
+                    schema: { type: 'string' },
+                  },
+                  {
+                    name: 'limit',
+                    in: 'query',
+                    required: false,
+                    schema: { type: 'integer', default: 20, maximum: 200 },
+                  },
+                ],
+                security: [{ apiKey: [] }, { oauthBearer: [] }, {}],
+                responses,
+              },
+            },
+          },
+          components: {
+            securitySchemes: {
+              apiKey: {
+                type: 'apiKey',
+                in: 'header',
+                name: 'x-api-key',
+              },
+              oauthBearer: {
+                type: 'http',
+                scheme: 'bearer',
+              },
+            },
+          },
+        };
+        const api = new OpenAPIBackend({ definition: xquikDefinition });
+        let context: Partial<Context> = {};
+        api.register('searchTweets', (c) => {
+          context = c;
+          return {
+            tweets: [],
+            has_next_page: false,
+            next_cursor: '',
+          };
+        });
+        api.registerSecurityHandler('apiKey', (c) => c.request.headers['x-api-key'] === 'test-key');
+
+        await api.init();
+        const result = await api.handleRequest({
+          method: 'get',
+          path: '/api/v1/x/tweets/search?q=openapi',
+          headers: { 'x-api-key': 'test-key' },
+        });
+
+        expect(result).toEqual({
+          tweets: [],
+          has_next_page: false,
+          next_cursor: '',
+        });
+        expect(context.security?.apiKey).toBe(true);
+        expect(context.security?.authorized).toBe(true);
+      });
+
       test('sets context.security.authorized=false if security requirements not met', async () => {
         const api = new OpenAPIBackend({ definition });
         let context: Partial<Context> = {};
