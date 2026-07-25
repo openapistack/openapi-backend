@@ -497,6 +497,7 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                   operationId: 'createPet',
                   responses: { 200: { description: 'ok' } },
                   requestBody: {
+                    required: true,
                     content: {
                       'application/json': {
                         schema: petSchema,
@@ -514,6 +515,19 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                       },
                       'application/xml': {
                         example: '<Pet><name>string</name></Pet>',
+                      },
+                    },
+                  },
+                },
+              },
+              '/pets/optional': {
+                post: {
+                  operationId: 'createOptionalPet',
+                  responses: { 200: { description: 'ok' } },
+                  requestBody: {
+                    content: {
+                      'application/json': {
+                        schema: petSchema,
                       },
                     },
                   },
@@ -629,6 +643,15 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
           headers,
         });
         expect(valid.errors).toHaveLength(1);
+      });
+
+      test('passes validation with an omitted optional request body', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets/optional',
+          method: 'post',
+          headers,
+        });
+        expect(valid.errors).toBeFalsy();
       });
 
       test('fails validation for non-json data when the only media type defined is application/json', async () => {
