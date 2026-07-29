@@ -240,6 +240,31 @@ cookie) or requestPayload don't match the request.
 
 The context object `c` gets a `validation` property with the [validation result](https://github.com/openapistack/openapi-backend/blob/main/DOCS.md#validationresult-object).
 
+### Controlling when requests get validated
+
+Request validation is enabled by default. Pass `validate: false` to turn it off entirely, which also skips building the
+Ajv validators at startup.
+
+```javascript
+const api = new OpenAPIBackend({ definition: './petstore.yml', validate: false });
+```
+
+You can also pass a predicate to decide per request. It receives the context object followed by the same handler
+arguments you pass to `handleRequest`, and validation runs only when it returns `true`.
+
+```javascript
+const api = new OpenAPIBackend({
+  definition: './petstore.yml',
+  // skip validation for internal traffic, validate everything else
+  validate: (c, req, res) => !req.headers['x-internal-request'],
+});
+
+api.handleRequest(req, req, res);
+```
+
+Note that type coercion happens as part of validation, so when `coerceTypes` is enabled, requests your predicate skips
+won't have their path and query parameters coerced either.
+
 ## Response validation
 
 OpenAPIBackend doesn't automatically perform response validation for your handlers, but you can register a

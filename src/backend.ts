@@ -163,10 +163,12 @@ export class OpenAPIBackend<D extends Document = Document> {
    * @param {string} opts.apiRoot - the root URI of the api. all paths are matched relative to apiRoot
    * @param {boolean} opts.strict - strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
    * @param {boolean} opts.quick - quick startup, attempts to optimise startup; might break things (default: false)
-   * @param {boolean | ContextPredicate} opts.validate - whether to validate requests with Ajv (default: true)
+   * @param {boolean | ContextPredicate} opts.validate - whether to validate requests with Ajv, or a predicate called per
+   * request to decide (default: true)
    * @param {boolean} opts.ignoreTrailingSlashes - whether to ignore trailing slashes when routing (default: true)
    * @param {boolean} opts.ajvOpts - default ajv opts to pass to the validator
-   * @param {boolean} opts.coerceTypes - enable coerce typing of request path and query parameters. Requires validate to be enabled. (default: false)
+   * @param {boolean} opts.coerceTypes - enable coerce typing of request path and query parameters. Coercion happens as
+   * part of validation, so it only applies to requests that get validated. (default: false)
    * @param {{ [operationId: string]: Handler | ErrorHandler }} opts.handlers - Operation handlers to be registered
    * @memberof OpenAPIBackend
    */

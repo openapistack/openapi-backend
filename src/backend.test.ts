@@ -734,6 +734,69 @@ describe('OpenAPIBackend', () => {
         expect(operationHandler).not.toBeCalled();
         expect(res).toBe('validation-failed');
       });
+
+      test('validates requests by default', async () => {
+        const api = new OpenAPIBackend({ definition: validationDefinition });
+        const operationHandler = jest.fn(() => 'operation-response');
+        const validationFailHandler = jest.fn(() => 'validation-failed');
+        api.register('getPetById', operationHandler);
+        api.register('validationFail', validationFailHandler);
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets/not-an-integer',
+          headers: {},
+        };
+        const res = await api.handleRequest(request);
+
+        expect(validationFailHandler).toBeCalledTimes(1);
+        expect(operationHandler).not.toBeCalled();
+        expect(res).toBe('validation-failed');
+      });
+
+      test('validates requests when validate is explicitly undefined', async () => {
+        const api = new OpenAPIBackend({ definition: validationDefinition, validate: undefined });
+        const operationHandler = jest.fn(() => 'operation-response');
+        const validationFailHandler = jest.fn(() => 'validation-failed');
+        api.register('getPetById', operationHandler);
+        api.register('validationFail', validationFailHandler);
+        await api.init();
+
+        const request = {
+          method: 'get',
+          path: '/pets/not-an-integer',
+          headers: {},
+        };
+        const res = await api.handleRequest(request);
+
+        expect(validationFailHandler).toBeCalledTimes(1);
+        expect(operationHandler).not.toBeCalled();
+        expect(res).toBe('validation-failed');
+      });
+
+      test('skips validation and validator init when validate is false', async () => {
+        const api = new OpenAPIBackend({ definition: validationDefinition, validate: false });
+        const operationHandler = jest.fn(() => 'operation-response');
+        const validationFailHandler = jest.fn(() => 'validation-failed');
+        api.register('getPetById', operationHandler);
+        api.register('validationFail', validationFailHandler);
+        await api.init();
+
+        // no Ajv validators are built when validation is disabled
+        expect(api.validator).toBeUndefined();
+
+        const request = {
+          method: 'get',
+          path: '/pets/not-an-integer',
+          headers: {},
+        };
+        const res = await api.handleRequest(request);
+
+        expect(validationFailHandler).not.toBeCalled();
+        expect(operationHandler).toBeCalledTimes(1);
+        expect(res).toBe('operation-response');
+      });
     });
   });
 
