@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Please report suspected security vulnerabilities privately. Email **viljami@viljami.io** with `SECURITY` in the subject line. Do not open a public GitHub issue for an unpatched vulnerability.
+Please report suspected security vulnerabilities privately. Email **support@openapistack.co** with `SECURITY` in the subject line. Do not open a public GitHub issue for an unpatched vulnerability.
 
 Please include, where possible:
 
