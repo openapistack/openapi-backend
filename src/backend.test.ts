@@ -565,13 +565,13 @@ describe('OpenAPIBackend', () => {
         expect(context.security?.authorized).toBe(false);
       });
 
-      test('sets context.security.authorized=true if handler returns an object with a falsy error', async () => {
+      test('sets context.security.authorized=false if handler returns an object with a falsy error', async () => {
         const api = new OpenAPIBackend({ definition });
         let context: Partial<Context> = {};
         api.register('notImplemented', (c) => {
           context = c;
         });
-        // a falsy `error` (e.g. the "no error, here's the user" success pattern) is not a rejection
+        // an error key is interpreted as failed auth, even when its value is falsy
         api.registerSecurityHandler('basicAuth', () => ({ error: null, user: { id: 1 } }));
 
         await api.init();
@@ -583,7 +583,7 @@ describe('OpenAPIBackend', () => {
         };
         await api.handleRequest(request);
 
-        expect(context.security?.authorized).toBe(true);
+        expect(context.security?.authorized).toBe(false);
       });
 
       test('does not call operation handler if handler returns a multi-key error object', async () => {

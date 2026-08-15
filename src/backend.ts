@@ -402,13 +402,12 @@ export class OpenAPIBackend<D extends Document = Document> {
           }
 
           // handle error object passed earlier
-          // any object carrying a truthy `error` property is treated as a failed
-          // auth, regardless of whatever other properties it carries. A falsy
-          // `error` (e.g. `{ error: null, user }`) is not a rejection.
+          // any object carrying an `error` key is treated as failed auth,
+          // regardless of its value or any additional properties.
           if (
             requirementResult &&
             typeof requirementResult === 'object' &&
-            (requirementResult as { error?: unknown }).error
+            Object.prototype.hasOwnProperty.call(requirementResult, 'error')
           ) {
             return false;
           }
