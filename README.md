@@ -341,6 +341,8 @@ accessed via the [Context Object](https://github.com/openapistack/openapi-backen
 You can also register an [`unauthorizedHandler`](https://github.com/openapistack/openapi-backend/blob/main/DOCS.md#unauthorizedhandler-handler)
 to handle unauthorized requests.
 
+**Important:** security handlers determine the authorization result and expose it as `context.security.authorized`; they do not automatically stop request handling. To reject unauthorized requests, register an `unauthorizedHandler`. If no `unauthorizedHandler` is registered, the matched operation handler still runs and is responsible for deciding how to handle `context.security.authorized === false`.
+
 ```javascript
 api.register('unauthorizedHandler', (c, req, res) => {
   return res.status(401).json({ err: 'unauthorized' })
