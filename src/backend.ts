@@ -121,7 +121,14 @@ export class OpenAPIBackend<D extends Document = Document> {
   public definition: D;
   public apiRoot: string;
 
-  public initalized: boolean;
+  public initialized: boolean;
+
+  /**
+   * @deprecated Use `initialized` instead. Kept for backwards compatibility with the misspelled property name.
+   */
+  public get initalized(): boolean {
+    return this.initialized;
+  }
 
   public strict: boolean;
   public quick: boolean;
@@ -198,12 +205,12 @@ export class OpenAPIBackend<D extends Document = Document> {
   }
 
   /**
-   * Initalizes OpenAPIBackend.
+   * Initializes OpenAPIBackend.
    *
    * 1. Loads and parses the OpenAPI document passed in constructor options
    * 2. Validates the OpenAPI document
    * 3. Builds validation schemas for all API operations
-   * 4. Marks property `initalized` to true
+   * 4. Marks property `initialized` to true
    * 5. Registers all [Operation Handlers](#operation-handlers) passed in constructor options
    *
    * The init() method should be called right after creating a new instance of OpenAPIBackend
@@ -245,14 +252,14 @@ export class OpenAPIBackend<D extends Document = Document> {
       }
     }
 
-    // initalize router with dereferenced definition
+    // initialize router with dereferenced definition
     this.router = new OpenAPIRouter({
       definition: this.definition,
       apiRoot: this.apiRoot,
       ignoreTrailingSlashes: this.ignoreTrailingSlashes,
     });
 
-    // initalize validator with dereferenced definition
+    // initialize validator with dereferenced definition
     if (this.validate !== false) {
       this.validator = new OpenAPIValidator({
         definition: this.definition,
@@ -264,8 +271,8 @@ export class OpenAPIBackend<D extends Document = Document> {
       });
     }
 
-    // we are initalized
-    this.initalized = true;
+    // we are initialized
+    this.initialized = true;
 
     // register all handlers
     if (this.handlers) {
@@ -307,12 +314,12 @@ export class OpenAPIBackend<D extends Document = Document> {
    * @memberof OpenAPIBackend
    */
   public async handleRequest(req: Request, ...handlerArgs: any[]): Promise<any> {
-    if (!this.initalized) {
-      // auto-initalize if not yet initalized
+    if (!this.initialized) {
+      // auto-initialize if not yet initialized
       await this.init();
     }
 
-    // initalize context object with a reference to this OpenAPIBackend instance
+    // initialize context object with a reference to this OpenAPIBackend instance
     const context: Partial<Context<any, any, any, any, any, D>> = { api: this };
 
     // handle request with correct handler
@@ -513,8 +520,8 @@ export class OpenAPIBackend<D extends Document = Document> {
       throw new Error('Handler should be a function');
     }
 
-    // if initalized, check that operation matches an operationId or is one of our allowed handlers
-    if (this.initalized) {
+    // if initialized, check that operation matches an operationId or is one of our allowed handlers
+    if (this.initialized) {
       const operation = this.router.getOperation(operationId);
       if (!operation && !_.includes(this.allowedHandlers, operationId)) {
         const err = `Unknown operationId ${operationId}`;
@@ -587,7 +594,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     }
 
     // if initialized, check that operation matches a security scheme
-    if (this.initalized) {
+    if (this.initialized) {
       const securitySchemes = this.definition.components?.securitySchemes || {};
       if (!securitySchemes[name]) {
         const err = `Unknown security scheme ${name}`;

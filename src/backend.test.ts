@@ -120,7 +120,7 @@ describe('OpenAPIBackend', () => {
     // @TODO: read a complex document with as many features as possible here
     const api = new OpenAPIBackend({ definition, strict: true });
     await api.init();
-    expect(api.initalized).toEqual(true);
+    expect(api.initialized).toEqual(true);
     expect(api.router.getOperations()).toHaveLength(8);
   });
 
@@ -128,7 +128,7 @@ describe('OpenAPIBackend', () => {
     // @TODO: read a complex document with as many features as possible here
     const api = new OpenAPIBackend({ definition: examplePetAPIYAML, strict: true });
     await api.init();
-    expect(api.initalized).toEqual(true);
+    expect(api.initialized).toEqual(true);
     expect(api.router.getOperations()).toHaveLength(8);
   });
 
@@ -136,8 +136,15 @@ describe('OpenAPIBackend', () => {
     // @TODO: read a complex document with as many features as possible here
     const api = new OpenAPIBackend({ definition: examplePetAPIJSON, strict: true });
     await api.init();
-    expect(api.initalized).toEqual(true);
+    expect(api.initialized).toEqual(true);
     expect(api.router.getOperations()).toHaveLength(8);
+  });
+
+  test('exposes deprecated initalized alias for backwards compatibility', async () => {
+    const api = new OpenAPIBackend({ definition, strict: true });
+    expect(api.initalized).toBeFalsy();
+    await api.init();
+    expect(api.initalized).toEqual(true);
   });
 
   test('throws an error when initalised with an invalid document in strict mode', async () => {
