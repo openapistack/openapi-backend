@@ -10,12 +10,12 @@
     "test": "jest"
   },
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^5.2.1",
     "openapi-backend": "^5.2.0"
   },
   "devDependencies": {
     "axios": "^0.21.1",
     "jest": "^29.3.1",
-    "wait-on": "^3.2.0"
+    "wait-on": "^9.1.0"
   }
 }
