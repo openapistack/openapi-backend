@@ -2,7 +2,11 @@
 
 ## Reporting a vulnerability
 
-Please report suspected security vulnerabilities privately. Email **support@openapistack.co** with `SECURITY` in the subject line. Do not open a public GitHub issue for an unpatched vulnerability.
+Please report suspected security vulnerabilities privately. Do not open a public GitHub issue for an unpatched vulnerability.
+
+The preferred channel is a private vulnerability report through GitHub Security Advisories: [Report a vulnerability](https://github.com/openapistack/openapi-backend/security/advisories/new). This keeps the report confidential and lets us collaborate on a fix and coordinate disclosure in one place.
+
+If you cannot use GitHub, email **support@openapistack.co** with `SECURITY` in the subject line.
 
 Please include, where possible:
 
