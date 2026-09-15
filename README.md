@@ -40,7 +40,7 @@ https://openapistack.co/docs/openapi-backend/intro
 
 ## Quick Start
 
-Full [example projects](https://github.com/openapistack/openapi-backend/tree/main/examples) included in the repo
+Full [example projects](https://github.com/openapistack/openapi-backend/tree/examples) included in the repo (on the `examples` branch)
 
 ```
 npm install --save openapi-backend
@@ -75,9 +75,9 @@ app.use((req, res) => api.handleRequest(req, req, res));
 app.listen(9000);
 ```
 
-[See full Express example](https://github.com/openapistack/openapi-backend/tree/main/examples/express)
+[See full Express example](https://github.com/openapistack/openapi-backend/tree/examples/express)
 
-[See full Express TypeScript example](https://github.com/openapistack/openapi-backend/tree/main/examples/express-typescript)
+[See full Express TypeScript example](https://github.com/openapistack/openapi-backend/tree/examples/express-typescript)
 
 ### AWS Serverless (Lambda)
 
@@ -97,13 +97,13 @@ module.exports.handler = (event, context) =>
   );
 ```
 
-[See full AWS SAM example](https://github.com/openapistack/openapi-backend/tree/main/examples/aws-sam)
+[See full AWS SAM example](https://github.com/openapistack/openapi-backend/tree/examples/aws-sam)
 
-[See full AWS CDK example](https://github.com/openapistack/openapi-backend/tree/main/examples/aws-cdk)
+[See full AWS CDK example](https://github.com/openapistack/openapi-backend/tree/examples/aws-cdk)
 
-[See full SST example](https://github.com/openapistack/openapi-backend/tree/main/examples/aws-sst)
+[See full SST example](https://github.com/openapistack/openapi-backend/tree/examples/aws-sst)
 
-[See full Serverless Framework example](https://github.com/openapistack/openapi-backend/tree/main/examples/serverless-framework)
+[See full Serverless Framework example](https://github.com/openapistack/openapi-backend/tree/examples/serverless-framework)
 
 ### Azure Function
 
@@ -122,7 +122,7 @@ module.exports = (context, req) =>
   );
 ```
 
-[See full Azure Function example](https://github.com/openapistack/openapi-backend/tree/main/examples/azure-function)
+[See full Azure Function example](https://github.com/openapistack/openapi-backend/tree/examples/azure-function)
 
 ### Fastify
 
@@ -148,7 +148,7 @@ fastify.route({
 fastify.listen();
 ```
 
-[See full Fastify example](https://github.com/openapistack/openapi-backend/tree/main/examples/fastify)
+[See full Fastify example](https://github.com/openapistack/openapi-backend/tree/examples/fastify)
 
 ### Hapi
 
@@ -175,7 +175,7 @@ server.route({
 server.start();
 ```
 
-[See full Hapi example](https://github.com/openapistack/openapi-backend/tree/main/examples/hapi-typescript)
+[See full Hapi example](https://github.com/openapistack/openapi-backend/tree/examples/hapi-typescript)
 
 
 ### Koa
@@ -196,7 +196,7 @@ app.use((ctx) =>
 app.listen(9000);
 ```
 
-[See full Koa example](https://github.com/openapistack/openapi-backend/tree/main/examples/koa)
+[See full Koa example](https://github.com/openapistack/openapi-backend/tree/examples/koa)
 
 ## Registering Handlers for Operations
 
@@ -348,8 +348,8 @@ api.register('unauthorizedHandler', (c, req, res) => {
 ```
 
 See examples:
-- [API Key auth (express)](https://github.com/openapistack/openapi-backend/tree/main/examples/express-apikey-auth)
-- [JWT auth (express)](https://github.com/openapistack/openapi-backend/tree/main/examples/express-jwt-auth)
+- [API Key auth (express)](https://github.com/openapistack/openapi-backend/tree/examples/express-apikey-auth)
+- [JWT auth (express)](https://github.com/openapistack/openapi-backend/tree/examples/express-jwt-auth)
 
 ## Mocking API responses
 
@@ -413,7 +413,7 @@ api.mockResponseForOperation('getPets'); // => { status: 200, mock: [{ id: 1, na
 api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, name: 'Garfield' }}
 ```
 
-[See full Mock API example on Express](https://github.com/openapistack/openapi-backend/tree/main/examples/express-ts-mock)
+[See full Mock API example on Express](https://github.com/openapistack/openapi-backend/tree/examples/express-ts-mock)
 
 ## Commercial support
 
