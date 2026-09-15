@@ -74,7 +74,8 @@
     "lint": "eslint src/ --ext ts",
     "prettier": "prettier --write src/**",
     "prepublishOnly": "npm run build",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "sbom": "bash scripts/generate-sbom.sh"
   },
   "engines": {
     "node": ">=20.0.0"

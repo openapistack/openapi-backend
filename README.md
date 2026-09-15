@@ -8,6 +8,7 @@
 [![npm downloads](https://img.shields.io/npm/dw/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
 [![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend?activeTab=dependencies)
 ![npm type definitions](https://img.shields.io/npm/types/openapi-backend.svg)
+[![SBOM](https://img.shields.io/badge/SBOM-CycloneDX-blue)](https://github.com/openapistack/openapi-backend/blob/main/sbom/openapi-backend.cdx.json)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/openapistack/openapi-backend)
 [![Buy me a coffee](https://img.shields.io/badge/donate-buy%20me%20a%20coffee-orange)](https://buymeacoff.ee/anttiviljami)
 
@@ -414,6 +415,18 @@ api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, 
 ```
 
 [See full Mock API example on Express](https://github.com/openapistack/openapi-backend/tree/examples/express-ts-mock)
+
+## Software Bill of Materials
+
+A [CycloneDX](https://cyclonedx.org) SBOM for the published package is maintained in [`sbom/openapi-backend.cdx.json`](sbom/openapi-backend.cdx.json), alongside a [full-tree variant](sbom/openapi-backend.full.cdx.json) that includes devDependencies and CSV license listings. Third-party licenses and copyright holders are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+To browse the SBOM interactively, open the [CycloneDX Web Tool](https://cyclonedx.github.io/cyclonedx-web-tool/) and load the JSON file, or import it into [Dependency-Track](https://dependencytrack.org).
+
+Regenerate after dependency changes with:
+
+```
+npm run sbom
+```
 
 ## Commercial support
 
