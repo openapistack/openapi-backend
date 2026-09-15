@@ -8,18 +8,3 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    exclude-paths:
-      - "examples/**"
-  # examples/: no version-update PRs, and batch all security updates
-  # into a single PR per example project instead of one PR per dependency.
-  - package-ecosystem: "npm"
-    directories:
-      - "/examples/*"
-    schedule:
-      interval: "monthly"
-    open-pull-requests-limit: 0
-    groups:
-      security-updates:
-        applies-to: security-updates
-        patterns:
-          - "*"

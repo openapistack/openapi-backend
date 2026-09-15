@@ -31,6 +31,10 @@ jobs:
           - examples/aws-cdk
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          ref: examples
+          path: examples
       - uses: actions/setup-node@v7
         with:
           node-version: "20"
