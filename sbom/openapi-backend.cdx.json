@@ -1,0 +1,2389 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "version": 1,
+  "serialNumber": "urn:uuid:3b88b345-4b4d-413e-b489-a2276d892b25",
+  "metadata": {
+    "timestamp": "2026-09-15T16:02:13.606Z",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "npm",
+          "version": "11.12.1"
+        },
+        {
+          "type": "application",
+          "name": "cyclonedx-npm",
+          "group": "@cyclonedx",
+          "version": "6.0.1",
+          "author": "Jan Kowalleck",
+          "description": "Create CycloneDX Software Bill of Materials (SBOM) from NPM projects.",
+          "licenses": [
+            {
+              "license": {
+                "id": "Apache-2.0"
+              }
+            }
+          ],
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/CycloneDX/cyclonedx-node-npm.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-node-npm#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-node-npm/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": ">=20.18.0"
+            },
+            {
+              "name": "cdx:npm:package:constraint:engine:npm",
+              "value": ">=9"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "cyclonedx-library",
+          "group": "@cyclonedx",
+          "version": "10.2.0",
+          "author": "Jan Kowalleck",
+          "description": "Core functionality of CycloneDX for JavaScript (Node.js or WebBrowser).",
+          "licenses": [
+            {
+              "license": {
+                "id": "Apache-2.0"
+              }
+            }
+          ],
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/CycloneDX/cyclonedx-javascript-library.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-javascript-library#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/CycloneDX/cyclonedx-javascript-library/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": ">=20.18.0"
+            }
+          ]
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "name": "openapi-backend",
+      "version": "5.20.1",
+      "bom-ref": "openapi-backend@5.20.1",
+      "author": "Viljami Kuosmanen",
+      "description": "Build, Validate, Route, Authenticate and Mock using OpenAPI definitions. Framework-agnostic",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/openapi-backend@5.20.1?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fopenapistack%2Fopenapi-backend.git",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/openapistack/openapi-backend.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://openapistack.co",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/openapistack/openapi-backend/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=20.0.0"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": ""
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "json-schema-ref-parser",
+      "group": "@apidevtools",
+      "version": "11.7.2",
+      "bom-ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2",
+      "author": "James Messinger",
+      "description": "Parse, Resolve, and Dereference JSON Schema $ref pointers",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40apidevtools/json-schema-ref-parser@11.7.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/APIDevTools/json-schema-ref-parser.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://apitools.dev/json-schema-ref-parser/",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/APIDevTools/json-schema-ref-parser/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-11.7.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "e20639e1e10612cb4296f1241a7c1591392bc74b2ac1e984146e4e491467ded0fdd571f4f90f172246087e8ec8c0458fa4967020b6fd1945de4a1b6995173f78"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 16"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@apidevtools/json-schema-ref-parser"
+        }
+      ],
+      "components": [
+        {
+          "type": "library",
+          "name": "js-yaml",
+          "version": "4.3.2",
+          "bom-ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|js-yaml@4.3.2",
+          "author": "Vladimir Zapparov",
+          "description": "YAML 1.2 parser and serializer",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/js-yaml@4.3.2",
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/nodeca/js-yaml.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/nodeca/js-yaml#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/nodeca/js-yaml/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            },
+            {
+              "url": "https://registry.npmjs.org/js-yaml/-/js-yaml-4.3.2.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "48534ebd227e0e07fff409fdd38631f828129483c2908a5aa38aa8e7596979edb94c845e8dd1f7ae1478119306a0dc77fd33f73bec335ae893165e2ca9b96dcc"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/@apidevtools/json-schema-ref-parser/node_modules/js-yaml"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "argparse",
+          "version": "2.0.1",
+          "bom-ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|argparse@2.0.1",
+          "description": "CLI arguments parser. Native port of python's argparse.",
+          "licenses": [
+            {
+              "license": {
+                "id": "Python-2.0",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/argparse@2.0.1",
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/nodeca/argparse.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/nodeca/argparse#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/nodeca/argparse/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            },
+            {
+              "url": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "f3ef56a9e6db173a57f4e47e59ae8edbd6ac22881e44ccdc1ad00835da4c1c7c80835d1fd3969215505b704a867ff3d7c35123019faadbf6c4060dc3beeacadd"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/@apidevtools/json-schema-ref-parser/node_modules/argparse"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "ajv",
+      "version": "8.20.0",
+      "bom-ref": "openapi-backend@5.20.1|ajv@8.20.0",
+      "author": "Evgeny Poberezkin",
+      "description": "Another JSON Schema Validator",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/ajv@8.20.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ajv-validator/ajv.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://ajv.js.org",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ajv-validator/ajv/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/ajv/-/ajv-8.20.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "4e16e58be3a53a3fa230f60505505f2773a60809da4b2367e0cd6fcfd4fa1a46b926df5b6bf1c8479ea3a32eb9b58ea4c7f142179557341f35f58eff194ac118"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/ajv"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "bath-es5",
+      "version": "3.0.3",
+      "bom-ref": "openapi-backend@5.20.1|bath-es5@3.0.3",
+      "author": "bouzuya",
+      "description": "A simple path template engine",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/bath-es5@3.0.3",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/anttiviljami/bath-es5.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/anttiviljami/bath-es5#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/bouzuya/bath/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/bath-es5/-/bath-es5-3.0.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "3dd0a2a034e81f7b7ce253f8d2450508a5823821f7f3d0e5d646c2f051a8a8ec1a9b1b26ab1c672525dd9133ac3e83475e37a6e3eb09f9b6cda109b9cde0aac6"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/bath-es5"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "cookie",
+      "version": "1.0.1",
+      "bom-ref": "openapi-backend@5.20.1|cookie@1.0.1",
+      "author": "Roman Shtylman",
+      "description": "HTTP server cookie parsing and serialization",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/cookie@1.0.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/jshttp/cookie.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/jshttp/cookie#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/jshttp/cookie/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/cookie/-/cookie-1.0.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5ddf25157e0b33d404130c50a45f49f4d4d487ca667493b4732449845883a0b4e4d9e1fc157951bf620519855a759a6a2378fc7e136b49d2827983f188084b5f"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=18"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/cookie"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "dereference-json-schema",
+      "version": "0.2.3",
+      "bom-ref": "openapi-backend@5.20.1|dereference-json-schema@0.2.3",
+      "author": "Viljami Kuosmanen",
+      "description": "Dereference $ref pointers in JSONSchema or OpenAPI documents.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/dereference-json-schema@0.2.3",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/anttiviljami/dereference-json-schema.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/anttiviljami/dereference-json-schema#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/anttiviljami/dereference-json-schema/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/dereference-json-schema/-/dereference-json-schema-0.2.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "08156812e7f6b4a86a9d48682a3bd7e30a39355c43487c489eac04c507d43442baeda5fe2cf0b6ed583ee820298be29179b001259016847055a0da4a7e132cb2"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/dereference-json-schema"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lodash",
+      "version": "4.18.1",
+      "bom-ref": "openapi-backend@5.20.1|lodash@4.18.1",
+      "author": "John-David Dalton",
+      "description": "Lodash modular utilities.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lodash@4.18.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/lodash/lodash.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://lodash.com/",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/lodash/lodash/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/lodash/-/lodash-4.18.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "74c22789c4cf544f1dd5ee68b5fc269a3971919a14a6254bc32793754b22fc26a3fe07f3cdb941702139b111d5fc0b23b829b15abb5ed93346498b82782abed1"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lodash"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "mock-json-schema",
+      "version": "1.1.2",
+      "bom-ref": "openapi-backend@5.20.1|mock-json-schema@1.1.2",
+      "author": "Viljami Kuosmanen",
+      "description": "Simple utility to mock example objects based on JSON schema definitions",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/mock-json-schema@1.1.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/anttiviljami/mock-json-schema.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/anttiviljami/mock-json-schema",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/anttiviljami/mock-json-schema/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/mock-json-schema/-/mock-json-schema-1.1.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "dc8c9db989617f33f2fa714df30c548e5a148b584cee5f253792c84ee6ae50d31096dca724839f2dffc3003c13029d9dea4bd206d5a88e5cb512ec57e41d1690"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/mock-json-schema"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "openapi-schema-validator",
+      "version": "12.1.3",
+      "bom-ref": "openapi-backend@5.20.1|openapi-schema-validator@12.1.3",
+      "author": "Joseph Spencer",
+      "description": "A validator for OpenAPI documents.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/openapi-schema-validator@12.1.3",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/kogosoftwarellc/open-api.git#master",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/kogosoftwarellc/open-api/tree/master/packages/openapi-schema-validator#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/kogosoftwarellc/open-api/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/openapi-schema-validator/-/openapi-schema-validator-12.1.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "c531ce9b153f550194828ec29b48e1c1b92538aa1b5dbcbeff6dfb106f7aefedd3404609ced3205fd439504dad6992b0c8a3d4ab48f5d5d9e0a468d4bb1cf585"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/openapi-schema-validator"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "openapi-types",
+      "version": "12.1.3",
+      "bom-ref": "openapi-backend@5.20.1|openapi-types@12.1.3",
+      "author": "Joseph Spencer",
+      "description": "Types for OpenAPI documents.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/openapi-types@12.1.3",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/kogosoftwarellc/open-api.git#master",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/kogosoftwarellc/open-api/tree/master/packages/openapi-types#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/kogosoftwarellc/open-api/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Aopenapi-types",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/openapi-types/-/openapi-types-12.1.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "37862d49826a82156ee227a4d9952f70dff46aa1f59110ee36acdcc9c0f184e52983b19dbcb6b61770e04bac8136122786fdabffa234165927ec2a8bf3e9c873"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/openapi-types"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "qs",
+      "version": "6.16.0",
+      "bom-ref": "openapi-backend@5.20.1|qs@6.16.0",
+      "description": "A querystring parser that supports nesting and arrays, with a depth limit",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/qs@6.16.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/qs.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/qs",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/qs/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/qs/-/qs-6.16.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "87a7e1388691ac80f609b118d9faacfbbb7e517668f8c2c09d4e60448abce6e16d76250f09db00a4c947857a202953381ccd8355b22318d4d3607d8e7263f5bc"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=0.6"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/qs"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "ono",
+      "group": "@jsdevtools",
+      "version": "7.1.3",
+      "bom-ref": "openapi-backend@5.20.1|@jsdevtools/ono@7.1.3",
+      "author": "James Messinger",
+      "description": "Throw better errors.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40jsdevtools/ono@7.1.3",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/JS-DevTools/ono.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://jstools.dev/ono",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/JS-DevTools/ono/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@jsdevtools/ono/-/ono-7.1.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "e0940d93ede65732b7c61daba9de91078278eaa511d7d6b3107067799c9364cf9ce39eaa3ab6db33fe71711f21b8d08271b56defe5268b31ba1ae52f3ef29462"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@jsdevtools/ono"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "json-schema",
+      "group": "@types",
+      "version": "7.0.15",
+      "bom-ref": "openapi-backend@5.20.1|@types/json-schema@7.0.15",
+      "description": "TypeScript definitions for json-schema",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40types/json-schema@7.0.15",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/DefinitelyTyped/DefinitelyTyped.git#types/json-schema",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/json-schema",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.15.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "e7e7cff0ff0c14d0be0326420f1ac1da991914f1b3a90594ce949ebae54bbe6f1531ca2b3586af06aa057312bc6d0cf842c6e7e2850411e9b8c032df732b061c"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@types/json-schema"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fast-deep-equal",
+      "version": "3.1.3",
+      "bom-ref": "openapi-backend@5.20.1|fast-deep-equal@3.1.3",
+      "author": "Evgeny Poberezkin",
+      "description": "Fast deep equal",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/fast-deep-equal@3.1.3",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/epoberezkin/fast-deep-equal.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/epoberezkin/fast-deep-equal#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/epoberezkin/fast-deep-equal/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "7f7a90f68432f63d808417bf1fd542f75c0b98a042094fe00ce9ca340606e61b303bb04b2a3d3d1dce4760dcfd70623efb19690c22200da8ad56cd3701347ce1"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/fast-deep-equal"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "fast-uri",
+      "version": "3.1.7",
+      "bom-ref": "openapi-backend@5.20.1|fast-uri@3.1.7",
+      "author": "Vincent Le Goff",
+      "description": "Dependency-free RFC 3986 URI toolbox",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/fast-uri@3.1.7",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/fastify/fast-uri.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/fastify/fast-uri",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/fastify/fast-uri/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/fast-uri/-/fast-uri-3.1.7.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "74ebd95738dd65dcfba6177dbfa8c26f0c6b056ddf2ba9fc45cd02b5d98ce1bba6ccc9f1cb005886ea61e89f35f51470fe4bbeacb6de9707ccba792dbb35551e"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/fast-uri"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "json-schema-traverse",
+      "version": "1.0.0",
+      "bom-ref": "openapi-backend@5.20.1|json-schema-traverse@1.0.0",
+      "author": "Evgeny Poberezkin",
+      "description": "Traverse JSON Schema passing each schema object to callback",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/json-schema-traverse@1.0.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/epoberezkin/json-schema-traverse.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/epoberezkin/json-schema-traverse#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/epoberezkin/json-schema-traverse/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/json-schema-traverse/-/json-schema-traverse-1.0.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "34cf3f3fd9f75e35e12199f594b86415a0024ce5114178d6855e0103f4673aff31be0aadaa9017f483b89914314b1d51968e2dab37aa6f4b0e96bb9a3b2dddba"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/json-schema-traverse"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "bom-ref": "openapi-backend@5.20.1|require-from-string@2.0.2",
+      "author": "Vsevolod Strukchinsky",
+      "description": "Require module from string",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/require-from-string@2.0.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/floatdrop/require-from-string.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/floatdrop/require-from-string#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/floatdrop/require-from-string/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/require-from-string/-/require-from-string-2.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5dfd2759ee91b1ece214cbbe029f5b8a251b9a996ae92f7fa7eef0ed85cffc904786b5030d48706bebc0372b9bbaa7d9593bde53ffc36151ac0c6ed128bfef13"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=0.10.0"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/require-from-string"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "ajv-formats",
+      "version": "2.1.1",
+      "bom-ref": "openapi-backend@5.20.1|ajv-formats@2.1.1",
+      "author": "Evgeny Poberezkin",
+      "description": "Format validation for Ajv v7+",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/ajv-formats@2.1.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ajv-validator/ajv-formats.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ajv-validator/ajv-formats#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ajv-validator/ajv-formats/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/ajv-formats/-/ajv-formats-2.1.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5b1d0ac79da1c44ec2d7c8643048206251227ea599b58691828b89a2bf9631d3e743210ad77be0116c9536ea7b4a879ea0b32caf891fe61e9d396d75235e4c50"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/ajv-formats"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "lodash.merge",
+      "version": "4.6.2",
+      "bom-ref": "openapi-backend@5.20.1|lodash.merge@4.6.2",
+      "author": "John-David Dalton",
+      "description": "The Lodash method `_.merge` exported as a module.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/lodash.merge@4.6.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/lodash/lodash.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://lodash.com/",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/lodash/lodash/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "d0aa63a97455beb6320ac5f5b3047f5d32b4bdae9542440ce8c368ecfa96efb0728c086801103c11facfd4de3e2a52a3f184b46540ad453fd852e872603ba321"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/lodash.merge"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "es-define-property",
+      "version": "1.0.1",
+      "bom-ref": "openapi-backend@5.20.1|es-define-property@1.0.1",
+      "author": "Jordan Harband",
+      "description": "`Object.defineProperty`, but not IE 8's broken one.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/es-define-property@1.0.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/es-define-property.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/es-define-property#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/es-define-property/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/es-define-property/-/es-define-property-1.0.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "7b79d17e07d4678acd18bdb7da05205f4e90372c9ecf4e0a76316b17e2d34683979ab3a014a0e0e0109db235bc1274faf5ea9d606991a49c223d560dac2696de"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/es-define-property"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "side-channel",
+      "version": "1.1.1",
+      "bom-ref": "openapi-backend@5.20.1|side-channel@1.1.1",
+      "author": "Jordan Harband",
+      "description": "Store information about any JS value in a side channel. Uses WeakMap if available.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/side-channel@1.1.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/side-channel.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/side-channel#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/side-channel/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/side-channel/-/side-channel-1.1.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "eb1e9d2bacc97694f3178b1078d631c2dbc1cdfe848381ad95eb12f781cebd3b9d51ec8ad965c06887e60e0b32b2562b441785225b22e78018b05194ba19afad"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/side-channel"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "es-errors",
+      "version": "1.3.0",
+      "bom-ref": "openapi-backend@5.20.1|es-errors@1.3.0",
+      "author": "Jordan Harband",
+      "description": "A simple cache for a few of the JS Error constructors.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/es-errors@1.3.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/es-errors.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/es-errors#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/es-errors/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/es-errors/-/es-errors-1.3.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "65fe47d8ac6ddb18d3bdb26f3f66562c4202c40ea3fa1026333225ca9cb8c5c060d6f2959f1f3d5b2d066d2fa47f9730095145cdd0858765d20853542d2e9cb3"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/es-errors"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "object-inspect",
+      "version": "1.13.4",
+      "bom-ref": "openapi-backend@5.20.1|object-inspect@1.13.4",
+      "author": "James Halliday",
+      "description": "string representations of objects in node and the browser",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/object-inspect@1.13.4",
+      "externalReferences": [
+        {
+          "url": "git://github.com/inspect-js/object-inspect.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/inspect-js/object-inspect",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/inspect-js/object-inspect/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/object-inspect/-/object-inspect-1.13.4.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5baee22e5e09d845c41936df78709f7eb8c37e2b6f2c0360d14957df01545124f1f762974457a0307515812a84fb0be101b8b85aa8c683d733cac4d5d84a5b7b"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/object-inspect"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "side-channel-list",
+      "version": "1.0.1",
+      "bom-ref": "openapi-backend@5.20.1|side-channel-list@1.0.1",
+      "author": "Jordan Harband",
+      "description": "Store information about any JS value in a side channel, using a linked list",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/side-channel-list@1.0.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/side-channel-list.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/side-channel-list#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/side-channel-list/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/side-channel-list/-/side-channel-list-1.0.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "9a39ffd1b8bfa145118dce5797b21a5a2fce24926e9aea0915025f0c3c8ee3afa1056b1f69533ae53047ab67a864187397d11c8713a28e991b442f12541414d3"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/side-channel-list"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "side-channel-map",
+      "version": "1.0.1",
+      "bom-ref": "openapi-backend@5.20.1|side-channel-map@1.0.1",
+      "author": "Jordan Harband",
+      "description": "Store information about any JS value in a side channel, using a Map",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/side-channel-map@1.0.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/side-channel-map.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/side-channel-map#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/side-channel-map/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/side-channel-map/-/side-channel-map-1.0.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "5428c235f80cb1bcb7b53768d369db8ed33f7b0adaea33c79a94e17a7913621f291bdb9c67fd4ff12a38bb814605e93f063a4e56c0c23282c0fe2b8128815744"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/side-channel-map"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "side-channel-weakmap",
+      "version": "1.0.2",
+      "bom-ref": "openapi-backend@5.20.1|side-channel-weakmap@1.0.2",
+      "author": "Jordan Harband",
+      "description": "Store information about any JS value in a side channel. Uses WeakMap if available.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/side-channel-weakmap@1.0.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/side-channel-weakmap.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/side-channel-weakmap#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/side-channel-weakmap/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/side-channel-weakmap/-/side-channel-weakmap-1.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "58f4bf1ef1d04d89c78ac2e8f4c72a0473899361641cefed969be5772ae77a6e1a790a7885a8b7832b61b3083aa74d684a84e5e7cadca621408c5d9baf6024d8"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/side-channel-weakmap"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "call-bound",
+      "version": "1.0.4",
+      "bom-ref": "openapi-backend@5.20.1|call-bound@1.0.4",
+      "author": "Jordan Harband",
+      "description": "Robust call-bound JavaScript intrinsics, using `call-bind` and `get-intrinsic`.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/call-bound@1.0.4",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/call-bound.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/call-bound#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/call-bound/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/call-bound/-/call-bound-1.0.4.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "fb2b3df7b53dea9a382b1fc0069042aa103d12ec49690583420ef6f791f8841a61bf72198346e804abb0629b78617a7a319e4099942753fb72313951a5a49e8e"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/call-bound"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "get-intrinsic",
+      "version": "1.3.0",
+      "bom-ref": "openapi-backend@5.20.1|get-intrinsic@1.3.0",
+      "author": "Jordan Harband",
+      "description": "Get and robustly cache all JS language-level intrinsics at first require time",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/get-intrinsic@1.3.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/get-intrinsic.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/get-intrinsic#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/get-intrinsic/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.3.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "f5f4a349aa2cfdf448548a7ec5226513a95fc21112ecb36d29a08121a987b23af69dad418800493e8d263a38f3f062435116ab9823c6a9a89583999f8dbf7c09"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/get-intrinsic"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "call-bind-apply-helpers",
+      "version": "1.0.2",
+      "bom-ref": "openapi-backend@5.20.1|call-bind-apply-helpers@1.0.2",
+      "author": "Jordan Harband",
+      "description": "Helper functions around Function call/apply/bind, for use in `call-bind`",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/call-bind-apply-helpers@1.0.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/call-bind-apply-helpers.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/call-bind-apply-helpers#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/call-bind-apply-helpers/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/call-bind-apply-helpers/-/call-bind-apply-helpers-1.0.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "4a9d5a6e52748af0e44b38dc68977112e9cde7f5ef92c149dac30115fabac74af285057fd9bfcac057b6d5c329987b4f3928a3f0af7dff049fa04b9339b9ae31"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/call-bind-apply-helpers"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "es-object-atoms",
+      "version": "1.1.2",
+      "bom-ref": "openapi-backend@5.20.1|es-object-atoms@1.1.2",
+      "author": "Jordan Harband",
+      "description": "ES Object-related atoms: Object, ToObject, RequireObjectCoercible",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/es-object-atoms@1.1.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/es-object-atoms.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/es-object-atoms#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/es-object-atoms/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/es-object-atoms/-/es-object-atoms-1.1.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "1d6701a0de8d8a57aab52c9d2b616a1db4bf2e80ddda9aab9d01cbc89cc18f890ea7f932d8c58c37af78c4e7e42bcfd29d4b16d831fb11fc9597274a0ac9b567"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/es-object-atoms"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "function-bind",
+      "version": "1.1.2",
+      "bom-ref": "openapi-backend@5.20.1|function-bind@1.1.2",
+      "author": "Raynos",
+      "description": "Implementation of Function.prototype.bind",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/function-bind@1.1.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/Raynos/function-bind.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/Raynos/function-bind",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/Raynos/function-bind/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "ed71cdc47eea5fdc46e66230c6486e993a31fcc21135c3a00ebc56b0cb76a40af6dd61e9e8cad194dec50521690a9afea153b417be38894811f369c931f1b648"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/function-bind"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "get-proto",
+      "version": "1.0.1",
+      "bom-ref": "openapi-backend@5.20.1|get-proto@1.0.1",
+      "author": "Jordan Harband",
+      "description": "Robustly get the [[Prototype]] of an object",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/get-proto@1.0.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/get-proto.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/get-proto#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/get-proto/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/get-proto/-/get-proto-1.0.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "b1349f063a17069f3d26f20a21e7eac3b53608279bb1cef892263a6b0886a202ada1219b823604fc6ffe97db05dcc5853cd73d21ca0e0b83837ca1dfc459a9d2"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/get-proto"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "gopd",
+      "version": "1.2.0",
+      "bom-ref": "openapi-backend@5.20.1|gopd@1.2.0",
+      "author": "Jordan Harband",
+      "description": "`Object.getOwnPropertyDescriptor`, but accounts for IE's broken implementation.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/gopd@1.2.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/ljharb/gopd.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/gopd#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/gopd/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/gopd/-/gopd-1.2.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "65429187afe4505a0089302d4d83d9277870f70371c7e04804e8a39e51bd3e7ac9b027128ecd70cb20fabc9a5a62d827cc3aca6114aa7f738ee917daf77c6c46"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/gopd"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "has-symbols",
+      "version": "1.1.0",
+      "bom-ref": "openapi-backend@5.20.1|has-symbols@1.1.0",
+      "author": "Jordan Harband",
+      "description": "Determine if the JS environment has Symbol support. Supports spec, or shams.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/has-symbols@1.1.0",
+      "externalReferences": [
+        {
+          "url": "git://github.com/inspect-js/has-symbols.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/ljharb/has-symbols#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/ljharb/has-symbols/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/has-symbols/-/has-symbols-1.1.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "d5c0cd77027625aa2199bdec8383a629a301c2e0b8f2c6278b91d4c360efb02f0b8c64cb2bd87e79bd57e91cae3877b8853d142c25baf22a26863528294aa53d"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/has-symbols"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "hasown",
+      "version": "2.0.4",
+      "bom-ref": "openapi-backend@5.20.1|hasown@2.0.4",
+      "author": "Jordan Harband",
+      "description": "A robust, ES3 compatible, \"has own property\" predicate.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/hasown@2.0.4",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/inspect-js/hasOwn.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/inspect-js/hasOwn#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/inspect-js/hasOwn/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/hasown/-/hasown-2.0.4.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "4f651b7db044177db089ea5722c3254d6f7e743602eb0321fedfef600e2db8e30aa96cff9f7bebd4d152c508b23fece4da65eca0c03f8bfeea57a2cabadd6dd4"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/hasown"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "math-intrinsics",
+      "version": "1.1.0",
+      "bom-ref": "openapi-backend@5.20.1|math-intrinsics@1.1.0",
+      "author": "Jordan Harband",
+      "description": "ES Math-related intrinsics and helpers, robustly cached.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/math-intrinsics@1.1.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/es-shims/math-intrinsics.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/es-shims/math-intrinsics#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/es-shims/math-intrinsics/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/math-intrinsics/-/math-intrinsics-1.1.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "fc85ed6f0124e474cfc84c32297ea11a4617c4cf676e3eb807e8a55499c2fd1e81d291f91b85776f4a556cbec3063e2d921040a696d05257fa17a5e5f4b1eed6"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/math-intrinsics"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "dunder-proto",
+      "version": "1.0.1",
+      "bom-ref": "openapi-backend@5.20.1|dunder-proto@1.0.1",
+      "author": "Jordan Harband",
+      "description": "If available, the `Object.prototype.__proto__` accessor and mutator, call-bound",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/dunder-proto@1.0.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/es-shims/dunder-proto.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/es-shims/dunder-proto#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/es-shims/dunder-proto/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/dunder-proto/-/dunder-proto-1.0.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "28837f9c3241411717c3430b561644f62407986ebca80548060f42aa65188e64088608a3f54e4c16faea9142f915bb72cb366e39e3add3375e45ee1463b72df8"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 0.4"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/dunder-proto"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "openapi-backend@5.20.1",
+      "dependsOn": [
+        "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2",
+        "openapi-backend@5.20.1|ajv@8.20.0",
+        "openapi-backend@5.20.1|bath-es5@3.0.3",
+        "openapi-backend@5.20.1|cookie@1.0.1",
+        "openapi-backend@5.20.1|dereference-json-schema@0.2.3",
+        "openapi-backend@5.20.1|lodash@4.18.1",
+        "openapi-backend@5.20.1|mock-json-schema@1.1.2",
+        "openapi-backend@5.20.1|openapi-schema-validator@12.1.3",
+        "openapi-backend@5.20.1|openapi-types@12.1.3",
+        "openapi-backend@5.20.1|qs@6.16.0"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2",
+      "dependsOn": [
+        "openapi-backend@5.20.1|@jsdevtools/ono@7.1.3",
+        "openapi-backend@5.20.1|@types/json-schema@7.0.15",
+        "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|js-yaml@4.3.2"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|js-yaml@4.3.2",
+      "dependsOn": [
+        "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|argparse@2.0.1"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|argparse@2.0.1"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|ajv@8.20.0",
+      "dependsOn": [
+        "openapi-backend@5.20.1|fast-deep-equal@3.1.3",
+        "openapi-backend@5.20.1|fast-uri@3.1.7",
+        "openapi-backend@5.20.1|json-schema-traverse@1.0.0",
+        "openapi-backend@5.20.1|require-from-string@2.0.2"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|bath-es5@3.0.3"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|cookie@1.0.1"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|dereference-json-schema@0.2.3"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|lodash@4.18.1"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|mock-json-schema@1.1.2",
+      "dependsOn": [
+        "openapi-backend@5.20.1|lodash@4.18.1"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|openapi-schema-validator@12.1.3",
+      "dependsOn": [
+        "openapi-backend@5.20.1|ajv-formats@2.1.1",
+        "openapi-backend@5.20.1|ajv@8.20.0",
+        "openapi-backend@5.20.1|lodash.merge@4.6.2",
+        "openapi-backend@5.20.1|openapi-types@12.1.3"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|openapi-types@12.1.3"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|qs@6.16.0",
+      "dependsOn": [
+        "openapi-backend@5.20.1|es-define-property@1.0.1",
+        "openapi-backend@5.20.1|side-channel@1.1.1"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|@jsdevtools/ono@7.1.3"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|@types/json-schema@7.0.15"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|fast-deep-equal@3.1.3"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|fast-uri@3.1.7"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|json-schema-traverse@1.0.0"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|require-from-string@2.0.2"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|ajv-formats@2.1.1",
+      "dependsOn": [
+        "openapi-backend@5.20.1|ajv@8.20.0"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|lodash.merge@4.6.2"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|es-define-property@1.0.1"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|side-channel@1.1.1",
+      "dependsOn": [
+        "openapi-backend@5.20.1|es-errors@1.3.0",
+        "openapi-backend@5.20.1|object-inspect@1.13.4",
+        "openapi-backend@5.20.1|side-channel-list@1.0.1",
+        "openapi-backend@5.20.1|side-channel-map@1.0.1",
+        "openapi-backend@5.20.1|side-channel-weakmap@1.0.2"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|es-errors@1.3.0"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|object-inspect@1.13.4"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|side-channel-list@1.0.1",
+      "dependsOn": [
+        "openapi-backend@5.20.1|es-errors@1.3.0",
+        "openapi-backend@5.20.1|object-inspect@1.13.4"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|side-channel-map@1.0.1",
+      "dependsOn": [
+        "openapi-backend@5.20.1|call-bound@1.0.4",
+        "openapi-backend@5.20.1|es-errors@1.3.0",
+        "openapi-backend@5.20.1|get-intrinsic@1.3.0",
+        "openapi-backend@5.20.1|object-inspect@1.13.4"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|side-channel-weakmap@1.0.2",
+      "dependsOn": [
+        "openapi-backend@5.20.1|call-bound@1.0.4",
+        "openapi-backend@5.20.1|es-errors@1.3.0",
+        "openapi-backend@5.20.1|get-intrinsic@1.3.0",
+        "openapi-backend@5.20.1|object-inspect@1.13.4",
+        "openapi-backend@5.20.1|side-channel-map@1.0.1"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|call-bound@1.0.4",
+      "dependsOn": [
+        "openapi-backend@5.20.1|call-bind-apply-helpers@1.0.2",
+        "openapi-backend@5.20.1|get-intrinsic@1.3.0"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|get-intrinsic@1.3.0",
+      "dependsOn": [
+        "openapi-backend@5.20.1|call-bind-apply-helpers@1.0.2",
+        "openapi-backend@5.20.1|es-define-property@1.0.1",
+        "openapi-backend@5.20.1|es-errors@1.3.0",
+        "openapi-backend@5.20.1|es-object-atoms@1.1.2",
+        "openapi-backend@5.20.1|function-bind@1.1.2",
+        "openapi-backend@5.20.1|get-proto@1.0.1",
+        "openapi-backend@5.20.1|gopd@1.2.0",
+        "openapi-backend@5.20.1|has-symbols@1.1.0",
+        "openapi-backend@5.20.1|hasown@2.0.4",
+        "openapi-backend@5.20.1|math-intrinsics@1.1.0"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|call-bind-apply-helpers@1.0.2",
+      "dependsOn": [
+        "openapi-backend@5.20.1|es-errors@1.3.0",
+        "openapi-backend@5.20.1|function-bind@1.1.2"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|es-object-atoms@1.1.2",
+      "dependsOn": [
+        "openapi-backend@5.20.1|es-errors@1.3.0"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|function-bind@1.1.2"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|get-proto@1.0.1",
+      "dependsOn": [
+        "openapi-backend@5.20.1|dunder-proto@1.0.1",
+        "openapi-backend@5.20.1|es-object-atoms@1.1.2"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|gopd@1.2.0"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|has-symbols@1.1.0"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|hasown@2.0.4",
+      "dependsOn": [
+        "openapi-backend@5.20.1|function-bind@1.1.2"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.20.1|math-intrinsics@1.1.0"
+    },
+    {
+      "ref": "openapi-backend@5.20.1|dunder-proto@1.0.1",
+      "dependsOn": [
+        "openapi-backend@5.20.1|call-bind-apply-helpers@1.0.2",
+        "openapi-backend@5.20.1|es-errors@1.3.0",
+        "openapi-backend@5.20.1|gopd@1.2.0"
+      ]
+    }
+  ]
+}
