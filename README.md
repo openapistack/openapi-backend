@@ -420,7 +420,7 @@ api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, 
 
 A [CycloneDX](https://cyclonedx.org) SBOM for the published package is maintained in [`sbom/openapi-backend.cdx.json`](sbom/openapi-backend.cdx.json), alongside a [full-tree variant](sbom/openapi-backend.full.cdx.json) that includes devDependencies and CSV license listings. Third-party licenses and copyright holders are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-To browse the SBOM interactively, open the [CycloneDX Web Tool](https://cyclonedx.github.io/cyclonedx-web-tool/) and load the JSON file, or import it into [Dependency-Track](https://dependencytrack.org).
+To browse the SBOM interactively, open [CycloneDX Sunshine](https://cyclonedx.github.io/Sunshine/) and load the JSON file.
 
 Regenerate after dependency changes with:
 
