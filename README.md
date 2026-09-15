@@ -2,7 +2,7 @@
 
 <h1 align="center"><img alt="openapi-backend" src="https://github.com/openapistack/openapi-backend/raw/main/header.png" style="max-width:50rem"></h1>
 
-[![CI](https://github.com/openapistack/openapi-backend/workflows/CI/badge.svg)](https://github.com/openapistack/openapi-backend/actions?query=workflow%3ACI)
+[![CI](https://github.com/openapistack/openapi-backend/actions/workflows/ci.yml/badge.svg)](https://github.com/openapistack/openapi-backend/actions/workflows/ci.yml)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/openapistack/openapi-backend/blob/main/LICENSE)
 [![npm version](https://img.shields.io/npm/v/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
 [![npm downloads](https://img.shields.io/npm/dw/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
