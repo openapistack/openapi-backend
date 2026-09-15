@@ -36,6 +36,7 @@ Generated from package-lock.json on 2026-09-15.
 - License: MIT
 - Repository: https://github.com/anttiviljami/bath-es5
 - Copyright (c) 2016 bouzuya
+- Note: Fork of [bath](https://github.com/bouzuya/bath) by bouzuya, transpiled to ES5 for browser compatibility and published to npm as bath-es5 by Viljami Kuosmanen. Original work copyright bouzuya, MIT.
 
 ## call-bind-apply-helpers@1.0.2
 - License: MIT

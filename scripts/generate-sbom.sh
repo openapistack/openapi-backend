@@ -16,6 +16,9 @@ const fs = require("fs");
 const packages = JSON.parse(fs.readFileSync(0, "utf8"));
 const today = new Date().toISOString().slice(0, 10);
 const copyrightLine = /^\s*(copyright\s*(\(c\)|©)?\s*\d{4}.*|\(c\)\s*\d{4}.*)$/gim;
+const packageNotes = {
+  "bath-es5": "Fork of [bath](https://github.com/bouzuya/bath) by bouzuya, transpiled to ES5 for browser compatibility and published to npm as bath-es5 by Viljami Kuosmanen. Original work copyright bouzuya, MIT.",
+};
 
 let out = `# Third-party notices for openapi-backend
 
@@ -30,6 +33,8 @@ for (const [name, info] of Object.entries(packages)) {
   const holders = [...new Set((licenseText.match(copyrightLine) || []).map((line) => line.trim()))].slice(0, 3);
   out += `## ${name}\n- License: ${info.licenses}\n- Repository: ${info.repository || "n/a"}\n`;
   out += holders.map((line) => `- ${line}\n`).join("");
+  const note = packageNotes[name.slice(0, name.lastIndexOf("@"))];
+  if (note) out += `- Note: ${note}\n`;
   out += "\n";
 }
 
