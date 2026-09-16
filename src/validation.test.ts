@@ -273,6 +273,66 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
       });
     });
 
+    describe('query params with content application/json', () => {
+      const validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPets',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  {
+                    name: 'filter',
+                    in: 'query',
+                    content: {
+                      'application/json': {
+                        schema: {
+                          type: 'object',
+                          properties: {
+                            age: { type: 'integer' },
+                          },
+                        },
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        },
+        ...constructorOpts,
+      });
+
+      test('passes validation for GET /pets?filter={"age":4}', async () => {
+        const valid = validator.validateRequest({
+          path: `/pets?filter=${encodeURIComponent('{"age":4}')}`,
+          method: 'get',
+          headers,
+        });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation with a parse error for GET /pets?filter={bad', async () => {
+        const valid = validator.validateRequest({ path: '/pets?filter={bad', method: 'get', headers });
+        expect(valid.valid).toBe(false);
+        expect(valid.errors && valid.errors[0].keyword).toBe('parse');
+        expect(valid.errors && valid.errors[0].instancePath).toBe('/query/filter');
+      });
+
+      test('fails validation with a parse error when query is given as an object', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'get',
+          headers,
+          query: { filter: '{bad' },
+        });
+        expect(valid.valid).toBe(false);
+        expect(valid.errors && valid.errors[0].keyword).toBe('parse');
+      });
+    });
+
     describe('query params in operation object', () => {
       const validator = new OpenAPIValidator({
         definition: {
@@ -673,6 +733,17 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
           headers,
         });
         expect(valid.errors).toBeFalsy();
+      });
+
+      test('validates a non-json body sent as application/json with a charset parameter', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'put',
+          body: '<XML>',
+          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        });
+        expect(valid.valid).toBe(false);
+        expect(valid.errors).toHaveLength(1);
       });
 
       test('passes validation for PUT /pets with multipart/form-data', async () => {

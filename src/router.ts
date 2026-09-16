@@ -265,6 +265,21 @@ export class OpenAPIRouter<D extends Document = Document> {
   }
 
   /**
+   * Parses the raw query parameters of a request, before any per-parameter decoding
+   * - from req.query if given as an object or a string
+   * - otherwise from the query string in req.path
+   *
+   * @export
+   * @param {Request} req
+   * @returns {{ [key: string]: unknown }}
+   */
+  public parseRequestQuery(req: Request): { [key: string]: unknown } {
+    const qs = typeof req.query === 'object' ? new URLSearchParams(req.query).toString() : req.query;
+    const queryString = typeof qs === 'string' ? qs.replace('?', '') : req.path.split('?')[1];
+    return typeof req.query === 'object' ? _.cloneDeep(req.query) : parseQuery(queryString);
+  }
+
+  /**
    * Parses and normalizes a request
    * - parse json body
    * - parse query string
@@ -297,9 +312,7 @@ export class OpenAPIRouter<D extends Document = Document> {
     const cookies = cookie.parse(_.flatten([cookieHeader]).join('; '));
 
     // parse query
-    const qs = typeof req.query === 'object' ? new URLSearchParams(req.query).toString() : req.query;
-    const queryString = typeof qs === 'string' ? qs.replace('?', '') : req.path.split('?')[1];
-    const query = typeof req.query === 'object' ? _.cloneDeep(req.query) : parseQuery(queryString);
+    const query = this.parseRequestQuery(req);
 
     // normalize
     req = this.normalizeRequest(req);
@@ -323,7 +336,12 @@ export class OpenAPIRouter<D extends Document = Document> {
             if (parameter.content && parameter.content['application/json']) {
               const rawValue = query[queryParam];
               if (typeof rawValue === 'string') {
-                query[queryParam] = JSON.parse(rawValue);
+                try {
+                  query[queryParam] = JSON.parse(rawValue);
+                } catch {
+                  // suppress json parsing errors and leave the raw value in place
+                  // validation reports malformed json as a parse error
+                }
               }
             } else if (parameter.explode === false) {
               // Handle parameter parsing for non-exploded arrays

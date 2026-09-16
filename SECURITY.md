@@ -33,21 +33,20 @@ The full contract lives in [docs/threat-model.md](docs/threat-model.md). This is
 **What openapi-backend guarantees:**
 
 - Security requirement semantics per the OpenAPI spec. A required scheme whose handler returned falsy, returned `{ error }`, threw or was never registered counts as failed. Fail-open here is a CVE (GHSA-j939-289f-wq4w was one).
-- With `unauthorizedHandler` registered, an unauthorised request never reaches your operation handler.
-- With `validationFail` registered, a request the schema rejects never reaches your operation handler.
+- With `unauthorizedHandler` registered, or with `strict: true`, an unauthorised request never reaches your operation handler.
+- With `validationFail` registered, or with `strict: true`, a request the schema rejects never reaches your operation handler.
 - Routing goes to the operation the path template and method say, and nowhere else.
-- Client bytes only ever get parsed and validated. Never evaluated, never used as a path, URL or regex.
+- Client bytes only ever get parsed and validated. Never evaluated, never used as a path, URL or regex. Malformed input becomes a validation error, never a rejected promise.
+- A request that hangs the library or crashes the process is a bug. A slow one is not.
 
 **What it does NOT do:**
 
 - It does no authentication or authorisation itself. `security:` in the definition is a list of handlers to consult, not an enforcement rule.
-- Without `unauthorizedHandler` the operation handler still runs with `context.security.authorized === false`. Without `validationFail` it still runs with `context.validation.valid === false`. Both are on you (GHSA-7mmm-8m7g-cp5g was closed on this basis).
-- No request size, depth or rate limits. No timeouts. No path canonicalisation. No content-type enforcement beyond `application/json`. No crypto. Your framework and platform own those.
+- In the default non-strict mode, without `unauthorizedHandler` the operation handler still runs with `context.security.authorized === false`, and without `validationFail` it still runs with `context.validation.valid === false`. You get warned once. Both are on you until 6.0, where the library fails closed regardless.
+- No request size, depth or rate limits. No timeouts. No path canonicalisation. No content-type enforcement beyond JSON. No crypto. Your framework and platform own those.
 - Mocks return your definition's examples verbatim. Don't mock in production.
 
-**So what should you register?** `unauthorizedHandler` if you have any `security` requirements, `validationFail` if you rely on the schema, a security handler for every scheme and a `try/catch` around `handleRequest`. That's the whole contract.
-
-The threat model is a draft. A handful of rulings (most importantly whether the missing `unauthorizedHandler` default is "by design" or a gap to close) are still open in its §4.14. Until they're answered, reports in that grey area get triaged conservatively.
+**So what should you do?** Set `strict: true` in production. Register a security handler for every scheme. Register `unauthorizedHandler` and `validationFail` if you want custom responses instead of thrown errors. Wrap `handleRequest` in a `try/catch`. That's the whole contract.
 
 ## Scope and safe harbor
 

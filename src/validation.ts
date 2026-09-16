@@ -304,7 +304,40 @@ export class OpenAPIValidator<D extends Document = Document> {
       }
     }
 
-    if (typeof requestBody === 'object' || headers['content-type'] === 'application/json') {
+    // check that JSON isn't malformed in query parameters declared with content: application/json
+    const jsonQueryParams = (operation.parameters || []).filter(
+      (param) => !('$ref' in param) && param.in === 'query' && param.content?.['application/json'],
+    ) as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>[];
+    if (jsonQueryParams.length) {
+      const rawQuery = this.router.parseRequestQuery(req);
+      for (const param of jsonQueryParams) {
+        const rawValue = rawQuery[param.name];
+        if (typeof rawValue === 'string') {
+          try {
+            JSON.parse(rawValue);
+          } catch (err) {
+            if (err instanceof Error) {
+              result.errors.push({
+                keyword: 'parse',
+                instancePath: `/query/${param.name}`,
+                schemaPath: `#/parameters/${param.name}`,
+                params: [],
+                message: err.message,
+              });
+            }
+          }
+        }
+      }
+    }
+
+    // media type of the request, ignoring parameters such as charset
+    const rawContentType = headers['content-type'];
+    const contentType = String((Array.isArray(rawContentType) ? rawContentType[0] : rawContentType) || '')
+      .split(';')[0]
+      .trim()
+      .toLowerCase();
+
+    if (typeof requestBody === 'object' || contentType === 'application/json') {
       // include request body in validation if an object is provided
       parameters.requestBody = requestBody;
     }

@@ -667,6 +667,68 @@ describe('OpenAPIBackend', () => {
 
         expect(mockHandler).toBeCalled();
       });
+
+      describe('without unauthorizedHandler', () => {
+        test('rejects with 401 in strict mode if requirements are not met', async () => {
+          const api = new OpenAPIBackend({ definition, strict: true });
+          const mockHandler = jest.fn();
+          api.register('getPets', mockHandler);
+          api.registerSecurityHandler('basicAuth', () => false);
+          await api.init();
+
+          const request = {
+            method: 'get',
+            path: '/pets',
+            headers: {},
+          };
+          await expect(api.handleRequest(request)).rejects.toThrow(/^401-unauthorized/);
+          expect(mockHandler).not.toBeCalled();
+        });
+
+        test('calls operation handler in strict mode if requirements are met', async () => {
+          const api = new OpenAPIBackend({ definition, strict: true });
+          const mockHandler = jest.fn(() => 'dummyResponse');
+          api.register('getPets', mockHandler);
+          api.registerSecurityHandler('basicAuth', () => true);
+          await api.init();
+
+          const request = {
+            method: 'get',
+            path: '/pets',
+            headers: {},
+          };
+          const res = await api.handleRequest(request);
+          expect(res).toBe('dummyResponse');
+          expect(mockHandler).toBeCalledTimes(1);
+        });
+
+        test('calls operation handler and warns once in non-strict mode if requirements are not met', async () => {
+          const warn = console.warn;
+          console.warn = jest.fn();
+
+          const api = new OpenAPIBackend({ definition });
+          let context: Partial<Context> = {};
+          const mockHandler = jest.fn((c) => {
+            context = c;
+          });
+          api.register('getPets', mockHandler);
+          api.registerSecurityHandler('basicAuth', () => false);
+          await api.init();
+
+          const request = {
+            method: 'get',
+            path: '/pets',
+            headers: {},
+          };
+          await api.handleRequest(request);
+          await api.handleRequest(request);
+
+          expect(mockHandler).toBeCalledTimes(2);
+          expect(context.security?.authorized).toBe(false);
+          expect(console.warn).toBeCalledTimes(1);
+          console.warn = warn; // reset console.warn
+        });
+      });
     });
 
     describe('validation option', () => {
@@ -760,6 +822,85 @@ describe('OpenAPIBackend', () => {
         expect(validationFailHandler).toBeCalledTimes(1);
         expect(operationHandler).not.toBeCalled();
         expect(res).toBe('validation-failed');
+      });
+
+      describe('without validationFail handler', () => {
+        test('rejects with 400 in strict mode if validation fails', async () => {
+          const api = new OpenAPIBackend({ definition: validationDefinition, strict: true });
+          const operationHandler = jest.fn(() => 'operation-response');
+          api.register('getPetById', operationHandler);
+          await api.init();
+
+          const request = {
+            method: 'get',
+            path: '/pets/not-an-integer',
+            headers: {},
+          };
+          await expect(api.handleRequest(request)).rejects.toThrow(/^400-validationFail/);
+          expect(operationHandler).not.toBeCalled();
+        });
+
+        test('calls operation handler in strict mode if validation passes', async () => {
+          const api = new OpenAPIBackend({ definition: validationDefinition, strict: true });
+          const operationHandler = jest.fn(() => 'operation-response');
+          api.register('getPetById', operationHandler);
+          await api.init();
+
+          const request = {
+            method: 'get',
+            path: '/pets/1',
+            headers: {},
+          };
+          const res = await api.handleRequest(request);
+          expect(res).toBe('operation-response');
+          expect(operationHandler).toBeCalledTimes(1);
+        });
+
+        test('calls operation handler and warns once in non-strict mode if validation fails', async () => {
+          const warn = console.warn;
+          console.warn = jest.fn();
+
+          const api = new OpenAPIBackend({ definition: validationDefinition });
+          let context: Partial<Context> = {};
+          const operationHandler = jest.fn((c) => {
+            context = c;
+            return 'operation-response';
+          });
+          api.register('getPetById', operationHandler);
+          await api.init();
+
+          const request = {
+            method: 'get',
+            path: '/pets/not-an-integer',
+            headers: {},
+          };
+          await api.handleRequest(request);
+          await api.handleRequest(request);
+
+          expect(operationHandler).toBeCalledTimes(2);
+          expect(context.validation?.valid).toBe(false);
+          expect(console.warn).toBeCalledTimes(1);
+          console.warn = warn; // reset console.warn
+        });
+
+        test('uses a registered 400 handler as validationFail handler', async () => {
+          const api = new OpenAPIBackend({ definition: validationDefinition, strict: true });
+          const operationHandler = jest.fn(() => 'operation-response');
+          const badRequestHandler = jest.fn(() => 'bad-request');
+          api.register('getPetById', operationHandler);
+          api.register('400', badRequestHandler);
+          await api.init();
+
+          const request = {
+            method: 'get',
+            path: '/pets/not-an-integer',
+            headers: {},
+          };
+          const res = await api.handleRequest(request);
+          expect(res).toBe('bad-request');
+          expect(badRequestHandler).toBeCalledTimes(1);
+          expect(operationHandler).not.toBeCalled();
+        });
       });
 
       test('validates requests when validate is explicitly undefined', async () => {
