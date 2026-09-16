@@ -162,13 +162,28 @@ export class OpenAPIBackend<D extends Document = Document> {
   public router: OpenAPIRouter<D>;
   public validator: OpenAPIValidator<D>;
 
+  private warnings = new Set<string>();
+
+  /**
+   * Emits a console warning once per key for the lifetime of this instance
+   */
+  private warnOnce(key: string, message: string): void {
+    if (this.warnings.has(key)) {
+      return;
+    }
+    this.warnings.add(key);
+    console.warn(message);
+  }
+
   /**
    * Creates an instance of OpenAPIBackend.
    *
    * @param opts - constructor options
    * @param {D | string} opts.definition - the OpenAPI definition, file path or Document object
    * @param {string} opts.apiRoot - the root URI of the api. all paths are matched relative to apiRoot
-   * @param {boolean} opts.strict - strict mode, throw errors or warn on OpenAPI spec validation errors (default: false)
+   * @param {boolean} opts.strict - strict mode, fail closed instead of warning: throw on OpenAPI spec validation
+   * errors, on registering handlers for unknown operationIds, and on requests that fail security requirements or
+   * request validation when no unauthorizedHandler / validationFail handler is registered (default: false)
    * @param {boolean} opts.quick - quick startup, attempts to optimise startup; might break things (default: false)
    * @param {boolean | ContextPredicate} opts.validate - whether to validate requests with Ajv, or a predicate called per
    * request to decide (default: true)
@@ -448,6 +463,20 @@ export class OpenAPIBackend<D extends Document = Document> {
         if (unauthorizedHandler) {
           return unauthorizedHandler(context as Context<D>, ...handlerArgs);
         }
+        if (this.strict) {
+          // strict mode: fail closed
+          throw Error(
+            `401-unauthorized: ${operationId} request did not satisfy security requirements and no unauthorizedHandler is registered`,
+          );
+        }
+        // non-strict mode: fall through to the operation handler, which is responsible for checking
+        // context.security.authorized. Warn once so this doesn't go unnoticed.
+        this.warnOnce(
+          'unauthorizedHandler',
+          `Request to ${operationId} did not satisfy its security requirements, but no unauthorizedHandler is registered. ` +
+            'Proceeding to the operation handler. Register an unauthorizedHandler or set strict: true to reject these requests. ' +
+            'See https://github.com/openapistack/openapi-backend/blob/main/SECURITY.md',
+        );
       }
 
       // check whether this request should be validated
@@ -457,7 +486,7 @@ export class OpenAPIBackend<D extends Document = Document> {
           : Boolean(this.validate);
 
       // validate request
-      const validationFailHandler = this.handlers['validationFail'];
+      const validationFailHandler = this.handlers['400'] || this.handlers['validationFail'];
       if (validate) {
         context.validation = this.validator.validateRequest(req, context.operation);
         if (context.validation.errors) {
@@ -465,7 +494,20 @@ export class OpenAPIBackend<D extends Document = Document> {
           if (validationFailHandler) {
             return validationFailHandler(context as Context<D>, ...handlerArgs);
           }
-          // if no validation handler is specified, just ignore it and proceed to route handler
+          if (this.strict) {
+            // strict mode: fail closed
+            throw Error(
+              `400-validationFail: ${operationId} request failed validation and no validationFail handler is registered`,
+            );
+          }
+          // non-strict mode: fall through to the operation handler, which is responsible for checking
+          // context.validation.valid. Warn once so this doesn't go unnoticed.
+          this.warnOnce(
+            'validationFail',
+            `Request to ${operationId} failed validation, but no validationFail handler is registered. ` +
+              'Proceeding to the operation handler. Register a validationFail handler or set strict: true to reject these requests. ' +
+              'See https://github.com/openapistack/openapi-backend/blob/main/SECURITY.md',
+          );
         }
 
         // parse request again now with coerced types, if needed

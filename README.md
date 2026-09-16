@@ -348,6 +348,12 @@ api.register('unauthorizedHandler', (c, req, res) => {
 });
 ```
 
+**Important:** security handlers compute the authorization result and expose it as `context.security.authorized`. They
+don't stop request handling on their own. To reject unauthorized requests, register an `unauthorizedHandler` or set
+`strict: true`, which makes `handleRequest` reject with a `401-unauthorized` error instead. Without either, the matched
+operation handler still runs (you get warned once) and is responsible for checking `context.security.authorized`. The
+same applies to request validation and the `validationFail` handler. See [SECURITY.md](SECURITY.md) for the full contract.
+
 See examples:
 - [API Key auth (express)](https://github.com/openapistack/openapi-backend/tree/examples/express-apikey-auth)
 - [JWT auth (express)](https://github.com/openapistack/openapi-backend/tree/examples/express-jwt-auth)

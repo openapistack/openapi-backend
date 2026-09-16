@@ -203,6 +203,15 @@ describe('OpenAPIRouter', () => {
       expect(parsedRequest.query.filter).toEqual(filterValue);
     });
 
+    test('leaves malformed json in a content application/json query param as a string instead of throwing', () => {
+      const request = { path: '/pets?filter={bad', method: 'get', headers };
+
+      const operation = api.getOperation('getPets')!;
+      const parsedRequest = api.parseRequest(request, operation);
+
+      expect(parsedRequest.query.filter).toBe('{bad');
+    });
+
     test('parses query string arrays', () => {
       const request = { path: '/pets?limit=10&limit=20', method: 'get', headers };
       const parsedRequest = api.parseRequest(request);
