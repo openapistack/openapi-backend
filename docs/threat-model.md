@@ -5,10 +5,10 @@
 | **Project** | `openapi-backend` (npm), https://github.com/openapistack/openapi-backend |
 | **Version / commit** | 5.21.0 (unreleased, branch `claude/focused-lamport-ndmg3r`), written against 5.20.3 / `0adc950` |
 | **Date** | 2026-09-16 |
-| **Status** | **Accepted by the maintainer, 2026-09-16.** Three minor questions still open in §4.14 (Q15, Q17, Q19). None of them change a triage outcome. |
+| **Status** | **Accepted by the maintainer, 2026-09-16.** Three minor questions still open in §13 (Q15, Q17, Q19). None of them change a triage outcome. |
 | **Version binding** | This model ships with the package. A report against version N gets triaged against the model as it was at N, not at `main`. |
-| **Reporting** | Breaks a §4.8 property? Report it privately per [SECURITY.md](../SECURITY.md). Lands in §4.3 or §4.9? It gets closed citing this document. |
-| **Provenance legend** | *(documented)* = stated in the project's own artifacts (README, docs site, code comments, tests, commit messages, advisories, maintainer comments on issues). *(maintainer, 2026-09)* = ruled by the maintainer while reviewing this document. *(inferred)* = my reading of the code, not confirmed, has a matching question in §4.14. |
+| **Reporting** | Breaks a §7 property? Report it privately per [SECURITY.md](../SECURITY.md). Lands in §2 or §8? It gets closed citing this document. |
+| **Provenance legend** | *(documented)* = stated in the project's own artifacts (README, docs site, code comments, tests, commit messages, advisories, maintainer comments on issues). *(maintainer, 2026-09)* = ruled by the maintainer while reviewing this document. *(inferred)* = my reading of the code, not confirmed, has a matching question in §13. |
 | **Confidence** | 33 documented / 34 maintainer / 1 inferred |
 
 ## What is this document?
@@ -23,7 +23,7 @@ Two readers: the integrator who wants to know which threats are theirs now, and 
 
 ---
 
-## 4.2 What is this library for?
+## 1. What is this library for?
 
 **Intended use:** an in-process router / validator / auth orchestrator behind a Node.js HTTP framework or serverless runtime, driven by one OpenAPI document you control *(documented: README "Quick Start", framework examples)*. Also a mock server for API development *(documented: README "Mocking API responses")*.
 
@@ -43,27 +43,27 @@ No "authenticated peer" role exists. The library holds no sessions and issues no
 
 | Family | Entry points | Touches the outside world? | In model? |
 | --- | --- | --- | --- |
-| **A. Definition loading** | `init`, `loadDocument`, `validateDefinition`, `refparser.ts`, `dereference-json-schema` (quick mode) | **Yes.** Reads local files and fetches HTTP(S) URLs to resolve external `$ref`s via `@apidevtools/json-schema-ref-parser` (default `resolve.external: true`) *(maintainer, 2026-09)* | In, as a **trusted-input** boundary (§4.4) |
+| **A. Definition loading** | `init`, `loadDocument`, `validateDefinition`, `refparser.ts`, `dereference-json-schema` (quick mode) | **Yes.** Reads local files and fetches HTTP(S) URLs to resolve external `$ref`s via `@apidevtools/json-schema-ref-parser` (default `resolve.external: true`) *(maintainer, 2026-09)* | In, as a **trusted-input** boundary (§3) |
 | **B. Router** | `matchOperation`, `parseRequest`, `parseRequestQuery`, `normalizeRequest`, `normalizePath` (`router.ts`) | No | **In. Primary attack surface.** |
 | **C. Request validator** | `validateRequest`, `buildRequestValidatorsForOperation`, Ajv instances (`validation.ts`) | No | **In. Primary attack surface.** |
 | **D. Lifecycle & auth aggregation** | `handleRequest`, security handler evaluation, `register*` (`backend.ts`) | No (calls your code) | **In. Primary attack surface.** |
-| **E. Response validation** | `validateResponse`, `validateResponseHeaders` | No | In, as a correctness feature only (§4.9) |
-| **F. Mocking** | `mockResponseForOperation`, `mock-json-schema` | No | In, trusted input only (§4.6) |
-| **G. Examples** (`examples` branch, 14 projects) | | Yes (real servers) | **Out** (§4.3) |
-| **H. Test fixtures, SBOM, scripts** | | | **Out** (§4.3) |
+| **E. Response validation** | `validateResponse`, `validateResponseHeaders` | No | In, as a correctness feature only (§8) |
+| **F. Mocking** | `mockResponseForOperation`, `mock-json-schema` | No | In, trusted input only (§5) |
+| **G. Examples** (`examples` branch, 14 projects) | | Yes (real servers) | **Out** (§2) |
+| **H. Test fixtures, SBOM, scripts** | | | **Out** (§2) |
 
-## 4.3 What is out of scope?
+## 2. What is out of scope?
 
 - **Authentication and authorisation decisions.** The library never looks at a credential. It calls your security handlers and combines their results per the OpenAPI security requirement semantics. Whether a token is valid is your handler's problem *(documented: README "Auth / Security Handlers"; issue #31 design plan)*.
 - **Transport, TLS, HTTP parsing, request size limits, timeouts, rate limiting, compression.** Framework or platform *(maintainer, 2026-09)*.
 - **Error handling for thrown errors.** "I've designed the library to be agnostic towards error handling. You can perform exception handling either within the operation handlers or simply catch from `handleRequest`" *(documented: maintainer, issue #88; again in #110)*.
-- **Hostile OpenAPI definitions.** The definition is your config. Anything that needs an attacker to author or edit the definition, `apiRoot`, `ajvOpts`, `customizeAjv` or any handler is out of model (§4.7). That includes SSRF / local file read through external `$ref`s, ReDoS through schema `pattern`s and schemas that make Ajv compile slowly *(maintainer, 2026-09)*.
+- **Hostile OpenAPI definitions.** The definition is your config. Anything that needs an attacker to author or edit the definition, `apiRoot`, `ajvOpts`, `customizeAjv` or any handler is out of model (§6). That includes SSRF / local file read through external `$ref`s, ReDoS through schema `pattern`s and schemas that make Ajv compile slowly *(maintainer, 2026-09)*.
 - **Your framework's body/query parser.** Prototype pollution, depth and size behaviour of the objects it hands over as `req.body` / `req.query` *(maintainer, 2026-09)*.
 - **Response body confidentiality.** Response validation is a dev aid, not a data leak control. I don't use runtime response validation in production myself *(documented: maintainer, issue #384)*.
 - **Shipped but unsupported code.** The `examples` branch is "separate from the library source on `main`" *(documented: examples branch README)*. Example servers, their dependencies and their auth setups are modelled by whoever copies them. Test fixtures, the SBOM and `scripts/` are not runtime code.
 - **Supply chain and build hygiene.** Dependency advisories, CI pinning, SBOM accuracy. Important, not a threat model topic.
 
-## 4.4 Where is the trust boundary?
+## 3. Where is the trust boundary?
 
 **The `Request` object. That's it.** Everything the client controls comes in through the five fields of `Request` (`method`, `path`, `headers`, `query`, `body`) passed to `handleRequest`, `matchOperation` or `validateRequest`. Everything else the library reads (definition, options, handlers, `handlerArgs`) is on the trusted side *(maintainer, 2026-09)*.
 
@@ -74,7 +74,7 @@ No "authenticated peer" role exists. The library holds no sessions and issues no
 3. `router.matchOperation`: untrusted `method` + `path` vs trusted path templates → `context.operation` (trusted) or 404/405.
 4. `parseRequest` again with the operation. Path params get percent-decoded by `bath-es5` *after* matching. Query params get per-parameter decoding.
 5. Security handlers (your code) run **concurrently for every scheme named in any requirement object**. They get the untrusted `context`, return results → `context.security.authorized` (computed by the library).
-6. `authorized === false` with requirements present: `unauthorizedHandler` if registered → **early return**. No handler and `strict: true` → **reject with `401-unauthorized`**. No handler and `strict: false` → warn once, fall through (§4.5a, §4.9).
+6. `authorized === false` with requirements present: `unauthorizedHandler` if registered → **early return**. No handler and `strict: true` → **reject with `401-unauthorized`**. No handler and `strict: false` → warn once, fall through (§4a, §8).
 7. Validation → `context.validation`. Errors: `validationFail` (or `400`) if registered → **early return**. No handler and `strict: true` → **reject with `400-validationFail`**. No handler and `strict: false` → warn once, fall through *(documented: code comments in `backend.ts`; tests "without unauthorizedHandler" and "without validationFail handler")*.
 8. `preOperationHandler`, the operation handler or `notImplemented`, `postResponseHandler`. Return values are opaque to the library.
 
@@ -85,23 +85,23 @@ The library never turns untrusted data into trusted data. `context.security.auth
 | Family | A finding matters only if… |
 | --- | --- |
 | A (loading) | it's reachable with an operator-authored definition and options. Needs a malicious definition? `OUT-OF-MODEL: trusted-input`. Note: an un-initialised instance auto-inits on the first `handleRequest` *(documented: code comment)*, so a client can control *when* files/URLs get read, but never *which*. |
-| B, C, D | it's reachable from the five `Request` fields with any well-formed definition and default options, **or** with a non-default option that isn't dev-only per §4.5a. |
+| B, C, D | it's reachable from the five `Request` fields with any well-formed definition and default options, **or** with a non-default option that isn't dev-only per §4a. |
 | E | it's reachable from an operator-supplied response object. Client data only gets here if your handler copies it into the response. |
 | F | it's reachable from `operationId` / `opts` values you sourced from the client. Default usage (`c.operation.operationId`) is trusted. |
 
-## 4.5 What does the library assume about its host?
+## 4. What does the library assume about its host?
 
 - **Runtime:** Node ≥ 20 *(documented: `package.json`)*. No native code. No browser support claimed.
 - **Concurrency:** one `OpenAPIBackend` instance is shared across all concurrent requests. Per-request state lives in the `context` object only. Mutable instance state touched at request time: the lazy validator cache (`requestValidators` etc.) in `quick` / lazy mode, and the once-only warning set. Two concurrent first requests may compile the same validator twice. Harmless *(maintainer, 2026-09)*. Handler maps are copied at construction so your objects don't get mutated *(documented: code comment and test "copies objects passed to constructor")*.
 - **Clock:** not used *(maintainer, 2026-09)*.
-- **Filesystem / network:** family A only (§4.2), only for the definition path and the external `$ref`s it names *(maintainer, 2026-09)*.
+- **Filesystem / network:** family A only (§1), only for the definition path and the external `$ref`s it names *(maintainer, 2026-09)*.
 - **What it does NOT do to your process** *(maintainer, 2026-09)*:
   - never opens listening sockets, spawns processes, installs signal handlers, reads env vars or touches global state (except binding three `$RefParser` methods at module load);
   - never touches filesystem or network at request time (except the auto-init case above);
   - writes to `console.warn` at init (non-strict mode swallows init errors this way), when you register a handler for an unknown operationId/scheme in non-strict mode, and once per instance when a non-strict request falls through a missing `unauthorizedHandler` or `validationFail`. Never writes to stdout;
   - doesn't mutate the `Request` you pass in (it spreads and clones). But it **does** hand out the live dereferenced definition objects via `context.operation`. A handler that mutates `c.operation` mutates the shared definition. That's misuse, not a library bug. The library won't deep-freeze or clone per request.
 
-### 4.5a Which options change the security envelope?
+### 4a. Which options change the security envelope?
 
 No compile-time flags. Runtime knobs that matter:
 
@@ -112,14 +112,14 @@ No compile-time flags. Runtime knobs that matter:
 | `validationFail` (or `400`) registered | **no** | Not registered: see `strict`. Registered: a request the schema rejects never reaches the operation handler *(documented: tests)*. | Same ruling as `unauthorizedHandler` *(maintainer, 2026-09)*. |
 | `validate` | `true` | `false` disables validation and skips compiling validators. A predicate can skip validation (and so coercion) per request *(documented: README, docs site)*. | Supported production choice ("skip validation for internal traffic"). |
 | `quick` | `false` | Skips `validateDefinition`, uses a sync dereferencer, compiles validators lazily at first request *(documented: JSDoc, "attempts to optimise startup; might break things")*. Recommended for serverless *(documented: docs site)*. | Supported. A `quick` deployment is in model. |
-| `coerceTypes` | `false` | `true`: Ajv-coerced path/query values replace `context.request.params/query`. `false`: validation still runs Ajv with `coerceTypes: true` on the params schema, so `"1"` validates as `integer` but your handler gets the string. | **Intended.** Lenient matching, raw delivery. Documented as §4.9 false friend 3 *(maintainer, 2026-09)*. |
-| `ajvOpts` / `customizeAjv` | `{ strict: false }` / none | You can weaken or strengthen everything Ajv does (`removeAdditional`, `useDefaults`, formats, `unicodeRegExp`, custom keywords). Trusted. | Out of model when non-default and weakening (§4.7). |
+| `coerceTypes` | `false` | `true`: Ajv-coerced path/query values replace `context.request.params/query`. `false`: validation still runs Ajv with `coerceTypes: true` on the params schema, so `"1"` validates as `integer` but your handler gets the string. | **Intended.** Lenient matching, raw delivery. Documented as §8 false friend 3 *(maintainer, 2026-09)*. |
+| `ajvOpts` / `customizeAjv` | `{ strict: false }` / none | You can weaken or strengthen everything Ajv does (`removeAdditional`, `useDefaults`, formats, `unicodeRegExp`, custom keywords). Trusted. | Out of model when non-default and weakening (§6). |
 | `ignoreTrailingSlashes` | `true` | `/pets/` and `/pets` route the same. | Documented default. |
 | `apiRoot` | `/` | Operator string, inserted unescaped into a `RegExp` for prefix stripping. Trusted. | |
 
-**So what's the insecure default story?** In 5.x: not registering `unauthorizedHandler` or `validationFail` is a supported non-strict configuration, you get warned once, and `strict: true` is one line away. In 6.0 the choice goes away and the library fails closed. That's the migration path, and it's the ruling on GHSA-7mmm-8m7g-cp5g (§4.13).
+**So what's the insecure default story?** In 5.x: not registering `unauthorizedHandler` or `validationFail` is a supported non-strict configuration, you get warned once, and `strict: true` is one line away. In 6.0 the choice goes away and the library fails closed. That's the migration path, and it's the ruling on GHSA-7mmm-8m7g-cp5g (§12).
 
-## 4.6 What inputs does the library accept, and from whom?
+## 5. What inputs does the library accept, and from whom?
 
 **`handleRequest(req, ...handlerArgs)`** (same for `matchOperation`, `validateRequest`):
 
@@ -143,17 +143,17 @@ Per-parameter query handling that runs on attacker data *before* validation: `JS
 | --- | --- | --- | --- |
 | `new OpenAPIBackend(opts)` | all of `opts` | no | definition can be a file path or URL, resolved at `init` |
 | `register*`, `registerSecurityHandler` | names, functions | no | |
-| `mockResponseForOperation` | `operationId`, `opts.code/mediaType/example` | **no, trusted by contract.** If you forward client values here, the lookups are plain property reads on the definition (`responses[opts.code]`, `examples[opts.example]`) with no prototype key guard *(inferred)* | see §4.11, Q15 |
+| `mockResponseForOperation` | `operationId`, `opts.code/mediaType/example` | **no, trusted by contract.** If you forward client values here, the lookups are plain property reads on the definition (`responses[opts.code]`, `examples[opts.example]`) with no prototype key guard *(inferred)* | see §10, Q15 |
 | `validateRequest(req, operation)` | `operation` (string/object) | no | `req` is untrusted as above |
 | `validateResponse*` | `res`, `headers`, `operation`, `statusCode` | no | |
 
 **Size, shape, rate:** nothing enforced. Validation cost is whatever Ajv does with your schema against a body your framework already bounded. Routing is O(number of operations) per request with a fresh `RegExp` per template *(maintainer, 2026-09)*.
 
-## 4.7 Who is the attacker?
+## 6. Who is the attacker?
 
 **In scope: the unauthenticated network client.** Controls every byte of `method`, `path`, `headers`, `query`, `body` (modulo your framework's parsing). Can send as many requests as they like. What they want: reach an operation handler without satisfying its security requirements, reach a handler with data the schema should have rejected, get routed to a different operation than the path/method says, make `handleRequest` throw or hang, pull definition content they shouldn't see *(maintainer, 2026-09)*.
 
-**In scope, weaker: the client of a `notImplemented`-mocked API.** Same capabilities. Goal: extract example data (§4.9).
+**In scope, weaker: the client of a `notImplemented`-mocked API.** Same capabilities. Goal: extract example data (§8).
 
 **Out of scope** *(maintainer, 2026-09)*:
 
@@ -161,9 +161,9 @@ Per-parameter query handling that runs on attacker data *before* validation: `JS
 - In-process code (other modules, the framework). Already won.
 - Side channel and timing observers. The library compares no secrets.
 - Co-tenants, container escapes, OS-level attackers.
-- Anyone who can make `init` load a definition from a path or URL they control. That's operator misconfiguration (§4.11).
+- Anyone who can make `init` load a definition from a path or URL they control. That's operator misconfiguration (§10).
 
-## 4.8 What does the library guarantee?
+## 7. What does the library guarantee?
 
 Only properties the project has actually committed to. No inventing.
 
@@ -171,14 +171,14 @@ Only properties the project has actually committed to. No inventing.
 | --- | --- | --- | --- | --- |
 | **P1** | **Security requirement semantics.** For a matched operation, `context.security.authorized` is `true` iff at least one Security Requirement Object in the operation's (or, failing that, the document's) `security` list has *every* named scheme's handler result truthy and not an object with a truthy `error`. Scheme with no registered handler → *failed*. Handler threw or rejected → *failed*. Results are per request. | `authorized === true` when a required scheme's handler returned falsy, returned `{ error: <truthy>, … }`, threw or was unregistered. Or `authorized === false` when the spec's OR/AND says it should pass. | **Security-critical.** Fail-open = CVE. GHSA-j939-289f-wq4w was fixed and published as High. | *(documented: docs site "Auth with Security Handlers"; commit `834158d` "fail-open authorization flaw"; tests)* |
 | **P2** | **Enforcement gate.** With `unauthorizedHandler` registered, or with `strict: true`, a request with `authorized === false` and a non-empty requirement list never reaches validation, `preOperationHandler` or the operation handler. | Operation handler runs despite `authorized === false` under either condition. | **Security-critical** | *(documented: tests "does not call operation handler if requirements are not met and unauthorizedHandler is defined", "rejects with 401 in strict mode if requirements are not met")* |
-| **P3** | **Routing fidelity.** A request goes to the operation whose path template and method it matches under the normalisation in §4.6: exact path first, then the most specific template. No template matches → 404 handling. Path matches, method doesn't → 405 handling. Path param values are exactly the matched segment, percent-decoded. | A request reaching an operation its template doesn't match (route confusion), or path params with bytes from outside the matched segment. | **Security-critical** when it changes which handler (and so which `security` list) applies. Correctness-only otherwise. | *(maintainer, 2026-09; tests cover matching and specificity)* |
+| **P3** | **Routing fidelity.** A request goes to the operation whose path template and method it matches under the normalisation in §5: exact path first, then the most specific template. No template matches → 404 handling. Path matches, method doesn't → 405 handling. Path param values are exactly the matched segment, percent-decoded. | A request reaching an operation its template doesn't match (route confusion), or path params with bytes from outside the matched segment. | **Security-critical** when it changes which handler (and so which `security` list) applies. Correctness-only otherwise. | *(maintainer, 2026-09; tests cover matching and specificity)* |
 | **P4** | **Validation gate.** With `validationFail` (or `400`) registered, or with `strict: true`, and `validate` on for the request: a request doesn't reach the operation handler if its path/query/header/cookie parameters or its JSON body (media type `application/json`, parameters ignored, or an object body from the framework) fail the operation's schema, or if a `content: application/json` query param isn't valid JSON. Unknown query and path params are rejected (`additionalProperties: false`). Unknown headers and cookies are allowed. `required` params are enforced for all four locations. | Operation handler called for input the schema rejects, under the stated conditions. | **Security-critical** when the bypass is reachable from `Request` fields. Goes through the advisory process, not the issue tracker. Correctness-only for over-rejection. | *(documented: README "Request validation"; tests)* for the mechanism; *(maintainer, 2026-09)* for the tier |
 | **P5** | **No mutation of your objects.** Constructor `handlers` / `securityHandlers` maps and the `Request` object are not mutated. | Your object changed after a call. | Correctness-only | *(documented: code comments, test "copies objects passed to constructor")* |
-| **P6** | **Error contract.** For any well-typed `Request`, `handleRequest` either resolves or rejects with an `Error` that the library or your handlers threw on purpose. Rejection is the *documented* outcome for: unmatched route with no `notFound` handler, no handler for the operation and no `notImplemented`, `strict: true` with a failed security requirement or validation and no handler (§4.5a), and any throw from your handlers *(documented: code; maintainer #88, "simply catch from `handleRequest`")*. **Malformed client input never rejects before validation.** It becomes a validation error. GHSA-4v89-4c72-fxv7 (`TypeError` on `?limit[a]=1` with `explode: false`) was this class, fixed in 5.17.0. The sibling case, malformed JSON in a `content: application/json` query param, is fixed in 5.21.0. | Unhandled rejection or process exit on a crafted request, or a rejection whose stack points at the parser rather than a handler. | **Availability, request-scoped. `VALID`.** | *(maintainer, 2026-09; documented: tests "leaves malformed json … instead of throwing", "fails validation with a parse error")* |
+| **P6** | **Error contract.** For any well-typed `Request`, `handleRequest` either resolves or rejects with an `Error` that the library or your handlers threw on purpose. Rejection is the *documented* outcome for: unmatched route with no `notFound` handler, no handler for the operation and no `notImplemented`, `strict: true` with a failed security requirement or validation and no handler (§4a), and any throw from your handlers *(documented: code; maintainer #88, "simply catch from `handleRequest`")*. **Malformed client input never rejects before validation.** It becomes a validation error. GHSA-4v89-4c72-fxv7 (`TypeError` on `?limit[a]=1` with `explode: false`) was this class, fixed in 5.17.0. The sibling case, malformed JSON in a `content: application/json` query param, is fixed in 5.21.0. | Unhandled rejection or process exit on a crafted request, or a rejection whose stack points at the parser rather than a handler. | **Availability, request-scoped. `VALID`.** | *(maintainer, 2026-09; documented: tests "leaves malformed json … instead of throwing", "fails validation with a parse error")* |
 | **P7** | **No code evaluation of client data.** Client bytes only ever get `JSON.parse`d, string-split, regex-matched against operator templates and schema-validated. Never `eval`ed, never used to build a `RegExp`, never used as a file path or URL. | Any of those. | **Security-critical** | *(maintainer, 2026-09)* |
 | **P8** | **Resource use.** A hang or a process crash on a size-bounded request is a bug. Super-linear CPU or memory in request size is a bug. Constant-factor slowness is not. Body size limits stay with the framework. | Hang, crash or super-linear growth on a bounded request. | **Availability. `VALID` on the stated line.** | *(maintainer, 2026-09)* |
 
-## 4.9 What does the library NOT do?
+## 8. What does the library NOT do?
 
 The most useful section for an integrator. Read this one twice.
 
@@ -186,8 +186,8 @@ The most useful section for an integrator. Read this one twice.
 - **No enforcement of `authorized === false` in non-strict mode without `unauthorizedHandler`.** The operation handler runs (after a once-only warning) and has to check `c.security.authorized` itself. Strict mode rejects. 6.0 will reject regardless *(maintainer, 2026-09)*.
 - **No enforcement of validation errors in non-strict mode without `validationFail`.** Same shape *(maintainer, 2026-09)*.
 - **No content-type enforcement.** Only a JSON body (media type `application/json`, parameters like `charset` ignored, or an object body from the framework) is schema-validated. A body sent as text, XML or multipart goes to your handler unvalidated. Media types the operation doesn't declare are not rejected either *(maintainer, 2026-09; issue #229 stays an enhancement)*.
-- **No request size, depth, count or rate limits. No timeouts.** (§4.8 P8)
-- **No path canonicalisation** (§4.6). `/a/../b`, `/a//b` and `/%61` are three different paths to this router, whatever your proxy thinks *(maintainer, 2026-09)*.
+- **No request size, depth, count or rate limits. No timeouts.** (§7 P8)
+- **No path canonicalisation** (§5). `/a/../b`, `/a//b` and `/%61` are three different paths to this router, whatever your proxy thinks *(maintainer, 2026-09)*.
 - **No isolation between security handlers.** All handlers named anywhere in the requirement list run concurrently for every request, even for requirement objects that won't be needed. A handler with side effects (rate limit counters, audit logs, token introspection calls) runs regardless of the outcome. Intended. Handlers must tolerate it *(maintainer, 2026-09)*.
 - **No constant-time comparison, hashing, signing or randomness.** Zero crypto in the library. Whatever a handler compares, handler code compares *(maintainer, 2026-09)*.
 - **No protection of the definition from its own consumers.** `context.operation` and `api.definition` are the live dereferenced objects *(maintainer, 2026-09)*.
@@ -213,7 +213,7 @@ The most useful section for an integrator. Read this one twice.
 - *SSRF / local file read via `$ref`.* Definition is trusted. Load it from an untrusted path or URL and you crossed the boundary yourself.
 - *Example data leaking through mocks.* False friend 6.
 
-## 4.10 What do you need to do?
+## 9. What do you need to do?
 
 The contract from your side:
 
@@ -230,7 +230,7 @@ The contract from your side:
 11. **Keep `validate` on and `quick` off in security-sensitive deployments** unless you understand the trade (quick mode skips document validation).
 12. **Don't mutate `c.operation` or `api.definition`** from handlers. They're shared across requests.
 
-## 4.11 How does this library get misused?
+## 10. How does this library get misused?
 
 - Security handler registered, no `unauthorizedHandler`, no `strict`, no `authorized` check in the operation handlers (the GHSA-7mmm-8m7g-cp5g shape). You'll see the warning on the first unauthorised request. Act on it.
 - Relying on schema validation with no `validationFail` handler and no `strict`. Same warning.
@@ -242,72 +242,72 @@ The contract from your side:
 - Passing a `Request` whose `path` still has the framework mount prefix while `apiRoot` is `/` (or the reverse), getting universal 404s, then "fixing" it by loosening the framework route to `/*` and exposing every operation.
 - One instance per request. Defeats validator caching and re-emits the once-only warnings every time. Not a security issue, but it's how `quick` mode ends up compiling under load.
 
-### 4.11a What gets reported that isn't a bug?
+### 10a. What gets reported that isn't a bug?
 
 Feed this to your scanner as a suppression list.
 
 | Reported as | Why it's not a bug here |
 | --- | --- |
-| "`new RegExp` built from unescaped `path` template / `apiRoot`" (`router.ts`) | Templates and `apiRoot` are operator-authored (§4.6 trusted table). `OUT-OF-MODEL: trusted-input`. |
+| "`new RegExp` built from unescaped `path` template / `apiRoot`" (`router.ts`) | Templates and `apiRoot` are operator-authored (§5 trusted table). `OUT-OF-MODEL: trusted-input`. |
 | "Ajv `strict: false` by default disables schema strictness" | Deliberate, to accept OpenAPI-flavoured schemas (`nullable`, `example`, `discriminator`). Override via `ajvOpts` if you want. Not a vulnerability. |
-| "Security scheme `X` has no handler and the request isn't rejected" | Missing handler = failed scheme (P1). Whether the request gets *rejected* depends on `unauthorizedHandler` / `strict` (§4.5a). In non-strict mode: `BY-DESIGN: property-disclaimed` (§4.9). |
+| "Security scheme `X` has no handler and the request isn't rejected" | Missing handler = failed scheme (P1). Whether the request gets *rejected* depends on `unauthorizedHandler` / `strict` (§4a). In non-strict mode: `BY-DESIGN: property-disclaimed` (§8). |
 | "Unauthenticated request reaches operation handler; `context.security.authorized === false`" | Same. Non-strict, no handler → `BY-DESIGN`. Strict or handler registered → `VALID` (P2). |
-| "Invalid body reaches operation handler" | Non-strict, no `validationFail` → `BY-DESIGN` (§4.9 false friend 2). Otherwise `VALID` (P4). |
-| "Body under `text/plain` / `application/xml` / `multipart` isn't validated" | §4.9 "no content-type enforcement". `BY-DESIGN`. |
+| "Invalid body reaches operation handler" | Non-strict, no `validationFail` → `BY-DESIGN` (§8 false friend 2). Otherwise `VALID` (P4). |
+| "Body under `text/plain` / `application/xml` / `multipart` isn't validated" | §8 "no content-type enforcement". `BY-DESIGN`. |
 | "`JSON.parse` of request body without try/catch" (`validation.ts`) | It *is* wrapped. The error becomes a `parse` validation error. `KNOWN-NON-FINDING`. |
 | "`JSON.parse` of a `content: application/json` query param without try/catch" (`router.ts`) | Wrapped since 5.21.0. Validation reports a `parse` error. `KNOWN-NON-FINDING`. |
 | "External `$ref` resolution reads arbitrary files / does HTTP requests (SSRF)" | Definition is trusted. Refs are operator-authored. `OUT-OF-MODEL: trusted-input`. |
 | "ReDoS in schema `pattern`" | Trusted definition. `OUT-OF-MODEL: trusted-input`. |
-| "Prototype pollution via `__proto__` in query string" | `qs` defaults drop prototype keys (confirmed by probe). For object `req.query`, your framework's parser owns it (§4.3). |
+| "Prototype pollution via `__proto__` in query string" | `qs` defaults drop prototype keys (confirmed by probe). For object `req.query`, your framework's parser owns it (§2). |
 | "`console.warn` leaks definition validation errors" | Init time, operator-facing stderr, non-strict mode only. Not a client-reachable channel. |
 | "`console.warn` on an unauthorised request is a log injection / DoS vector" | The message contains the `operationId` from your definition, never client data, and fires once per instance. `KNOWN-NON-FINDING`. |
-| "`handleRequest` on an un-initialised instance triggers file reads" | Documented auto-init. Target is operator-configured (§4.4 family A). |
+| "`handleRequest` on an un-initialised instance triggers file reads" | Documented auto-init. Target is operator-configured (§3 family A). |
 | "Header/cookie `additionalProperties: true` lets unknown headers through" | Intentional. HTTP headers are open-ended. `additionalProperties: false` applies to path and query only (P4). |
-| "Advisory in a devDependency / an `examples/*` dependency" | §4.3. `OUT-OF-MODEL: unsupported-component`. |
+| "Advisory in a devDependency / an `examples/*` dependency" | §2. `OUT-OF-MODEL: unsupported-component`. |
 
-## 4.12 When does this model need a rewrite?
+## 11. When does this model need a rewrite?
 
 - A new `Request` field, or the library starting to parse a new encoding (XML, multipart bodies).
-- **6.0 removing the non-strict fall-through.** Rewrites §4.5a, §4.9 bullets 2 and 3, §4.10 items 1 and 2, false friends 1, 2 and 5, and the GHSA-7mmm row below.
+- **6.0 removing the non-strict fall-through.** Rewrites §4a, §8 bullets 2 and 3, §9 items 1 and 2, false friends 1, 2 and 5, and the GHSA-7mmm row below.
 - The library gaining a network or filesystem surface at request time (remote definition reloads, OIDC discovery in a built-in security handler).
-- Reference security handlers shipping in core (planned in issue #31, item 4). They'd become in-model authentication code and the first bullet of §4.3 stops being true.
+- Reference security handlers shipping in core (planned in issue #31, item 4). They'd become in-model authentication code and the first bullet of §2 stops being true.
 - A change in Ajv defaults (`strict`, `coerceTypes` on the params validator) or in `qs` parsing options.
 - Anything from the `examples` branch getting promoted into the package.
-- **Evidence the model is incomplete:** any report that can't be routed to exactly one §4.13 disposition. Fix by editing §4.8 or §4.9, not by ad-hoc triage.
+- **Evidence the model is incomplete:** any report that can't be routed to exactly one §12 disposition. Fix by editing §7 or §8, not by ad-hoc triage.
 
-## 4.13 How do we triage a report?
+## 12. How do we triage a report?
 
 Closed set. A report that doesn't fit isn't "other", it's `MODEL-GAP`.
 
 | Disposition | Meaning | Licensed by |
 | --- | --- | --- |
-| `VALID` | Breaks P1 to P8 via the client adversary and an in-model input. | §4.8, §4.6, §4.7 |
-| `VALID-HARDENING` | No property broken, but a §4.11 misuse is easy enough that we choose to harden. Private report, maintainer discretion, typically no CVE. | §4.11 |
-| `OUT-OF-MODEL: trusted-input` | Needs control of the definition, options, handlers, `handlerArgs` or `mockResponseForOperation` arguments. | §4.6 |
-| `OUT-OF-MODEL: adversary-not-in-scope` | Needs in-process, side channel, co-tenant or definition-author capability. | §4.7 |
-| `OUT-OF-MODEL: unsupported-component` | Lands in the `examples` branch, test fixtures, `sbom/`, `scripts/`. | §4.3 |
-| `OUT-OF-MODEL: non-default-build` | Only shows up under a weakening `ajvOpts` / `customizeAjv`. | §4.5a |
-| `BY-DESIGN: property-disclaimed` | About a §4.9 non-property or false friend. Includes the non-strict fall-through in 5.x. | §4.9 |
-| `KNOWN-NON-FINDING` | Matches a §4.11a row. | §4.11a |
-| `MODEL-GAP` | Doesn't route cleanly. Revise the model. | §4.12 |
+| `VALID` | Breaks P1 to P8 via the client adversary and an in-model input. | §7, §5, §6 |
+| `VALID-HARDENING` | No property broken, but a §10 misuse is easy enough that we choose to harden. Private report, maintainer discretion, typically no CVE. | §10 |
+| `OUT-OF-MODEL: trusted-input` | Needs control of the definition, options, handlers, `handlerArgs` or `mockResponseForOperation` arguments. | §5 |
+| `OUT-OF-MODEL: adversary-not-in-scope` | Needs in-process, side channel, co-tenant or definition-author capability. | §6 |
+| `OUT-OF-MODEL: unsupported-component` | Lands in the `examples` branch, test fixtures, `sbom/`, `scripts/`. | §2 |
+| `OUT-OF-MODEL: non-default-build` | Only shows up under a weakening `ajvOpts` / `customizeAjv`. | §4a |
+| `BY-DESIGN: property-disclaimed` | About a §8 non-property or false friend. Includes the non-strict fall-through in 5.x. | §8 |
+| `KNOWN-NON-FINDING` | Matches a §10a row. | §10a |
+| `MODEL-GAP` | Doesn't route cleanly. Revise the model. | §11 |
 
 **Does the model survive contact with real reports?** Three so far:
 
 | Report | Disposition | Section |
 | --- | --- | --- |
 | GHSA-j939-289f-wq4w: multi-key `{ error, … }` treated as authorised (fixed 5.18.0) | `VALID` | P1 |
-| GHSA-7mmm-8m7g-cp5g: fail-open without `unauthorizedHandler` | `VALID-HARDENING`. Non-strict fall-through stays by design in 5.x. Hardened in 5.21.0: once-only warning, and `strict: true` rejects. Fail-closed unconditionally in 6.0. The advisory should be updated to say so and credit EQSTLab. | §4.5a, §4.9, P2 |
+| GHSA-7mmm-8m7g-cp5g: fail-open without `unauthorizedHandler` | `VALID-HARDENING`. Non-strict fall-through stays by design in 5.x. Hardened in 5.21.0: once-only warning, and `strict: true` rejects. Fail-closed unconditionally in 6.0. The advisory should be updated to say so and credit EQSTLab. | §4a, §8, P2 |
 | GHSA-4v89-4c72-fxv7: `TypeError` on `?limit[a]=1` with `explode: false` | `VALID` (availability, P6). Fixed in 5.17.0 (commit `5450967`). The advisory still says "patched: none" and should be updated with 5.17.0 and credit kq5y. The sibling `JSON.parse` case is fixed in 5.21.0. | P6 |
 
 Three out of three route cleanly. 🙏
 
-## 4.14 What still needs deciding?
+## 13. What still needs deciding?
 
 Only three left, none of which change a triage outcome.
 
-15. **`mockResponseForOperation` / `validateRequest(…, operationIdString)` arguments are trusted.** *Proposed:* yes. The only reason to say otherwise would be to add prototype key guards on the definition lookups. → §4.6.
-17. **Edge probe of P1.** A scheme name listed in `security` but missing from `components.securitySchemes`: with `quick: true` the document validator doesn't catch this, and the requirement is then always-failed (no handler can be registered for it in strict mode, and it fails silently in non-strict). Is that how it should look like, or should `init` warn? → P1, §4.5a.
-19. **Ownership and revision.** *Proposed:* the maintainer owns this file. It gets updated in the same PR as any change listed in §4.12. The confidence line gets updated as questions close. → header.
+15. **`mockResponseForOperation` / `validateRequest(…, operationIdString)` arguments are trusted.** *Proposed:* yes. The only reason to say otherwise would be to add prototype key guards on the definition lookups. → §5.
+17. **Edge probe of P1.** A scheme name listed in `security` but missing from `components.securitySchemes`: with `quick: true` the document validator doesn't catch this, and the requirement is then always-failed (no handler can be registered for it in strict mode, and it fails silently in non-strict). Is that how it should look like, or should `init` warn? → P1, §4a.
+19. **Ownership and revision.** *Proposed:* the maintainer owns this file. It gets updated in the same PR as any change listed in §11. The confidence line gets updated as questions close. → header.
 
 Note to self: Q17 becomes interesting once the 6.0 fail-closed change lands. Decide it then.
 
