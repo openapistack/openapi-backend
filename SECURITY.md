@@ -22,6 +22,33 @@ Please avoid including secrets or personal data in the report. If sensitive mate
 
 We will acknowledge receipt as soon as practical, investigate in good faith, and keep the reporter informed when there is meaningful progress. We will coordinate disclosure with the reporter where possible, including credit if requested. There is no guaranteed response or remediation deadline.
 
+## What counts as a vulnerability?
+
+Short answer: it depends on which side of the `Request` object it lands.
+
+The full contract lives in [docs/threat-model.md](docs/threat-model.md). This is the summary. Please read it before reporting, it will save us both a round trip.
+
+**The trust boundary is the `Request` you pass to `handleRequest`.** Method, path, headers, query and body are attacker-controlled. Everything else is yours: the OpenAPI definition, constructor options, every handler and security handler, the arguments you forward to `mockResponseForOperation`. Anything that needs an attacker to edit your definition or your code is out of scope.
+
+**What openapi-backend guarantees:**
+
+- Security requirement semantics per the OpenAPI spec. A required scheme whose handler returned falsy, returned `{ error }`, threw or was never registered counts as failed. Fail-open here is a CVE (GHSA-j939-289f-wq4w was one).
+- With `unauthorizedHandler` registered, an unauthorised request never reaches your operation handler.
+- With `validationFail` registered, a request the schema rejects never reaches your operation handler.
+- Routing goes to the operation the path template and method say, and nowhere else.
+- Client bytes only ever get parsed and validated. Never evaluated, never used as a path, URL or regex.
+
+**What it does NOT do:**
+
+- It does no authentication or authorisation itself. `security:` in the definition is a list of handlers to consult, not an enforcement rule.
+- Without `unauthorizedHandler` the operation handler still runs with `context.security.authorized === false`. Without `validationFail` it still runs with `context.validation.valid === false`. Both are on you (GHSA-7mmm-8m7g-cp5g was closed on this basis).
+- No request size, depth or rate limits. No timeouts. No path canonicalisation. No content-type enforcement beyond `application/json`. No crypto. Your framework and platform own those.
+- Mocks return your definition's examples verbatim. Don't mock in production.
+
+**So what should you register?** `unauthorizedHandler` if you have any `security` requirements, `validationFail` if you rely on the schema, a security handler for every scheme and a `try/catch` around `handleRequest`. That's the whole contract.
+
+The threat model is a draft. A handful of rulings (most importantly whether the missing `unauthorizedHandler` default is "by design" or a gap to close) are still open in its §4.14. Until they're answered, reports in that grey area get triaged conservatively.
+
 ## Scope and safe harbor
 
 This policy covers security vulnerabilities in the code maintained in this repository and released versions of `openapi-backend`. Do not test against systems or data that you do not own or have explicit permission to assess, and do not intentionally access, modify, or retain data belonging to others.
