@@ -5,11 +5,11 @@
 | **Project** | `openapi-backend` (npm), https://github.com/openapistack/openapi-backend |
 | **Version / commit** | 5.21.0 (unreleased, branch `claude/focused-lamport-ndmg3r`), written against 5.20.3 / `0adc950` |
 | **Date** | 2026-09-16 |
-| **Status** | **Accepted by the maintainer, 2026-09-16.** Three minor questions still open in §13 (Q15, Q17, Q19). None of them change a triage outcome. |
+| **Status** | **Accepted by the maintainer, 2026-09-16.** Four minor questions still open in §13. None of them change a triage outcome. |
 | **Version binding** | This model ships with the package. A report against version N gets triaged against the model as it was at N, not at `main`. |
 | **Reporting** | Breaks a §7 property? Report it privately per [SECURITY.md](../SECURITY.md). Lands in §2 or §8? It gets closed citing this document. |
 | **Provenance legend** | *(documented)* = stated in the project's own artifacts (README, docs site, code comments, tests, commit messages, advisories, maintainer comments on issues). *(maintainer, 2026-09)* = ruled by the maintainer while reviewing this document. *(inferred)* = my reading of the code, not confirmed, has a matching question in §13. |
-| **Confidence** | 33 documented / 34 maintainer / 1 inferred |
+| **Confidence** | 33 documented / 34 maintainer / 2 inferred |
 
 ## What is this document?
 
@@ -143,7 +143,7 @@ Per-parameter query handling that runs on attacker data *before* validation: `JS
 | --- | --- | --- | --- |
 | `new OpenAPIBackend(opts)` | all of `opts` | no | definition can be a file path or URL, resolved at `init` |
 | `register*`, `registerSecurityHandler` | names, functions | no | |
-| `mockResponseForOperation` | `operationId`, `opts.code/mediaType/example` | **no, trusted by contract.** If you forward client values here, the lookups are plain property reads on the definition (`responses[opts.code]`, `examples[opts.example]`) with no prototype key guard *(inferred)* | see §10, Q15 |
+| `mockResponseForOperation` | `operationId`, `opts.code/mediaType/example` | **no, trusted by contract.** If you forward client values here, the lookups are plain property reads on the definition (`responses[opts.code]`, `examples[opts.example]`) with no prototype key guard *(inferred, Q1)* | see §10 |
 | `validateRequest(req, operation)` | `operation` (string/object) | no | `req` is untrusted as above |
 | `validateResponse*` | `res`, `headers`, `operation`, `statusCode` | no | |
 
@@ -240,7 +240,6 @@ The contract from your side:
 - Setting `validate` to a predicate keyed on a client-controlled header (the README example uses `x-internal-request`) without the proxy stripping that header from external traffic. The predicate then lets any client skip validation.
 - Loading the definition from a URL or user-writable storage.
 - Passing a `Request` whose `path` still has the framework mount prefix while `apiRoot` is `/` (or the reverse), getting universal 404s, then "fixing" it by loosening the framework route to `/*` and exposing every operation.
-- One instance per request. Defeats validator caching and re-emits the once-only warnings every time. Not a security issue, but it's how `quick` mode ends up compiling under load.
 
 ### 10a. What gets reported that isn't a bug?
 
@@ -249,20 +248,18 @@ Feed this to your scanner as a suppression list.
 | Reported as | Why it's not a bug here |
 | --- | --- |
 | "`new RegExp` built from unescaped `path` template / `apiRoot`" (`router.ts`) | Templates and `apiRoot` are operator-authored (§5 trusted table). `OUT-OF-MODEL: trusted-input`. |
-| "Ajv `strict: false` by default disables schema strictness" | Deliberate, to accept OpenAPI-flavoured schemas (`nullable`, `example`, `discriminator`). Override via `ajvOpts` if you want. Not a vulnerability. |
-| "Security scheme `X` has no handler and the request isn't rejected" | Missing handler = failed scheme (P1). Whether the request gets *rejected* depends on `unauthorizedHandler` / `strict` (§4a). In non-strict mode: `BY-DESIGN: property-disclaimed` (§8). |
-| "Unauthenticated request reaches operation handler; `context.security.authorized === false`" | Same. Non-strict, no handler → `BY-DESIGN`. Strict or handler registered → `VALID` (P2). |
+| "Ajv `strict: false` by default disables schema strictness" | Deliberate, to accept OpenAPI-flavoured schemas (`nullable`, `example`, `discriminator`) *(inferred, Q4)*. Override via `ajvOpts` if you want. `KNOWN-NON-FINDING`. |
+| "Security scheme `X` has no handler and the request isn't rejected" / "Unauthenticated request reaches operation handler with `context.security.authorized === false`" | Missing handler = failed scheme (P1). Whether the request gets *rejected* depends on `unauthorizedHandler` / `strict` (§4a). Non-strict, no handler → `BY-DESIGN: property-disclaimed` (§8). Strict or handler registered → `VALID` (P2). |
 | "Invalid body reaches operation handler" | Non-strict, no `validationFail` → `BY-DESIGN` (§8 false friend 2). Otherwise `VALID` (P4). |
 | "Body under `text/plain` / `application/xml` / `multipart` isn't validated" | §8 "no content-type enforcement". `BY-DESIGN`. |
 | "`JSON.parse` of request body without try/catch" (`validation.ts`) | It *is* wrapped. The error becomes a `parse` validation error. `KNOWN-NON-FINDING`. |
 | "`JSON.parse` of a `content: application/json` query param without try/catch" (`router.ts`) | Wrapped since 5.21.0. Validation reports a `parse` error. `KNOWN-NON-FINDING`. |
 | "External `$ref` resolution reads arbitrary files / does HTTP requests (SSRF)" | Definition is trusted. Refs are operator-authored. `OUT-OF-MODEL: trusted-input`. |
 | "ReDoS in schema `pattern`" | Trusted definition. `OUT-OF-MODEL: trusted-input`. |
-| "Prototype pollution via `__proto__` in query string" | `qs` defaults drop prototype keys (confirmed by probe). For object `req.query`, your framework's parser owns it (§2). |
-| "`console.warn` leaks definition validation errors" | Init time, operator-facing stderr, non-strict mode only. Not a client-reachable channel. |
-| "`console.warn` on an unauthorised request is a log injection / DoS vector" | The message contains the `operationId` from your definition, never client data, and fires once per instance. `KNOWN-NON-FINDING`. |
-| "`handleRequest` on an un-initialised instance triggers file reads" | Documented auto-init. Target is operator-configured (§3 family A). |
-| "Header/cookie `additionalProperties: true` lets unknown headers through" | Intentional. HTTP headers are open-ended. `additionalProperties: false` applies to path and query only (P4). |
+| "Prototype pollution via `__proto__` in query string" | `qs` defaults drop prototype keys (confirmed by probe). `KNOWN-NON-FINDING`. For object `req.query`, your framework's parser owns it: `OUT-OF-MODEL: adversary-not-in-scope` (§2). |
+| "`console.warn` leaks definition errors" / "`console.warn` on an unauthorised request is a log injection or DoS vector" | Operator-facing stderr. The messages carry definition errors or the `operationId` from your definition, never client data, and the request-time ones fire once per instance. `KNOWN-NON-FINDING`. |
+| "`handleRequest` on an un-initialised instance triggers file reads" | Documented auto-init. Target is operator-configured (§3 family A). `OUT-OF-MODEL: trusted-input`. |
+| "Header/cookie `additionalProperties: true` lets unknown headers through" | Intentional. HTTP headers are open-ended. `additionalProperties: false` applies to path and query only (P4). `KNOWN-NON-FINDING`. |
 | "Advisory in a devDependency / an `examples/*` dependency" | §2. `OUT-OF-MODEL: unsupported-component`. |
 
 ## 11. When does this model need a rewrite?
@@ -303,16 +300,17 @@ Three out of three route cleanly. 🙏
 
 ## 13. What still needs deciding?
 
-Only three left, none of which change a triage outcome.
+Only four left, none of which change a triage outcome.
 
-15. **`mockResponseForOperation` / `validateRequest(…, operationIdString)` arguments are trusted.** *Proposed:* yes. The only reason to say otherwise would be to add prototype key guards on the definition lookups. → §5.
-17. **Edge probe of P1.** A scheme name listed in `security` but missing from `components.securitySchemes`: with `quick: true` the document validator doesn't catch this, and the requirement is then always-failed (no handler can be registered for it in strict mode, and it fails silently in non-strict). Is that how it should look like, or should `init` warn? → P1, §4a.
-19. **Ownership and revision.** *Proposed:* the maintainer owns this file. It gets updated in the same PR as any change listed in §11. The confidence line gets updated as questions close. → header.
+1. **`mockResponseForOperation` / `validateRequest(…, operationIdString)` arguments are trusted.** *Proposed:* yes. The only reason to say otherwise would be to add prototype key guards on the definition lookups. → §5.
+2. **Edge probe of P1.** A scheme name listed in `security` but missing from `components.securitySchemes`: with `quick: true` the document validator doesn't catch this, and the requirement is then always-failed (no handler can be registered for it in strict mode, and it fails silently in non-strict). Is that how it should look like, or should `init` warn? → P1, §4a.
+3. **Ownership and revision.** *Proposed:* the maintainer owns this file. It gets updated in the same PR as any change listed in §11. The confidence line gets updated as questions close. → header.
+4. **Ajv `strict: false` default.** *Proposed:* "Deliberate. OpenAPI schemas carry keywords Ajv strict mode rejects (`nullable`, `example`, `discriminator`, `xml`). Operators who want strict Ajv set it in `ajvOpts`." → §10a.
 
-Note to self: Q17 becomes interesting once the 6.0 fail-closed change lands. Decide it then.
+Note to self: Q2 becomes interesting once the 6.0 fail-closed change lands. Decide it then.
 
 ---
 
 ### Appendix: provenance count
 
-Documented: 33 · Maintainer: 34 · Inferred: 1. The one inferred claim maps to Q15. Q17 probes an edge of a documented claim, Q19 is meta. Neither has a body claim behind it.
+Documented: 33 · Maintainer: 34 · Inferred: 2. The inferred claims map to Q1 and Q4. Q2 probes an edge of a documented claim, Q3 is meta. Neither has a body claim behind it.
