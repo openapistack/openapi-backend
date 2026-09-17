@@ -48,6 +48,32 @@ The full contract lives in [docs/threat-model.md](docs/threat-model.md). This is
 
 **So what should you do?** Set `strict: true` in production. Register a security handler for every scheme. Register `unauthorizedHandler` and `validationFail` if you want custom responses instead of thrown errors. Wrap `handleRequest` in a `try/catch`. That's the whole contract.
 
+## What happens if something actually goes wrong?
+
+Honest answer first: openapi-backend has one maintainer. There is no security team, no on-call rotation and no SLA. This is the plan for the person who is here, sized for the project it is. It's a compression of GitHub's [incident response guide](https://docs.github.com/en/code-security/tutorials/secure-your-organization/respond-to-a-security-incident) down to what one person can actually execute.
+
+**What counts as an incident?** Something worse than a vulnerability report:
+
+- A malicious or tampered version of `openapi-backend` on npm.
+- The maintainer's GitHub or npm account, or the release workflow, compromised.
+- A published vulnerability in the library being actively exploited.
+- A dependency advisory that makes the library exploitable through a documented use.
+
+A vulnerability report that isn't being exploited is not an incident. It goes through the process above.
+
+**The plan:**
+
+1. **Assess.** Is it real, is it still active, what's the blast radius? Check the GitHub audit log, the Actions runs for the release workflow, and diff the npm tarball against the git tag (`npm pack openapi-backend@x.y.z` vs `git archive x.y.z`). Releases are published by GitHub Actions from a git tag using OIDC, so there is no long-lived npm token sitting around to leak. If the tarball and the tag match, the release pipeline is probably fine and the problem is in the code.
+2. **Contain.** In this order: `npm deprecate` the bad version with a message pointing to the advisory, revoke GitHub sessions and tokens, disable GitHub Actions on the repo, lock `main`. Deprecation beats unpublishing: unpublish breaks builds silently, deprecate warns every installer.
+3. **Investigate.** Figure out the entry point before writing the fix. Check for persistence: unexpected workflows, webhooks, deploy keys, installed apps, collaborators.
+4. **Remediate.** Rotate whatever could have been exposed. Publish a clean patch from a verified tag. Open or update a GitHub Security Advisory with affected and patched versions.
+5. **Communicate.** The advisory is the single source of truth. Pin it in the README until the patched version is a week old. Reply to whoever reported it.
+6. **Reflect.** Timeline and root cause go into the advisory. Anything that should change in the code or the process becomes an issue. Update [docs/threat-model.md](docs/threat-model.md) if the incident found a gap in it.
+
+**Realistic expectations.** I'll aim to deprecate a confirmed malicious version within 24 hours of confirming it. Everything else is best effort, around a day job and a family. If I'm unreachable for an extended period there is nobody else with publish rights, and that's a known limitation of depending on a single-maintainer project. Pin your versions, review the diff when you bump them, and keep your own incident plan for the software you ship.
+
+**Enterprise security inquiries.** Security questionnaires, SLAs, compliance attestations, escrow, or anything that needs a signature: reach out to **support@openapistack.co**. Those are commercial support topics, not something a public policy can promise.
+
 ## Scope and safe harbor
 
 This policy covers security vulnerabilities in the code maintained in this repository and released versions of `openapi-backend`. Do not test against systems or data that you do not own or have explicit permission to assess, and do not intentionally access, modify, or retain data belonging to others.
