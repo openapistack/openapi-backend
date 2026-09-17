@@ -48,9 +48,9 @@ The full contract lives in [docs/threat-model.md](docs/threat-model.md). This is
 
 **So what should you do?** Set `strict: true` in production. Register a security handler for every scheme. Register `unauthorizedHandler` and `validationFail` if you want custom responses instead of thrown errors. Wrap `handleRequest` in a `try/catch`. That's the whole contract.
 
-## What happens if something actually goes wrong?
+## Incident Response Plan
 
-Honest answer first: openapi-backend has one maintainer. There is no security team, no on-call rotation and no SLA. This is the plan for the person who is here, sized for the project it is. It's a compression of GitHub's [incident response guide](https://docs.github.com/en/code-security/tutorials/secure-your-organization/respond-to-a-security-incident) down to what one person can actually execute.
+What happens if something actually goes wrong? Honest answer first: openapi-backend has one maintainer. There is no security team, no on-call rotation and no SLA. This is the plan for the person who is here, sized for the project it is. It's a compression of GitHub's [incident response guide](https://docs.github.com/en/code-security/tutorials/secure-your-organization/respond-to-a-security-incident) down to what one person can actually execute.
 
 **What counts as an incident?** Something worse than a vulnerability report:
 
