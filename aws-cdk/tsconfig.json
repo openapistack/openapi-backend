@@ -22,7 +22,8 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
-    "target": "es2021"
+    "target": "es2021",
+    "types": ["node"]
   },
   "include": [
     "src/**/*.ts"
