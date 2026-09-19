@@ -7,7 +7,7 @@
   "keywords": [],
   "scripts": {
     "start": "node index.js",
-    "test": "jest"
+    "test": "vitest run"
   },
   "dependencies": {
     "fastify": "^4.15.0",
@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "axios": "^0.21.1",
-    "jest": "^29.3.1",
+    "vitest": "^0.34.6",
     "wait-on": "^3.2.0"
   }
 }
