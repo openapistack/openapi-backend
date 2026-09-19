@@ -13,7 +13,8 @@
     "rootDir": ".",
     "outDir": "dist",
     "sourceMap": true,
-    "skipLibCheck": true 
+    "skipLibCheck": true,
+    "types": ["node"]
   },
   "include": [
     "**/*"
