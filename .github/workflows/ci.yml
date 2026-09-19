@@ -46,6 +46,9 @@ jobs:
       - run: npm ci && npm run build
       - run: npm ci
         working-directory: ${{ matrix.project_dir }}
+      - run: npm install --no-save source-map-support
+        if: matrix.project_dir == 'examples/aws-sam'
+        working-directory: ${{ matrix.project_dir }}
       - run: npm link ../../
         if: matrix.project_dir != '.' && matrix.project_dir != 'examples/aws-sam'
         working-directory: ${{ matrix.project_dir }}
