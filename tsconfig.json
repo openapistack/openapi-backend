@@ -11,6 +11,7 @@
     "noImplicitAny": false,
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
+    "types": ["node", "vitest/globals"],
     "baseUrl": ".",
     "rootDir": "src/",
     "outDir": "",
@@ -24,6 +25,7 @@
     }
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "vitest.setup.d.ts"
   ]
 }
