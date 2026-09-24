@@ -6,7 +6,6 @@
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/openapistack/openapi-backend/blob/main/LICENSE)
 [![npm version](https://img.shields.io/npm/v/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
 [![npm downloads](https://img.shields.io/npm/dw/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend)
-[![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/openapi-backend.svg)](https://www.npmjs.com/package/openapi-backend?activeTab=dependencies)
 ![npm type definitions](https://img.shields.io/npm/types/openapi-backend.svg)
 [![SBOM](https://img.shields.io/badge/SBOM-CycloneDX-blue)](https://github.com/openapistack/openapi-backend/blob/main/sbom/openapi-backend.cdx.json)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/openapistack/openapi-backend)
