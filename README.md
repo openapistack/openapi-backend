@@ -352,6 +352,7 @@ don't stop request handling on their own. To reject unauthorized requests, regis
 `strict: true`, which makes `handleRequest` reject with a `401-unauthorized` error instead. Without either, the matched
 operation handler still runs (you get warned once) and is responsible for checking `context.security.authorized`. The
 same applies to request validation and the `validationFail` handler. See [SECURITY.md](SECURITY.md) for the full contract.
+To catch handlers that skip these checks, see [Static analysis with CodeQL](#static-analysis-with-codeql).
 
 See examples:
 - [API Key auth (express)](https://github.com/openapistack/openapi-backend/tree/examples/express-apikey-auth)
@@ -420,6 +421,15 @@ api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, 
 ```
 
 [See full Mock API example on Express](https://github.com/openapistack/openapi-backend/tree/examples/express-ts-mock)
+
+## Static analysis with CodeQL
+
+[openapi-backend-codeql](https://github.com/openapistack/openapi-backend-codeql) provides CodeQL queries that find
+insecure openapi-backend setups, like security requirements or request validation that never get enforced, or a
+`validate` predicate the client can switch off.
+
+It also includes models that let CodeQL's built-in queries (SQL injection, XSS, path traversal, ...) treat
+`context.request` in your handlers as user input.
 
 ## Software Bill of Materials
 
