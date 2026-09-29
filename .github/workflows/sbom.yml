@@ -1,0 +1,33 @@
+name: SBOM and third party notices
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - package-lock.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sbom:
+    name: Generate SBOM and notices
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+      - run: npm ci
+      - run: npm run sbom
+      - name: Commit changes
+        run: |
+          git add sbom THIRD_PARTY_NOTICES.md
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: update SBOM and third party notices"
+          git push

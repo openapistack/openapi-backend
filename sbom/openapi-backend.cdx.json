@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:3b88b345-4b4d-413e-b489-a2276d892b25",
+  "serialNumber": "urn:uuid:9cc80670-3ece-4a7e-b757-d3932f54dd59",
   "metadata": {
-    "timestamp": "2026-09-15T16:02:13.606Z",
+    "timestamp": "2026-09-29T09:36:29.759Z",
     "tools": {
       "components": [
         {
@@ -98,8 +98,8 @@
     "component": {
       "type": "application",
       "name": "openapi-backend",
-      "version": "5.20.1",
-      "bom-ref": "openapi-backend@5.20.1",
+      "version": "5.21.2",
+      "bom-ref": "openapi-backend@5.21.2",
       "author": "Viljami Kuosmanen",
       "description": "Build, Validate, Route, Authenticate and Mock using OpenAPI definitions. Framework-agnostic",
       "licenses": [
@@ -110,7 +110,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/openapi-backend@5.20.1?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fopenapistack%2Fopenapi-backend.git",
+      "purl": "pkg:npm/openapi-backend@5.21.2?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fopenapistack%2Fopenapi-backend.git",
       "externalReferences": [
         {
           "url": "git+https://github.com/openapistack/openapi-backend.git",
@@ -145,9 +145,9 @@
       "type": "library",
       "name": "json-schema-ref-parser",
       "group": "@apidevtools",
-      "version": "11.7.2",
-      "bom-ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2",
-      "author": "James Messinger",
+      "version": "16.0.2",
+      "bom-ref": "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.2",
+      "author": "JonLuca DeCaro",
       "description": "Parse, Resolve, and Dereference JSON Schema $ref pointers",
       "licenses": [
         {
@@ -157,7 +157,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40apidevtools/json-schema-ref-parser@11.7.2",
+      "purl": "pkg:npm/%40apidevtools/json-schema-ref-parser@16.0.2",
       "externalReferences": [
         {
           "url": "git+https://github.com/APIDevTools/json-schema-ref-parser.git",
@@ -165,7 +165,7 @@
           "comment": "as detected from PackageJson property \"repository.url\""
         },
         {
-          "url": "https://apitools.dev/json-schema-ref-parser/",
+          "url": "https://apidevtools.com/json-schema-ref-parser/",
           "type": "website",
           "comment": "as detected from PackageJson property \"homepage\""
         },
@@ -175,12 +175,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-11.7.2.tgz",
+          "url": "https://registry.npmjs.org/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-16.0.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "e20639e1e10612cb4296f1241a7c1591392bc74b2ac1e984146e4e491467ded0fdd571f4f90f172246087e8ec8c0458fa4967020b6fd1945de4a1b6995173f78"
+              "content": "a02c1653245d32db7f867a7a38d3ee74567317bb52aa21f2e3a94bc7956c9ec2d369cb3c4d2539e7c54f0223ae78527c59d7421f7d0f20d58303c072c6118799"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -189,114 +189,11 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">= 16"
+          "value": ">=22.19.0"
         },
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/@apidevtools/json-schema-ref-parser"
-        }
-      ],
-      "components": [
-        {
-          "type": "library",
-          "name": "js-yaml",
-          "version": "4.3.2",
-          "bom-ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|js-yaml@4.3.2",
-          "author": "Vladimir Zapparov",
-          "description": "YAML 1.2 parser and serializer",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/js-yaml@4.3.2",
-          "externalReferences": [
-            {
-              "url": "git+https://github.com/nodeca/js-yaml.git",
-              "type": "vcs",
-              "comment": "as detected from PackageJson property \"repository.url\""
-            },
-            {
-              "url": "https://github.com/nodeca/js-yaml#readme",
-              "type": "website",
-              "comment": "as detected from PackageJson property \"homepage\""
-            },
-            {
-              "url": "https://github.com/nodeca/js-yaml/issues",
-              "type": "issue-tracker",
-              "comment": "as detected from PackageJson property \"bugs.url\""
-            },
-            {
-              "url": "https://registry.npmjs.org/js-yaml/-/js-yaml-4.3.2.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "48534ebd227e0e07fff409fdd38631f828129483c2908a5aa38aa8e7596979edb94c845e8dd1f7ae1478119306a0dc77fd33f73bec335ae893165e2ca9b96dcc"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/@apidevtools/json-schema-ref-parser/node_modules/js-yaml"
-            }
-          ]
-        },
-        {
-          "type": "library",
-          "name": "argparse",
-          "version": "2.0.1",
-          "bom-ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|argparse@2.0.1",
-          "description": "CLI arguments parser. Native port of python's argparse.",
-          "licenses": [
-            {
-              "license": {
-                "id": "Python-2.0",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/argparse@2.0.1",
-          "externalReferences": [
-            {
-              "url": "git+https://github.com/nodeca/argparse.git",
-              "type": "vcs",
-              "comment": "as detected from PackageJson property \"repository.url\""
-            },
-            {
-              "url": "https://github.com/nodeca/argparse#readme",
-              "type": "website",
-              "comment": "as detected from PackageJson property \"homepage\""
-            },
-            {
-              "url": "https://github.com/nodeca/argparse/issues",
-              "type": "issue-tracker",
-              "comment": "as detected from PackageJson property \"bugs.url\""
-            },
-            {
-              "url": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "f3ef56a9e6db173a57f4e47e59ae8edbd6ac22881e44ccdc1ad00835da4c1c7c80835d1fd3969215505b704a867ff3d7c35123019faadbf6c4060dc3beeacadd"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/@apidevtools/json-schema-ref-parser/node_modules/argparse"
-            }
-          ]
         }
       ]
     },
@@ -304,7 +201,7 @@
       "type": "library",
       "name": "ajv",
       "version": "8.20.0",
-      "bom-ref": "openapi-backend@5.20.1|ajv@8.20.0",
+      "bom-ref": "openapi-backend@5.21.2|ajv@8.20.0",
       "author": "Evgeny Poberezkin",
       "description": "Another JSON Schema Validator",
       "licenses": [
@@ -355,7 +252,7 @@
       "type": "library",
       "name": "bath-es5",
       "version": "3.0.3",
-      "bom-ref": "openapi-backend@5.20.1|bath-es5@3.0.3",
+      "bom-ref": "openapi-backend@5.21.2|bath-es5@3.0.3",
       "author": "bouzuya",
       "description": "A simple path template engine",
       "licenses": [
@@ -405,8 +302,8 @@
     {
       "type": "library",
       "name": "cookie",
-      "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.20.1|cookie@1.0.1",
+      "version": "1.1.1",
+      "bom-ref": "openapi-backend@5.21.2|cookie@1.1.1",
       "author": "Roman Shtylman",
       "description": "HTTP server cookie parsing and serialization",
       "licenses": [
@@ -417,7 +314,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/cookie@1.0.1",
+      "purl": "pkg:npm/cookie@1.1.1",
       "externalReferences": [
         {
           "url": "git+https://github.com/jshttp/cookie.git",
@@ -435,12 +332,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/cookie/-/cookie-1.0.1.tgz",
+          "url": "https://registry.npmjs.org/cookie/-/cookie-1.1.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "5ddf25157e0b33d404130c50a45f49f4d4d487ca667493b4732449845883a0b4e4d9e1fc157951bf620519855a759a6a2378fc7e136b49d2827983f188084b5f"
+              "content": "7a2f00a2cee36b4c1e469173267100f541c9ffb5d09aa8256d1c277f60138dc07d5aaf3be15287f647e38e2acce94854dbf1397c561a77297284595d72a4a275"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -461,7 +358,7 @@
       "type": "library",
       "name": "dereference-json-schema",
       "version": "0.2.3",
-      "bom-ref": "openapi-backend@5.20.1|dereference-json-schema@0.2.3",
+      "bom-ref": "openapi-backend@5.21.2|dereference-json-schema@0.2.3",
       "author": "Viljami Kuosmanen",
       "description": "Dereference $ref pointers in JSONSchema or OpenAPI documents.",
       "licenses": [
@@ -512,7 +409,7 @@
       "type": "library",
       "name": "lodash",
       "version": "4.18.1",
-      "bom-ref": "openapi-backend@5.20.1|lodash@4.18.1",
+      "bom-ref": "openapi-backend@5.21.2|lodash@4.18.1",
       "author": "John-David Dalton",
       "description": "Lodash modular utilities.",
       "licenses": [
@@ -562,8 +459,8 @@
     {
       "type": "library",
       "name": "mock-json-schema",
-      "version": "1.1.2",
-      "bom-ref": "openapi-backend@5.20.1|mock-json-schema@1.1.2",
+      "version": "1.1.3",
+      "bom-ref": "openapi-backend@5.21.2|mock-json-schema@1.1.3",
       "author": "Viljami Kuosmanen",
       "description": "Simple utility to mock example objects based on JSON schema definitions",
       "licenses": [
@@ -574,7 +471,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/mock-json-schema@1.1.2",
+      "purl": "pkg:npm/mock-json-schema@1.1.3",
       "externalReferences": [
         {
           "url": "git+https://github.com/anttiviljami/mock-json-schema.git",
@@ -592,12 +489,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/mock-json-schema/-/mock-json-schema-1.1.2.tgz",
+          "url": "https://registry.npmjs.org/mock-json-schema/-/mock-json-schema-1.1.3.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "dc8c9db989617f33f2fa714df30c548e5a148b584cee5f253792c84ee6ae50d31096dca724839f2dffc3003c13029d9dea4bd206d5a88e5cb512ec57e41d1690"
+              "content": "f2d0411727d7136055b323b07e6b8f3e56113e60f230066d3e76b63300990e37326faad51f95e2d01872d9faf7790bad5e5dc14288b53a812bf7cdf951e0f751"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -614,7 +511,7 @@
       "type": "library",
       "name": "openapi-schema-validator",
       "version": "12.1.3",
-      "bom-ref": "openapi-backend@5.20.1|openapi-schema-validator@12.1.3",
+      "bom-ref": "openapi-backend@5.21.2|openapi-schema-validator@12.1.3",
       "author": "Joseph Spencer",
       "description": "A validator for OpenAPI documents.",
       "licenses": [
@@ -665,7 +562,7 @@
       "type": "library",
       "name": "openapi-types",
       "version": "12.1.3",
-      "bom-ref": "openapi-backend@5.20.1|openapi-types@12.1.3",
+      "bom-ref": "openapi-backend@5.21.2|openapi-types@12.1.3",
       "author": "Joseph Spencer",
       "description": "Types for OpenAPI documents.",
       "licenses": [
@@ -716,7 +613,7 @@
       "type": "library",
       "name": "qs",
       "version": "6.16.0",
-      "bom-ref": "openapi-backend@5.20.1|qs@6.16.0",
+      "bom-ref": "openapi-backend@5.21.2|qs@6.16.0",
       "description": "A querystring parser that supports nesting and arrays, with a depth limit",
       "licenses": [
         {
@@ -768,62 +665,10 @@
     },
     {
       "type": "library",
-      "name": "ono",
-      "group": "@jsdevtools",
-      "version": "7.1.3",
-      "bom-ref": "openapi-backend@5.20.1|@jsdevtools/ono@7.1.3",
-      "author": "James Messinger",
-      "description": "Throw better errors.",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/%40jsdevtools/ono@7.1.3",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/JS-DevTools/ono.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://jstools.dev/ono",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/JS-DevTools/ono/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/@jsdevtools/ono/-/ono-7.1.3.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "e0940d93ede65732b7c61daba9de91078278eaa511d7d6b3107067799c9364cf9ce39eaa3ab6db33fe71711f21b8d08271b56defe5268b31ba1ae52f3ef29462"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/@jsdevtools/ono"
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "json-schema",
       "group": "@types",
       "version": "7.0.15",
-      "bom-ref": "openapi-backend@5.20.1|@types/json-schema@7.0.15",
+      "bom-ref": "openapi-backend@5.21.2|@types/json-schema@7.0.15",
       "description": "TypeScript definitions for json-schema",
       "licenses": [
         {
@@ -871,9 +716,114 @@
     },
     {
       "type": "library",
+      "name": "js-yaml",
+      "version": "5.4.2",
+      "bom-ref": "openapi-backend@5.21.2|js-yaml@5.4.2",
+      "author": "Vladimir Zapparov",
+      "description": "YAML 1.2 parser and serializer",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/js-yaml@5.4.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/nodeca/js-yaml.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/nodeca/js-yaml#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/nodeca/js-yaml/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/js-yaml/-/js-yaml-5.4.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "9be6aabbe2f03b53bab08a2969f8fc1d4565e5a6b0213c1941eff21e93022a369605a03f774ec1fd074c6f7e76f5111fb6253e44c3072f7565b30de138deef5a"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/js-yaml"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "undici",
+      "version": "8.10.2",
+      "bom-ref": "openapi-backend@5.21.2|undici@8.10.2",
+      "description": "An HTTP/1.1 client, written from scratch for Node.js",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/undici@8.10.2",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/nodejs/undici.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://undici.nodejs.org",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/nodejs/undici/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/undici/-/undici-8.10.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "ff2e3f6c7f58354e618bd348ae93aebc65c5731ae3dc232b57efc0629a300184e91e7f205ff5cf163372efae853e8618d2689085d5bdefb24558a18d841770c9"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">=22.19.0"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/undici"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "fast-deep-equal",
       "version": "3.1.3",
-      "bom-ref": "openapi-backend@5.20.1|fast-deep-equal@3.1.3",
+      "bom-ref": "openapi-backend@5.21.2|fast-deep-equal@3.1.3",
       "author": "Evgeny Poberezkin",
       "description": "Fast deep equal",
       "licenses": [
@@ -924,7 +874,7 @@
       "type": "library",
       "name": "fast-uri",
       "version": "3.1.7",
-      "bom-ref": "openapi-backend@5.20.1|fast-uri@3.1.7",
+      "bom-ref": "openapi-backend@5.21.2|fast-uri@3.1.7",
       "author": "Vincent Le Goff",
       "description": "Dependency-free RFC 3986 URI toolbox",
       "licenses": [
@@ -975,7 +925,7 @@
       "type": "library",
       "name": "json-schema-traverse",
       "version": "1.0.0",
-      "bom-ref": "openapi-backend@5.20.1|json-schema-traverse@1.0.0",
+      "bom-ref": "openapi-backend@5.21.2|json-schema-traverse@1.0.0",
       "author": "Evgeny Poberezkin",
       "description": "Traverse JSON Schema passing each schema object to callback",
       "licenses": [
@@ -1026,7 +976,7 @@
       "type": "library",
       "name": "require-from-string",
       "version": "2.0.2",
-      "bom-ref": "openapi-backend@5.20.1|require-from-string@2.0.2",
+      "bom-ref": "openapi-backend@5.21.2|require-from-string@2.0.2",
       "author": "Vsevolod Strukchinsky",
       "description": "Require module from string",
       "licenses": [
@@ -1081,7 +1031,7 @@
       "type": "library",
       "name": "ajv-formats",
       "version": "2.1.1",
-      "bom-ref": "openapi-backend@5.20.1|ajv-formats@2.1.1",
+      "bom-ref": "openapi-backend@5.21.2|ajv-formats@2.1.1",
       "author": "Evgeny Poberezkin",
       "description": "Format validation for Ajv v7+",
       "licenses": [
@@ -1132,7 +1082,7 @@
       "type": "library",
       "name": "lodash.merge",
       "version": "4.6.2",
-      "bom-ref": "openapi-backend@5.20.1|lodash.merge@4.6.2",
+      "bom-ref": "openapi-backend@5.21.2|lodash.merge@4.6.2",
       "author": "John-David Dalton",
       "description": "The Lodash method `_.merge` exported as a module.",
       "licenses": [
@@ -1183,7 +1133,7 @@
       "type": "library",
       "name": "es-define-property",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.20.1|es-define-property@1.0.1",
+      "bom-ref": "openapi-backend@5.21.2|es-define-property@1.0.1",
       "author": "Jordan Harband",
       "description": "`Object.defineProperty`, but not IE 8's broken one.",
       "licenses": [
@@ -1238,7 +1188,7 @@
       "type": "library",
       "name": "side-channel",
       "version": "1.1.1",
-      "bom-ref": "openapi-backend@5.20.1|side-channel@1.1.1",
+      "bom-ref": "openapi-backend@5.21.2|side-channel@1.1.1",
       "author": "Jordan Harband",
       "description": "Store information about any JS value in a side channel. Uses WeakMap if available.",
       "licenses": [
@@ -1291,9 +1241,59 @@
     },
     {
       "type": "library",
+      "name": "argparse",
+      "version": "2.0.1",
+      "bom-ref": "openapi-backend@5.21.2|argparse@2.0.1",
+      "description": "CLI arguments parser. Native port of python's argparse.",
+      "licenses": [
+        {
+          "license": {
+            "id": "Python-2.0",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/argparse@2.0.1",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/nodeca/argparse.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/nodeca/argparse#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/nodeca/argparse/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "f3ef56a9e6db173a57f4e47e59ae8edbd6ac22881e44ccdc1ad00835da4c1c7c80835d1fd3969215505b704a867ff3d7c35123019faadbf6c4060dc3beeacadd"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/argparse"
+        }
+      ]
+    },
+    {
+      "type": "library",
       "name": "es-errors",
       "version": "1.3.0",
-      "bom-ref": "openapi-backend@5.20.1|es-errors@1.3.0",
+      "bom-ref": "openapi-backend@5.21.2|es-errors@1.3.0",
       "author": "Jordan Harband",
       "description": "A simple cache for a few of the JS Error constructors.",
       "licenses": [
@@ -1348,7 +1348,7 @@
       "type": "library",
       "name": "object-inspect",
       "version": "1.13.4",
-      "bom-ref": "openapi-backend@5.20.1|object-inspect@1.13.4",
+      "bom-ref": "openapi-backend@5.21.2|object-inspect@1.13.4",
       "author": "James Halliday",
       "description": "string representations of objects in node and the browser",
       "licenses": [
@@ -1403,7 +1403,7 @@
       "type": "library",
       "name": "side-channel-list",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.20.1|side-channel-list@1.0.1",
+      "bom-ref": "openapi-backend@5.21.2|side-channel-list@1.0.1",
       "author": "Jordan Harband",
       "description": "Store information about any JS value in a side channel, using a linked list",
       "licenses": [
@@ -1458,7 +1458,7 @@
       "type": "library",
       "name": "side-channel-map",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.20.1|side-channel-map@1.0.1",
+      "bom-ref": "openapi-backend@5.21.2|side-channel-map@1.0.1",
       "author": "Jordan Harband",
       "description": "Store information about any JS value in a side channel, using a Map",
       "licenses": [
@@ -1513,7 +1513,7 @@
       "type": "library",
       "name": "side-channel-weakmap",
       "version": "1.0.2",
-      "bom-ref": "openapi-backend@5.20.1|side-channel-weakmap@1.0.2",
+      "bom-ref": "openapi-backend@5.21.2|side-channel-weakmap@1.0.2",
       "author": "Jordan Harband",
       "description": "Store information about any JS value in a side channel. Uses WeakMap if available.",
       "licenses": [
@@ -1568,7 +1568,7 @@
       "type": "library",
       "name": "call-bound",
       "version": "1.0.4",
-      "bom-ref": "openapi-backend@5.20.1|call-bound@1.0.4",
+      "bom-ref": "openapi-backend@5.21.2|call-bound@1.0.4",
       "author": "Jordan Harband",
       "description": "Robust call-bound JavaScript intrinsics, using `call-bind` and `get-intrinsic`.",
       "licenses": [
@@ -1623,7 +1623,7 @@
       "type": "library",
       "name": "get-intrinsic",
       "version": "1.3.0",
-      "bom-ref": "openapi-backend@5.20.1|get-intrinsic@1.3.0",
+      "bom-ref": "openapi-backend@5.21.2|get-intrinsic@1.3.0",
       "author": "Jordan Harband",
       "description": "Get and robustly cache all JS language-level intrinsics at first require time",
       "licenses": [
@@ -1678,7 +1678,7 @@
       "type": "library",
       "name": "call-bind-apply-helpers",
       "version": "1.0.2",
-      "bom-ref": "openapi-backend@5.20.1|call-bind-apply-helpers@1.0.2",
+      "bom-ref": "openapi-backend@5.21.2|call-bind-apply-helpers@1.0.2",
       "author": "Jordan Harband",
       "description": "Helper functions around Function call/apply/bind, for use in `call-bind`",
       "licenses": [
@@ -1733,7 +1733,7 @@
       "type": "library",
       "name": "es-object-atoms",
       "version": "1.1.2",
-      "bom-ref": "openapi-backend@5.20.1|es-object-atoms@1.1.2",
+      "bom-ref": "openapi-backend@5.21.2|es-object-atoms@1.1.2",
       "author": "Jordan Harband",
       "description": "ES Object-related atoms: Object, ToObject, RequireObjectCoercible",
       "licenses": [
@@ -1788,7 +1788,7 @@
       "type": "library",
       "name": "function-bind",
       "version": "1.1.2",
-      "bom-ref": "openapi-backend@5.20.1|function-bind@1.1.2",
+      "bom-ref": "openapi-backend@5.21.2|function-bind@1.1.2",
       "author": "Raynos",
       "description": "Implementation of Function.prototype.bind",
       "licenses": [
@@ -1839,7 +1839,7 @@
       "type": "library",
       "name": "get-proto",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.20.1|get-proto@1.0.1",
+      "bom-ref": "openapi-backend@5.21.2|get-proto@1.0.1",
       "author": "Jordan Harband",
       "description": "Robustly get the [[Prototype]] of an object",
       "licenses": [
@@ -1894,7 +1894,7 @@
       "type": "library",
       "name": "gopd",
       "version": "1.2.0",
-      "bom-ref": "openapi-backend@5.20.1|gopd@1.2.0",
+      "bom-ref": "openapi-backend@5.21.2|gopd@1.2.0",
       "author": "Jordan Harband",
       "description": "`Object.getOwnPropertyDescriptor`, but accounts for IE's broken implementation.",
       "licenses": [
@@ -1949,7 +1949,7 @@
       "type": "library",
       "name": "has-symbols",
       "version": "1.1.0",
-      "bom-ref": "openapi-backend@5.20.1|has-symbols@1.1.0",
+      "bom-ref": "openapi-backend@5.21.2|has-symbols@1.1.0",
       "author": "Jordan Harband",
       "description": "Determine if the JS environment has Symbol support. Supports spec, or shams.",
       "licenses": [
@@ -2004,7 +2004,7 @@
       "type": "library",
       "name": "hasown",
       "version": "2.0.4",
-      "bom-ref": "openapi-backend@5.20.1|hasown@2.0.4",
+      "bom-ref": "openapi-backend@5.21.2|hasown@2.0.4",
       "author": "Jordan Harband",
       "description": "A robust, ES3 compatible, \"has own property\" predicate.",
       "licenses": [
@@ -2059,7 +2059,7 @@
       "type": "library",
       "name": "math-intrinsics",
       "version": "1.1.0",
-      "bom-ref": "openapi-backend@5.20.1|math-intrinsics@1.1.0",
+      "bom-ref": "openapi-backend@5.21.2|math-intrinsics@1.1.0",
       "author": "Jordan Harband",
       "description": "ES Math-related intrinsics and helpers, robustly cached.",
       "licenses": [
@@ -2114,7 +2114,7 @@
       "type": "library",
       "name": "dunder-proto",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.20.1|dunder-proto@1.0.1",
+      "bom-ref": "openapi-backend@5.21.2|dunder-proto@1.0.1",
       "author": "Jordan Harband",
       "description": "If available, the `Object.prototype.__proto__` accessor and mutator, call-bound",
       "licenses": [
@@ -2168,221 +2168,221 @@
   ],
   "dependencies": [
     {
-      "ref": "openapi-backend@5.20.1",
+      "ref": "openapi-backend@5.21.2",
       "dependsOn": [
-        "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2",
-        "openapi-backend@5.20.1|ajv@8.20.0",
-        "openapi-backend@5.20.1|bath-es5@3.0.3",
-        "openapi-backend@5.20.1|cookie@1.0.1",
-        "openapi-backend@5.20.1|dereference-json-schema@0.2.3",
-        "openapi-backend@5.20.1|lodash@4.18.1",
-        "openapi-backend@5.20.1|mock-json-schema@1.1.2",
-        "openapi-backend@5.20.1|openapi-schema-validator@12.1.3",
-        "openapi-backend@5.20.1|openapi-types@12.1.3",
-        "openapi-backend@5.20.1|qs@6.16.0"
+        "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.2",
+        "openapi-backend@5.21.2|ajv@8.20.0",
+        "openapi-backend@5.21.2|bath-es5@3.0.3",
+        "openapi-backend@5.21.2|cookie@1.1.1",
+        "openapi-backend@5.21.2|dereference-json-schema@0.2.3",
+        "openapi-backend@5.21.2|lodash@4.18.1",
+        "openapi-backend@5.21.2|mock-json-schema@1.1.3",
+        "openapi-backend@5.21.2|openapi-schema-validator@12.1.3",
+        "openapi-backend@5.21.2|openapi-types@12.1.3",
+        "openapi-backend@5.21.2|qs@6.16.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2",
+      "ref": "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.2",
       "dependsOn": [
-        "openapi-backend@5.20.1|@jsdevtools/ono@7.1.3",
-        "openapi-backend@5.20.1|@types/json-schema@7.0.15",
-        "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|js-yaml@4.3.2"
+        "openapi-backend@5.21.2|@types/json-schema@7.0.15",
+        "openapi-backend@5.21.2|js-yaml@5.4.2",
+        "openapi-backend@5.21.2|undici@8.10.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|js-yaml@4.3.2",
+      "ref": "openapi-backend@5.21.2|ajv@8.20.0",
       "dependsOn": [
-        "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|argparse@2.0.1"
+        "openapi-backend@5.21.2|fast-deep-equal@3.1.3",
+        "openapi-backend@5.21.2|fast-uri@3.1.7",
+        "openapi-backend@5.21.2|json-schema-traverse@1.0.0",
+        "openapi-backend@5.21.2|require-from-string@2.0.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|@apidevtools/json-schema-ref-parser@11.7.2|argparse@2.0.1"
+      "ref": "openapi-backend@5.21.2|bath-es5@3.0.3"
     },
     {
-      "ref": "openapi-backend@5.20.1|ajv@8.20.0",
+      "ref": "openapi-backend@5.21.2|cookie@1.1.1"
+    },
+    {
+      "ref": "openapi-backend@5.21.2|dereference-json-schema@0.2.3"
+    },
+    {
+      "ref": "openapi-backend@5.21.2|lodash@4.18.1"
+    },
+    {
+      "ref": "openapi-backend@5.21.2|mock-json-schema@1.1.3",
       "dependsOn": [
-        "openapi-backend@5.20.1|fast-deep-equal@3.1.3",
-        "openapi-backend@5.20.1|fast-uri@3.1.7",
-        "openapi-backend@5.20.1|json-schema-traverse@1.0.0",
-        "openapi-backend@5.20.1|require-from-string@2.0.2"
+        "openapi-backend@5.21.2|lodash@4.18.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|bath-es5@3.0.3"
-    },
-    {
-      "ref": "openapi-backend@5.20.1|cookie@1.0.1"
-    },
-    {
-      "ref": "openapi-backend@5.20.1|dereference-json-schema@0.2.3"
-    },
-    {
-      "ref": "openapi-backend@5.20.1|lodash@4.18.1"
-    },
-    {
-      "ref": "openapi-backend@5.20.1|mock-json-schema@1.1.2",
+      "ref": "openapi-backend@5.21.2|openapi-schema-validator@12.1.3",
       "dependsOn": [
-        "openapi-backend@5.20.1|lodash@4.18.1"
+        "openapi-backend@5.21.2|ajv-formats@2.1.1",
+        "openapi-backend@5.21.2|ajv@8.20.0",
+        "openapi-backend@5.21.2|lodash.merge@4.6.2",
+        "openapi-backend@5.21.2|openapi-types@12.1.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|openapi-schema-validator@12.1.3",
+      "ref": "openapi-backend@5.21.2|openapi-types@12.1.3"
+    },
+    {
+      "ref": "openapi-backend@5.21.2|qs@6.16.0",
       "dependsOn": [
-        "openapi-backend@5.20.1|ajv-formats@2.1.1",
-        "openapi-backend@5.20.1|ajv@8.20.0",
-        "openapi-backend@5.20.1|lodash.merge@4.6.2",
-        "openapi-backend@5.20.1|openapi-types@12.1.3"
+        "openapi-backend@5.21.2|es-define-property@1.0.1",
+        "openapi-backend@5.21.2|side-channel@1.1.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|openapi-types@12.1.3"
+      "ref": "openapi-backend@5.21.2|@types/json-schema@7.0.15"
     },
     {
-      "ref": "openapi-backend@5.20.1|qs@6.16.0",
+      "ref": "openapi-backend@5.21.2|js-yaml@5.4.2",
       "dependsOn": [
-        "openapi-backend@5.20.1|es-define-property@1.0.1",
-        "openapi-backend@5.20.1|side-channel@1.1.1"
+        "openapi-backend@5.21.2|argparse@2.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|@jsdevtools/ono@7.1.3"
+      "ref": "openapi-backend@5.21.2|undici@8.10.2"
     },
     {
-      "ref": "openapi-backend@5.20.1|@types/json-schema@7.0.15"
+      "ref": "openapi-backend@5.21.2|fast-deep-equal@3.1.3"
     },
     {
-      "ref": "openapi-backend@5.20.1|fast-deep-equal@3.1.3"
+      "ref": "openapi-backend@5.21.2|fast-uri@3.1.7"
     },
     {
-      "ref": "openapi-backend@5.20.1|fast-uri@3.1.7"
+      "ref": "openapi-backend@5.21.2|json-schema-traverse@1.0.0"
     },
     {
-      "ref": "openapi-backend@5.20.1|json-schema-traverse@1.0.0"
+      "ref": "openapi-backend@5.21.2|require-from-string@2.0.2"
     },
     {
-      "ref": "openapi-backend@5.20.1|require-from-string@2.0.2"
-    },
-    {
-      "ref": "openapi-backend@5.20.1|ajv-formats@2.1.1",
+      "ref": "openapi-backend@5.21.2|ajv-formats@2.1.1",
       "dependsOn": [
-        "openapi-backend@5.20.1|ajv@8.20.0"
+        "openapi-backend@5.21.2|ajv@8.20.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|lodash.merge@4.6.2"
+      "ref": "openapi-backend@5.21.2|lodash.merge@4.6.2"
     },
     {
-      "ref": "openapi-backend@5.20.1|es-define-property@1.0.1"
+      "ref": "openapi-backend@5.21.2|es-define-property@1.0.1"
     },
     {
-      "ref": "openapi-backend@5.20.1|side-channel@1.1.1",
+      "ref": "openapi-backend@5.21.2|side-channel@1.1.1",
       "dependsOn": [
-        "openapi-backend@5.20.1|es-errors@1.3.0",
-        "openapi-backend@5.20.1|object-inspect@1.13.4",
-        "openapi-backend@5.20.1|side-channel-list@1.0.1",
-        "openapi-backend@5.20.1|side-channel-map@1.0.1",
-        "openapi-backend@5.20.1|side-channel-weakmap@1.0.2"
+        "openapi-backend@5.21.2|es-errors@1.3.0",
+        "openapi-backend@5.21.2|object-inspect@1.13.4",
+        "openapi-backend@5.21.2|side-channel-list@1.0.1",
+        "openapi-backend@5.21.2|side-channel-map@1.0.1",
+        "openapi-backend@5.21.2|side-channel-weakmap@1.0.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|es-errors@1.3.0"
+      "ref": "openapi-backend@5.21.2|argparse@2.0.1"
     },
     {
-      "ref": "openapi-backend@5.20.1|object-inspect@1.13.4"
+      "ref": "openapi-backend@5.21.2|es-errors@1.3.0"
     },
     {
-      "ref": "openapi-backend@5.20.1|side-channel-list@1.0.1",
+      "ref": "openapi-backend@5.21.2|object-inspect@1.13.4"
+    },
+    {
+      "ref": "openapi-backend@5.21.2|side-channel-list@1.0.1",
       "dependsOn": [
-        "openapi-backend@5.20.1|es-errors@1.3.0",
-        "openapi-backend@5.20.1|object-inspect@1.13.4"
+        "openapi-backend@5.21.2|es-errors@1.3.0",
+        "openapi-backend@5.21.2|object-inspect@1.13.4"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|side-channel-map@1.0.1",
+      "ref": "openapi-backend@5.21.2|side-channel-map@1.0.1",
       "dependsOn": [
-        "openapi-backend@5.20.1|call-bound@1.0.4",
-        "openapi-backend@5.20.1|es-errors@1.3.0",
-        "openapi-backend@5.20.1|get-intrinsic@1.3.0",
-        "openapi-backend@5.20.1|object-inspect@1.13.4"
+        "openapi-backend@5.21.2|call-bound@1.0.4",
+        "openapi-backend@5.21.2|es-errors@1.3.0",
+        "openapi-backend@5.21.2|get-intrinsic@1.3.0",
+        "openapi-backend@5.21.2|object-inspect@1.13.4"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|side-channel-weakmap@1.0.2",
+      "ref": "openapi-backend@5.21.2|side-channel-weakmap@1.0.2",
       "dependsOn": [
-        "openapi-backend@5.20.1|call-bound@1.0.4",
-        "openapi-backend@5.20.1|es-errors@1.3.0",
-        "openapi-backend@5.20.1|get-intrinsic@1.3.0",
-        "openapi-backend@5.20.1|object-inspect@1.13.4",
-        "openapi-backend@5.20.1|side-channel-map@1.0.1"
+        "openapi-backend@5.21.2|call-bound@1.0.4",
+        "openapi-backend@5.21.2|es-errors@1.3.0",
+        "openapi-backend@5.21.2|get-intrinsic@1.3.0",
+        "openapi-backend@5.21.2|object-inspect@1.13.4",
+        "openapi-backend@5.21.2|side-channel-map@1.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|call-bound@1.0.4",
+      "ref": "openapi-backend@5.21.2|call-bound@1.0.4",
       "dependsOn": [
-        "openapi-backend@5.20.1|call-bind-apply-helpers@1.0.2",
-        "openapi-backend@5.20.1|get-intrinsic@1.3.0"
+        "openapi-backend@5.21.2|call-bind-apply-helpers@1.0.2",
+        "openapi-backend@5.21.2|get-intrinsic@1.3.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|get-intrinsic@1.3.0",
+      "ref": "openapi-backend@5.21.2|get-intrinsic@1.3.0",
       "dependsOn": [
-        "openapi-backend@5.20.1|call-bind-apply-helpers@1.0.2",
-        "openapi-backend@5.20.1|es-define-property@1.0.1",
-        "openapi-backend@5.20.1|es-errors@1.3.0",
-        "openapi-backend@5.20.1|es-object-atoms@1.1.2",
-        "openapi-backend@5.20.1|function-bind@1.1.2",
-        "openapi-backend@5.20.1|get-proto@1.0.1",
-        "openapi-backend@5.20.1|gopd@1.2.0",
-        "openapi-backend@5.20.1|has-symbols@1.1.0",
-        "openapi-backend@5.20.1|hasown@2.0.4",
-        "openapi-backend@5.20.1|math-intrinsics@1.1.0"
+        "openapi-backend@5.21.2|call-bind-apply-helpers@1.0.2",
+        "openapi-backend@5.21.2|es-define-property@1.0.1",
+        "openapi-backend@5.21.2|es-errors@1.3.0",
+        "openapi-backend@5.21.2|es-object-atoms@1.1.2",
+        "openapi-backend@5.21.2|function-bind@1.1.2",
+        "openapi-backend@5.21.2|get-proto@1.0.1",
+        "openapi-backend@5.21.2|gopd@1.2.0",
+        "openapi-backend@5.21.2|has-symbols@1.1.0",
+        "openapi-backend@5.21.2|hasown@2.0.4",
+        "openapi-backend@5.21.2|math-intrinsics@1.1.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|call-bind-apply-helpers@1.0.2",
+      "ref": "openapi-backend@5.21.2|call-bind-apply-helpers@1.0.2",
       "dependsOn": [
-        "openapi-backend@5.20.1|es-errors@1.3.0",
-        "openapi-backend@5.20.1|function-bind@1.1.2"
+        "openapi-backend@5.21.2|es-errors@1.3.0",
+        "openapi-backend@5.21.2|function-bind@1.1.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|es-object-atoms@1.1.2",
+      "ref": "openapi-backend@5.21.2|es-object-atoms@1.1.2",
       "dependsOn": [
-        "openapi-backend@5.20.1|es-errors@1.3.0"
+        "openapi-backend@5.21.2|es-errors@1.3.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|function-bind@1.1.2"
+      "ref": "openapi-backend@5.21.2|function-bind@1.1.2"
     },
     {
-      "ref": "openapi-backend@5.20.1|get-proto@1.0.1",
+      "ref": "openapi-backend@5.21.2|get-proto@1.0.1",
       "dependsOn": [
-        "openapi-backend@5.20.1|dunder-proto@1.0.1",
-        "openapi-backend@5.20.1|es-object-atoms@1.1.2"
+        "openapi-backend@5.21.2|dunder-proto@1.0.1",
+        "openapi-backend@5.21.2|es-object-atoms@1.1.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|gopd@1.2.0"
+      "ref": "openapi-backend@5.21.2|gopd@1.2.0"
     },
     {
-      "ref": "openapi-backend@5.20.1|has-symbols@1.1.0"
+      "ref": "openapi-backend@5.21.2|has-symbols@1.1.0"
     },
     {
-      "ref": "openapi-backend@5.20.1|hasown@2.0.4",
+      "ref": "openapi-backend@5.21.2|hasown@2.0.4",
       "dependsOn": [
-        "openapi-backend@5.20.1|function-bind@1.1.2"
+        "openapi-backend@5.21.2|function-bind@1.1.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.20.1|math-intrinsics@1.1.0"
+      "ref": "openapi-backend@5.21.2|math-intrinsics@1.1.0"
     },
     {
-      "ref": "openapi-backend@5.20.1|dunder-proto@1.0.1",
+      "ref": "openapi-backend@5.21.2|dunder-proto@1.0.1",
       "dependsOn": [
-        "openapi-backend@5.20.1|call-bind-apply-helpers@1.0.2",
-        "openapi-backend@5.20.1|es-errors@1.3.0",
-        "openapi-backend@5.20.1|gopd@1.2.0"
+        "openapi-backend@5.21.2|call-bind-apply-helpers@1.0.2",
+        "openapi-backend@5.21.2|es-errors@1.3.0",
+        "openapi-backend@5.21.2|gopd@1.2.0"
       ]
     }
   ]
