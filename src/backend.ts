@@ -400,7 +400,9 @@ export class OpenAPIBackend<D extends Document = Document> {
               })
               // save rejected error as result, if thrown
               .catch((error: unknown) => {
-                securityHandlerResults[name] = { error };
+                // rejections are always failed auth. A falsy reason (Promise.reject(), throw null)
+                // must not be stored as { error: <falsy> }, which the aggregator treats as success.
+                securityHandlerResults[name] = { error: error || new Error('security handler rejected') };
               });
           } else {
             // if no handler is found for scheme, set to undefined
@@ -447,8 +449,8 @@ export class OpenAPIBackend<D extends Document = Document> {
 
       // add the results and authorized state to the context object
       context.security = {
-        authorized,
         ...securityHandlerResults,
+        authorized,
       };
 
       // postSecurityHandler

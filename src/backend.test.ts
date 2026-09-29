@@ -593,6 +593,98 @@ describe('OpenAPIBackend', () => {
         expect(context.security?.authorized).toBe(true);
       });
 
+      test('sets context.security.authorized=false if handler throws', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        api.registerSecurityHandler('basicAuth', () => {
+          throw new Error('no creds');
+        });
+
+        await api.init();
+        await api.handleRequest({ method: 'get', path: '/pets', headers: {} });
+
+        expect(context.security?.authorized).toBe(false);
+      });
+
+      test('sets context.security.authorized=false if handler rejects with no reason', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        api.registerSecurityHandler('basicAuth', () => Promise.reject());
+
+        await api.init();
+        await api.handleRequest({ method: 'get', path: '/pets', headers: {} });
+
+        expect(context.security?.authorized).toBe(false);
+      });
+
+      test('sets context.security.authorized=false if handler throws a falsy value', async () => {
+        const api = new OpenAPIBackend({ definition });
+        let context: Partial<Context> = {};
+        api.register('notImplemented', (c) => {
+          context = c;
+        });
+        api.registerSecurityHandler('basicAuth', () => {
+          throw null;
+        });
+
+        await api.init();
+        await api.handleRequest({ method: 'get', path: '/pets', headers: {} });
+
+        expect(context.security?.authorized).toBe(false);
+      });
+
+      test('does not call operation handler if handler rejects with no reason', async () => {
+        const api = new OpenAPIBackend({ definition });
+        const mockHandler = jest.fn();
+        api.register('getPets', mockHandler);
+        api.register('unauthorizedHandler', () => null);
+        api.registerSecurityHandler('basicAuth', () => Promise.reject());
+
+        await api.init();
+        await api.handleRequest({ method: 'get', path: '/pets', headers: {} });
+
+        expect(mockHandler).not.toBeCalled();
+      });
+
+      test('does not let a scheme named authorized overwrite context.security.authorized', async () => {
+        const collidingDefinition: OpenAPIV3_1.Document = {
+          ...meta,
+          components: {
+            securitySchemes: {
+              authorized: { type: 'apiKey', in: 'header', name: 'x-a' },
+              second: { type: 'apiKey', in: 'header', name: 'x-b' },
+            },
+          },
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPets',
+                security: [{ authorized: [], second: [] }],
+                responses,
+              },
+            },
+          },
+        };
+        const api = new OpenAPIBackend({ definition: collidingDefinition });
+        let context: Partial<Context> = {};
+        api.register('getPets', (c) => {
+          context = c;
+        });
+        api.registerSecurityHandler('authorized', () => ({ user: 'ok' }));
+        api.registerSecurityHandler('second', () => false);
+
+        await api.init();
+        await api.handleRequest({ method: 'get', path: '/pets', headers: {} });
+
+        expect(context.security?.authorized).toBe(false);
+      });
+
       test('does not call operation handler if handler returns a multi-key error object', async () => {
         const api = new OpenAPIBackend({ definition });
         const mockHandler = jest.fn();
