@@ -7,7 +7,6 @@ on:
     branches: ["main"]
 
 permissions:
-  id-token: write # Required for OIDC
   contents: read
 
 jobs:
@@ -30,18 +29,22 @@ jobs:
           - examples/aws-sam
           - examples/aws-cdk
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: examples
           path: examples
-      - uses: actions/setup-node@v7
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "20"
-      - uses: actions/setup-python@v7
+          package-manager-cache: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.8"
-      - uses: aws-actions/setup-sam@v2
+      - uses: aws-actions/setup-sam@f84ec7d548307efafe33230528756de3c5841a17 # v2
         if: matrix.project_dir == 'examples/aws-sam' || matrix.project_dir == 'examples/aws-cdk'
       - run: npm ci && npm run build
       - run: npm ci
@@ -61,11 +64,20 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     needs:
       - test
+    # Only this job can mint an OIDC token for npm trusted publishing. The test job installs
+    # third-party packages for every example project and must not be able to publish.
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: "24"
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
+          package-manager-cache: false
+      # No dependency install scripts while an OIDC token is available. prepublishOnly still builds.
+      - run: npm ci --ignore-scripts
       - run: npm publish
