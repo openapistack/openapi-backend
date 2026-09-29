@@ -69,6 +69,19 @@ export interface ParsedRequest<
   body?: AnyRequestBody;
 }
 
+function escapeRegExp(literal: string) {
+  return literal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function pathTemplateToPattern(path: string) {
+  const pattern = path
+    .replace(/\{[^}]+\}/g, '\0')
+    .split('\0')
+    .map(escapeRegExp)
+    .join('[^/]+');
+  return `^${pattern}$`;
+}
+
 /**
  * Class that handles routing
  *
@@ -109,8 +122,8 @@ export class OpenAPIRouter<D extends Document = Document> {
     // normalize request for matching
     req = this.normalizeRequest(req);
 
-    // if request doesn't match apiRoot, throw 404
-    if (!req.path.startsWith(this.apiRoot)) {
+    // if request doesn't match apiRoot at a path-segment boundary, 404
+    if (!this.isUnderApiRoot(req.path)) {
       if (strict) {
         throw Error('404-notFound: no route matches request');
       } else {
@@ -133,8 +146,9 @@ export class OpenAPIRouter<D extends Document = Document> {
     // check with path templates
     const templatePathMatches = this.getOperations().filter(({ path }) => {
       // convert openapi path template to a regex pattern i.e. /{id}/ becomes /[^/]+/
-      const pathPattern = `^${path.replace(/\{.*?\}/g, '[^/]+')}$`;
-      return Boolean(normalizedPath.match(new RegExp(pathPattern, 'g')));
+      // escape regex metacharacters in the literal parts so /files/{name}.json does not treat '.' as any-char
+      const pathPattern = pathTemplateToPattern(path);
+      return Boolean(normalizedPath.match(new RegExp(pathPattern)));
     });
 
     // if no operations match the path, throw 404
@@ -251,9 +265,15 @@ export class OpenAPIRouter<D extends Document = Document> {
   public normalizePath(pathInput: string) {
     let path = pathInput.trim();
 
-    // strip apiRoot from path
-    if (path.startsWith(this.apiRoot)) {
-      path = path.replace(new RegExp(`^${this.apiRoot}/?`), '/');
+    // strip apiRoot from path on a segment boundary. Do not use a RegExp: apiRoot '/'
+    // used to compile /^\/\/?/ which collapsed '//pets' onto '/pets'.
+    if (this.apiRoot !== '/') {
+      const root = this.apiRoot.replace(/\/$/, '');
+      if (path === root) {
+        path = '/';
+      } else if (path.startsWith(`${root}/`)) {
+        path = path.slice(root.length) || '/';
+      }
     }
 
     // remove trailing slashes from path if ignoreTrailingSlashes = true
@@ -262,6 +282,18 @@ export class OpenAPIRouter<D extends Document = Document> {
     }
 
     return path;
+  }
+
+  /**
+   * True when path is the apiRoot itself or a child of it (segment boundary).
+   * `/apiadmin` is not under apiRoot `/api`.
+   */
+  private isUnderApiRoot(path: string) {
+    if (this.apiRoot === '/') {
+      return path.startsWith('/');
+    }
+    const root = this.apiRoot.replace(/\/$/, '');
+    return path === root || path.startsWith(`${root}/`);
   }
 
   /**

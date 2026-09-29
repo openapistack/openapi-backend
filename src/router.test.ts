@@ -441,6 +441,11 @@ describe('OpenAPIRouter', () => {
       const operation = api.matchOperation({ path: '/v2/pets', method: 'get', headers }) as Operation;
       expect(operation).toBe(undefined);
     });
+
+    test('does not match GET //pets', async () => {
+      const operation = api.matchOperation({ path: '//pets', method: 'get', headers }) as Operation;
+      expect(operation).toBe(undefined);
+    });
   });
 
   describe('.matchOperation with ignoreTrailingSlashes=false', () => {
@@ -477,6 +482,16 @@ describe('OpenAPIRouter', () => {
 
     test('does not match GET /pets', async () => {
       const operation = api.matchOperation({ path: '/pets', method: 'get', headers }) as Operation;
+      expect(operation).toBe(undefined);
+    });
+
+    test('does not match GET /apiadmin', async () => {
+      const operation = api.matchOperation({ path: '/apiadmin', method: 'get', headers }) as Operation;
+      expect(operation).toBe(undefined);
+    });
+
+    test('does not match GET /apiadmin/pets', async () => {
+      const operation = api.matchOperation({ path: '/apiadmin/pets', method: 'get', headers }) as Operation;
       expect(operation).toBe(undefined);
     });
   });
