@@ -3,15 +3,15 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:91cf1125-6fdd-4d19-a3a2-01de84073a1a",
+  "serialNumber": "urn:uuid:cfe3210a-23cc-4389-936a-07898e5614c4",
   "metadata": {
-    "timestamp": "2026-09-29T09:36:31.422Z",
+    "timestamp": "2026-09-30T13:52:39.252Z",
     "tools": {
       "components": [
         {
           "type": "application",
           "name": "npm",
-          "version": "11.12.1"
+          "version": "11.19.0"
         },
         {
           "type": "application",
@@ -59,7 +59,7 @@
           "type": "library",
           "name": "cyclonedx-library",
           "group": "@cyclonedx",
-          "version": "10.2.0",
+          "version": "10.3.0",
           "author": "Jan Kowalleck",
           "description": "Core functionality of CycloneDX for JavaScript (Node.js or WebBrowser).",
           "licenses": [
@@ -1634,8 +1634,8 @@
     {
       "type": "library",
       "name": "vitest",
-      "version": "5.0.1",
-      "bom-ref": "openapi-backend@5.21.2|vitest@5.0.1",
+      "version": "5.0.2",
+      "bom-ref": "openapi-backend@5.21.2|vitest@5.0.2",
       "author": "Anthony Fu",
       "description": "Next generation testing framework powered by Vite",
       "licenses": [
@@ -1646,7 +1646,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/vitest@5.0.1",
+      "purl": "pkg:npm/vitest@5.0.2",
       "externalReferences": [
         {
           "url": "git+https://github.com/vitest-dev/vitest.git#packages/vitest",
@@ -1664,12 +1664,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/vitest/-/vitest-5.0.1.tgz",
+          "url": "https://registry.npmjs.org/vitest/-/vitest-5.0.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "880f799506ca124bebb5391d0209d66d77db8a95a28967bf8439763f9b4c8ba585c03efa1b43715c01a9fccf4439c62ea5e18946beb0a6931cec2a00e354d08e"
+              "content": "ecc42bc7da43bf9687894728bc86ffef462cded82d9145600ad95e76f29d0a610efbfd4389cab966aa12c4e5b4df89b4de8a82fa81ce2ae8b674ceaab4c2e826"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -1694,7 +1694,7 @@
           "type": "library",
           "name": "picomatch",
           "version": "4.0.7",
-          "bom-ref": "openapi-backend@5.21.2|vitest@5.0.1|picomatch@4.0.7",
+          "bom-ref": "openapi-backend@5.21.2|vitest@5.0.2|picomatch@4.0.7",
           "author": "Jon Schlinkert",
           "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
           "licenses": [
@@ -5185,8 +5185,8 @@
       "type": "library",
       "name": "mocker",
       "group": "@vitest",
-      "version": "5.0.1",
-      "bom-ref": "openapi-backend@5.21.2|@vitest/mocker@5.0.1",
+      "version": "5.0.2",
+      "bom-ref": "openapi-backend@5.21.2|@vitest/mocker@5.0.2",
       "description": "Vitest module mocker implementation",
       "licenses": [
         {
@@ -5196,7 +5196,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40vitest/mocker@5.0.1",
+      "purl": "pkg:npm/%40vitest/mocker@5.0.2",
       "externalReferences": [
         {
           "url": "git+https://github.com/vitest-dev/vitest.git#packages/mocker",
@@ -5214,12 +5214,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@vitest/mocker/-/mocker-5.0.1.tgz",
+          "url": "https://registry.npmjs.org/@vitest/mocker/-/mocker-5.0.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "e8ad43a013403c6bee39c4ac180e03eb1fb9cc411f7ff2a638e3f7b9eb53d93ac6a557c8f874474672497ca8b989bfe0d6fc7c2181d00fcb34a5b273f16408ed"
+              "content": "679152d344354891e4077e71013b26586750e56035ff4315dc20e3ab2bfb19abc7bf539f3a3d78e4c35f1ce94793b40b7acdb574a1431ebf043b6cef2fef5618"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5410,8 +5410,8 @@
     {
       "type": "library",
       "name": "magic-string",
-      "version": "1.4.1",
-      "bom-ref": "openapi-backend@5.21.2|magic-string@1.4.1",
+      "version": "1.4.2",
+      "bom-ref": "openapi-backend@5.21.2|magic-string@1.4.2",
       "author": "Rich Harris",
       "description": "Modify strings, generate sourcemaps",
       "licenses": [
@@ -5422,7 +5422,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/magic-string@1.4.1",
+      "purl": "pkg:npm/magic-string@1.4.2",
       "externalReferences": [
         {
           "url": "git+https://github.com/Rich-Harris/magic-string.git",
@@ -5440,12 +5440,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/magic-string/-/magic-string-1.4.1.tgz",
+          "url": "https://registry.npmjs.org/magic-string/-/magic-string-1.4.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "f25c82bb7e84ad747427db9a18a94a42888b64a9ad23add818b13c1b6a3d8f244f76be17e3b2eeb123b080e24ecdc56da7cd5f4c0023c51ec1c0acfaf36261a3"
+              "content": "bc6fab8c5463d4fa9d201a332310063233e53a16957be197a5bb6d63f8922bbac670944c9703493bb75c530994aa4ca6b052c988d188d3ab780fb16bef2442f6"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5874,8 +5874,8 @@
     {
       "type": "library",
       "name": "vite",
-      "version": "8.3.0",
-      "bom-ref": "openapi-backend@5.21.2|vite@8.3.0",
+      "version": "8.3.1",
+      "bom-ref": "openapi-backend@5.21.2|vite@8.3.1",
       "author": "Evan You",
       "description": "Native-ESM powered web dev build tool",
       "licenses": [
@@ -5886,7 +5886,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/vite@8.3.0",
+      "purl": "pkg:npm/vite@8.3.1",
       "externalReferences": [
         {
           "url": "git+https://github.com/vitejs/vite.git#packages/vite",
@@ -5904,12 +5904,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/vite/-/vite-8.3.0.tgz",
+          "url": "https://registry.npmjs.org/vite/-/vite-8.3.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "96164156f10779f804f874190bd3bb101260094fe757314d97bbe44b8444d003ed58b3f4dbff10548910b730713eaba1ee5ab9ffbf0d1e2a538fb38343a5eec9"
+              "content": "fdbbc7f44f6d9825d11a9dae5d8dd66ce95daa94f01646e16bff0035a110e95931847eb42b2a8bc2066aea51b6cbee2e4f9e71f7ef5e50732943bb869ce08a8c"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5934,7 +5934,7 @@
           "type": "library",
           "name": "picomatch",
           "version": "4.0.7",
-          "bom-ref": "openapi-backend@5.21.2|vite@8.3.0|picomatch@4.0.7",
+          "bom-ref": "openapi-backend@5.21.2|vite@8.3.1|picomatch@4.0.7",
           "author": "Jon Schlinkert",
           "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
           "licenses": [
@@ -5994,8 +5994,8 @@
     {
       "type": "library",
       "name": "why-is-node-running",
-      "version": "2.3.0",
-      "bom-ref": "openapi-backend@5.21.2|why-is-node-running@2.3.0",
+      "version": "3.2.2",
+      "bom-ref": "openapi-backend@5.21.2|why-is-node-running@3.2.2",
       "author": "Mathias Buus",
       "description": "Node is running but you don't know why? why-is-node-running is here to help you.",
       "licenses": [
@@ -6006,7 +6006,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/why-is-node-running@2.3.0",
+      "purl": "pkg:npm/why-is-node-running@3.2.2",
       "externalReferences": [
         {
           "url": "git+https://github.com/mafintosh/why-is-node-running.git",
@@ -6024,12 +6024,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/why-is-node-running/-/why-is-node-running-2.3.0.tgz",
+          "url": "https://registry.npmjs.org/why-is-node-running/-/why-is-node-running-3.2.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "854ae669605d543731bd8aa7ca1d3dcee9cacd13968db65388dcbc741123912ede8440d089b5c9ed7be59ad6f0b9372552223237e0b25d00f8566928f1f366f3"
+              "content": "34a53301e95ca025e15cbe1d273288c17791f22115aac0342eae959ddd145ef81a29bcd5a386531d1385d8989daeff92831390d377cc8a79cd8736404f1383dc"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -6038,7 +6038,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=8"
+          "value": ">=20.11"
         },
         {
           "name": "cdx:npm:package:development",
@@ -8222,8 +8222,8 @@
       "type": "library",
       "name": "spy",
       "group": "@vitest",
-      "version": "5.0.1",
-      "bom-ref": "openapi-backend@5.21.2|@vitest/spy@5.0.1",
+      "version": "5.0.2",
+      "bom-ref": "openapi-backend@5.21.2|@vitest/spy@5.0.2",
       "description": "Lightweight Jest compatible spy implementation",
       "licenses": [
         {
@@ -8233,7 +8233,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40vitest/spy@5.0.1",
+      "purl": "pkg:npm/%40vitest/spy@5.0.2",
       "externalReferences": [
         {
           "url": "git+https://github.com/vitest-dev/vitest.git#packages/spy",
@@ -8251,12 +8251,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@vitest/spy/-/spy-5.0.1.tgz",
+          "url": "https://registry.npmjs.org/@vitest/spy/-/spy-5.0.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "adbb68fe617f486111c4481839e93b5e6e81f5bfb2fa6568a3e7f86f62f29983bccccd5beee0799c7ba154c4cfda1c5dce0c6f1a26581b118868cbcbe72d7cd1"
+              "content": "22373b4f59d3f5e7cd6f92f1be3681ac4ab0ddffd0c14bf9104d272aa67182ab1a57f17100067c6da1b2940f17fd9da84b82e9f8aef826be9d4c9b032b12437a"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8386,65 +8386,6 @@
     },
     {
       "type": "library",
-      "name": "fsevents",
-      "version": "2.3.3",
-      "bom-ref": "openapi-backend@5.21.2|fsevents@2.3.3",
-      "description": "Native Access to MacOS FSEvents",
-      "scope": "optional",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/fsevents@2.3.3",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/fsevents/fsevents.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/fsevents/fsevents",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/fsevents/fsevents/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "e71a037d7f9f2fb7da0139da82658fa5b16dc21fd1efb5a630caaa1c64bae42defbc1d181eb805f81d58999df8e35b4c8f99fade4d36d765cda09c339617df43"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": "^8.16.0 || ^10.6.0 || >=11.0.0"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/fsevents"
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "lightningcss",
       "version": "1.33.0",
       "bom-ref": "openapi-backend@5.21.2|lightningcss@1.33.0",
@@ -8563,8 +8504,8 @@
     {
       "type": "library",
       "name": "rolldown",
-      "version": "1.2.9",
-      "bom-ref": "openapi-backend@5.21.2|rolldown@1.2.9",
+      "version": "1.2.11",
+      "bom-ref": "openapi-backend@5.21.2|rolldown@1.2.11",
       "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
       "licenses": [
         {
@@ -8574,7 +8515,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/rolldown@1.2.9",
+      "purl": "pkg:npm/rolldown@1.2.11",
       "externalReferences": [
         {
           "url": "git+https://github.com/rolldown/rolldown.git#packages/rolldown",
@@ -8592,12 +8533,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.9.tgz",
+          "url": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.11.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "871fcfbf437585a5d16f5d6a91f9cae4c5c1fe2aabee2d328d642a98ef6e1ea669060412ab373c52c4a71296a5b21fa3d48f2a4360a45c09090bc06bddd29296"
+              "content": "aa94b0232cf48c742ae6a5c14cdc45984ebaeb8ac9ecefb84ef3c53a239a052af3f0838773592828a4aa4ccd87eaed541b5f93bdeb82eaf6831ca5c53af6f52b"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8615,116 +8556,6 @@
         {
           "name": "cdx:npm:package:path",
           "value": "node_modules/rolldown"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "siginfo",
-      "version": "2.0.0",
-      "bom-ref": "openapi-backend@5.21.2|siginfo@2.0.0",
-      "author": "Emil Bay",
-      "description": "Utility module to print pretty messages on SIGINFO/SIGUSR1",
-      "licenses": [
-        {
-          "license": {
-            "id": "ISC",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/siginfo@2.0.0",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/emilbayes/siginfo.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/emilbayes/siginfo#readme",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/emilbayes/siginfo/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/siginfo/-/siginfo-2.0.0.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "c9bc7458ed7ff1b4812c459766f11dee0316dd29f7245956dd3bd7d674446c32d135035a78d37c58ad26781c0f74068e23b4ed4514499ff12cd7386bac21eeee"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/siginfo"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "stackback",
-      "version": "0.0.2",
-      "bom-ref": "openapi-backend@5.21.2|stackback@0.0.2",
-      "author": "Roman Shtylman",
-      "description": "return list of CallSite objects from a captured stacktrace",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/stackback@0.0.2",
-      "externalReferences": [
-        {
-          "url": "git://github.com/shtylman/node-stackback.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/shtylman/node-stackback#readme",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/shtylman/node-stackback/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/stackback/-/stackback-0.0.2.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "d573091397d0a358c61fa63fede6e7c0f3811242049d3e10177d9de51d7e557757bde334201309b7ccdf6b15f53f7421570ad87bee7bebe8e400db524b69816f"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/stackback"
         }
       ]
     },
@@ -10171,9 +10002,9 @@
     },
     {
       "type": "library",
-      "name": "lightningcss-darwin-arm64",
+      "name": "lightningcss-linux-x64-gnu",
       "version": "1.33.0",
-      "bom-ref": "openapi-backend@5.21.2|lightningcss-darwin-arm64@1.33.0",
+      "bom-ref": "openapi-backend@5.21.2|lightningcss-linux-x64-gnu@1.33.0",
       "description": "A CSS parser, transformer, and minifier written in Rust",
       "scope": "optional",
       "licenses": [
@@ -10184,7 +10015,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/lightningcss-darwin-arm64@1.33.0",
+      "purl": "pkg:npm/lightningcss-linux-x64-gnu@1.33.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/parcel-bundler/lightningcss.git",
@@ -10202,12 +10033,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.33.0.tgz",
+          "url": "https://registry.npmjs.org/lightningcss-linux-x64-gnu/-/lightningcss-linux-x64-gnu-1.33.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "49c89acfc79e9cd4ca9fd6f7b7bfb1af48a94e9f58c4a418e27a704379ab46e2f404054704bc99c687e168a04056dce6b5167fcd3ca8d3fb68e01d6e586fc38e"
+              "content": "6abf89bbb2e670dd09a381692f88691726f0346f7fdc0fc1af9296da7da3c8e0e0dcc1195da0d800375e9a8352f810cd7cc80abf29492e3e12e6dc9101cb6e02"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10224,7 +10055,7 @@
         },
         {
           "name": "cdx:npm:package:path",
-          "value": "node_modules/lightningcss-darwin-arm64"
+          "value": "node_modules/lightningcss-linux-x64-gnu"
         }
       ]
     },
@@ -10405,8 +10236,8 @@
       "type": "library",
       "name": "types",
       "group": "@oxc-project",
-      "version": "0.150.0",
-      "bom-ref": "openapi-backend@5.21.2|@oxc-project/types@0.150.0",
+      "version": "0.151.0",
+      "bom-ref": "openapi-backend@5.21.2|@oxc-project/types@0.151.0",
       "author": "Boshen and oxc contributors",
       "description": "Types for Oxc AST nodes",
       "licenses": [
@@ -10417,7 +10248,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40oxc-project/types@0.150.0",
+      "purl": "pkg:npm/%40oxc-project/types@0.151.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/oxc-project/oxc.git#npm/oxc-types",
@@ -10435,12 +10266,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@oxc-project/types/-/types-0.150.0.tgz",
+          "url": "https://registry.npmjs.org/@oxc-project/types/-/types-0.151.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "ac34b9ff7d44f477cf97f088cc6ae7d033a5bc16d716c790e54449f6c60c7ecb5b28b0ff73a1a6f6f991cd11837405f23882f8ce63b7ee573d448c18a95aee67"
+              "content": "275c97ac894d0d957313769d6b7d74c5e030ee71fcc820322cfb9422c8ca6ad14f99f9f96d2d685be70cf90b063ad5567799e14a96f0656c7faee7beaf967e3c"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10459,10 +10290,10 @@
     },
     {
       "type": "library",
-      "name": "binding-darwin-arm64",
+      "name": "binding-linux-x64-gnu",
       "group": "@rolldown",
-      "version": "1.2.9",
-      "bom-ref": "openapi-backend@5.21.2|@rolldown/binding-darwin-arm64@1.2.9",
+      "version": "1.2.11",
+      "bom-ref": "openapi-backend@5.21.2|@rolldown/binding-linux-x64-gnu@1.2.11",
       "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
       "scope": "optional",
       "licenses": [
@@ -10473,7 +10304,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-darwin-arm64@1.2.9",
+      "purl": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.11",
       "externalReferences": [
         {
           "url": "git+https://github.com/rolldown/rolldown.git#packages/rolldown",
@@ -10491,12 +10322,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-darwin-arm64/-/binding-darwin-arm64-1.2.9.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.11.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "2308651f7a8ae6eaeb63c85988480690728414df74d69fe9d9b8f10b1265af81b236717bc18a54bcaf98e37b9a458b82e21a5f8f36d1dd2242ddaad7d631af9b"
+              "content": "98e5414f774fa645a6f170563e65386dff94e9d6032de328ffda235268ace0dd0be6ebb5d2aadae6f3b29e067bfcf49da04e06f4abd1b786e5a11c4d8cb6acec"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10513,7 +10344,7 @@
         },
         {
           "name": "cdx:npm:package:path",
-          "value": "node_modules/@rolldown/binding-darwin-arm64"
+          "value": "node_modules/@rolldown/binding-linux-x64-gnu"
         }
       ]
     },
@@ -12239,7 +12070,7 @@
         "openapi-backend@5.21.2|qs@6.16.0",
         "openapi-backend@5.21.2|source-map-support@0.5.21",
         "openapi-backend@5.21.2|typescript@5.2.2",
-        "openapi-backend@5.21.2|vitest@5.0.1"
+        "openapi-backend@5.21.2|vitest@5.0.2"
       ]
     },
     {
@@ -12435,27 +12266,27 @@
       "ref": "openapi-backend@5.21.2|typescript@5.2.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|vitest@5.0.1",
+      "ref": "openapi-backend@5.21.2|vitest@5.0.2",
       "dependsOn": [
         "openapi-backend@5.21.2|@types/chai@5.2.3",
         "openapi-backend@5.21.2|@types/node@22.20.4",
-        "openapi-backend@5.21.2|@vitest/mocker@5.0.1",
+        "openapi-backend@5.21.2|@vitest/mocker@5.0.2",
         "openapi-backend@5.21.2|chai@6.2.2",
         "openapi-backend@5.21.2|es-module-lexer@2.3.2",
         "openapi-backend@5.21.2|expect-type@1.4.0",
-        "openapi-backend@5.21.2|magic-string@1.4.1",
+        "openapi-backend@5.21.2|magic-string@1.4.2",
         "openapi-backend@5.21.2|obug@2.2.1",
-        "openapi-backend@5.21.2|vitest@5.0.1|picomatch@4.0.7",
+        "openapi-backend@5.21.2|vitest@5.0.2|picomatch@4.0.7",
         "openapi-backend@5.21.2|std-env@4.2.0",
         "openapi-backend@5.21.2|tinybench@6.1.4",
         "openapi-backend@5.21.2|tinyexec@1.3.0",
         "openapi-backend@5.21.2|tinyglobby@0.2.17",
-        "openapi-backend@5.21.2|vite@8.3.0",
-        "openapi-backend@5.21.2|why-is-node-running@2.3.0"
+        "openapi-backend@5.21.2|vite@8.3.1",
+        "openapi-backend@5.21.2|why-is-node-running@3.2.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|vitest@5.0.1|picomatch@4.0.7"
+      "ref": "openapi-backend@5.21.2|vitest@5.0.2|picomatch@4.0.7"
     },
     {
       "ref": "openapi-backend@5.21.2|js-yaml@5.4.2",
@@ -12786,13 +12617,13 @@
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@vitest/mocker@5.0.1",
+      "ref": "openapi-backend@5.21.2|@vitest/mocker@5.0.2",
       "dependsOn": [
         "openapi-backend@5.21.2|@jridgewell/trace-mapping@0.3.31",
-        "openapi-backend@5.21.2|@vitest/spy@5.0.1",
+        "openapi-backend@5.21.2|@vitest/spy@5.0.2",
         "openapi-backend@5.21.2|estree-walker@3.0.3",
-        "openapi-backend@5.21.2|magic-string@1.4.1",
-        "openapi-backend@5.21.2|vite@8.3.0"
+        "openapi-backend@5.21.2|magic-string@1.4.2",
+        "openapi-backend@5.21.2|vite@8.3.1"
       ]
     },
     {
@@ -12805,7 +12636,7 @@
       "ref": "openapi-backend@5.21.2|expect-type@1.4.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|magic-string@1.4.1",
+      "ref": "openapi-backend@5.21.2|magic-string@1.4.2",
       "dependsOn": [
         "openapi-backend@5.21.2|@jridgewell/sourcemap-codec@1.6.0"
       ]
@@ -12839,26 +12670,21 @@
       "ref": "openapi-backend@5.21.2|tinyglobby@0.2.17|picomatch@4.0.7"
     },
     {
-      "ref": "openapi-backend@5.21.2|vite@8.3.0",
+      "ref": "openapi-backend@5.21.2|vite@8.3.1",
       "dependsOn": [
         "openapi-backend@5.21.2|@types/node@22.20.4",
-        "openapi-backend@5.21.2|fsevents@2.3.3",
         "openapi-backend@5.21.2|lightningcss@1.33.0",
-        "openapi-backend@5.21.2|vite@8.3.0|picomatch@4.0.7",
+        "openapi-backend@5.21.2|vite@8.3.1|picomatch@4.0.7",
         "openapi-backend@5.21.2|postcss@8.5.28",
-        "openapi-backend@5.21.2|rolldown@1.2.9",
+        "openapi-backend@5.21.2|rolldown@1.2.11",
         "openapi-backend@5.21.2|tinyglobby@0.2.17"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|vite@8.3.0|picomatch@4.0.7"
+      "ref": "openapi-backend@5.21.2|vite@8.3.1|picomatch@4.0.7"
     },
     {
-      "ref": "openapi-backend@5.21.2|why-is-node-running@2.3.0",
-      "dependsOn": [
-        "openapi-backend@5.21.2|siginfo@2.0.0",
-        "openapi-backend@5.21.2|stackback@0.0.2"
-      ]
+      "ref": "openapi-backend@5.21.2|why-is-node-running@3.2.2"
     },
     {
       "ref": "openapi-backend@5.21.2|argparse@2.0.1"
@@ -13048,7 +12874,7 @@
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@vitest/spy@5.0.1"
+      "ref": "openapi-backend@5.21.2|@vitest/spy@5.0.2"
     },
     {
       "ref": "openapi-backend@5.21.2|estree-walker@3.0.3",
@@ -13060,13 +12886,10 @@
       "ref": "openapi-backend@5.21.2|@jridgewell/sourcemap-codec@1.6.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|fsevents@2.3.3"
-    },
-    {
       "ref": "openapi-backend@5.21.2|lightningcss@1.33.0",
       "dependsOn": [
         "openapi-backend@5.21.2|detect-libc@2.1.2",
-        "openapi-backend@5.21.2|lightningcss-darwin-arm64@1.33.0"
+        "openapi-backend@5.21.2|lightningcss-linux-x64-gnu@1.33.0"
       ]
     },
     {
@@ -13078,18 +12901,12 @@
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|rolldown@1.2.9",
+      "ref": "openapi-backend@5.21.2|rolldown@1.2.11",
       "dependsOn": [
-        "openapi-backend@5.21.2|@oxc-project/types@0.150.0",
-        "openapi-backend@5.21.2|@rolldown/binding-darwin-arm64@1.2.9",
+        "openapi-backend@5.21.2|@oxc-project/types@0.151.0",
+        "openapi-backend@5.21.2|@rolldown/binding-linux-x64-gnu@1.2.11",
         "openapi-backend@5.21.2|@rolldown/pluginutils@1.0.1"
       ]
-    },
-    {
-      "ref": "openapi-backend@5.21.2|siginfo@2.0.0"
-    },
-    {
-      "ref": "openapi-backend@5.21.2|stackback@0.0.2"
     },
     {
       "ref": "openapi-backend@5.21.2|array-union@2.1.0"
@@ -13211,7 +13028,7 @@
       "ref": "openapi-backend@5.21.2|detect-libc@2.1.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|lightningcss-darwin-arm64@1.33.0"
+      "ref": "openapi-backend@5.21.2|lightningcss-linux-x64-gnu@1.33.0"
     },
     {
       "ref": "openapi-backend@5.21.2|nanoid@3.3.19"
@@ -13223,10 +13040,10 @@
       "ref": "openapi-backend@5.21.2|source-map-js@1.2.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|@oxc-project/types@0.150.0"
+      "ref": "openapi-backend@5.21.2|@oxc-project/types@0.151.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|@rolldown/binding-darwin-arm64@1.2.9"
+      "ref": "openapi-backend@5.21.2|@rolldown/binding-linux-x64-gnu@1.2.11"
     },
     {
       "ref": "openapi-backend@5.21.2|@rolldown/pluginutils@1.0.1"

@@ -3,15 +3,15 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:9cc80670-3ece-4a7e-b757-d3932f54dd59",
+  "serialNumber": "urn:uuid:3979a875-ad42-49fe-b5fb-0905afe4addb",
   "metadata": {
-    "timestamp": "2026-09-29T09:36:29.759Z",
+    "timestamp": "2026-09-30T13:52:37.776Z",
     "tools": {
       "components": [
         {
           "type": "application",
           "name": "npm",
-          "version": "11.12.1"
+          "version": "11.19.0"
         },
         {
           "type": "application",
@@ -59,7 +59,7 @@
           "type": "library",
           "name": "cyclonedx-library",
           "group": "@cyclonedx",
-          "version": "10.2.0",
+          "version": "10.3.0",
           "author": "Jan Kowalleck",
           "description": "Core functionality of CycloneDX for JavaScript (Node.js or WebBrowser).",
           "licenses": [
