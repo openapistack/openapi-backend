@@ -674,7 +674,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ````
 
-## fast-uri@3.1.7
+## fast-uri@3.1.8
 - License: BSD-3-Clause
 - Repository: https://github.com/fastify/fast-uri
 - Copyright (c) 2011-2021, Gary Court until https://github.com/garycourt/uri-js/commit/a1acf730b4bba3f1097c9f52e7d9d3aba8cdcaae

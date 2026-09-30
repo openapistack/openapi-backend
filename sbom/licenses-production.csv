@@ -14,7 +14,7 @@
 "es-errors@1.3.0","MIT","https://github.com/ljharb/es-errors"
 "es-object-atoms@1.1.2","MIT","https://github.com/ljharb/es-object-atoms"
 "fast-deep-equal@3.1.3","MIT","https://github.com/epoberezkin/fast-deep-equal"
-"fast-uri@3.1.7","BSD-3-Clause","https://github.com/fastify/fast-uri"
+"fast-uri@3.1.8","BSD-3-Clause","https://github.com/fastify/fast-uri"
 "function-bind@1.1.2","MIT","https://github.com/Raynos/function-bind"
 "get-intrinsic@1.3.0","MIT","https://github.com/ljharb/get-intrinsic"
 "get-proto@1.0.1","MIT","https://github.com/ljharb/get-proto"

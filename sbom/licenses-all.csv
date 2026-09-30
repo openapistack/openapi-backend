@@ -86,7 +86,7 @@
 "fast-glob@3.3.3","MIT","https://github.com/mrmlnc/fast-glob"
 "fast-json-stable-stringify@2.1.0","MIT","https://github.com/epoberezkin/fast-json-stable-stringify"
 "fast-levenshtein@2.0.6","MIT","https://github.com/hiddentao/fast-levenshtein"
-"fast-uri@3.1.7","BSD-3-Clause","https://github.com/fastify/fast-uri"
+"fast-uri@3.1.8","BSD-3-Clause","https://github.com/fastify/fast-uri"
 "fastq@1.20.3","ISC","https://github.com/mcollina/fastq"
 "fdir@6.5.0","MIT","https://github.com/thecodrr/fdir"
 "file-entry-cache@6.0.1","MIT","https://github.com/royriojas/file-entry-cache"
