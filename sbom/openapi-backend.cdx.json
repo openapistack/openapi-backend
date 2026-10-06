@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:4f741945-9945-4ce5-b07e-e12fd8d3433a",
+  "serialNumber": "urn:uuid:8a4ff0c5-403a-4191-8839-341d73f2ce57",
   "metadata": {
-    "timestamp": "2026-09-30T16:21:55.079Z",
+    "timestamp": "2026-10-06T09:08:02.632Z",
     "tools": {
       "components": [
         {
@@ -145,8 +145,8 @@
       "type": "library",
       "name": "json-schema-ref-parser",
       "group": "@apidevtools",
-      "version": "16.0.2",
-      "bom-ref": "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.2",
+      "version": "16.0.3",
+      "bom-ref": "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.3",
       "author": "JonLuca DeCaro",
       "description": "Parse, Resolve, and Dereference JSON Schema $ref pointers",
       "licenses": [
@@ -157,7 +157,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40apidevtools/json-schema-ref-parser@16.0.2",
+      "purl": "pkg:npm/%40apidevtools/json-schema-ref-parser@16.0.3",
       "externalReferences": [
         {
           "url": "git+https://github.com/APIDevTools/json-schema-ref-parser.git",
@@ -175,12 +175,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-16.0.2.tgz",
+          "url": "https://registry.npmjs.org/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-16.0.3.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "a02c1653245d32db7f867a7a38d3ee74567317bb52aa21f2e3a94bc7956c9ec2d369cb3c4d2539e7c54f0223ae78527c59d7421f7d0f20d58303c072c6118799"
+              "content": "ee5669e1709366153f020886a481be8f8b897963dd19ba50fbcc2a5ebcee1f2fad6e82ac8d269c8c61fdfe43538510c81613161c5ddb6be7a34bc2773de488d5"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2170,7 +2170,7 @@
     {
       "ref": "openapi-backend@5.21.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.2",
+        "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.3",
         "openapi-backend@5.21.2|ajv@8.20.0",
         "openapi-backend@5.21.2|bath-es5@3.0.3",
         "openapi-backend@5.21.2|cookie@1.1.1",
@@ -2183,7 +2183,7 @@
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.2",
+      "ref": "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.3",
       "dependsOn": [
         "openapi-backend@5.21.2|@types/json-schema@7.0.15",
         "openapi-backend@5.21.2|js-yaml@5.4.2",

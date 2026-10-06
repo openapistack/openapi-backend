@@ -1,5 +1,5 @@
 "module name","license","repository"
-"@apidevtools/json-schema-ref-parser@16.0.2","MIT","https://github.com/APIDevTools/json-schema-ref-parser"
+"@apidevtools/json-schema-ref-parser@16.0.3","MIT","https://github.com/APIDevTools/json-schema-ref-parser"
 "@eslint-community/eslint-utils@4.10.1","MIT","https://github.com/eslint-community/eslint-utils"
 "@eslint-community/regexpp@4.12.2","MIT","https://github.com/eslint-community/regexpp"
 "@eslint/eslintrc@2.1.4","MIT","https://github.com/eslint/eslintrc"

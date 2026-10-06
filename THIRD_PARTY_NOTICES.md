@@ -1,9 +1,9 @@
 # Third-party notices for openapi-backend
 
 Runtime (production) dependencies distributed alongside openapi-backend, with their licenses and copyright holders. The full license text for each package is included below.
-Generated from package-lock.json on 2026-09-30.
+Generated from package-lock.json on 2026-10-06.
 
-## @apidevtools/json-schema-ref-parser@16.0.2
+## @apidevtools/json-schema-ref-parser@16.0.3
 - License: MIT
 - Repository: https://github.com/APIDevTools/json-schema-ref-parser
 - Copyright (c) 2015 James Messinger
