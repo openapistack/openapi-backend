@@ -178,7 +178,7 @@
 "side-channel-weakmap@1.0.2","MIT","https://github.com/ljharb/side-channel-weakmap"
 "side-channel@1.1.1","MIT","https://github.com/ljharb/side-channel"
 "slash@3.0.0","MIT","https://github.com/sindresorhus/slash"
-"source-map-js@1.2.1","BSD-3-Clause","https://github.com/7rulnik/source-map-js"
+"source-map-js@1.2.2","BSD-3-Clause","https://github.com/7rulnik/source-map-js"
 "source-map-support@0.5.21","MIT","https://github.com/evanw/node-source-map-support"
 "source-map@0.6.1","BSD-3-Clause","https://github.com/mozilla/source-map"
 "std-env@4.2.0","MIT","https://github.com/unjs/std-env"

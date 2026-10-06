@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:87ebf53b-41b1-4003-b2d7-09b3e5d718e1",
+  "serialNumber": "urn:uuid:65ca2926-aafd-4519-9fa8-e0c369ea0f78",
   "metadata": {
-    "timestamp": "2026-10-06T09:08:04.196Z",
+    "timestamp": "2026-10-06T13:05:45.313Z",
     "tools": {
       "components": [
         {
@@ -10176,8 +10176,8 @@
     {
       "type": "library",
       "name": "source-map-js",
-      "version": "1.2.1",
-      "bom-ref": "openapi-backend@5.21.2|source-map-js@1.2.1",
+      "version": "1.2.2",
+      "bom-ref": "openapi-backend@5.21.2|source-map-js@1.2.2",
       "author": "Valentin 7rulnik Semirulnik",
       "description": "Generates and consumes source maps",
       "licenses": [
@@ -10188,7 +10188,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/source-map-js@1.2.1",
+      "purl": "pkg:npm/source-map-js@1.2.2",
       "externalReferences": [
         {
           "url": "git+https://github.com/7rulnik/source-map-js.git",
@@ -10206,12 +10206,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz",
+          "url": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "51758c2a12cec1529bef6f0852d40f5f17d853ebac7726ed52b2bff2e184f0240cbeb84ea70bf30c1c23d108522fb31073bbc8b084811bc550f3e203431a5f40"
+              "content": "2868fff18e37c77e5a6550edb7e27898ad61a0b18750b3187d290e0c93508cd0c2de85b53ea3e8c4cc28d292d4b1633f5041b338dfcdc5e1f2c047cd5cd3f757"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -12897,7 +12897,7 @@
       "dependsOn": [
         "openapi-backend@5.21.2|nanoid@3.3.19",
         "openapi-backend@5.21.2|picocolors@1.1.1",
-        "openapi-backend@5.21.2|source-map-js@1.2.1"
+        "openapi-backend@5.21.2|source-map-js@1.2.2"
       ]
     },
     {
@@ -13037,7 +13037,7 @@
       "ref": "openapi-backend@5.21.2|picocolors@1.1.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|source-map-js@1.2.1"
+      "ref": "openapi-backend@5.21.2|source-map-js@1.2.2"
     },
     {
       "ref": "openapi-backend@5.21.2|@oxc-project/types@0.151.0"
