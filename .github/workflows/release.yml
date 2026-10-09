@@ -102,7 +102,6 @@ jobs:
     # token and no checkout, and the model can't run commands, write files or fetch URLs. A failure here never blocks
     # the release; it falls back to a plain commit list.
     permissions: {}
-    environment: release-notes
     continue-on-error: true
     timeout-minutes: 10
     env:

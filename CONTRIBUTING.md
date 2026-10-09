@@ -20,4 +20,4 @@ The tag starts [`ci.yml`](.github/workflows/ci.yml), which tests and publishes t
 
 To change a published entry, edit `CHANGELOG.md` and the GitHub release. To create or refresh the release for an existing tag, run the Release workflow by hand with the tag. An entry already in `CHANGELOG.md` is used as is.
 
-One-time setup: create a [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new) with only the account permission "Copilot Requests", and add it as the `COPILOT_GITHUB_TOKEN` secret of the `release-notes` environment. Limit that environment's deployment branches and tags to `main` and the version tags. Set the `RELEASE_NOTES_MODEL` repository variable to change the model.
+One-time setup: create a [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new) with only the account permission "Copilot Requests", and add it as the `COPILOT_GITHUB_TOKEN` repository secret. Drafts use the token owner's Copilot AI credits. When the token expires, releases fall back to the plain commit list until it is replaced. Set the `RELEASE_NOTES_MODEL` repository variable to change the model.
