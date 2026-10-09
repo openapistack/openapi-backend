@@ -4,6 +4,18 @@ All notable changes to openapi-backend. This project follows [Semantic Versionin
 
 New entries are drafted by an AI model from the merged pull requests and commits when a version tag is pushed, checked by a script, and published here and on [GitHub Releases](https://github.com/openapistack/openapi-backend/releases) by [`release.yml`](.github/workflows/release.yml). Releases before 5.16.0 are listed in the [tags](https://github.com/openapistack/openapi-backend/tags).
 
+## [5.21.3](https://github.com/openapistack/openapi-backend/compare/5.21.2...5.21.3) - 2026-10-09
+
+This release has no changes to the library's runtime behavior. It updates the security policy and threat model documentation, and refreshes development dependencies.
+
+### Changed
+
+- Revised security guidance: `SECURITY.md` now covers supported versions (the latest 5.x release), what makes a report actionable, how to verify a release, and a recommendation to catch `handleRequest` rejections. In strict mode these rejections signal 401 and 400 responses, and on Express 4 an uncaught rejection ends the process. The threat model was also updated ([#1014](https://github.com/openapistack/openapi-backend/pull/1014)).
+
+### Dependencies
+
+- Lockfile and development dependency updates ([#1018](https://github.com/openapistack/openapi-backend/pull/1018), [#1015](https://github.com/openapistack/openapi-backend/pull/1015), [#1010](https://github.com/openapistack/openapi-backend/pull/1010), [#1012](https://github.com/openapistack/openapi-backend/pull/1012)).
+
 ## [5.21.2](https://github.com/openapistack/openapi-backend/compare/5.21.1...5.21.2) - 2026-09-29
 
 Two security fixes. Upgrade if you use security handlers or `apiRoot`.
