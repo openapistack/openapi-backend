@@ -97,7 +97,7 @@ function packageJsonChanges(from, to) {
   return changes;
 }
 
-// The context is passed to the model as a command-line argument, which Linux caps at 128 KiB.
+// Keeps the prompt, and what a release costs in AI credits, bounded.
 const MAX_CONTEXT_LENGTH = 90000;
 function shrinkToFit(ctx) {
   const steps = [
