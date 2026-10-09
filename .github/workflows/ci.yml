@@ -81,3 +81,17 @@ jobs:
       # No dependency install scripts while an OIDC token is available. prepublishOnly still builds.
       - run: npm ci --ignore-scripts
       - run: npm publish
+
+  release:
+    name: Release
+    needs:
+      - publish
+    # GitHub release, CHANGELOG.md entry and SBOM assets. Each job in release.yml narrows these permissions further.
+    permissions:
+      contents: write
+      pull-requests: read
+    uses: ./.github/workflows/release.yml
+    with:
+      tag: ${{ github.ref_name }}
+    secrets:
+      COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
