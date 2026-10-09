@@ -137,10 +137,21 @@ jobs:
           # The prompt comes from stdin. The only tool left is `view`, confined to this empty directory: an empty
           # --available-tools would mean no filter at all. Shell, writes, URLs and the GitHub MCP server are off, and
           # prompt mode denies anything not approved by a flag.
+          status=0
           copilot --model "$MODEL" --output-format=json --no-ask-user --no-custom-instructions --no-auto-update \
             --available-tools=view --deny-tool=shell --deny-tool=write --deny-tool=url --disable-builtin-mcps \
             --disallow-temp-dir --secret-env-vars=COPILOT_GITHUB_TOKEN --max-ai-credits=100 \
-            < "$RUNNER_TEMP/prompt.txt" > "$RUNNER_TEMP/events.jsonl"
+            < "$RUNNER_TEMP/prompt.txt" > "$RUNNER_TEMP/events.jsonl" || status=$?
+          # For the record: the model that answered, tokens, AI credits, tool calls (expected: none) and errors.
+          jq -sc '{
+              models: [.[] | select(.type == "assistant.usage") | .data.model] | unique,
+              inputTokens: [.[] | select(.type == "assistant.usage") | .data.inputTokens // 0] | add,
+              outputTokens: [.[] | select(.type == "assistant.usage") | .data.outputTokens // 0] | add,
+              aiCredits: (map(select(.type == "result")) | last | .usage.premiumRequests),
+              toolCalls: [.[] | select(.type == "tool.execution_start") | .data.toolName],
+              errors: [.[] | select(.type == "session.error") | .data.message]
+            }' "$RUNNER_TEMP/events.jsonl" || true
+          [ "$status" -eq 0 ]
           jq -se 'map(select(.type == "result")) | last | .exitCode == 0' "$RUNNER_TEMP/events.jsonl" > /dev/null
           mkdir -p "$RUNNER_TEMP/draft"
           jq -rs '[.[] | select(.type == "assistant.message" and .agentId == null
