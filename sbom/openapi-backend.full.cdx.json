@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:65ca2926-aafd-4519-9fa8-e0c369ea0f78",
+  "serialNumber": "urn:uuid:d834ab27-4cdc-4d31-a1b8-799feebbe9c4",
   "metadata": {
-    "timestamp": "2026-10-06T13:05:45.313Z",
+    "timestamp": "2026-10-09T14:12:18.807Z",
     "tools": {
       "components": [
         {
@@ -98,8 +98,8 @@
     "component": {
       "type": "application",
       "name": "openapi-backend",
-      "version": "5.21.2",
-      "bom-ref": "openapi-backend@5.21.2",
+      "version": "5.21.3",
+      "bom-ref": "openapi-backend@5.21.3",
       "author": "Viljami Kuosmanen",
       "description": "Build, Validate, Route, Authenticate and Mock using OpenAPI definitions. Framework-agnostic",
       "licenses": [
@@ -110,7 +110,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/openapi-backend@5.21.2?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fopenapistack%2Fopenapi-backend.git",
+      "purl": "pkg:npm/openapi-backend@5.21.3?vcs_url=git%2Bhttps%3A%2F%2Fgithub.com%2Fopenapistack%2Fopenapi-backend.git",
       "externalReferences": [
         {
           "url": "git+https://github.com/openapistack/openapi-backend.git",
@@ -146,7 +146,7 @@
       "name": "json-schema-ref-parser",
       "group": "@apidevtools",
       "version": "16.0.3",
-      "bom-ref": "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.3",
+      "bom-ref": "openapi-backend@5.21.3|@apidevtools/json-schema-ref-parser@16.0.3",
       "author": "JonLuca DeCaro",
       "description": "Parse, Resolve, and Dereference JSON Schema $ref pointers",
       "licenses": [
@@ -202,7 +202,7 @@
       "name": "json-schema",
       "group": "@types",
       "version": "7.0.15",
-      "bom-ref": "openapi-backend@5.21.2|@types/json-schema@7.0.15",
+      "bom-ref": "openapi-backend@5.21.3|@types/json-schema@7.0.15",
       "description": "TypeScript definitions for json-schema",
       "licenses": [
         {
@@ -253,7 +253,7 @@
       "name": "lodash",
       "group": "@types",
       "version": "4.14.199",
-      "bom-ref": "openapi-backend@5.21.2|@types/lodash@4.14.199",
+      "bom-ref": "openapi-backend@5.21.3|@types/lodash@4.14.199",
       "description": "TypeScript definitions for Lo-Dash",
       "licenses": [
         {
@@ -308,7 +308,7 @@
       "name": "node",
       "group": "@types",
       "version": "22.20.4",
-      "bom-ref": "openapi-backend@5.21.2|@types/node@22.20.4",
+      "bom-ref": "openapi-backend@5.21.3|@types/node@22.20.4",
       "description": "TypeScript definitions for node",
       "licenses": [
         {
@@ -363,7 +363,7 @@
       "name": "qs",
       "group": "@types",
       "version": "6.15.1",
-      "bom-ref": "openapi-backend@5.21.2|@types/qs@6.15.1",
+      "bom-ref": "openapi-backend@5.21.3|@types/qs@6.15.1",
       "description": "TypeScript definitions for qs",
       "licenses": [
         {
@@ -418,7 +418,7 @@
       "name": "eslint-plugin",
       "group": "@typescript-eslint",
       "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/eslint-plugin@7.18.0",
+      "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/eslint-plugin@7.18.0",
       "description": "TypeScript plugin for ESLint",
       "licenses": [
         {
@@ -477,7 +477,7 @@
       "name": "parser",
       "group": "@typescript-eslint",
       "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/parser@7.18.0",
+      "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/parser@7.18.0",
       "description": "An ESLint custom parser which leverages TypeScript ESTree",
       "licenses": [
         {
@@ -535,7 +535,7 @@
       "type": "library",
       "name": "ajv",
       "version": "8.20.0",
-      "bom-ref": "openapi-backend@5.21.2|ajv@8.20.0",
+      "bom-ref": "openapi-backend@5.21.3|ajv@8.20.0",
       "author": "Evgeny Poberezkin",
       "description": "Another JSON Schema Validator",
       "licenses": [
@@ -586,7 +586,7 @@
       "type": "library",
       "name": "bath-es5",
       "version": "3.0.3",
-      "bom-ref": "openapi-backend@5.21.2|bath-es5@3.0.3",
+      "bom-ref": "openapi-backend@5.21.3|bath-es5@3.0.3",
       "author": "bouzuya",
       "description": "A simple path template engine",
       "licenses": [
@@ -637,7 +637,7 @@
       "type": "library",
       "name": "cookie",
       "version": "1.1.1",
-      "bom-ref": "openapi-backend@5.21.2|cookie@1.1.1",
+      "bom-ref": "openapi-backend@5.21.3|cookie@1.1.1",
       "author": "Roman Shtylman",
       "description": "HTTP server cookie parsing and serialization",
       "licenses": [
@@ -692,7 +692,7 @@
       "type": "library",
       "name": "dereference-json-schema",
       "version": "0.2.3",
-      "bom-ref": "openapi-backend@5.21.2|dereference-json-schema@0.2.3",
+      "bom-ref": "openapi-backend@5.21.3|dereference-json-schema@0.2.3",
       "author": "Viljami Kuosmanen",
       "description": "Dereference $ref pointers in JSONSchema or OpenAPI documents.",
       "licenses": [
@@ -743,7 +743,7 @@
       "type": "library",
       "name": "eslint",
       "version": "8.57.1",
-      "bom-ref": "openapi-backend@5.21.2|eslint@8.57.1",
+      "bom-ref": "openapi-backend@5.21.3|eslint@8.57.1",
       "author": "Nicholas C. Zakas",
       "description": "An AST-based pattern checker for JavaScript.",
       "licenses": [
@@ -802,7 +802,7 @@
           "type": "library",
           "name": "ajv",
           "version": "6.15.0",
-          "bom-ref": "openapi-backend@5.21.2|eslint@8.57.1|ajv@6.15.0",
+          "bom-ref": "openapi-backend@5.21.3|eslint@8.57.1|ajv@6.15.0",
           "author": "Evgeny Poberezkin",
           "description": "Another JSON Schema Validator",
           "licenses": [
@@ -857,7 +857,7 @@
           "type": "library",
           "name": "escape-string-regexp",
           "version": "4.0.0",
-          "bom-ref": "openapi-backend@5.21.2|eslint@8.57.1|escape-string-regexp@4.0.0",
+          "bom-ref": "openapi-backend@5.21.3|eslint@8.57.1|escape-string-regexp@4.0.0",
           "author": "Sindre Sorhus",
           "description": "Escape RegExp special characters",
           "licenses": [
@@ -916,7 +916,7 @@
           "type": "library",
           "name": "find-up",
           "version": "5.0.0",
-          "bom-ref": "openapi-backend@5.21.2|eslint@8.57.1|find-up@5.0.0",
+          "bom-ref": "openapi-backend@5.21.3|eslint@8.57.1|find-up@5.0.0",
           "author": "Sindre Sorhus",
           "description": "Find a file or directory by walking up parent directories",
           "licenses": [
@@ -975,7 +975,7 @@
           "type": "library",
           "name": "js-yaml",
           "version": "4.3.2",
-          "bom-ref": "openapi-backend@5.21.2|eslint@8.57.1|js-yaml@4.3.2",
+          "bom-ref": "openapi-backend@5.21.3|eslint@8.57.1|js-yaml@4.3.2",
           "author": "Vladimir Zapparov",
           "description": "YAML 1.2 parser and serializer",
           "licenses": [
@@ -1030,7 +1030,7 @@
           "type": "library",
           "name": "json-schema-traverse",
           "version": "0.4.1",
-          "bom-ref": "openapi-backend@5.21.2|eslint@8.57.1|json-schema-traverse@0.4.1",
+          "bom-ref": "openapi-backend@5.21.3|eslint@8.57.1|json-schema-traverse@0.4.1",
           "author": "Evgeny Poberezkin",
           "description": "Traverse JSON Schema passing each schema object to callback",
           "licenses": [
@@ -1085,7 +1085,7 @@
           "type": "library",
           "name": "locate-path",
           "version": "6.0.0",
-          "bom-ref": "openapi-backend@5.21.2|eslint@8.57.1|locate-path@6.0.0",
+          "bom-ref": "openapi-backend@5.21.3|eslint@8.57.1|locate-path@6.0.0",
           "author": "Sindre Sorhus",
           "description": "Get the first path that exists on disk of multiple paths",
           "licenses": [
@@ -1144,7 +1144,7 @@
           "type": "library",
           "name": "p-locate",
           "version": "5.0.0",
-          "bom-ref": "openapi-backend@5.21.2|eslint@8.57.1|p-locate@5.0.0",
+          "bom-ref": "openapi-backend@5.21.3|eslint@8.57.1|p-locate@5.0.0",
           "author": "Sindre Sorhus",
           "description": "Get the first fulfilled promise that satisfies the provided testing function",
           "licenses": [
@@ -1205,7 +1205,7 @@
       "type": "library",
       "name": "lodash",
       "version": "4.18.1",
-      "bom-ref": "openapi-backend@5.21.2|lodash@4.18.1",
+      "bom-ref": "openapi-backend@5.21.3|lodash@4.18.1",
       "author": "John-David Dalton",
       "description": "Lodash modular utilities.",
       "licenses": [
@@ -1256,7 +1256,7 @@
       "type": "library",
       "name": "mock-json-schema",
       "version": "1.1.3",
-      "bom-ref": "openapi-backend@5.21.2|mock-json-schema@1.1.3",
+      "bom-ref": "openapi-backend@5.21.3|mock-json-schema@1.1.3",
       "author": "Viljami Kuosmanen",
       "description": "Simple utility to mock example objects based on JSON schema definitions",
       "licenses": [
@@ -1307,7 +1307,7 @@
       "type": "library",
       "name": "openapi-schema-validator",
       "version": "12.1.3",
-      "bom-ref": "openapi-backend@5.21.2|openapi-schema-validator@12.1.3",
+      "bom-ref": "openapi-backend@5.21.3|openapi-schema-validator@12.1.3",
       "author": "Joseph Spencer",
       "description": "A validator for OpenAPI documents.",
       "licenses": [
@@ -1358,7 +1358,7 @@
       "type": "library",
       "name": "openapi-types",
       "version": "12.1.3",
-      "bom-ref": "openapi-backend@5.21.2|openapi-types@12.1.3",
+      "bom-ref": "openapi-backend@5.21.3|openapi-types@12.1.3",
       "author": "Joseph Spencer",
       "description": "Types for OpenAPI documents.",
       "licenses": [
@@ -1409,7 +1409,7 @@
       "type": "library",
       "name": "prettier",
       "version": "3.9.8",
-      "bom-ref": "openapi-backend@5.21.2|prettier@3.9.8",
+      "bom-ref": "openapi-backend@5.21.3|prettier@3.9.8",
       "author": "James Long",
       "description": "Prettier is an opinionated code formatter",
       "licenses": [
@@ -1468,7 +1468,7 @@
       "type": "library",
       "name": "qs",
       "version": "6.16.0",
-      "bom-ref": "openapi-backend@5.21.2|qs@6.16.0",
+      "bom-ref": "openapi-backend@5.21.3|qs@6.16.0",
       "description": "A querystring parser that supports nesting and arrays, with a depth limit",
       "licenses": [
         {
@@ -1522,7 +1522,7 @@
       "type": "library",
       "name": "source-map-support",
       "version": "0.5.21",
-      "bom-ref": "openapi-backend@5.21.2|source-map-support@0.5.21",
+      "bom-ref": "openapi-backend@5.21.3|source-map-support@0.5.21",
       "description": "Fixes stack traces for files with source maps",
       "licenses": [
         {
@@ -1576,7 +1576,7 @@
       "type": "library",
       "name": "typescript",
       "version": "5.2.2",
-      "bom-ref": "openapi-backend@5.21.2|typescript@5.2.2",
+      "bom-ref": "openapi-backend@5.21.3|typescript@5.2.2",
       "author": "Microsoft Corp.",
       "description": "TypeScript is a language for application scale JavaScript development",
       "licenses": [
@@ -1635,7 +1635,7 @@
       "type": "library",
       "name": "vitest",
       "version": "5.0.2",
-      "bom-ref": "openapi-backend@5.21.2|vitest@5.0.2",
+      "bom-ref": "openapi-backend@5.21.3|vitest@5.0.2",
       "author": "Anthony Fu",
       "description": "Next generation testing framework powered by Vite",
       "licenses": [
@@ -1694,7 +1694,7 @@
           "type": "library",
           "name": "picomatch",
           "version": "4.0.7",
-          "bom-ref": "openapi-backend@5.21.2|vitest@5.0.2|picomatch@4.0.7",
+          "bom-ref": "openapi-backend@5.21.3|vitest@5.0.2|picomatch@4.0.7",
           "author": "Jon Schlinkert",
           "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
           "licenses": [
@@ -1755,7 +1755,7 @@
       "type": "library",
       "name": "js-yaml",
       "version": "5.4.2",
-      "bom-ref": "openapi-backend@5.21.2|js-yaml@5.4.2",
+      "bom-ref": "openapi-backend@5.21.3|js-yaml@5.4.2",
       "author": "Vladimir Zapparov",
       "description": "YAML 1.2 parser and serializer",
       "licenses": [
@@ -1806,7 +1806,7 @@
       "type": "library",
       "name": "undici",
       "version": "8.10.2",
-      "bom-ref": "openapi-backend@5.21.2|undici@8.10.2",
+      "bom-ref": "openapi-backend@5.21.3|undici@8.10.2",
       "description": "An HTTP/1.1 client, written from scratch for Node.js",
       "licenses": [
         {
@@ -1860,7 +1860,7 @@
       "type": "library",
       "name": "undici-types",
       "version": "6.21.0",
-      "bom-ref": "openapi-backend@5.21.2|undici-types@6.21.0",
+      "bom-ref": "openapi-backend@5.21.3|undici-types@6.21.0",
       "description": "A stand-alone types package for Undici",
       "licenses": [
         {
@@ -1915,7 +1915,7 @@
       "name": "regexpp",
       "group": "@eslint-community",
       "version": "4.12.2",
-      "bom-ref": "openapi-backend@5.21.2|@eslint-community/regexpp@4.12.2",
+      "bom-ref": "openapi-backend@5.21.3|@eslint-community/regexpp@4.12.2",
       "author": "Toru Nagashima",
       "description": "Regular expression parser for ECMAScript.",
       "licenses": [
@@ -1975,7 +1975,7 @@
       "name": "scope-manager",
       "group": "@typescript-eslint",
       "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/scope-manager@7.18.0",
+      "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/scope-manager@7.18.0",
       "description": "TypeScript scope analyser for ESLint",
       "licenses": [
         {
@@ -2034,7 +2034,7 @@
       "name": "type-utils",
       "group": "@typescript-eslint",
       "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/type-utils@7.18.0",
+      "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/type-utils@7.18.0",
       "description": "Type utilities for working with TypeScript + ESLint together",
       "licenses": [
         {
@@ -2093,7 +2093,7 @@
       "name": "utils",
       "group": "@typescript-eslint",
       "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/utils@7.18.0",
+      "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/utils@7.18.0",
       "description": "Utilities for working with TypeScript + ESLint together",
       "licenses": [
         {
@@ -2152,7 +2152,7 @@
       "name": "visitor-keys",
       "group": "@typescript-eslint",
       "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/visitor-keys@7.18.0",
+      "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/visitor-keys@7.18.0",
       "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
       "licenses": [
         {
@@ -2210,7 +2210,7 @@
       "type": "library",
       "name": "graphemer",
       "version": "1.4.0",
-      "bom-ref": "openapi-backend@5.21.2|graphemer@1.4.0",
+      "bom-ref": "openapi-backend@5.21.3|graphemer@1.4.0",
       "author": "Matt Davies",
       "description": "A JavaScript library that breaks strings into their individual user-perceived characters (including emojis!)",
       "licenses": [
@@ -2265,7 +2265,7 @@
       "type": "library",
       "name": "ignore",
       "version": "5.3.2",
-      "bom-ref": "openapi-backend@5.21.2|ignore@5.3.2",
+      "bom-ref": "openapi-backend@5.21.3|ignore@5.3.2",
       "author": "kael",
       "description": "Ignore is a manager and filter for .gitignore rules, the one used by eslint, gitbook and many others.",
       "licenses": [
@@ -2324,7 +2324,7 @@
       "type": "library",
       "name": "natural-compare",
       "version": "1.4.0",
-      "bom-ref": "openapi-backend@5.21.2|natural-compare@1.4.0",
+      "bom-ref": "openapi-backend@5.21.3|natural-compare@1.4.0",
       "author": "Lauri Rooden",
       "description": "Compare strings containing a mix of letters and numbers in the way a human being would in sort order.",
       "licenses": [
@@ -2379,7 +2379,7 @@
       "type": "library",
       "name": "ts-api-utils",
       "version": "1.4.3",
-      "bom-ref": "openapi-backend@5.21.2|ts-api-utils@1.4.3",
+      "bom-ref": "openapi-backend@5.21.3|ts-api-utils@1.4.3",
       "author": "JoshuaKGoldberg",
       "description": "Utility functions for working with TypeScript's API. Successor to the wonderful tsutils. 🛠️️",
       "licenses": [
@@ -2439,7 +2439,7 @@
       "name": "types",
       "group": "@typescript-eslint",
       "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/types@7.18.0",
+      "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/types@7.18.0",
       "description": "Types for the TypeScript-ESTree AST spec",
       "licenses": [
         {
@@ -2498,7 +2498,7 @@
       "name": "typescript-estree",
       "group": "@typescript-eslint",
       "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0",
+      "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0",
       "description": "A parser that converts TypeScript source code into an ESTree compatible form",
       "licenses": [
         {
@@ -2556,7 +2556,7 @@
           "type": "library",
           "name": "minimatch",
           "version": "9.0.9",
-          "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0|minimatch@9.0.9",
+          "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0|minimatch@9.0.9",
           "author": "Isaac Z. Schlueter",
           "description": "a glob matcher in javascript",
           "licenses": [
@@ -2615,7 +2615,7 @@
           "type": "library",
           "name": "semver",
           "version": "7.8.5",
-          "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0|semver@7.8.5",
+          "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0|semver@7.8.5",
           "author": "GitHub Inc.",
           "description": "The semantic version parser used by npm.",
           "licenses": [
@@ -2674,7 +2674,7 @@
           "type": "library",
           "name": "brace-expansion",
           "version": "2.1.7",
-          "bom-ref": "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0|brace-expansion@2.1.7",
+          "bom-ref": "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0|brace-expansion@2.1.7",
           "author": "Julian Gruber",
           "description": "Brace expansion as known from sh/bash",
           "licenses": [
@@ -2731,7 +2731,7 @@
       "type": "library",
       "name": "debug",
       "version": "4.3.4",
-      "bom-ref": "openapi-backend@5.21.2|debug@4.3.4",
+      "bom-ref": "openapi-backend@5.21.3|debug@4.3.4",
       "author": "Josh Junon",
       "description": "Lightweight debugging utility for Node.js and the browser",
       "licenses": [
@@ -2790,7 +2790,7 @@
       "type": "library",
       "name": "fast-deep-equal",
       "version": "3.1.3",
-      "bom-ref": "openapi-backend@5.21.2|fast-deep-equal@3.1.3",
+      "bom-ref": "openapi-backend@5.21.3|fast-deep-equal@3.1.3",
       "author": "Evgeny Poberezkin",
       "description": "Fast deep equal",
       "licenses": [
@@ -2841,7 +2841,7 @@
       "type": "library",
       "name": "fast-uri",
       "version": "3.1.8",
-      "bom-ref": "openapi-backend@5.21.2|fast-uri@3.1.8",
+      "bom-ref": "openapi-backend@5.21.3|fast-uri@3.1.8",
       "author": "Vincent Le Goff",
       "description": "Dependency-free RFC 3986 URI toolbox",
       "licenses": [
@@ -2892,7 +2892,7 @@
       "type": "library",
       "name": "json-schema-traverse",
       "version": "1.0.0",
-      "bom-ref": "openapi-backend@5.21.2|json-schema-traverse@1.0.0",
+      "bom-ref": "openapi-backend@5.21.3|json-schema-traverse@1.0.0",
       "author": "Evgeny Poberezkin",
       "description": "Traverse JSON Schema passing each schema object to callback",
       "licenses": [
@@ -2943,7 +2943,7 @@
       "type": "library",
       "name": "require-from-string",
       "version": "2.0.2",
-      "bom-ref": "openapi-backend@5.21.2|require-from-string@2.0.2",
+      "bom-ref": "openapi-backend@5.21.3|require-from-string@2.0.2",
       "author": "Vsevolod Strukchinsky",
       "description": "Require module from string",
       "licenses": [
@@ -2999,7 +2999,7 @@
       "name": "eslint-utils",
       "group": "@eslint-community",
       "version": "4.10.1",
-      "bom-ref": "openapi-backend@5.21.2|@eslint-community/eslint-utils@4.10.1",
+      "bom-ref": "openapi-backend@5.21.3|@eslint-community/eslint-utils@4.10.1",
       "author": "Toru Nagashima",
       "description": "Utilities for ESLint plugins.",
       "licenses": [
@@ -3059,7 +3059,7 @@
       "name": "eslintrc",
       "group": "@eslint",
       "version": "2.1.4",
-      "bom-ref": "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4",
+      "bom-ref": "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4",
       "author": "Nicholas C. Zakas",
       "description": "The legacy ESLintRC config file format for ESLint",
       "licenses": [
@@ -3118,7 +3118,7 @@
           "type": "library",
           "name": "ajv",
           "version": "6.15.0",
-          "bom-ref": "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4|ajv@6.15.0",
+          "bom-ref": "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4|ajv@6.15.0",
           "author": "Evgeny Poberezkin",
           "description": "Another JSON Schema Validator",
           "licenses": [
@@ -3173,7 +3173,7 @@
           "type": "library",
           "name": "js-yaml",
           "version": "4.3.2",
-          "bom-ref": "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4|js-yaml@4.3.2",
+          "bom-ref": "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4|js-yaml@4.3.2",
           "author": "Vladimir Zapparov",
           "description": "YAML 1.2 parser and serializer",
           "licenses": [
@@ -3228,7 +3228,7 @@
           "type": "library",
           "name": "json-schema-traverse",
           "version": "0.4.1",
-          "bom-ref": "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4|json-schema-traverse@0.4.1",
+          "bom-ref": "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4|json-schema-traverse@0.4.1",
           "author": "Evgeny Poberezkin",
           "description": "Traverse JSON Schema passing each schema object to callback",
           "licenses": [
@@ -3286,7 +3286,7 @@
       "name": "js",
       "group": "@eslint",
       "version": "8.57.1",
-      "bom-ref": "openapi-backend@5.21.2|@eslint/js@8.57.1",
+      "bom-ref": "openapi-backend@5.21.3|@eslint/js@8.57.1",
       "description": "ESLint JavaScript language implementation",
       "licenses": [
         {
@@ -3345,7 +3345,7 @@
       "name": "config-array",
       "group": "@humanwhocodes",
       "version": "0.13.0",
-      "bom-ref": "openapi-backend@5.21.2|@humanwhocodes/config-array@0.13.0",
+      "bom-ref": "openapi-backend@5.21.3|@humanwhocodes/config-array@0.13.0",
       "author": "Nicholas C. Zakas",
       "description": "Glob-based configuration matching.",
       "licenses": [
@@ -3405,7 +3405,7 @@
       "name": "module-importer",
       "group": "@humanwhocodes",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.21.2|@humanwhocodes/module-importer@1.0.1",
+      "bom-ref": "openapi-backend@5.21.3|@humanwhocodes/module-importer@1.0.1",
       "author": "Nicholas C. Zaks",
       "description": "Universal module importer for Node.js",
       "licenses": [
@@ -3465,7 +3465,7 @@
       "name": "fs.walk",
       "group": "@nodelib",
       "version": "1.2.8",
-      "bom-ref": "openapi-backend@5.21.2|@nodelib/fs.walk@1.2.8",
+      "bom-ref": "openapi-backend@5.21.3|@nodelib/fs.walk@1.2.8",
       "description": "A library for efficiently walking a directory recursively",
       "licenses": [
         {
@@ -3524,7 +3524,7 @@
       "name": "structured-clone",
       "group": "@ungap",
       "version": "1.4.0",
-      "bom-ref": "openapi-backend@5.21.2|@ungap/structured-clone@1.4.0",
+      "bom-ref": "openapi-backend@5.21.3|@ungap/structured-clone@1.4.0",
       "author": "Andrea Giammarchi",
       "description": "A structuredClone polyfill",
       "licenses": [
@@ -3579,7 +3579,7 @@
       "type": "library",
       "name": "chalk",
       "version": "4.1.1",
-      "bom-ref": "openapi-backend@5.21.2|chalk@4.1.1",
+      "bom-ref": "openapi-backend@5.21.3|chalk@4.1.1",
       "description": "Terminal string styling done right",
       "licenses": [
         {
@@ -3637,7 +3637,7 @@
       "type": "library",
       "name": "cross-spawn",
       "version": "7.0.6",
-      "bom-ref": "openapi-backend@5.21.2|cross-spawn@7.0.6",
+      "bom-ref": "openapi-backend@5.21.3|cross-spawn@7.0.6",
       "author": "André Cruz",
       "description": "Cross platform child_process#spawn and child_process#spawnSync",
       "licenses": [
@@ -3696,7 +3696,7 @@
       "type": "library",
       "name": "doctrine",
       "version": "3.0.0",
-      "bom-ref": "openapi-backend@5.21.2|doctrine@3.0.0",
+      "bom-ref": "openapi-backend@5.21.3|doctrine@3.0.0",
       "description": "JSDoc parser",
       "licenses": [
         {
@@ -3754,7 +3754,7 @@
       "type": "library",
       "name": "eslint-scope",
       "version": "7.2.2",
-      "bom-ref": "openapi-backend@5.21.2|eslint-scope@7.2.2",
+      "bom-ref": "openapi-backend@5.21.3|eslint-scope@7.2.2",
       "description": "ECMAScript scope analyzer for ESLint",
       "licenses": [
         {
@@ -3812,7 +3812,7 @@
       "type": "library",
       "name": "eslint-visitor-keys",
       "version": "3.4.3",
-      "bom-ref": "openapi-backend@5.21.2|eslint-visitor-keys@3.4.3",
+      "bom-ref": "openapi-backend@5.21.3|eslint-visitor-keys@3.4.3",
       "author": "Toru Nagashima",
       "description": "Constants and utilities about visitor keys to traverse AST.",
       "licenses": [
@@ -3871,7 +3871,7 @@
       "type": "library",
       "name": "espree",
       "version": "9.6.1",
-      "bom-ref": "openapi-backend@5.21.2|espree@9.6.1",
+      "bom-ref": "openapi-backend@5.21.3|espree@9.6.1",
       "author": "Nicholas C. Zakas",
       "description": "An Esprima-compatible JavaScript parser built on Acorn",
       "licenses": [
@@ -3930,7 +3930,7 @@
       "type": "library",
       "name": "esquery",
       "version": "1.7.0",
-      "bom-ref": "openapi-backend@5.21.2|esquery@1.7.0",
+      "bom-ref": "openapi-backend@5.21.3|esquery@1.7.0",
       "author": "Joel Feenstra",
       "description": "A query library for ECMAScript AST using a CSS selector like query language.",
       "licenses": [
@@ -3989,7 +3989,7 @@
       "type": "library",
       "name": "esutils",
       "version": "2.0.3",
-      "bom-ref": "openapi-backend@5.21.2|esutils@2.0.3",
+      "bom-ref": "openapi-backend@5.21.3|esutils@2.0.3",
       "description": "utility box for ECMAScript language tools",
       "licenses": [
         {
@@ -4047,7 +4047,7 @@
       "type": "library",
       "name": "file-entry-cache",
       "version": "6.0.1",
-      "bom-ref": "openapi-backend@5.21.2|file-entry-cache@6.0.1",
+      "bom-ref": "openapi-backend@5.21.3|file-entry-cache@6.0.1",
       "author": "Roy Riojas",
       "description": "Super simple cache for file metadata, useful for process that work o a given series of files and that only need to repeat the job on the changed ones since the previous run of the process",
       "licenses": [
@@ -4106,7 +4106,7 @@
       "type": "library",
       "name": "glob-parent",
       "version": "6.0.2",
-      "bom-ref": "openapi-backend@5.21.2|glob-parent@6.0.2",
+      "bom-ref": "openapi-backend@5.21.3|glob-parent@6.0.2",
       "author": "Gulp Team",
       "description": "Extract the non-magic parent path from a glob string.",
       "licenses": [
@@ -4165,7 +4165,7 @@
       "type": "library",
       "name": "globals",
       "version": "13.24.0",
-      "bom-ref": "openapi-backend@5.21.2|globals@13.24.0",
+      "bom-ref": "openapi-backend@5.21.3|globals@13.24.0",
       "author": "Sindre Sorhus",
       "description": "Global identifiers from different JavaScript environments",
       "licenses": [
@@ -4224,7 +4224,7 @@
           "type": "library",
           "name": "type-fest",
           "version": "0.20.2",
-          "bom-ref": "openapi-backend@5.21.2|globals@13.24.0|type-fest@0.20.2",
+          "bom-ref": "openapi-backend@5.21.3|globals@13.24.0|type-fest@0.20.2",
           "author": "Sindre Sorhus",
           "description": "A collection of essential TypeScript types",
           "licenses": [
@@ -4283,7 +4283,7 @@
       "type": "library",
       "name": "imurmurhash",
       "version": "0.1.4",
-      "bom-ref": "openapi-backend@5.21.2|imurmurhash@0.1.4",
+      "bom-ref": "openapi-backend@5.21.3|imurmurhash@0.1.4",
       "author": "Jens Taylor",
       "description": "An incremental implementation of MurmurHash3",
       "licenses": [
@@ -4342,7 +4342,7 @@
       "type": "library",
       "name": "is-glob",
       "version": "4.0.3",
-      "bom-ref": "openapi-backend@5.21.2|is-glob@4.0.3",
+      "bom-ref": "openapi-backend@5.21.3|is-glob@4.0.3",
       "author": "Jon Schlinkert",
       "description": "Returns `true` if the given string looks like a glob pattern or an extglob pattern. This makes it easy to create code that only uses external modules like node-glob when necessary, resulting in much faster code execution and initialization time, and a better user experience.",
       "licenses": [
@@ -4401,7 +4401,7 @@
       "type": "library",
       "name": "is-path-inside",
       "version": "3.0.3",
-      "bom-ref": "openapi-backend@5.21.2|is-path-inside@3.0.3",
+      "bom-ref": "openapi-backend@5.21.3|is-path-inside@3.0.3",
       "author": "Sindre Sorhus",
       "description": "Check if a path is inside another path",
       "licenses": [
@@ -4460,7 +4460,7 @@
       "type": "library",
       "name": "json-stable-stringify-without-jsonify",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.21.2|json-stable-stringify-without-jsonify@1.0.1",
+      "bom-ref": "openapi-backend@5.21.3|json-stable-stringify-without-jsonify@1.0.1",
       "author": "James Halliday",
       "description": "deterministic JSON.stringify() with custom sorting to get deterministic hashes from stringified results, with no public domain dependencies",
       "licenses": [
@@ -4515,7 +4515,7 @@
       "type": "library",
       "name": "levn",
       "version": "0.4.1",
-      "bom-ref": "openapi-backend@5.21.2|levn@0.4.1",
+      "bom-ref": "openapi-backend@5.21.3|levn@0.4.1",
       "author": "George Zahariev",
       "description": "Light ECMAScript (JavaScript) Value Notation - human written, concise, typed, flexible",
       "licenses": [
@@ -4574,7 +4574,7 @@
       "type": "library",
       "name": "lodash.merge",
       "version": "4.6.2",
-      "bom-ref": "openapi-backend@5.21.2|lodash.merge@4.6.2",
+      "bom-ref": "openapi-backend@5.21.3|lodash.merge@4.6.2",
       "author": "John-David Dalton",
       "description": "The Lodash method `_.merge` exported as a module.",
       "licenses": [
@@ -4625,7 +4625,7 @@
       "type": "library",
       "name": "minimatch",
       "version": "3.1.5",
-      "bom-ref": "openapi-backend@5.21.2|minimatch@3.1.5",
+      "bom-ref": "openapi-backend@5.21.3|minimatch@3.1.5",
       "author": "Isaac Z. Schlueter",
       "description": "a glob matcher in javascript",
       "licenses": [
@@ -4684,7 +4684,7 @@
       "type": "library",
       "name": "optionator",
       "version": "0.9.4",
-      "bom-ref": "openapi-backend@5.21.2|optionator@0.9.4",
+      "bom-ref": "openapi-backend@5.21.3|optionator@0.9.4",
       "author": "George Zahariev",
       "description": "option parsing and help generation",
       "licenses": [
@@ -4743,7 +4743,7 @@
       "type": "library",
       "name": "strip-ansi",
       "version": "6.0.1",
-      "bom-ref": "openapi-backend@5.21.2|strip-ansi@6.0.1",
+      "bom-ref": "openapi-backend@5.21.3|strip-ansi@6.0.1",
       "author": "Sindre Sorhus",
       "description": "Strip ANSI escape codes from a string",
       "licenses": [
@@ -4802,7 +4802,7 @@
       "type": "library",
       "name": "text-table",
       "version": "0.2.0",
-      "bom-ref": "openapi-backend@5.21.2|text-table@0.2.0",
+      "bom-ref": "openapi-backend@5.21.3|text-table@0.2.0",
       "author": "James Halliday",
       "description": "borderless text tables with alignment",
       "licenses": [
@@ -4857,7 +4857,7 @@
       "type": "library",
       "name": "ajv-formats",
       "version": "2.1.1",
-      "bom-ref": "openapi-backend@5.21.2|ajv-formats@2.1.1",
+      "bom-ref": "openapi-backend@5.21.3|ajv-formats@2.1.1",
       "author": "Evgeny Poberezkin",
       "description": "Format validation for Ajv v7+",
       "licenses": [
@@ -4908,7 +4908,7 @@
       "type": "library",
       "name": "es-define-property",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.21.2|es-define-property@1.0.1",
+      "bom-ref": "openapi-backend@5.21.3|es-define-property@1.0.1",
       "author": "Jordan Harband",
       "description": "`Object.defineProperty`, but not IE 8's broken one.",
       "licenses": [
@@ -4963,7 +4963,7 @@
       "type": "library",
       "name": "side-channel",
       "version": "1.1.1",
-      "bom-ref": "openapi-backend@5.21.2|side-channel@1.1.1",
+      "bom-ref": "openapi-backend@5.21.3|side-channel@1.1.1",
       "author": "Jordan Harband",
       "description": "Store information about any JS value in a side channel. Uses WeakMap if available.",
       "licenses": [
@@ -5018,7 +5018,7 @@
       "type": "library",
       "name": "buffer-from",
       "version": "1.1.1",
-      "bom-ref": "openapi-backend@5.21.2|buffer-from@1.1.1",
+      "bom-ref": "openapi-backend@5.21.3|buffer-from@1.1.1",
       "licenses": [
         {
           "license": {
@@ -5071,7 +5071,7 @@
       "type": "library",
       "name": "source-map",
       "version": "0.6.1",
-      "bom-ref": "openapi-backend@5.21.2|source-map@0.6.1",
+      "bom-ref": "openapi-backend@5.21.3|source-map@0.6.1",
       "author": "Nick Fitzgerald",
       "description": "Generates and consumes source maps",
       "licenses": [
@@ -5131,7 +5131,7 @@
       "name": "chai",
       "group": "@types",
       "version": "5.2.3",
-      "bom-ref": "openapi-backend@5.21.2|@types/chai@5.2.3",
+      "bom-ref": "openapi-backend@5.21.3|@types/chai@5.2.3",
       "description": "TypeScript definitions for chai",
       "licenses": [
         {
@@ -5186,7 +5186,7 @@
       "name": "mocker",
       "group": "@vitest",
       "version": "5.0.2",
-      "bom-ref": "openapi-backend@5.21.2|@vitest/mocker@5.0.2",
+      "bom-ref": "openapi-backend@5.21.3|@vitest/mocker@5.0.2",
       "description": "Vitest module mocker implementation",
       "licenses": [
         {
@@ -5240,7 +5240,7 @@
       "type": "library",
       "name": "chai",
       "version": "6.2.2",
-      "bom-ref": "openapi-backend@5.21.2|chai@6.2.2",
+      "bom-ref": "openapi-backend@5.21.3|chai@6.2.2",
       "author": "Jake Luer",
       "description": "BDD/TDD assertion library for node.js and the browser. Test framework agnostic.",
       "licenses": [
@@ -5299,7 +5299,7 @@
       "type": "library",
       "name": "es-module-lexer",
       "version": "2.3.2",
-      "bom-ref": "openapi-backend@5.21.2|es-module-lexer@2.3.2",
+      "bom-ref": "openapi-backend@5.21.3|es-module-lexer@2.3.2",
       "author": "Guy Bedford",
       "description": "Lexes ES modules returning their import/export metadata",
       "licenses": [
@@ -5354,7 +5354,7 @@
       "type": "library",
       "name": "expect-type",
       "version": "1.4.0",
-      "bom-ref": "openapi-backend@5.21.2|expect-type@1.4.0",
+      "bom-ref": "openapi-backend@5.21.3|expect-type@1.4.0",
       "licenses": [
         {
           "license": {
@@ -5411,7 +5411,7 @@
       "type": "library",
       "name": "magic-string",
       "version": "1.4.2",
-      "bom-ref": "openapi-backend@5.21.2|magic-string@1.4.2",
+      "bom-ref": "openapi-backend@5.21.3|magic-string@1.4.2",
       "author": "Rich Harris",
       "description": "Modify strings, generate sourcemaps",
       "licenses": [
@@ -5466,7 +5466,7 @@
       "type": "library",
       "name": "obug",
       "version": "2.2.1",
-      "bom-ref": "openapi-backend@5.21.2|obug@2.2.1",
+      "bom-ref": "openapi-backend@5.21.3|obug@2.2.1",
       "author": "Kevin Deng",
       "description": "A lightweight JavaScript debugging utility, forked from debug, featuring TypeScript and ESM support.",
       "licenses": [
@@ -5525,7 +5525,7 @@
       "type": "library",
       "name": "std-env",
       "version": "4.2.0",
-      "bom-ref": "openapi-backend@5.21.2|std-env@4.2.0",
+      "bom-ref": "openapi-backend@5.21.3|std-env@4.2.0",
       "description": "Runtime agnostic JS utils",
       "licenses": [
         {
@@ -5579,7 +5579,7 @@
       "type": "library",
       "name": "tinybench",
       "version": "6.1.4",
-      "bom-ref": "openapi-backend@5.21.2|tinybench@6.1.4",
+      "bom-ref": "openapi-backend@5.21.3|tinybench@6.1.4",
       "description": "🔎 A simple, tiny and lightweight benchmarking library!",
       "licenses": [
         {
@@ -5637,7 +5637,7 @@
       "type": "library",
       "name": "tinyexec",
       "version": "1.3.0",
-      "bom-ref": "openapi-backend@5.21.2|tinyexec@1.3.0",
+      "bom-ref": "openapi-backend@5.21.3|tinyexec@1.3.0",
       "author": "James Garbutt",
       "description": "A minimal library for executing processes in Node",
       "licenses": [
@@ -5696,7 +5696,7 @@
       "type": "library",
       "name": "tinyglobby",
       "version": "0.2.17",
-      "bom-ref": "openapi-backend@5.21.2|tinyglobby@0.2.17",
+      "bom-ref": "openapi-backend@5.21.3|tinyglobby@0.2.17",
       "author": "Superchupu",
       "description": "A fast and minimal alternative to globby and fast-glob",
       "licenses": [
@@ -5755,7 +5755,7 @@
           "type": "library",
           "name": "fdir",
           "version": "6.5.0",
-          "bom-ref": "openapi-backend@5.21.2|tinyglobby@0.2.17|fdir@6.5.0",
+          "bom-ref": "openapi-backend@5.21.3|tinyglobby@0.2.17|fdir@6.5.0",
           "author": "thecodrr",
           "description": "The fastest directory crawler & globbing alternative to glob, fast-glob, & tiny-glob. Crawls 1m files in < 1s",
           "licenses": [
@@ -5814,7 +5814,7 @@
           "type": "library",
           "name": "picomatch",
           "version": "4.0.7",
-          "bom-ref": "openapi-backend@5.21.2|tinyglobby@0.2.17|picomatch@4.0.7",
+          "bom-ref": "openapi-backend@5.21.3|tinyglobby@0.2.17|picomatch@4.0.7",
           "author": "Jon Schlinkert",
           "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
           "licenses": [
@@ -5875,7 +5875,7 @@
       "type": "library",
       "name": "vite",
       "version": "8.3.1",
-      "bom-ref": "openapi-backend@5.21.2|vite@8.3.1",
+      "bom-ref": "openapi-backend@5.21.3|vite@8.3.1",
       "author": "Evan You",
       "description": "Native-ESM powered web dev build tool",
       "licenses": [
@@ -5934,7 +5934,7 @@
           "type": "library",
           "name": "picomatch",
           "version": "4.0.7",
-          "bom-ref": "openapi-backend@5.21.2|vite@8.3.1|picomatch@4.0.7",
+          "bom-ref": "openapi-backend@5.21.3|vite@8.3.1|picomatch@4.0.7",
           "author": "Jon Schlinkert",
           "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
           "licenses": [
@@ -5995,7 +5995,7 @@
       "type": "library",
       "name": "why-is-node-running",
       "version": "3.2.2",
-      "bom-ref": "openapi-backend@5.21.2|why-is-node-running@3.2.2",
+      "bom-ref": "openapi-backend@5.21.3|why-is-node-running@3.2.2",
       "author": "Mathias Buus",
       "description": "Node is running but you don't know why? why-is-node-running is here to help you.",
       "licenses": [
@@ -6054,7 +6054,7 @@
       "type": "library",
       "name": "argparse",
       "version": "2.0.1",
-      "bom-ref": "openapi-backend@5.21.2|argparse@2.0.1",
+      "bom-ref": "openapi-backend@5.21.3|argparse@2.0.1",
       "description": "CLI arguments parser. Native port of python's argparse.",
       "licenses": [
         {
@@ -6104,7 +6104,7 @@
       "type": "library",
       "name": "globby",
       "version": "11.1.0",
-      "bom-ref": "openapi-backend@5.21.2|globby@11.1.0",
+      "bom-ref": "openapi-backend@5.21.3|globby@11.1.0",
       "author": "Sindre Sorhus",
       "description": "User-friendly glob matching",
       "licenses": [
@@ -6163,7 +6163,7 @@
       "type": "library",
       "name": "ms",
       "version": "2.1.2",
-      "bom-ref": "openapi-backend@5.21.2|ms@2.1.2",
+      "bom-ref": "openapi-backend@5.21.3|ms@2.1.2",
       "description": "Tiny millisecond conversion utility",
       "licenses": [
         {
@@ -6217,7 +6217,7 @@
       "type": "library",
       "name": "import-fresh",
       "version": "3.3.1",
-      "bom-ref": "openapi-backend@5.21.2|import-fresh@3.3.1",
+      "bom-ref": "openapi-backend@5.21.3|import-fresh@3.3.1",
       "author": "Sindre Sorhus",
       "description": "Import a module while bypassing the cache",
       "licenses": [
@@ -6276,7 +6276,7 @@
           "type": "library",
           "name": "resolve-from",
           "version": "4.0.0",
-          "bom-ref": "openapi-backend@5.21.2|import-fresh@3.3.1|resolve-from@4.0.0",
+          "bom-ref": "openapi-backend@5.21.3|import-fresh@3.3.1|resolve-from@4.0.0",
           "author": "Sindre Sorhus",
           "description": "Resolve the path of a module like `require.resolve()` but from a given path",
           "licenses": [
@@ -6337,7 +6337,7 @@
       "type": "library",
       "name": "strip-json-comments",
       "version": "3.1.1",
-      "bom-ref": "openapi-backend@5.21.2|strip-json-comments@3.1.1",
+      "bom-ref": "openapi-backend@5.21.3|strip-json-comments@3.1.1",
       "author": "Sindre Sorhus",
       "description": "Strip comments from JSON. Lets you use comments in your JSON files!",
       "licenses": [
@@ -6397,7 +6397,7 @@
       "name": "object-schema",
       "group": "@humanwhocodes",
       "version": "2.0.3",
-      "bom-ref": "openapi-backend@5.21.2|@humanwhocodes/object-schema@2.0.3",
+      "bom-ref": "openapi-backend@5.21.3|@humanwhocodes/object-schema@2.0.3",
       "author": "Nicholas C. Zakas",
       "description": "An object schema merger/validator",
       "licenses": [
@@ -6453,7 +6453,7 @@
       "name": "fs.scandir",
       "group": "@nodelib",
       "version": "2.1.5",
-      "bom-ref": "openapi-backend@5.21.2|@nodelib/fs.scandir@2.1.5",
+      "bom-ref": "openapi-backend@5.21.3|@nodelib/fs.scandir@2.1.5",
       "description": "List files and directories inside the specified directory",
       "licenses": [
         {
@@ -6511,7 +6511,7 @@
       "type": "library",
       "name": "fastq",
       "version": "1.20.3",
-      "bom-ref": "openapi-backend@5.21.2|fastq@1.20.3",
+      "bom-ref": "openapi-backend@5.21.3|fastq@1.20.3",
       "author": "Matteo Collina",
       "description": "Fast, in memory work queue",
       "licenses": [
@@ -6566,7 +6566,7 @@
       "type": "library",
       "name": "fast-json-stable-stringify",
       "version": "2.1.0",
-      "bom-ref": "openapi-backend@5.21.2|fast-json-stable-stringify@2.1.0",
+      "bom-ref": "openapi-backend@5.21.3|fast-json-stable-stringify@2.1.0",
       "author": "James Halliday",
       "description": "deterministic `JSON.stringify()` - a faster version of substack's json-stable-strigify without jsonify",
       "licenses": [
@@ -6621,7 +6621,7 @@
       "type": "library",
       "name": "uri-js",
       "version": "4.4.1",
-      "bom-ref": "openapi-backend@5.21.2|uri-js@4.4.1",
+      "bom-ref": "openapi-backend@5.21.3|uri-js@4.4.1",
       "author": "Gary Court",
       "description": "An RFC 3986/3987 compliant, scheme extendable URI/IRI parsing/validating/resolving library for JavaScript.",
       "licenses": [
@@ -6676,7 +6676,7 @@
       "type": "library",
       "name": "ansi-styles",
       "version": "4.3.0",
-      "bom-ref": "openapi-backend@5.21.2|ansi-styles@4.3.0",
+      "bom-ref": "openapi-backend@5.21.3|ansi-styles@4.3.0",
       "author": "Sindre Sorhus",
       "description": "ANSI escape codes for styling strings in the terminal",
       "licenses": [
@@ -6735,7 +6735,7 @@
       "type": "library",
       "name": "supports-color",
       "version": "7.2.0",
-      "bom-ref": "openapi-backend@5.21.2|supports-color@7.2.0",
+      "bom-ref": "openapi-backend@5.21.3|supports-color@7.2.0",
       "author": "Sindre Sorhus",
       "description": "Detect whether a terminal supports color",
       "licenses": [
@@ -6794,7 +6794,7 @@
       "type": "library",
       "name": "path-key",
       "version": "3.1.1",
-      "bom-ref": "openapi-backend@5.21.2|path-key@3.1.1",
+      "bom-ref": "openapi-backend@5.21.3|path-key@3.1.1",
       "author": "Sindre Sorhus",
       "description": "Get the PATH environment variable key cross-platform",
       "licenses": [
@@ -6853,7 +6853,7 @@
       "type": "library",
       "name": "shebang-command",
       "version": "2.0.0",
-      "bom-ref": "openapi-backend@5.21.2|shebang-command@2.0.0",
+      "bom-ref": "openapi-backend@5.21.3|shebang-command@2.0.0",
       "author": "Kevin Mårtensson",
       "description": "Get the command from a shebang",
       "licenses": [
@@ -6912,7 +6912,7 @@
       "type": "library",
       "name": "which",
       "version": "2.0.2",
-      "bom-ref": "openapi-backend@5.21.2|which@2.0.2",
+      "bom-ref": "openapi-backend@5.21.3|which@2.0.2",
       "author": "Isaac Z. Schlueter",
       "description": "Like which(1) unix command. Find the first instance of an executable in the PATH.",
       "licenses": [
@@ -6971,7 +6971,7 @@
       "type": "library",
       "name": "esrecurse",
       "version": "4.3.0",
-      "bom-ref": "openapi-backend@5.21.2|esrecurse@4.3.0",
+      "bom-ref": "openapi-backend@5.21.3|esrecurse@4.3.0",
       "description": "ECMAScript AST recursive visitor",
       "licenses": [
         {
@@ -7029,7 +7029,7 @@
       "type": "library",
       "name": "estraverse",
       "version": "5.3.0",
-      "bom-ref": "openapi-backend@5.21.2|estraverse@5.3.0",
+      "bom-ref": "openapi-backend@5.21.3|estraverse@5.3.0",
       "description": "ECMAScript JS AST traversal functions",
       "licenses": [
         {
@@ -7087,7 +7087,7 @@
       "type": "library",
       "name": "acorn-jsx",
       "version": "5.3.2",
-      "bom-ref": "openapi-backend@5.21.2|acorn-jsx@5.3.2",
+      "bom-ref": "openapi-backend@5.21.3|acorn-jsx@5.3.2",
       "description": "Modern, fast React.js JSX parser",
       "licenses": [
         {
@@ -7141,7 +7141,7 @@
       "type": "library",
       "name": "acorn",
       "version": "8.18.0",
-      "bom-ref": "openapi-backend@5.21.2|acorn@8.18.0",
+      "bom-ref": "openapi-backend@5.21.3|acorn@8.18.0",
       "description": "ECMAScript parser",
       "licenses": [
         {
@@ -7199,7 +7199,7 @@
       "type": "library",
       "name": "flat-cache",
       "version": "3.2.0",
-      "bom-ref": "openapi-backend@5.21.2|flat-cache@3.2.0",
+      "bom-ref": "openapi-backend@5.21.3|flat-cache@3.2.0",
       "author": "Jared Wray",
       "description": "A stupidly simple key/value storage using files to persist some data",
       "licenses": [
@@ -7258,7 +7258,7 @@
       "type": "library",
       "name": "path-exists",
       "version": "4.0.0",
-      "bom-ref": "openapi-backend@5.21.2|path-exists@4.0.0",
+      "bom-ref": "openapi-backend@5.21.3|path-exists@4.0.0",
       "author": "Sindre Sorhus",
       "description": "Check if a path exists",
       "licenses": [
@@ -7317,7 +7317,7 @@
       "type": "library",
       "name": "is-extglob",
       "version": "2.1.1",
-      "bom-ref": "openapi-backend@5.21.2|is-extglob@2.1.1",
+      "bom-ref": "openapi-backend@5.21.3|is-extglob@2.1.1",
       "author": "Jon Schlinkert",
       "description": "Returns true if a string has an extglob.",
       "licenses": [
@@ -7376,7 +7376,7 @@
       "type": "library",
       "name": "prelude-ls",
       "version": "1.2.1",
-      "bom-ref": "openapi-backend@5.21.2|prelude-ls@1.2.1",
+      "bom-ref": "openapi-backend@5.21.3|prelude-ls@1.2.1",
       "author": "George Zahariev",
       "description": "prelude.ls is a functionally oriented utility library. It is powerful and flexible. Almost all of its functions are curried. It is written in, and is the recommended base library for, LiveScript.",
       "licenses": [
@@ -7435,7 +7435,7 @@
       "type": "library",
       "name": "type-check",
       "version": "0.4.0",
-      "bom-ref": "openapi-backend@5.21.2|type-check@0.4.0",
+      "bom-ref": "openapi-backend@5.21.3|type-check@0.4.0",
       "author": "George Zahariev",
       "description": "type-check allows you to check the types of JavaScript values at runtime with a Haskell like type syntax.",
       "licenses": [
@@ -7494,7 +7494,7 @@
       "type": "library",
       "name": "brace-expansion",
       "version": "1.1.21",
-      "bom-ref": "openapi-backend@5.21.2|brace-expansion@1.1.21",
+      "bom-ref": "openapi-backend@5.21.3|brace-expansion@1.1.21",
       "author": "Julian Gruber",
       "description": "Brace expansion as known from sh/bash",
       "licenses": [
@@ -7549,7 +7549,7 @@
       "type": "library",
       "name": "deep-is",
       "version": "0.1.4",
-      "bom-ref": "openapi-backend@5.21.2|deep-is@0.1.4",
+      "bom-ref": "openapi-backend@5.21.3|deep-is@0.1.4",
       "author": "Thorsten Lorenz",
       "description": "node's assert.deepEqual algorithm except for NaN being equal to NaN",
       "licenses": [
@@ -7604,7 +7604,7 @@
       "type": "library",
       "name": "fast-levenshtein",
       "version": "2.0.6",
-      "bom-ref": "openapi-backend@5.21.2|fast-levenshtein@2.0.6",
+      "bom-ref": "openapi-backend@5.21.3|fast-levenshtein@2.0.6",
       "author": "Ramesh Nair",
       "description": "Efficient implementation of Levenshtein algorithm  with locale-specific collator support.",
       "licenses": [
@@ -7659,7 +7659,7 @@
       "type": "library",
       "name": "word-wrap",
       "version": "1.2.5",
-      "bom-ref": "openapi-backend@5.21.2|word-wrap@1.2.5",
+      "bom-ref": "openapi-backend@5.21.3|word-wrap@1.2.5",
       "author": "Jon Schlinkert",
       "description": "Wrap words to a specified length.",
       "licenses": [
@@ -7718,7 +7718,7 @@
       "type": "library",
       "name": "ansi-regex",
       "version": "5.0.1",
-      "bom-ref": "openapi-backend@5.21.2|ansi-regex@5.0.1",
+      "bom-ref": "openapi-backend@5.21.3|ansi-regex@5.0.1",
       "author": "Sindre Sorhus",
       "description": "Regular expression for matching ANSI escape codes",
       "licenses": [
@@ -7777,7 +7777,7 @@
       "type": "library",
       "name": "es-errors",
       "version": "1.3.0",
-      "bom-ref": "openapi-backend@5.21.2|es-errors@1.3.0",
+      "bom-ref": "openapi-backend@5.21.3|es-errors@1.3.0",
       "author": "Jordan Harband",
       "description": "A simple cache for a few of the JS Error constructors.",
       "licenses": [
@@ -7832,7 +7832,7 @@
       "type": "library",
       "name": "object-inspect",
       "version": "1.13.4",
-      "bom-ref": "openapi-backend@5.21.2|object-inspect@1.13.4",
+      "bom-ref": "openapi-backend@5.21.3|object-inspect@1.13.4",
       "author": "James Halliday",
       "description": "string representations of objects in node and the browser",
       "licenses": [
@@ -7887,7 +7887,7 @@
       "type": "library",
       "name": "side-channel-list",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.21.2|side-channel-list@1.0.1",
+      "bom-ref": "openapi-backend@5.21.3|side-channel-list@1.0.1",
       "author": "Jordan Harband",
       "description": "Store information about any JS value in a side channel, using a linked list",
       "licenses": [
@@ -7942,7 +7942,7 @@
       "type": "library",
       "name": "side-channel-map",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.21.2|side-channel-map@1.0.1",
+      "bom-ref": "openapi-backend@5.21.3|side-channel-map@1.0.1",
       "author": "Jordan Harband",
       "description": "Store information about any JS value in a side channel, using a Map",
       "licenses": [
@@ -7997,7 +7997,7 @@
       "type": "library",
       "name": "side-channel-weakmap",
       "version": "1.0.2",
-      "bom-ref": "openapi-backend@5.21.2|side-channel-weakmap@1.0.2",
+      "bom-ref": "openapi-backend@5.21.3|side-channel-weakmap@1.0.2",
       "author": "Jordan Harband",
       "description": "Store information about any JS value in a side channel. Uses WeakMap if available.",
       "licenses": [
@@ -8053,7 +8053,7 @@
       "name": "deep-eql",
       "group": "@types",
       "version": "4.0.2",
-      "bom-ref": "openapi-backend@5.21.2|@types/deep-eql@4.0.2",
+      "bom-ref": "openapi-backend@5.21.3|@types/deep-eql@4.0.2",
       "description": "TypeScript definitions for deep-eql",
       "licenses": [
         {
@@ -8107,7 +8107,7 @@
       "type": "library",
       "name": "assertion-error",
       "version": "2.0.1",
-      "bom-ref": "openapi-backend@5.21.2|assertion-error@2.0.1",
+      "bom-ref": "openapi-backend@5.21.3|assertion-error@2.0.1",
       "author": "Jake Luer",
       "description": "Error constructor for test and validation frameworks that implements standardized AssertionError specification.",
       "licenses": [
@@ -8167,7 +8167,7 @@
       "name": "trace-mapping",
       "group": "@jridgewell",
       "version": "0.3.31",
-      "bom-ref": "openapi-backend@5.21.2|@jridgewell/trace-mapping@0.3.31",
+      "bom-ref": "openapi-backend@5.21.3|@jridgewell/trace-mapping@0.3.31",
       "author": "Justin Ridgewell",
       "description": "Trace the original position through a source map",
       "licenses": [
@@ -8223,7 +8223,7 @@
       "name": "spy",
       "group": "@vitest",
       "version": "5.0.2",
-      "bom-ref": "openapi-backend@5.21.2|@vitest/spy@5.0.2",
+      "bom-ref": "openapi-backend@5.21.3|@vitest/spy@5.0.2",
       "description": "Lightweight Jest compatible spy implementation",
       "licenses": [
         {
@@ -8277,7 +8277,7 @@
       "type": "library",
       "name": "estree-walker",
       "version": "3.0.3",
-      "bom-ref": "openapi-backend@5.21.2|estree-walker@3.0.3",
+      "bom-ref": "openapi-backend@5.21.3|estree-walker@3.0.3",
       "author": "Rich Harris",
       "description": "Traverse an ESTree-compliant AST",
       "licenses": [
@@ -8333,7 +8333,7 @@
       "name": "sourcemap-codec",
       "group": "@jridgewell",
       "version": "1.6.0",
-      "bom-ref": "openapi-backend@5.21.2|@jridgewell/sourcemap-codec@1.6.0",
+      "bom-ref": "openapi-backend@5.21.3|@jridgewell/sourcemap-codec@1.6.0",
       "author": "Justin Ridgewell",
       "description": "Encode/decode sourcemap mappings",
       "licenses": [
@@ -8388,7 +8388,7 @@
       "type": "library",
       "name": "lightningcss",
       "version": "1.33.0",
-      "bom-ref": "openapi-backend@5.21.2|lightningcss@1.33.0",
+      "bom-ref": "openapi-backend@5.21.3|lightningcss@1.33.0",
       "description": "A CSS parser, transformer, and minifier written in Rust",
       "licenses": [
         {
@@ -8446,7 +8446,7 @@
       "type": "library",
       "name": "postcss",
       "version": "8.5.28",
-      "bom-ref": "openapi-backend@5.21.2|postcss@8.5.28",
+      "bom-ref": "openapi-backend@5.21.3|postcss@8.5.28",
       "author": "Andrey Sitnik",
       "description": "Tool for transforming styles with JS plugins",
       "licenses": [
@@ -8505,7 +8505,7 @@
       "type": "library",
       "name": "rolldown",
       "version": "1.2.11",
-      "bom-ref": "openapi-backend@5.21.2|rolldown@1.2.11",
+      "bom-ref": "openapi-backend@5.21.3|rolldown@1.2.11",
       "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
       "licenses": [
         {
@@ -8563,7 +8563,7 @@
       "type": "library",
       "name": "array-union",
       "version": "2.1.0",
-      "bom-ref": "openapi-backend@5.21.2|array-union@2.1.0",
+      "bom-ref": "openapi-backend@5.21.3|array-union@2.1.0",
       "author": "Sindre Sorhus",
       "description": "Create an array of unique values, in order, from the input arrays",
       "licenses": [
@@ -8622,7 +8622,7 @@
       "type": "library",
       "name": "dir-glob",
       "version": "3.0.1",
-      "bom-ref": "openapi-backend@5.21.2|dir-glob@3.0.1",
+      "bom-ref": "openapi-backend@5.21.3|dir-glob@3.0.1",
       "author": "Kevin Mårtensson",
       "description": "Convert directories to glob compatible strings",
       "licenses": [
@@ -8681,7 +8681,7 @@
       "type": "library",
       "name": "fast-glob",
       "version": "3.3.3",
-      "bom-ref": "openapi-backend@5.21.2|fast-glob@3.3.3",
+      "bom-ref": "openapi-backend@5.21.3|fast-glob@3.3.3",
       "author": "Denis Malinochkin",
       "description": "It's a very fast and efficient glob library for Node.js",
       "licenses": [
@@ -8740,7 +8740,7 @@
           "type": "library",
           "name": "glob-parent",
           "version": "5.1.2",
-          "bom-ref": "openapi-backend@5.21.2|fast-glob@3.3.3|glob-parent@5.1.2",
+          "bom-ref": "openapi-backend@5.21.3|fast-glob@3.3.3|glob-parent@5.1.2",
           "author": "Gulp Team",
           "description": "Extract the non-magic parent path from a glob string.",
           "licenses": [
@@ -8801,7 +8801,7 @@
       "type": "library",
       "name": "merge2",
       "version": "1.4.1",
-      "bom-ref": "openapi-backend@5.21.2|merge2@1.4.1",
+      "bom-ref": "openapi-backend@5.21.3|merge2@1.4.1",
       "description": "Merge multiple streams into one stream in sequence or parallel.",
       "licenses": [
         {
@@ -8859,7 +8859,7 @@
       "type": "library",
       "name": "slash",
       "version": "3.0.0",
-      "bom-ref": "openapi-backend@5.21.2|slash@3.0.0",
+      "bom-ref": "openapi-backend@5.21.3|slash@3.0.0",
       "author": "Sindre Sorhus",
       "description": "Convert Windows backslash paths to slash paths",
       "licenses": [
@@ -8918,7 +8918,7 @@
       "type": "library",
       "name": "parent-module",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.21.2|parent-module@1.0.1",
+      "bom-ref": "openapi-backend@5.21.3|parent-module@1.0.1",
       "author": "Sindre Sorhus",
       "description": "Get the path of the parent module",
       "licenses": [
@@ -8978,7 +8978,7 @@
       "name": "fs.stat",
       "group": "@nodelib",
       "version": "2.0.5",
-      "bom-ref": "openapi-backend@5.21.2|@nodelib/fs.stat@2.0.5",
+      "bom-ref": "openapi-backend@5.21.3|@nodelib/fs.stat@2.0.5",
       "description": "Get the status of a file with some features",
       "licenses": [
         {
@@ -9036,7 +9036,7 @@
       "type": "library",
       "name": "run-parallel",
       "version": "1.2.0",
-      "bom-ref": "openapi-backend@5.21.2|run-parallel@1.2.0",
+      "bom-ref": "openapi-backend@5.21.3|run-parallel@1.2.0",
       "author": "Feross Aboukhadijeh",
       "description": "Run an array of functions in parallel",
       "licenses": [
@@ -9091,7 +9091,7 @@
       "type": "library",
       "name": "reusify",
       "version": "1.1.0",
-      "bom-ref": "openapi-backend@5.21.2|reusify@1.1.0",
+      "bom-ref": "openapi-backend@5.21.3|reusify@1.1.0",
       "author": "Matteo Collina",
       "description": "Reuse objects and functions with style",
       "licenses": [
@@ -9154,7 +9154,7 @@
       "type": "library",
       "name": "punycode",
       "version": "2.3.1",
-      "bom-ref": "openapi-backend@5.21.2|punycode@2.3.1",
+      "bom-ref": "openapi-backend@5.21.3|punycode@2.3.1",
       "author": "Mathias Bynens",
       "description": "A robust Punycode converter that fully complies to RFC 3492 and RFC 5891, and works on nearly all JavaScript platforms.",
       "licenses": [
@@ -9213,7 +9213,7 @@
       "type": "library",
       "name": "color-convert",
       "version": "2.0.1",
-      "bom-ref": "openapi-backend@5.21.2|color-convert@2.0.1",
+      "bom-ref": "openapi-backend@5.21.3|color-convert@2.0.1",
       "author": "Heather Arthur",
       "description": "Plain color conversion functions",
       "licenses": [
@@ -9272,7 +9272,7 @@
       "type": "library",
       "name": "has-flag",
       "version": "4.0.0",
-      "bom-ref": "openapi-backend@5.21.2|has-flag@4.0.0",
+      "bom-ref": "openapi-backend@5.21.3|has-flag@4.0.0",
       "author": "Sindre Sorhus",
       "description": "Check if argv has a specific flag",
       "licenses": [
@@ -9331,7 +9331,7 @@
       "type": "library",
       "name": "shebang-regex",
       "version": "3.0.0",
-      "bom-ref": "openapi-backend@5.21.2|shebang-regex@3.0.0",
+      "bom-ref": "openapi-backend@5.21.3|shebang-regex@3.0.0",
       "author": "Sindre Sorhus",
       "description": "Regular expression for matching a shebang line",
       "licenses": [
@@ -9390,7 +9390,7 @@
       "type": "library",
       "name": "isexe",
       "version": "2.0.0",
-      "bom-ref": "openapi-backend@5.21.2|isexe@2.0.0",
+      "bom-ref": "openapi-backend@5.21.3|isexe@2.0.0",
       "author": "Isaac Z. Schlueter",
       "description": "Minimal module to check if a file is executable.",
       "licenses": [
@@ -9445,7 +9445,7 @@
       "type": "library",
       "name": "flatted",
       "version": "3.4.4",
-      "bom-ref": "openapi-backend@5.21.2|flatted@3.4.4",
+      "bom-ref": "openapi-backend@5.21.3|flatted@3.4.4",
       "author": "Andrea Giammarchi",
       "description": "A super light and fast circular JSON parser.",
       "licenses": [
@@ -9500,7 +9500,7 @@
       "type": "library",
       "name": "keyv",
       "version": "4.5.4",
-      "bom-ref": "openapi-backend@5.21.2|keyv@4.5.4",
+      "bom-ref": "openapi-backend@5.21.3|keyv@4.5.4",
       "author": "Jared Wray",
       "description": "Simple key-value storage with support for multiple backends",
       "licenses": [
@@ -9555,7 +9555,7 @@
       "type": "library",
       "name": "rimraf",
       "version": "3.0.2",
-      "bom-ref": "openapi-backend@5.21.2|rimraf@3.0.2",
+      "bom-ref": "openapi-backend@5.21.3|rimraf@3.0.2",
       "author": "Isaac Z. Schlueter",
       "description": "A deep deletion module for node (like `rm -rf`)",
       "licenses": [
@@ -9610,7 +9610,7 @@
       "type": "library",
       "name": "balanced-match",
       "version": "1.0.0",
-      "bom-ref": "openapi-backend@5.21.2|balanced-match@1.0.0",
+      "bom-ref": "openapi-backend@5.21.3|balanced-match@1.0.0",
       "author": "Julian Gruber",
       "description": "Match balanced character pairs, like \"{\" and \"}\"",
       "licenses": [
@@ -9665,7 +9665,7 @@
       "type": "library",
       "name": "concat-map",
       "version": "0.0.1",
-      "bom-ref": "openapi-backend@5.21.2|concat-map@0.0.1",
+      "bom-ref": "openapi-backend@5.21.3|concat-map@0.0.1",
       "author": "James Halliday",
       "description": "concatenative mapdashery",
       "licenses": [
@@ -9720,7 +9720,7 @@
       "type": "library",
       "name": "call-bound",
       "version": "1.0.4",
-      "bom-ref": "openapi-backend@5.21.2|call-bound@1.0.4",
+      "bom-ref": "openapi-backend@5.21.3|call-bound@1.0.4",
       "author": "Jordan Harband",
       "description": "Robust call-bound JavaScript intrinsics, using `call-bind` and `get-intrinsic`.",
       "licenses": [
@@ -9775,7 +9775,7 @@
       "type": "library",
       "name": "get-intrinsic",
       "version": "1.3.0",
-      "bom-ref": "openapi-backend@5.21.2|get-intrinsic@1.3.0",
+      "bom-ref": "openapi-backend@5.21.3|get-intrinsic@1.3.0",
       "author": "Jordan Harband",
       "description": "Get and robustly cache all JS language-level intrinsics at first require time",
       "licenses": [
@@ -9831,7 +9831,7 @@
       "name": "resolve-uri",
       "group": "@jridgewell",
       "version": "3.1.2",
-      "bom-ref": "openapi-backend@5.21.2|@jridgewell/resolve-uri@3.1.2",
+      "bom-ref": "openapi-backend@5.21.3|@jridgewell/resolve-uri@3.1.2",
       "author": "Justin Ridgewell",
       "description": "Resolve a URI relative to an optional base URI",
       "licenses": [
@@ -9891,7 +9891,7 @@
       "name": "estree",
       "group": "@types",
       "version": "1.0.9",
-      "bom-ref": "openapi-backend@5.21.2|@types/estree@1.0.9",
+      "bom-ref": "openapi-backend@5.21.3|@types/estree@1.0.9",
       "description": "TypeScript definitions for estree",
       "licenses": [
         {
@@ -9945,7 +9945,7 @@
       "type": "library",
       "name": "detect-libc",
       "version": "2.1.2",
-      "bom-ref": "openapi-backend@5.21.2|detect-libc@2.1.2",
+      "bom-ref": "openapi-backend@5.21.3|detect-libc@2.1.2",
       "author": "Lovell Fuller",
       "description": "Node.js module to detect the C standard library (libc) implementation family and version",
       "licenses": [
@@ -10004,7 +10004,7 @@
       "type": "library",
       "name": "lightningcss-linux-x64-gnu",
       "version": "1.33.0",
-      "bom-ref": "openapi-backend@5.21.2|lightningcss-linux-x64-gnu@1.33.0",
+      "bom-ref": "openapi-backend@5.21.3|lightningcss-linux-x64-gnu@1.33.0",
       "description": "A CSS parser, transformer, and minifier written in Rust",
       "scope": "optional",
       "licenses": [
@@ -10063,7 +10063,7 @@
       "type": "library",
       "name": "nanoid",
       "version": "3.3.19",
-      "bom-ref": "openapi-backend@5.21.2|nanoid@3.3.19",
+      "bom-ref": "openapi-backend@5.21.3|nanoid@3.3.19",
       "author": "Andrey Sitnik",
       "description": "A tiny (116 bytes), secure URL-friendly unique string ID generator",
       "licenses": [
@@ -10122,7 +10122,7 @@
       "type": "library",
       "name": "picocolors",
       "version": "1.1.1",
-      "bom-ref": "openapi-backend@5.21.2|picocolors@1.1.1",
+      "bom-ref": "openapi-backend@5.21.3|picocolors@1.1.1",
       "author": "Alexey Raspopov",
       "description": "The tiniest and the fastest library for terminal output formatting with ANSI colors",
       "licenses": [
@@ -10177,7 +10177,7 @@
       "type": "library",
       "name": "source-map-js",
       "version": "1.2.2",
-      "bom-ref": "openapi-backend@5.21.2|source-map-js@1.2.2",
+      "bom-ref": "openapi-backend@5.21.3|source-map-js@1.2.2",
       "author": "Valentin 7rulnik Semirulnik",
       "description": "Generates and consumes source maps",
       "licenses": [
@@ -10237,7 +10237,7 @@
       "name": "types",
       "group": "@oxc-project",
       "version": "0.151.0",
-      "bom-ref": "openapi-backend@5.21.2|@oxc-project/types@0.151.0",
+      "bom-ref": "openapi-backend@5.21.3|@oxc-project/types@0.151.0",
       "author": "Boshen and oxc contributors",
       "description": "Types for Oxc AST nodes",
       "licenses": [
@@ -10293,7 +10293,7 @@
       "name": "binding-linux-x64-gnu",
       "group": "@rolldown",
       "version": "1.2.11",
-      "bom-ref": "openapi-backend@5.21.2|@rolldown/binding-linux-x64-gnu@1.2.11",
+      "bom-ref": "openapi-backend@5.21.3|@rolldown/binding-linux-x64-gnu@1.2.11",
       "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
       "scope": "optional",
       "licenses": [
@@ -10353,7 +10353,7 @@
       "name": "pluginutils",
       "group": "@rolldown",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.21.2|@rolldown/pluginutils@1.0.1",
+      "bom-ref": "openapi-backend@5.21.3|@rolldown/pluginutils@1.0.1",
       "description": "Plugin utilities for Rolldown",
       "licenses": [
         {
@@ -10407,7 +10407,7 @@
       "type": "library",
       "name": "path-type",
       "version": "4.0.0",
-      "bom-ref": "openapi-backend@5.21.2|path-type@4.0.0",
+      "bom-ref": "openapi-backend@5.21.3|path-type@4.0.0",
       "author": "Sindre Sorhus",
       "description": "Check if a path is a file, directory, or symlink",
       "licenses": [
@@ -10466,7 +10466,7 @@
       "type": "library",
       "name": "micromatch",
       "version": "4.0.8",
-      "bom-ref": "openapi-backend@5.21.2|micromatch@4.0.8",
+      "bom-ref": "openapi-backend@5.21.3|micromatch@4.0.8",
       "author": "Jon Schlinkert",
       "description": "Glob matching for javascript/node.js. A replacement and faster alternative to minimatch and multimatch.",
       "licenses": [
@@ -10525,7 +10525,7 @@
       "type": "library",
       "name": "callsites",
       "version": "3.1.0",
-      "bom-ref": "openapi-backend@5.21.2|callsites@3.1.0",
+      "bom-ref": "openapi-backend@5.21.3|callsites@3.1.0",
       "author": "Sindre Sorhus",
       "description": "Get callsites from the V8 stack trace API",
       "licenses": [
@@ -10584,7 +10584,7 @@
       "type": "library",
       "name": "queue-microtask",
       "version": "1.2.3",
-      "bom-ref": "openapi-backend@5.21.2|queue-microtask@1.2.3",
+      "bom-ref": "openapi-backend@5.21.3|queue-microtask@1.2.3",
       "author": "Feross Aboukhadijeh",
       "description": "fast, tiny `queueMicrotask` shim for modern engines",
       "licenses": [
@@ -10639,7 +10639,7 @@
       "type": "library",
       "name": "color-name",
       "version": "1.1.4",
-      "bom-ref": "openapi-backend@5.21.2|color-name@1.1.4",
+      "bom-ref": "openapi-backend@5.21.3|color-name@1.1.4",
       "author": "DY",
       "description": "A list of color names and its values",
       "licenses": [
@@ -10694,7 +10694,7 @@
       "type": "library",
       "name": "json-buffer",
       "version": "3.0.1",
-      "bom-ref": "openapi-backend@5.21.2|json-buffer@3.0.1",
+      "bom-ref": "openapi-backend@5.21.3|json-buffer@3.0.1",
       "author": "Dominic Tarr",
       "description": "JSON parse & stringify that supports binary via bops & base64",
       "licenses": [
@@ -10749,7 +10749,7 @@
       "type": "library",
       "name": "glob",
       "version": "7.1.6",
-      "bom-ref": "openapi-backend@5.21.2|glob@7.1.6",
+      "bom-ref": "openapi-backend@5.21.3|glob@7.1.6",
       "author": "Isaac Z. Schlueter",
       "description": "a little globber",
       "licenses": [
@@ -10808,7 +10808,7 @@
       "type": "library",
       "name": "p-limit",
       "version": "3.1.0",
-      "bom-ref": "openapi-backend@5.21.2|p-limit@3.1.0",
+      "bom-ref": "openapi-backend@5.21.3|p-limit@3.1.0",
       "author": "Sindre Sorhus",
       "description": "Run multiple promise-returning & async functions with limited concurrency",
       "licenses": [
@@ -10867,7 +10867,7 @@
       "type": "library",
       "name": "call-bind-apply-helpers",
       "version": "1.0.2",
-      "bom-ref": "openapi-backend@5.21.2|call-bind-apply-helpers@1.0.2",
+      "bom-ref": "openapi-backend@5.21.3|call-bind-apply-helpers@1.0.2",
       "author": "Jordan Harband",
       "description": "Helper functions around Function call/apply/bind, for use in `call-bind`",
       "licenses": [
@@ -10922,7 +10922,7 @@
       "type": "library",
       "name": "es-object-atoms",
       "version": "1.1.2",
-      "bom-ref": "openapi-backend@5.21.2|es-object-atoms@1.1.2",
+      "bom-ref": "openapi-backend@5.21.3|es-object-atoms@1.1.2",
       "author": "Jordan Harband",
       "description": "ES Object-related atoms: Object, ToObject, RequireObjectCoercible",
       "licenses": [
@@ -10977,7 +10977,7 @@
       "type": "library",
       "name": "function-bind",
       "version": "1.1.2",
-      "bom-ref": "openapi-backend@5.21.2|function-bind@1.1.2",
+      "bom-ref": "openapi-backend@5.21.3|function-bind@1.1.2",
       "author": "Raynos",
       "description": "Implementation of Function.prototype.bind",
       "licenses": [
@@ -11028,7 +11028,7 @@
       "type": "library",
       "name": "get-proto",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.21.2|get-proto@1.0.1",
+      "bom-ref": "openapi-backend@5.21.3|get-proto@1.0.1",
       "author": "Jordan Harband",
       "description": "Robustly get the [[Prototype]] of an object",
       "licenses": [
@@ -11083,7 +11083,7 @@
       "type": "library",
       "name": "gopd",
       "version": "1.2.0",
-      "bom-ref": "openapi-backend@5.21.2|gopd@1.2.0",
+      "bom-ref": "openapi-backend@5.21.3|gopd@1.2.0",
       "author": "Jordan Harband",
       "description": "`Object.getOwnPropertyDescriptor`, but accounts for IE's broken implementation.",
       "licenses": [
@@ -11138,7 +11138,7 @@
       "type": "library",
       "name": "has-symbols",
       "version": "1.1.0",
-      "bom-ref": "openapi-backend@5.21.2|has-symbols@1.1.0",
+      "bom-ref": "openapi-backend@5.21.3|has-symbols@1.1.0",
       "author": "Jordan Harband",
       "description": "Determine if the JS environment has Symbol support. Supports spec, or shams.",
       "licenses": [
@@ -11193,7 +11193,7 @@
       "type": "library",
       "name": "hasown",
       "version": "2.0.4",
-      "bom-ref": "openapi-backend@5.21.2|hasown@2.0.4",
+      "bom-ref": "openapi-backend@5.21.3|hasown@2.0.4",
       "author": "Jordan Harband",
       "description": "A robust, ES3 compatible, \"has own property\" predicate.",
       "licenses": [
@@ -11248,7 +11248,7 @@
       "type": "library",
       "name": "math-intrinsics",
       "version": "1.1.0",
-      "bom-ref": "openapi-backend@5.21.2|math-intrinsics@1.1.0",
+      "bom-ref": "openapi-backend@5.21.3|math-intrinsics@1.1.0",
       "author": "Jordan Harband",
       "description": "ES Math-related intrinsics and helpers, robustly cached.",
       "licenses": [
@@ -11303,7 +11303,7 @@
       "type": "library",
       "name": "braces",
       "version": "3.0.3",
-      "bom-ref": "openapi-backend@5.21.2|braces@3.0.3",
+      "bom-ref": "openapi-backend@5.21.3|braces@3.0.3",
       "author": "Jon Schlinkert",
       "description": "Bash-like brace expansion, implemented in JavaScript. Safer than other brace expansion libs, with complete support for the Bash 4.3 braces specification, without sacrificing speed.",
       "licenses": [
@@ -11362,7 +11362,7 @@
           "type": "library",
           "name": "fill-range",
           "version": "7.1.1",
-          "bom-ref": "openapi-backend@5.21.2|braces@3.0.3|fill-range@7.1.1",
+          "bom-ref": "openapi-backend@5.21.3|braces@3.0.3|fill-range@7.1.1",
           "author": "Jon Schlinkert",
           "description": "Fill in a range of numbers or letters, optionally passing an increment or `step` to use, or create a regex-compatible range with `options.toRegex`",
           "licenses": [
@@ -11423,7 +11423,7 @@
       "type": "library",
       "name": "picomatch",
       "version": "2.3.2",
-      "bom-ref": "openapi-backend@5.21.2|picomatch@2.3.2",
+      "bom-ref": "openapi-backend@5.21.3|picomatch@2.3.2",
       "author": "Jon Schlinkert",
       "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
       "licenses": [
@@ -11482,7 +11482,7 @@
       "type": "library",
       "name": "fs.realpath",
       "version": "1.0.0",
-      "bom-ref": "openapi-backend@5.21.2|fs.realpath@1.0.0",
+      "bom-ref": "openapi-backend@5.21.3|fs.realpath@1.0.0",
       "author": "Isaac Z. Schlueter",
       "description": "Use node's fs.realpath, but fall back to the JS implementation if the native one fails",
       "licenses": [
@@ -11537,7 +11537,7 @@
       "type": "library",
       "name": "inflight",
       "version": "1.0.6",
-      "bom-ref": "openapi-backend@5.21.2|inflight@1.0.6",
+      "bom-ref": "openapi-backend@5.21.3|inflight@1.0.6",
       "author": "Isaac Z. Schlueter",
       "description": "Add callbacks to requests in flight to avoid async duplication",
       "licenses": [
@@ -11592,7 +11592,7 @@
       "type": "library",
       "name": "inherits",
       "version": "2.0.3",
-      "bom-ref": "openapi-backend@5.21.2|inherits@2.0.3",
+      "bom-ref": "openapi-backend@5.21.3|inherits@2.0.3",
       "description": "Browser-friendly inheritance fully compatible with standard node.js inherits()",
       "licenses": [
         {
@@ -11646,7 +11646,7 @@
       "type": "library",
       "name": "once",
       "version": "1.4.0",
-      "bom-ref": "openapi-backend@5.21.2|once@1.4.0",
+      "bom-ref": "openapi-backend@5.21.3|once@1.4.0",
       "author": "Isaac Z. Schlueter",
       "description": "Run a function exactly one time",
       "licenses": [
@@ -11701,7 +11701,7 @@
       "type": "library",
       "name": "path-is-absolute",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.21.2|path-is-absolute@1.0.1",
+      "bom-ref": "openapi-backend@5.21.3|path-is-absolute@1.0.1",
       "author": "Sindre Sorhus",
       "description": "Node.js 0.12 path.isAbsolute() ponyfill",
       "licenses": [
@@ -11760,7 +11760,7 @@
       "type": "library",
       "name": "yocto-queue",
       "version": "0.1.0",
-      "bom-ref": "openapi-backend@5.21.2|yocto-queue@0.1.0",
+      "bom-ref": "openapi-backend@5.21.3|yocto-queue@0.1.0",
       "author": "Sindre Sorhus",
       "description": "Tiny queue data structure",
       "licenses": [
@@ -11819,7 +11819,7 @@
       "type": "library",
       "name": "dunder-proto",
       "version": "1.0.1",
-      "bom-ref": "openapi-backend@5.21.2|dunder-proto@1.0.1",
+      "bom-ref": "openapi-backend@5.21.3|dunder-proto@1.0.1",
       "author": "Jordan Harband",
       "description": "If available, the `Object.prototype.__proto__` accessor and mutator, call-bound",
       "licenses": [
@@ -11874,7 +11874,7 @@
       "type": "library",
       "name": "wrappy",
       "version": "1.0.2",
-      "bom-ref": "openapi-backend@5.21.2|wrappy@1.0.2",
+      "bom-ref": "openapi-backend@5.21.3|wrappy@1.0.2",
       "author": "Isaac Z. Schlueter",
       "description": "Callback wrapping utility",
       "licenses": [
@@ -11929,7 +11929,7 @@
       "type": "library",
       "name": "to-regex-range",
       "version": "5.0.1",
-      "bom-ref": "openapi-backend@5.21.2|to-regex-range@5.0.1",
+      "bom-ref": "openapi-backend@5.21.3|to-regex-range@5.0.1",
       "author": "Jon Schlinkert",
       "description": "Pass two numbers, get a regex-compatible source string for matching ranges. Validated against more than 2.78 million test assertions.",
       "licenses": [
@@ -11988,7 +11988,7 @@
           "type": "library",
           "name": "is-number",
           "version": "7.0.0",
-          "bom-ref": "openapi-backend@5.21.2|to-regex-range@5.0.1|is-number@7.0.0",
+          "bom-ref": "openapi-backend@5.21.3|to-regex-range@5.0.1|is-number@7.0.0",
           "author": "Jon Schlinkert",
           "description": "Returns true if a number or string value is a finite number. Useful for regex matches, parsing, user input, etc.",
           "licenses": [
@@ -12048,1142 +12048,1142 @@
   ],
   "dependencies": [
     {
-      "ref": "openapi-backend@5.21.2",
+      "ref": "openapi-backend@5.21.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.3",
-        "openapi-backend@5.21.2|@types/json-schema@7.0.15",
-        "openapi-backend@5.21.2|@types/lodash@4.14.199",
-        "openapi-backend@5.21.2|@types/node@22.20.4",
-        "openapi-backend@5.21.2|@types/qs@6.15.1",
-        "openapi-backend@5.21.2|@typescript-eslint/eslint-plugin@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/parser@7.18.0",
-        "openapi-backend@5.21.2|ajv@8.20.0",
-        "openapi-backend@5.21.2|bath-es5@3.0.3",
-        "openapi-backend@5.21.2|cookie@1.1.1",
-        "openapi-backend@5.21.2|dereference-json-schema@0.2.3",
-        "openapi-backend@5.21.2|eslint@8.57.1",
-        "openapi-backend@5.21.2|lodash@4.18.1",
-        "openapi-backend@5.21.2|mock-json-schema@1.1.3",
-        "openapi-backend@5.21.2|openapi-schema-validator@12.1.3",
-        "openapi-backend@5.21.2|openapi-types@12.1.3",
-        "openapi-backend@5.21.2|prettier@3.9.8",
-        "openapi-backend@5.21.2|qs@6.16.0",
-        "openapi-backend@5.21.2|source-map-support@0.5.21",
-        "openapi-backend@5.21.2|typescript@5.2.2",
-        "openapi-backend@5.21.2|vitest@5.0.2"
+        "openapi-backend@5.21.3|@apidevtools/json-schema-ref-parser@16.0.3",
+        "openapi-backend@5.21.3|@types/json-schema@7.0.15",
+        "openapi-backend@5.21.3|@types/lodash@4.14.199",
+        "openapi-backend@5.21.3|@types/node@22.20.4",
+        "openapi-backend@5.21.3|@types/qs@6.15.1",
+        "openapi-backend@5.21.3|@typescript-eslint/eslint-plugin@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/parser@7.18.0",
+        "openapi-backend@5.21.3|ajv@8.20.0",
+        "openapi-backend@5.21.3|bath-es5@3.0.3",
+        "openapi-backend@5.21.3|cookie@1.1.1",
+        "openapi-backend@5.21.3|dereference-json-schema@0.2.3",
+        "openapi-backend@5.21.3|eslint@8.57.1",
+        "openapi-backend@5.21.3|lodash@4.18.1",
+        "openapi-backend@5.21.3|mock-json-schema@1.1.3",
+        "openapi-backend@5.21.3|openapi-schema-validator@12.1.3",
+        "openapi-backend@5.21.3|openapi-types@12.1.3",
+        "openapi-backend@5.21.3|prettier@3.9.8",
+        "openapi-backend@5.21.3|qs@6.16.0",
+        "openapi-backend@5.21.3|source-map-support@0.5.21",
+        "openapi-backend@5.21.3|typescript@5.2.2",
+        "openapi-backend@5.21.3|vitest@5.0.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@apidevtools/json-schema-ref-parser@16.0.3",
+      "ref": "openapi-backend@5.21.3|@apidevtools/json-schema-ref-parser@16.0.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|@types/json-schema@7.0.15",
-        "openapi-backend@5.21.2|js-yaml@5.4.2",
-        "openapi-backend@5.21.2|undici@8.10.2"
+        "openapi-backend@5.21.3|@types/json-schema@7.0.15",
+        "openapi-backend@5.21.3|js-yaml@5.4.2",
+        "openapi-backend@5.21.3|undici@8.10.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@types/json-schema@7.0.15"
+      "ref": "openapi-backend@5.21.3|@types/json-schema@7.0.15"
     },
     {
-      "ref": "openapi-backend@5.21.2|@types/lodash@4.14.199"
+      "ref": "openapi-backend@5.21.3|@types/lodash@4.14.199"
     },
     {
-      "ref": "openapi-backend@5.21.2|@types/node@22.20.4",
+      "ref": "openapi-backend@5.21.3|@types/node@22.20.4",
       "dependsOn": [
-        "openapi-backend@5.21.2|undici-types@6.21.0"
+        "openapi-backend@5.21.3|undici-types@6.21.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@types/qs@6.15.1"
+      "ref": "openapi-backend@5.21.3|@types/qs@6.15.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/eslint-plugin@7.18.0",
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/eslint-plugin@7.18.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|@eslint-community/regexpp@4.12.2",
-        "openapi-backend@5.21.2|@typescript-eslint/parser@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/scope-manager@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/type-utils@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/utils@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/visitor-keys@7.18.0",
-        "openapi-backend@5.21.2|eslint@8.57.1",
-        "openapi-backend@5.21.2|graphemer@1.4.0",
-        "openapi-backend@5.21.2|ignore@5.3.2",
-        "openapi-backend@5.21.2|natural-compare@1.4.0",
-        "openapi-backend@5.21.2|ts-api-utils@1.4.3"
+        "openapi-backend@5.21.3|@eslint-community/regexpp@4.12.2",
+        "openapi-backend@5.21.3|@typescript-eslint/parser@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/scope-manager@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/type-utils@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/utils@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/visitor-keys@7.18.0",
+        "openapi-backend@5.21.3|eslint@8.57.1",
+        "openapi-backend@5.21.3|graphemer@1.4.0",
+        "openapi-backend@5.21.3|ignore@5.3.2",
+        "openapi-backend@5.21.3|natural-compare@1.4.0",
+        "openapi-backend@5.21.3|ts-api-utils@1.4.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/parser@7.18.0",
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/parser@7.18.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|@typescript-eslint/scope-manager@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/types@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/visitor-keys@7.18.0",
-        "openapi-backend@5.21.2|debug@4.3.4",
-        "openapi-backend@5.21.2|eslint@8.57.1"
+        "openapi-backend@5.21.3|@typescript-eslint/scope-manager@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/types@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/visitor-keys@7.18.0",
+        "openapi-backend@5.21.3|debug@4.3.4",
+        "openapi-backend@5.21.3|eslint@8.57.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|ajv@8.20.0",
+      "ref": "openapi-backend@5.21.3|ajv@8.20.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|fast-deep-equal@3.1.3",
-        "openapi-backend@5.21.2|fast-uri@3.1.8",
-        "openapi-backend@5.21.2|json-schema-traverse@1.0.0",
-        "openapi-backend@5.21.2|require-from-string@2.0.2"
+        "openapi-backend@5.21.3|fast-deep-equal@3.1.3",
+        "openapi-backend@5.21.3|fast-uri@3.1.8",
+        "openapi-backend@5.21.3|json-schema-traverse@1.0.0",
+        "openapi-backend@5.21.3|require-from-string@2.0.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|bath-es5@3.0.3"
+      "ref": "openapi-backend@5.21.3|bath-es5@3.0.3"
     },
     {
-      "ref": "openapi-backend@5.21.2|cookie@1.1.1"
+      "ref": "openapi-backend@5.21.3|cookie@1.1.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|dereference-json-schema@0.2.3"
+      "ref": "openapi-backend@5.21.3|dereference-json-schema@0.2.3"
     },
     {
-      "ref": "openapi-backend@5.21.2|eslint@8.57.1",
+      "ref": "openapi-backend@5.21.3|eslint@8.57.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|@eslint-community/eslint-utils@4.10.1",
-        "openapi-backend@5.21.2|@eslint-community/regexpp@4.12.2",
-        "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4",
-        "openapi-backend@5.21.2|@eslint/js@8.57.1",
-        "openapi-backend@5.21.2|@humanwhocodes/config-array@0.13.0",
-        "openapi-backend@5.21.2|@humanwhocodes/module-importer@1.0.1",
-        "openapi-backend@5.21.2|@nodelib/fs.walk@1.2.8",
-        "openapi-backend@5.21.2|@ungap/structured-clone@1.4.0",
-        "openapi-backend@5.21.2|eslint@8.57.1|ajv@6.15.0",
-        "openapi-backend@5.21.2|chalk@4.1.1",
-        "openapi-backend@5.21.2|cross-spawn@7.0.6",
-        "openapi-backend@5.21.2|debug@4.3.4",
-        "openapi-backend@5.21.2|doctrine@3.0.0",
-        "openapi-backend@5.21.2|eslint@8.57.1|escape-string-regexp@4.0.0",
-        "openapi-backend@5.21.2|eslint-scope@7.2.2",
-        "openapi-backend@5.21.2|eslint-visitor-keys@3.4.3",
-        "openapi-backend@5.21.2|espree@9.6.1",
-        "openapi-backend@5.21.2|esquery@1.7.0",
-        "openapi-backend@5.21.2|esutils@2.0.3",
-        "openapi-backend@5.21.2|fast-deep-equal@3.1.3",
-        "openapi-backend@5.21.2|file-entry-cache@6.0.1",
-        "openapi-backend@5.21.2|eslint@8.57.1|find-up@5.0.0",
-        "openapi-backend@5.21.2|glob-parent@6.0.2",
-        "openapi-backend@5.21.2|globals@13.24.0",
-        "openapi-backend@5.21.2|graphemer@1.4.0",
-        "openapi-backend@5.21.2|ignore@5.3.2",
-        "openapi-backend@5.21.2|imurmurhash@0.1.4",
-        "openapi-backend@5.21.2|is-glob@4.0.3",
-        "openapi-backend@5.21.2|is-path-inside@3.0.3",
-        "openapi-backend@5.21.2|eslint@8.57.1|js-yaml@4.3.2",
-        "openapi-backend@5.21.2|json-stable-stringify-without-jsonify@1.0.1",
-        "openapi-backend@5.21.2|levn@0.4.1",
-        "openapi-backend@5.21.2|lodash.merge@4.6.2",
-        "openapi-backend@5.21.2|minimatch@3.1.5",
-        "openapi-backend@5.21.2|natural-compare@1.4.0",
-        "openapi-backend@5.21.2|optionator@0.9.4",
-        "openapi-backend@5.21.2|strip-ansi@6.0.1",
-        "openapi-backend@5.21.2|text-table@0.2.0"
+        "openapi-backend@5.21.3|@eslint-community/eslint-utils@4.10.1",
+        "openapi-backend@5.21.3|@eslint-community/regexpp@4.12.2",
+        "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4",
+        "openapi-backend@5.21.3|@eslint/js@8.57.1",
+        "openapi-backend@5.21.3|@humanwhocodes/config-array@0.13.0",
+        "openapi-backend@5.21.3|@humanwhocodes/module-importer@1.0.1",
+        "openapi-backend@5.21.3|@nodelib/fs.walk@1.2.8",
+        "openapi-backend@5.21.3|@ungap/structured-clone@1.4.0",
+        "openapi-backend@5.21.3|eslint@8.57.1|ajv@6.15.0",
+        "openapi-backend@5.21.3|chalk@4.1.1",
+        "openapi-backend@5.21.3|cross-spawn@7.0.6",
+        "openapi-backend@5.21.3|debug@4.3.4",
+        "openapi-backend@5.21.3|doctrine@3.0.0",
+        "openapi-backend@5.21.3|eslint@8.57.1|escape-string-regexp@4.0.0",
+        "openapi-backend@5.21.3|eslint-scope@7.2.2",
+        "openapi-backend@5.21.3|eslint-visitor-keys@3.4.3",
+        "openapi-backend@5.21.3|espree@9.6.1",
+        "openapi-backend@5.21.3|esquery@1.7.0",
+        "openapi-backend@5.21.3|esutils@2.0.3",
+        "openapi-backend@5.21.3|fast-deep-equal@3.1.3",
+        "openapi-backend@5.21.3|file-entry-cache@6.0.1",
+        "openapi-backend@5.21.3|eslint@8.57.1|find-up@5.0.0",
+        "openapi-backend@5.21.3|glob-parent@6.0.2",
+        "openapi-backend@5.21.3|globals@13.24.0",
+        "openapi-backend@5.21.3|graphemer@1.4.0",
+        "openapi-backend@5.21.3|ignore@5.3.2",
+        "openapi-backend@5.21.3|imurmurhash@0.1.4",
+        "openapi-backend@5.21.3|is-glob@4.0.3",
+        "openapi-backend@5.21.3|is-path-inside@3.0.3",
+        "openapi-backend@5.21.3|eslint@8.57.1|js-yaml@4.3.2",
+        "openapi-backend@5.21.3|json-stable-stringify-without-jsonify@1.0.1",
+        "openapi-backend@5.21.3|levn@0.4.1",
+        "openapi-backend@5.21.3|lodash.merge@4.6.2",
+        "openapi-backend@5.21.3|minimatch@3.1.5",
+        "openapi-backend@5.21.3|natural-compare@1.4.0",
+        "openapi-backend@5.21.3|optionator@0.9.4",
+        "openapi-backend@5.21.3|strip-ansi@6.0.1",
+        "openapi-backend@5.21.3|text-table@0.2.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|eslint@8.57.1|ajv@6.15.0",
+      "ref": "openapi-backend@5.21.3|eslint@8.57.1|ajv@6.15.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|fast-deep-equal@3.1.3",
-        "openapi-backend@5.21.2|fast-json-stable-stringify@2.1.0",
-        "openapi-backend@5.21.2|eslint@8.57.1|json-schema-traverse@0.4.1",
-        "openapi-backend@5.21.2|uri-js@4.4.1"
+        "openapi-backend@5.21.3|fast-deep-equal@3.1.3",
+        "openapi-backend@5.21.3|fast-json-stable-stringify@2.1.0",
+        "openapi-backend@5.21.3|eslint@8.57.1|json-schema-traverse@0.4.1",
+        "openapi-backend@5.21.3|uri-js@4.4.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|eslint@8.57.1|escape-string-regexp@4.0.0"
+      "ref": "openapi-backend@5.21.3|eslint@8.57.1|escape-string-regexp@4.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|eslint@8.57.1|find-up@5.0.0",
+      "ref": "openapi-backend@5.21.3|eslint@8.57.1|find-up@5.0.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|eslint@8.57.1|locate-path@6.0.0",
-        "openapi-backend@5.21.2|path-exists@4.0.0"
+        "openapi-backend@5.21.3|eslint@8.57.1|locate-path@6.0.0",
+        "openapi-backend@5.21.3|path-exists@4.0.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|eslint@8.57.1|js-yaml@4.3.2",
+      "ref": "openapi-backend@5.21.3|eslint@8.57.1|js-yaml@4.3.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|argparse@2.0.1"
+        "openapi-backend@5.21.3|argparse@2.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|eslint@8.57.1|json-schema-traverse@0.4.1"
+      "ref": "openapi-backend@5.21.3|eslint@8.57.1|json-schema-traverse@0.4.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|eslint@8.57.1|locate-path@6.0.0",
+      "ref": "openapi-backend@5.21.3|eslint@8.57.1|locate-path@6.0.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|eslint@8.57.1|p-locate@5.0.0"
+        "openapi-backend@5.21.3|eslint@8.57.1|p-locate@5.0.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|eslint@8.57.1|p-locate@5.0.0",
+      "ref": "openapi-backend@5.21.3|eslint@8.57.1|p-locate@5.0.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|p-limit@3.1.0"
+        "openapi-backend@5.21.3|p-limit@3.1.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|lodash@4.18.1"
+      "ref": "openapi-backend@5.21.3|lodash@4.18.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|mock-json-schema@1.1.3",
+      "ref": "openapi-backend@5.21.3|mock-json-schema@1.1.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|lodash@4.18.1"
+        "openapi-backend@5.21.3|lodash@4.18.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|openapi-schema-validator@12.1.3",
+      "ref": "openapi-backend@5.21.3|openapi-schema-validator@12.1.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|ajv-formats@2.1.1",
-        "openapi-backend@5.21.2|ajv@8.20.0",
-        "openapi-backend@5.21.2|lodash.merge@4.6.2",
-        "openapi-backend@5.21.2|openapi-types@12.1.3"
+        "openapi-backend@5.21.3|ajv-formats@2.1.1",
+        "openapi-backend@5.21.3|ajv@8.20.0",
+        "openapi-backend@5.21.3|lodash.merge@4.6.2",
+        "openapi-backend@5.21.3|openapi-types@12.1.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|openapi-types@12.1.3"
+      "ref": "openapi-backend@5.21.3|openapi-types@12.1.3"
     },
     {
-      "ref": "openapi-backend@5.21.2|prettier@3.9.8"
+      "ref": "openapi-backend@5.21.3|prettier@3.9.8"
     },
     {
-      "ref": "openapi-backend@5.21.2|qs@6.16.0",
+      "ref": "openapi-backend@5.21.3|qs@6.16.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|es-define-property@1.0.1",
-        "openapi-backend@5.21.2|side-channel@1.1.1"
+        "openapi-backend@5.21.3|es-define-property@1.0.1",
+        "openapi-backend@5.21.3|side-channel@1.1.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|source-map-support@0.5.21",
+      "ref": "openapi-backend@5.21.3|source-map-support@0.5.21",
       "dependsOn": [
-        "openapi-backend@5.21.2|buffer-from@1.1.1",
-        "openapi-backend@5.21.2|source-map@0.6.1"
+        "openapi-backend@5.21.3|buffer-from@1.1.1",
+        "openapi-backend@5.21.3|source-map@0.6.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|typescript@5.2.2"
+      "ref": "openapi-backend@5.21.3|typescript@5.2.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|vitest@5.0.2",
+      "ref": "openapi-backend@5.21.3|vitest@5.0.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|@types/chai@5.2.3",
-        "openapi-backend@5.21.2|@types/node@22.20.4",
-        "openapi-backend@5.21.2|@vitest/mocker@5.0.2",
-        "openapi-backend@5.21.2|chai@6.2.2",
-        "openapi-backend@5.21.2|es-module-lexer@2.3.2",
-        "openapi-backend@5.21.2|expect-type@1.4.0",
-        "openapi-backend@5.21.2|magic-string@1.4.2",
-        "openapi-backend@5.21.2|obug@2.2.1",
-        "openapi-backend@5.21.2|vitest@5.0.2|picomatch@4.0.7",
-        "openapi-backend@5.21.2|std-env@4.2.0",
-        "openapi-backend@5.21.2|tinybench@6.1.4",
-        "openapi-backend@5.21.2|tinyexec@1.3.0",
-        "openapi-backend@5.21.2|tinyglobby@0.2.17",
-        "openapi-backend@5.21.2|vite@8.3.1",
-        "openapi-backend@5.21.2|why-is-node-running@3.2.2"
+        "openapi-backend@5.21.3|@types/chai@5.2.3",
+        "openapi-backend@5.21.3|@types/node@22.20.4",
+        "openapi-backend@5.21.3|@vitest/mocker@5.0.2",
+        "openapi-backend@5.21.3|chai@6.2.2",
+        "openapi-backend@5.21.3|es-module-lexer@2.3.2",
+        "openapi-backend@5.21.3|expect-type@1.4.0",
+        "openapi-backend@5.21.3|magic-string@1.4.2",
+        "openapi-backend@5.21.3|obug@2.2.1",
+        "openapi-backend@5.21.3|vitest@5.0.2|picomatch@4.0.7",
+        "openapi-backend@5.21.3|std-env@4.2.0",
+        "openapi-backend@5.21.3|tinybench@6.1.4",
+        "openapi-backend@5.21.3|tinyexec@1.3.0",
+        "openapi-backend@5.21.3|tinyglobby@0.2.17",
+        "openapi-backend@5.21.3|vite@8.3.1",
+        "openapi-backend@5.21.3|why-is-node-running@3.2.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|vitest@5.0.2|picomatch@4.0.7"
+      "ref": "openapi-backend@5.21.3|vitest@5.0.2|picomatch@4.0.7"
     },
     {
-      "ref": "openapi-backend@5.21.2|js-yaml@5.4.2",
+      "ref": "openapi-backend@5.21.3|js-yaml@5.4.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|argparse@2.0.1"
+        "openapi-backend@5.21.3|argparse@2.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|undici@8.10.2"
+      "ref": "openapi-backend@5.21.3|undici@8.10.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|undici-types@6.21.0"
+      "ref": "openapi-backend@5.21.3|undici-types@6.21.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|@eslint-community/regexpp@4.12.2"
+      "ref": "openapi-backend@5.21.3|@eslint-community/regexpp@4.12.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/scope-manager@7.18.0",
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/scope-manager@7.18.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|@typescript-eslint/types@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/visitor-keys@7.18.0"
+        "openapi-backend@5.21.3|@typescript-eslint/types@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/visitor-keys@7.18.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/type-utils@7.18.0",
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/type-utils@7.18.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/utils@7.18.0",
-        "openapi-backend@5.21.2|debug@4.3.4",
-        "openapi-backend@5.21.2|eslint@8.57.1",
-        "openapi-backend@5.21.2|ts-api-utils@1.4.3"
+        "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/utils@7.18.0",
+        "openapi-backend@5.21.3|debug@4.3.4",
+        "openapi-backend@5.21.3|eslint@8.57.1",
+        "openapi-backend@5.21.3|ts-api-utils@1.4.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/utils@7.18.0",
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/utils@7.18.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|@eslint-community/eslint-utils@4.10.1",
-        "openapi-backend@5.21.2|@typescript-eslint/scope-manager@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/types@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0",
-        "openapi-backend@5.21.2|eslint@8.57.1"
+        "openapi-backend@5.21.3|@eslint-community/eslint-utils@4.10.1",
+        "openapi-backend@5.21.3|@typescript-eslint/scope-manager@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/types@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0",
+        "openapi-backend@5.21.3|eslint@8.57.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/visitor-keys@7.18.0",
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/visitor-keys@7.18.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|@typescript-eslint/types@7.18.0",
-        "openapi-backend@5.21.2|eslint-visitor-keys@3.4.3"
+        "openapi-backend@5.21.3|@typescript-eslint/types@7.18.0",
+        "openapi-backend@5.21.3|eslint-visitor-keys@3.4.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|graphemer@1.4.0"
+      "ref": "openapi-backend@5.21.3|graphemer@1.4.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|ignore@5.3.2"
+      "ref": "openapi-backend@5.21.3|ignore@5.3.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|natural-compare@1.4.0"
+      "ref": "openapi-backend@5.21.3|natural-compare@1.4.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|ts-api-utils@1.4.3",
+      "ref": "openapi-backend@5.21.3|ts-api-utils@1.4.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|typescript@5.2.2"
+        "openapi-backend@5.21.3|typescript@5.2.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/types@7.18.0"
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/types@7.18.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0",
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|@typescript-eslint/types@7.18.0",
-        "openapi-backend@5.21.2|@typescript-eslint/visitor-keys@7.18.0",
-        "openapi-backend@5.21.2|debug@4.3.4",
-        "openapi-backend@5.21.2|globby@11.1.0",
-        "openapi-backend@5.21.2|is-glob@4.0.3",
-        "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0|minimatch@9.0.9",
-        "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0|semver@7.8.5",
-        "openapi-backend@5.21.2|ts-api-utils@1.4.3"
+        "openapi-backend@5.21.3|@typescript-eslint/types@7.18.0",
+        "openapi-backend@5.21.3|@typescript-eslint/visitor-keys@7.18.0",
+        "openapi-backend@5.21.3|debug@4.3.4",
+        "openapi-backend@5.21.3|globby@11.1.0",
+        "openapi-backend@5.21.3|is-glob@4.0.3",
+        "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0|minimatch@9.0.9",
+        "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0|semver@7.8.5",
+        "openapi-backend@5.21.3|ts-api-utils@1.4.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0|minimatch@9.0.9",
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0|minimatch@9.0.9",
       "dependsOn": [
-        "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0|brace-expansion@2.1.7"
+        "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0|brace-expansion@2.1.7"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0|semver@7.8.5"
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0|semver@7.8.5"
     },
     {
-      "ref": "openapi-backend@5.21.2|@typescript-eslint/typescript-estree@7.18.0|brace-expansion@2.1.7",
+      "ref": "openapi-backend@5.21.3|@typescript-eslint/typescript-estree@7.18.0|brace-expansion@2.1.7",
       "dependsOn": [
-        "openapi-backend@5.21.2|balanced-match@1.0.0"
+        "openapi-backend@5.21.3|balanced-match@1.0.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|debug@4.3.4",
+      "ref": "openapi-backend@5.21.3|debug@4.3.4",
       "dependsOn": [
-        "openapi-backend@5.21.2|ms@2.1.2"
+        "openapi-backend@5.21.3|ms@2.1.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|fast-deep-equal@3.1.3"
+      "ref": "openapi-backend@5.21.3|fast-deep-equal@3.1.3"
     },
     {
-      "ref": "openapi-backend@5.21.2|fast-uri@3.1.8"
+      "ref": "openapi-backend@5.21.3|fast-uri@3.1.8"
     },
     {
-      "ref": "openapi-backend@5.21.2|json-schema-traverse@1.0.0"
+      "ref": "openapi-backend@5.21.3|json-schema-traverse@1.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|require-from-string@2.0.2"
+      "ref": "openapi-backend@5.21.3|require-from-string@2.0.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|@eslint-community/eslint-utils@4.10.1",
+      "ref": "openapi-backend@5.21.3|@eslint-community/eslint-utils@4.10.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|eslint-visitor-keys@3.4.3",
-        "openapi-backend@5.21.2|eslint@8.57.1"
+        "openapi-backend@5.21.3|eslint-visitor-keys@3.4.3",
+        "openapi-backend@5.21.3|eslint@8.57.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4",
+      "ref": "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4",
       "dependsOn": [
-        "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4|ajv@6.15.0",
-        "openapi-backend@5.21.2|debug@4.3.4",
-        "openapi-backend@5.21.2|espree@9.6.1",
-        "openapi-backend@5.21.2|globals@13.24.0",
-        "openapi-backend@5.21.2|ignore@5.3.2",
-        "openapi-backend@5.21.2|import-fresh@3.3.1",
-        "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4|js-yaml@4.3.2",
-        "openapi-backend@5.21.2|minimatch@3.1.5",
-        "openapi-backend@5.21.2|strip-json-comments@3.1.1"
+        "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4|ajv@6.15.0",
+        "openapi-backend@5.21.3|debug@4.3.4",
+        "openapi-backend@5.21.3|espree@9.6.1",
+        "openapi-backend@5.21.3|globals@13.24.0",
+        "openapi-backend@5.21.3|ignore@5.3.2",
+        "openapi-backend@5.21.3|import-fresh@3.3.1",
+        "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4|js-yaml@4.3.2",
+        "openapi-backend@5.21.3|minimatch@3.1.5",
+        "openapi-backend@5.21.3|strip-json-comments@3.1.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4|ajv@6.15.0",
+      "ref": "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4|ajv@6.15.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|fast-deep-equal@3.1.3",
-        "openapi-backend@5.21.2|fast-json-stable-stringify@2.1.0",
-        "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4|json-schema-traverse@0.4.1",
-        "openapi-backend@5.21.2|uri-js@4.4.1"
+        "openapi-backend@5.21.3|fast-deep-equal@3.1.3",
+        "openapi-backend@5.21.3|fast-json-stable-stringify@2.1.0",
+        "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4|json-schema-traverse@0.4.1",
+        "openapi-backend@5.21.3|uri-js@4.4.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4|js-yaml@4.3.2",
+      "ref": "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4|js-yaml@4.3.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|argparse@2.0.1"
+        "openapi-backend@5.21.3|argparse@2.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@eslint/eslintrc@2.1.4|json-schema-traverse@0.4.1"
+      "ref": "openapi-backend@5.21.3|@eslint/eslintrc@2.1.4|json-schema-traverse@0.4.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|@eslint/js@8.57.1"
+      "ref": "openapi-backend@5.21.3|@eslint/js@8.57.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|@humanwhocodes/config-array@0.13.0",
+      "ref": "openapi-backend@5.21.3|@humanwhocodes/config-array@0.13.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|@humanwhocodes/object-schema@2.0.3",
-        "openapi-backend@5.21.2|debug@4.3.4",
-        "openapi-backend@5.21.2|minimatch@3.1.5"
+        "openapi-backend@5.21.3|@humanwhocodes/object-schema@2.0.3",
+        "openapi-backend@5.21.3|debug@4.3.4",
+        "openapi-backend@5.21.3|minimatch@3.1.5"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@humanwhocodes/module-importer@1.0.1"
+      "ref": "openapi-backend@5.21.3|@humanwhocodes/module-importer@1.0.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|@nodelib/fs.walk@1.2.8",
+      "ref": "openapi-backend@5.21.3|@nodelib/fs.walk@1.2.8",
       "dependsOn": [
-        "openapi-backend@5.21.2|@nodelib/fs.scandir@2.1.5",
-        "openapi-backend@5.21.2|fastq@1.20.3"
+        "openapi-backend@5.21.3|@nodelib/fs.scandir@2.1.5",
+        "openapi-backend@5.21.3|fastq@1.20.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@ungap/structured-clone@1.4.0"
+      "ref": "openapi-backend@5.21.3|@ungap/structured-clone@1.4.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|chalk@4.1.1",
+      "ref": "openapi-backend@5.21.3|chalk@4.1.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|ansi-styles@4.3.0",
-        "openapi-backend@5.21.2|supports-color@7.2.0"
+        "openapi-backend@5.21.3|ansi-styles@4.3.0",
+        "openapi-backend@5.21.3|supports-color@7.2.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|cross-spawn@7.0.6",
+      "ref": "openapi-backend@5.21.3|cross-spawn@7.0.6",
       "dependsOn": [
-        "openapi-backend@5.21.2|path-key@3.1.1",
-        "openapi-backend@5.21.2|shebang-command@2.0.0",
-        "openapi-backend@5.21.2|which@2.0.2"
+        "openapi-backend@5.21.3|path-key@3.1.1",
+        "openapi-backend@5.21.3|shebang-command@2.0.0",
+        "openapi-backend@5.21.3|which@2.0.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|doctrine@3.0.0",
+      "ref": "openapi-backend@5.21.3|doctrine@3.0.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|esutils@2.0.3"
+        "openapi-backend@5.21.3|esutils@2.0.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|eslint-scope@7.2.2",
+      "ref": "openapi-backend@5.21.3|eslint-scope@7.2.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|esrecurse@4.3.0",
-        "openapi-backend@5.21.2|estraverse@5.3.0"
+        "openapi-backend@5.21.3|esrecurse@4.3.0",
+        "openapi-backend@5.21.3|estraverse@5.3.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|eslint-visitor-keys@3.4.3"
+      "ref": "openapi-backend@5.21.3|eslint-visitor-keys@3.4.3"
     },
     {
-      "ref": "openapi-backend@5.21.2|espree@9.6.1",
+      "ref": "openapi-backend@5.21.3|espree@9.6.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|acorn-jsx@5.3.2",
-        "openapi-backend@5.21.2|acorn@8.18.0",
-        "openapi-backend@5.21.2|eslint-visitor-keys@3.4.3"
+        "openapi-backend@5.21.3|acorn-jsx@5.3.2",
+        "openapi-backend@5.21.3|acorn@8.18.0",
+        "openapi-backend@5.21.3|eslint-visitor-keys@3.4.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|esquery@1.7.0",
+      "ref": "openapi-backend@5.21.3|esquery@1.7.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|estraverse@5.3.0"
+        "openapi-backend@5.21.3|estraverse@5.3.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|esutils@2.0.3"
+      "ref": "openapi-backend@5.21.3|esutils@2.0.3"
     },
     {
-      "ref": "openapi-backend@5.21.2|file-entry-cache@6.0.1",
+      "ref": "openapi-backend@5.21.3|file-entry-cache@6.0.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|flat-cache@3.2.0"
+        "openapi-backend@5.21.3|flat-cache@3.2.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|glob-parent@6.0.2",
+      "ref": "openapi-backend@5.21.3|glob-parent@6.0.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|is-glob@4.0.3"
+        "openapi-backend@5.21.3|is-glob@4.0.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|globals@13.24.0",
+      "ref": "openapi-backend@5.21.3|globals@13.24.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|globals@13.24.0|type-fest@0.20.2"
+        "openapi-backend@5.21.3|globals@13.24.0|type-fest@0.20.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|globals@13.24.0|type-fest@0.20.2"
+      "ref": "openapi-backend@5.21.3|globals@13.24.0|type-fest@0.20.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|imurmurhash@0.1.4"
+      "ref": "openapi-backend@5.21.3|imurmurhash@0.1.4"
     },
     {
-      "ref": "openapi-backend@5.21.2|is-glob@4.0.3",
+      "ref": "openapi-backend@5.21.3|is-glob@4.0.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|is-extglob@2.1.1"
+        "openapi-backend@5.21.3|is-extglob@2.1.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|is-path-inside@3.0.3"
+      "ref": "openapi-backend@5.21.3|is-path-inside@3.0.3"
     },
     {
-      "ref": "openapi-backend@5.21.2|json-stable-stringify-without-jsonify@1.0.1"
+      "ref": "openapi-backend@5.21.3|json-stable-stringify-without-jsonify@1.0.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|levn@0.4.1",
+      "ref": "openapi-backend@5.21.3|levn@0.4.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|prelude-ls@1.2.1",
-        "openapi-backend@5.21.2|type-check@0.4.0"
+        "openapi-backend@5.21.3|prelude-ls@1.2.1",
+        "openapi-backend@5.21.3|type-check@0.4.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|lodash.merge@4.6.2"
+      "ref": "openapi-backend@5.21.3|lodash.merge@4.6.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|minimatch@3.1.5",
+      "ref": "openapi-backend@5.21.3|minimatch@3.1.5",
       "dependsOn": [
-        "openapi-backend@5.21.2|brace-expansion@1.1.21"
+        "openapi-backend@5.21.3|brace-expansion@1.1.21"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|optionator@0.9.4",
+      "ref": "openapi-backend@5.21.3|optionator@0.9.4",
       "dependsOn": [
-        "openapi-backend@5.21.2|deep-is@0.1.4",
-        "openapi-backend@5.21.2|fast-levenshtein@2.0.6",
-        "openapi-backend@5.21.2|levn@0.4.1",
-        "openapi-backend@5.21.2|prelude-ls@1.2.1",
-        "openapi-backend@5.21.2|type-check@0.4.0",
-        "openapi-backend@5.21.2|word-wrap@1.2.5"
+        "openapi-backend@5.21.3|deep-is@0.1.4",
+        "openapi-backend@5.21.3|fast-levenshtein@2.0.6",
+        "openapi-backend@5.21.3|levn@0.4.1",
+        "openapi-backend@5.21.3|prelude-ls@1.2.1",
+        "openapi-backend@5.21.3|type-check@0.4.0",
+        "openapi-backend@5.21.3|word-wrap@1.2.5"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|strip-ansi@6.0.1",
+      "ref": "openapi-backend@5.21.3|strip-ansi@6.0.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|ansi-regex@5.0.1"
+        "openapi-backend@5.21.3|ansi-regex@5.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|text-table@0.2.0"
+      "ref": "openapi-backend@5.21.3|text-table@0.2.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|ajv-formats@2.1.1",
+      "ref": "openapi-backend@5.21.3|ajv-formats@2.1.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|ajv@8.20.0"
+        "openapi-backend@5.21.3|ajv@8.20.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|es-define-property@1.0.1"
+      "ref": "openapi-backend@5.21.3|es-define-property@1.0.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|side-channel@1.1.1",
+      "ref": "openapi-backend@5.21.3|side-channel@1.1.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|es-errors@1.3.0",
-        "openapi-backend@5.21.2|object-inspect@1.13.4",
-        "openapi-backend@5.21.2|side-channel-list@1.0.1",
-        "openapi-backend@5.21.2|side-channel-map@1.0.1",
-        "openapi-backend@5.21.2|side-channel-weakmap@1.0.2"
+        "openapi-backend@5.21.3|es-errors@1.3.0",
+        "openapi-backend@5.21.3|object-inspect@1.13.4",
+        "openapi-backend@5.21.3|side-channel-list@1.0.1",
+        "openapi-backend@5.21.3|side-channel-map@1.0.1",
+        "openapi-backend@5.21.3|side-channel-weakmap@1.0.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|buffer-from@1.1.1"
+      "ref": "openapi-backend@5.21.3|buffer-from@1.1.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|source-map@0.6.1"
+      "ref": "openapi-backend@5.21.3|source-map@0.6.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|@types/chai@5.2.3",
+      "ref": "openapi-backend@5.21.3|@types/chai@5.2.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|@types/deep-eql@4.0.2",
-        "openapi-backend@5.21.2|assertion-error@2.0.1"
+        "openapi-backend@5.21.3|@types/deep-eql@4.0.2",
+        "openapi-backend@5.21.3|assertion-error@2.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@vitest/mocker@5.0.2",
+      "ref": "openapi-backend@5.21.3|@vitest/mocker@5.0.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|@jridgewell/trace-mapping@0.3.31",
-        "openapi-backend@5.21.2|@vitest/spy@5.0.2",
-        "openapi-backend@5.21.2|estree-walker@3.0.3",
-        "openapi-backend@5.21.2|magic-string@1.4.2",
-        "openapi-backend@5.21.2|vite@8.3.1"
+        "openapi-backend@5.21.3|@jridgewell/trace-mapping@0.3.31",
+        "openapi-backend@5.21.3|@vitest/spy@5.0.2",
+        "openapi-backend@5.21.3|estree-walker@3.0.3",
+        "openapi-backend@5.21.3|magic-string@1.4.2",
+        "openapi-backend@5.21.3|vite@8.3.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|chai@6.2.2"
+      "ref": "openapi-backend@5.21.3|chai@6.2.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|es-module-lexer@2.3.2"
+      "ref": "openapi-backend@5.21.3|es-module-lexer@2.3.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|expect-type@1.4.0"
+      "ref": "openapi-backend@5.21.3|expect-type@1.4.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|magic-string@1.4.2",
+      "ref": "openapi-backend@5.21.3|magic-string@1.4.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|@jridgewell/sourcemap-codec@1.6.0"
+        "openapi-backend@5.21.3|@jridgewell/sourcemap-codec@1.6.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|obug@2.2.1"
+      "ref": "openapi-backend@5.21.3|obug@2.2.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|std-env@4.2.0"
+      "ref": "openapi-backend@5.21.3|std-env@4.2.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|tinybench@6.1.4"
+      "ref": "openapi-backend@5.21.3|tinybench@6.1.4"
     },
     {
-      "ref": "openapi-backend@5.21.2|tinyexec@1.3.0"
+      "ref": "openapi-backend@5.21.3|tinyexec@1.3.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|tinyglobby@0.2.17",
+      "ref": "openapi-backend@5.21.3|tinyglobby@0.2.17",
       "dependsOn": [
-        "openapi-backend@5.21.2|tinyglobby@0.2.17|fdir@6.5.0",
-        "openapi-backend@5.21.2|tinyglobby@0.2.17|picomatch@4.0.7"
+        "openapi-backend@5.21.3|tinyglobby@0.2.17|fdir@6.5.0",
+        "openapi-backend@5.21.3|tinyglobby@0.2.17|picomatch@4.0.7"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|tinyglobby@0.2.17|fdir@6.5.0",
+      "ref": "openapi-backend@5.21.3|tinyglobby@0.2.17|fdir@6.5.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|tinyglobby@0.2.17|picomatch@4.0.7"
+        "openapi-backend@5.21.3|tinyglobby@0.2.17|picomatch@4.0.7"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|tinyglobby@0.2.17|picomatch@4.0.7"
+      "ref": "openapi-backend@5.21.3|tinyglobby@0.2.17|picomatch@4.0.7"
     },
     {
-      "ref": "openapi-backend@5.21.2|vite@8.3.1",
+      "ref": "openapi-backend@5.21.3|vite@8.3.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|@types/node@22.20.4",
-        "openapi-backend@5.21.2|lightningcss@1.33.0",
-        "openapi-backend@5.21.2|vite@8.3.1|picomatch@4.0.7",
-        "openapi-backend@5.21.2|postcss@8.5.28",
-        "openapi-backend@5.21.2|rolldown@1.2.11",
-        "openapi-backend@5.21.2|tinyglobby@0.2.17"
+        "openapi-backend@5.21.3|@types/node@22.20.4",
+        "openapi-backend@5.21.3|lightningcss@1.33.0",
+        "openapi-backend@5.21.3|vite@8.3.1|picomatch@4.0.7",
+        "openapi-backend@5.21.3|postcss@8.5.28",
+        "openapi-backend@5.21.3|rolldown@1.2.11",
+        "openapi-backend@5.21.3|tinyglobby@0.2.17"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|vite@8.3.1|picomatch@4.0.7"
+      "ref": "openapi-backend@5.21.3|vite@8.3.1|picomatch@4.0.7"
     },
     {
-      "ref": "openapi-backend@5.21.2|why-is-node-running@3.2.2"
+      "ref": "openapi-backend@5.21.3|why-is-node-running@3.2.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|argparse@2.0.1"
+      "ref": "openapi-backend@5.21.3|argparse@2.0.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|globby@11.1.0",
+      "ref": "openapi-backend@5.21.3|globby@11.1.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|array-union@2.1.0",
-        "openapi-backend@5.21.2|dir-glob@3.0.1",
-        "openapi-backend@5.21.2|fast-glob@3.3.3",
-        "openapi-backend@5.21.2|ignore@5.3.2",
-        "openapi-backend@5.21.2|merge2@1.4.1",
-        "openapi-backend@5.21.2|slash@3.0.0"
+        "openapi-backend@5.21.3|array-union@2.1.0",
+        "openapi-backend@5.21.3|dir-glob@3.0.1",
+        "openapi-backend@5.21.3|fast-glob@3.3.3",
+        "openapi-backend@5.21.3|ignore@5.3.2",
+        "openapi-backend@5.21.3|merge2@1.4.1",
+        "openapi-backend@5.21.3|slash@3.0.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|ms@2.1.2"
+      "ref": "openapi-backend@5.21.3|ms@2.1.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|import-fresh@3.3.1",
+      "ref": "openapi-backend@5.21.3|import-fresh@3.3.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|parent-module@1.0.1",
-        "openapi-backend@5.21.2|import-fresh@3.3.1|resolve-from@4.0.0"
+        "openapi-backend@5.21.3|parent-module@1.0.1",
+        "openapi-backend@5.21.3|import-fresh@3.3.1|resolve-from@4.0.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|import-fresh@3.3.1|resolve-from@4.0.0"
+      "ref": "openapi-backend@5.21.3|import-fresh@3.3.1|resolve-from@4.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|strip-json-comments@3.1.1"
+      "ref": "openapi-backend@5.21.3|strip-json-comments@3.1.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|@humanwhocodes/object-schema@2.0.3"
+      "ref": "openapi-backend@5.21.3|@humanwhocodes/object-schema@2.0.3"
     },
     {
-      "ref": "openapi-backend@5.21.2|@nodelib/fs.scandir@2.1.5",
+      "ref": "openapi-backend@5.21.3|@nodelib/fs.scandir@2.1.5",
       "dependsOn": [
-        "openapi-backend@5.21.2|@nodelib/fs.stat@2.0.5",
-        "openapi-backend@5.21.2|run-parallel@1.2.0"
+        "openapi-backend@5.21.3|@nodelib/fs.stat@2.0.5",
+        "openapi-backend@5.21.3|run-parallel@1.2.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|fastq@1.20.3",
+      "ref": "openapi-backend@5.21.3|fastq@1.20.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|reusify@1.1.0"
+        "openapi-backend@5.21.3|reusify@1.1.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|fast-json-stable-stringify@2.1.0"
+      "ref": "openapi-backend@5.21.3|fast-json-stable-stringify@2.1.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|uri-js@4.4.1",
+      "ref": "openapi-backend@5.21.3|uri-js@4.4.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|punycode@2.3.1"
+        "openapi-backend@5.21.3|punycode@2.3.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|ansi-styles@4.3.0",
+      "ref": "openapi-backend@5.21.3|ansi-styles@4.3.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|color-convert@2.0.1"
+        "openapi-backend@5.21.3|color-convert@2.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|supports-color@7.2.0",
+      "ref": "openapi-backend@5.21.3|supports-color@7.2.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|has-flag@4.0.0"
+        "openapi-backend@5.21.3|has-flag@4.0.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|path-key@3.1.1"
+      "ref": "openapi-backend@5.21.3|path-key@3.1.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|shebang-command@2.0.0",
+      "ref": "openapi-backend@5.21.3|shebang-command@2.0.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|shebang-regex@3.0.0"
+        "openapi-backend@5.21.3|shebang-regex@3.0.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|which@2.0.2",
+      "ref": "openapi-backend@5.21.3|which@2.0.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|isexe@2.0.0"
+        "openapi-backend@5.21.3|isexe@2.0.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|esrecurse@4.3.0",
+      "ref": "openapi-backend@5.21.3|esrecurse@4.3.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|estraverse@5.3.0"
+        "openapi-backend@5.21.3|estraverse@5.3.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|estraverse@5.3.0"
+      "ref": "openapi-backend@5.21.3|estraverse@5.3.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|acorn-jsx@5.3.2",
+      "ref": "openapi-backend@5.21.3|acorn-jsx@5.3.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|acorn@8.18.0"
+        "openapi-backend@5.21.3|acorn@8.18.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|acorn@8.18.0"
+      "ref": "openapi-backend@5.21.3|acorn@8.18.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|flat-cache@3.2.0",
+      "ref": "openapi-backend@5.21.3|flat-cache@3.2.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|flatted@3.4.4",
-        "openapi-backend@5.21.2|keyv@4.5.4",
-        "openapi-backend@5.21.2|rimraf@3.0.2"
+        "openapi-backend@5.21.3|flatted@3.4.4",
+        "openapi-backend@5.21.3|keyv@4.5.4",
+        "openapi-backend@5.21.3|rimraf@3.0.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|path-exists@4.0.0"
+      "ref": "openapi-backend@5.21.3|path-exists@4.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|is-extglob@2.1.1"
+      "ref": "openapi-backend@5.21.3|is-extglob@2.1.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|prelude-ls@1.2.1"
+      "ref": "openapi-backend@5.21.3|prelude-ls@1.2.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|type-check@0.4.0",
+      "ref": "openapi-backend@5.21.3|type-check@0.4.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|prelude-ls@1.2.1"
+        "openapi-backend@5.21.3|prelude-ls@1.2.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|brace-expansion@1.1.21",
+      "ref": "openapi-backend@5.21.3|brace-expansion@1.1.21",
       "dependsOn": [
-        "openapi-backend@5.21.2|balanced-match@1.0.0",
-        "openapi-backend@5.21.2|concat-map@0.0.1"
+        "openapi-backend@5.21.3|balanced-match@1.0.0",
+        "openapi-backend@5.21.3|concat-map@0.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|deep-is@0.1.4"
+      "ref": "openapi-backend@5.21.3|deep-is@0.1.4"
     },
     {
-      "ref": "openapi-backend@5.21.2|fast-levenshtein@2.0.6"
+      "ref": "openapi-backend@5.21.3|fast-levenshtein@2.0.6"
     },
     {
-      "ref": "openapi-backend@5.21.2|word-wrap@1.2.5"
+      "ref": "openapi-backend@5.21.3|word-wrap@1.2.5"
     },
     {
-      "ref": "openapi-backend@5.21.2|ansi-regex@5.0.1"
+      "ref": "openapi-backend@5.21.3|ansi-regex@5.0.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|es-errors@1.3.0"
+      "ref": "openapi-backend@5.21.3|es-errors@1.3.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|object-inspect@1.13.4"
+      "ref": "openapi-backend@5.21.3|object-inspect@1.13.4"
     },
     {
-      "ref": "openapi-backend@5.21.2|side-channel-list@1.0.1",
+      "ref": "openapi-backend@5.21.3|side-channel-list@1.0.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|es-errors@1.3.0",
-        "openapi-backend@5.21.2|object-inspect@1.13.4"
+        "openapi-backend@5.21.3|es-errors@1.3.0",
+        "openapi-backend@5.21.3|object-inspect@1.13.4"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|side-channel-map@1.0.1",
+      "ref": "openapi-backend@5.21.3|side-channel-map@1.0.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|call-bound@1.0.4",
-        "openapi-backend@5.21.2|es-errors@1.3.0",
-        "openapi-backend@5.21.2|get-intrinsic@1.3.0",
-        "openapi-backend@5.21.2|object-inspect@1.13.4"
+        "openapi-backend@5.21.3|call-bound@1.0.4",
+        "openapi-backend@5.21.3|es-errors@1.3.0",
+        "openapi-backend@5.21.3|get-intrinsic@1.3.0",
+        "openapi-backend@5.21.3|object-inspect@1.13.4"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|side-channel-weakmap@1.0.2",
+      "ref": "openapi-backend@5.21.3|side-channel-weakmap@1.0.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|call-bound@1.0.4",
-        "openapi-backend@5.21.2|es-errors@1.3.0",
-        "openapi-backend@5.21.2|get-intrinsic@1.3.0",
-        "openapi-backend@5.21.2|object-inspect@1.13.4",
-        "openapi-backend@5.21.2|side-channel-map@1.0.1"
+        "openapi-backend@5.21.3|call-bound@1.0.4",
+        "openapi-backend@5.21.3|es-errors@1.3.0",
+        "openapi-backend@5.21.3|get-intrinsic@1.3.0",
+        "openapi-backend@5.21.3|object-inspect@1.13.4",
+        "openapi-backend@5.21.3|side-channel-map@1.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@types/deep-eql@4.0.2"
+      "ref": "openapi-backend@5.21.3|@types/deep-eql@4.0.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|assertion-error@2.0.1"
+      "ref": "openapi-backend@5.21.3|assertion-error@2.0.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|@jridgewell/trace-mapping@0.3.31",
+      "ref": "openapi-backend@5.21.3|@jridgewell/trace-mapping@0.3.31",
       "dependsOn": [
-        "openapi-backend@5.21.2|@jridgewell/resolve-uri@3.1.2",
-        "openapi-backend@5.21.2|@jridgewell/sourcemap-codec@1.6.0"
+        "openapi-backend@5.21.3|@jridgewell/resolve-uri@3.1.2",
+        "openapi-backend@5.21.3|@jridgewell/sourcemap-codec@1.6.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@vitest/spy@5.0.2"
+      "ref": "openapi-backend@5.21.3|@vitest/spy@5.0.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|estree-walker@3.0.3",
+      "ref": "openapi-backend@5.21.3|estree-walker@3.0.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|@types/estree@1.0.9"
+        "openapi-backend@5.21.3|@types/estree@1.0.9"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@jridgewell/sourcemap-codec@1.6.0"
+      "ref": "openapi-backend@5.21.3|@jridgewell/sourcemap-codec@1.6.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|lightningcss@1.33.0",
+      "ref": "openapi-backend@5.21.3|lightningcss@1.33.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|detect-libc@2.1.2",
-        "openapi-backend@5.21.2|lightningcss-linux-x64-gnu@1.33.0"
+        "openapi-backend@5.21.3|detect-libc@2.1.2",
+        "openapi-backend@5.21.3|lightningcss-linux-x64-gnu@1.33.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|postcss@8.5.28",
+      "ref": "openapi-backend@5.21.3|postcss@8.5.28",
       "dependsOn": [
-        "openapi-backend@5.21.2|nanoid@3.3.19",
-        "openapi-backend@5.21.2|picocolors@1.1.1",
-        "openapi-backend@5.21.2|source-map-js@1.2.2"
+        "openapi-backend@5.21.3|nanoid@3.3.19",
+        "openapi-backend@5.21.3|picocolors@1.1.1",
+        "openapi-backend@5.21.3|source-map-js@1.2.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|rolldown@1.2.11",
+      "ref": "openapi-backend@5.21.3|rolldown@1.2.11",
       "dependsOn": [
-        "openapi-backend@5.21.2|@oxc-project/types@0.151.0",
-        "openapi-backend@5.21.2|@rolldown/binding-linux-x64-gnu@1.2.11",
-        "openapi-backend@5.21.2|@rolldown/pluginutils@1.0.1"
+        "openapi-backend@5.21.3|@oxc-project/types@0.151.0",
+        "openapi-backend@5.21.3|@rolldown/binding-linux-x64-gnu@1.2.11",
+        "openapi-backend@5.21.3|@rolldown/pluginutils@1.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|array-union@2.1.0"
+      "ref": "openapi-backend@5.21.3|array-union@2.1.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|dir-glob@3.0.1",
+      "ref": "openapi-backend@5.21.3|dir-glob@3.0.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|path-type@4.0.0"
+        "openapi-backend@5.21.3|path-type@4.0.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|fast-glob@3.3.3",
+      "ref": "openapi-backend@5.21.3|fast-glob@3.3.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|@nodelib/fs.stat@2.0.5",
-        "openapi-backend@5.21.2|@nodelib/fs.walk@1.2.8",
-        "openapi-backend@5.21.2|fast-glob@3.3.3|glob-parent@5.1.2",
-        "openapi-backend@5.21.2|merge2@1.4.1",
-        "openapi-backend@5.21.2|micromatch@4.0.8"
+        "openapi-backend@5.21.3|@nodelib/fs.stat@2.0.5",
+        "openapi-backend@5.21.3|@nodelib/fs.walk@1.2.8",
+        "openapi-backend@5.21.3|fast-glob@3.3.3|glob-parent@5.1.2",
+        "openapi-backend@5.21.3|merge2@1.4.1",
+        "openapi-backend@5.21.3|micromatch@4.0.8"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|fast-glob@3.3.3|glob-parent@5.1.2",
+      "ref": "openapi-backend@5.21.3|fast-glob@3.3.3|glob-parent@5.1.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|is-glob@4.0.3"
+        "openapi-backend@5.21.3|is-glob@4.0.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|merge2@1.4.1"
+      "ref": "openapi-backend@5.21.3|merge2@1.4.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|slash@3.0.0"
+      "ref": "openapi-backend@5.21.3|slash@3.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|parent-module@1.0.1",
+      "ref": "openapi-backend@5.21.3|parent-module@1.0.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|callsites@3.1.0"
+        "openapi-backend@5.21.3|callsites@3.1.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@nodelib/fs.stat@2.0.5"
+      "ref": "openapi-backend@5.21.3|@nodelib/fs.stat@2.0.5"
     },
     {
-      "ref": "openapi-backend@5.21.2|run-parallel@1.2.0",
+      "ref": "openapi-backend@5.21.3|run-parallel@1.2.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|queue-microtask@1.2.3"
+        "openapi-backend@5.21.3|queue-microtask@1.2.3"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|reusify@1.1.0"
+      "ref": "openapi-backend@5.21.3|reusify@1.1.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|punycode@2.3.1"
+      "ref": "openapi-backend@5.21.3|punycode@2.3.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|color-convert@2.0.1",
+      "ref": "openapi-backend@5.21.3|color-convert@2.0.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|color-name@1.1.4"
+        "openapi-backend@5.21.3|color-name@1.1.4"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|has-flag@4.0.0"
+      "ref": "openapi-backend@5.21.3|has-flag@4.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|shebang-regex@3.0.0"
+      "ref": "openapi-backend@5.21.3|shebang-regex@3.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|isexe@2.0.0"
+      "ref": "openapi-backend@5.21.3|isexe@2.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|flatted@3.4.4"
+      "ref": "openapi-backend@5.21.3|flatted@3.4.4"
     },
     {
-      "ref": "openapi-backend@5.21.2|keyv@4.5.4",
+      "ref": "openapi-backend@5.21.3|keyv@4.5.4",
       "dependsOn": [
-        "openapi-backend@5.21.2|json-buffer@3.0.1"
+        "openapi-backend@5.21.3|json-buffer@3.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|rimraf@3.0.2",
+      "ref": "openapi-backend@5.21.3|rimraf@3.0.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|glob@7.1.6"
+        "openapi-backend@5.21.3|glob@7.1.6"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|balanced-match@1.0.0"
+      "ref": "openapi-backend@5.21.3|balanced-match@1.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|concat-map@0.0.1"
+      "ref": "openapi-backend@5.21.3|concat-map@0.0.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|call-bound@1.0.4",
+      "ref": "openapi-backend@5.21.3|call-bound@1.0.4",
       "dependsOn": [
-        "openapi-backend@5.21.2|call-bind-apply-helpers@1.0.2",
-        "openapi-backend@5.21.2|get-intrinsic@1.3.0"
+        "openapi-backend@5.21.3|call-bind-apply-helpers@1.0.2",
+        "openapi-backend@5.21.3|get-intrinsic@1.3.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|get-intrinsic@1.3.0",
+      "ref": "openapi-backend@5.21.3|get-intrinsic@1.3.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|call-bind-apply-helpers@1.0.2",
-        "openapi-backend@5.21.2|es-define-property@1.0.1",
-        "openapi-backend@5.21.2|es-errors@1.3.0",
-        "openapi-backend@5.21.2|es-object-atoms@1.1.2",
-        "openapi-backend@5.21.2|function-bind@1.1.2",
-        "openapi-backend@5.21.2|get-proto@1.0.1",
-        "openapi-backend@5.21.2|gopd@1.2.0",
-        "openapi-backend@5.21.2|has-symbols@1.1.0",
-        "openapi-backend@5.21.2|hasown@2.0.4",
-        "openapi-backend@5.21.2|math-intrinsics@1.1.0"
+        "openapi-backend@5.21.3|call-bind-apply-helpers@1.0.2",
+        "openapi-backend@5.21.3|es-define-property@1.0.1",
+        "openapi-backend@5.21.3|es-errors@1.3.0",
+        "openapi-backend@5.21.3|es-object-atoms@1.1.2",
+        "openapi-backend@5.21.3|function-bind@1.1.2",
+        "openapi-backend@5.21.3|get-proto@1.0.1",
+        "openapi-backend@5.21.3|gopd@1.2.0",
+        "openapi-backend@5.21.3|has-symbols@1.1.0",
+        "openapi-backend@5.21.3|hasown@2.0.4",
+        "openapi-backend@5.21.3|math-intrinsics@1.1.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|@jridgewell/resolve-uri@3.1.2"
+      "ref": "openapi-backend@5.21.3|@jridgewell/resolve-uri@3.1.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|@types/estree@1.0.9"
+      "ref": "openapi-backend@5.21.3|@types/estree@1.0.9"
     },
     {
-      "ref": "openapi-backend@5.21.2|detect-libc@2.1.2"
+      "ref": "openapi-backend@5.21.3|detect-libc@2.1.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|lightningcss-linux-x64-gnu@1.33.0"
+      "ref": "openapi-backend@5.21.3|lightningcss-linux-x64-gnu@1.33.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|nanoid@3.3.19"
+      "ref": "openapi-backend@5.21.3|nanoid@3.3.19"
     },
     {
-      "ref": "openapi-backend@5.21.2|picocolors@1.1.1"
+      "ref": "openapi-backend@5.21.3|picocolors@1.1.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|source-map-js@1.2.2"
+      "ref": "openapi-backend@5.21.3|source-map-js@1.2.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|@oxc-project/types@0.151.0"
+      "ref": "openapi-backend@5.21.3|@oxc-project/types@0.151.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|@rolldown/binding-linux-x64-gnu@1.2.11"
+      "ref": "openapi-backend@5.21.3|@rolldown/binding-linux-x64-gnu@1.2.11"
     },
     {
-      "ref": "openapi-backend@5.21.2|@rolldown/pluginutils@1.0.1"
+      "ref": "openapi-backend@5.21.3|@rolldown/pluginutils@1.0.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|path-type@4.0.0"
+      "ref": "openapi-backend@5.21.3|path-type@4.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|micromatch@4.0.8",
+      "ref": "openapi-backend@5.21.3|micromatch@4.0.8",
       "dependsOn": [
-        "openapi-backend@5.21.2|braces@3.0.3",
-        "openapi-backend@5.21.2|picomatch@2.3.2"
+        "openapi-backend@5.21.3|braces@3.0.3",
+        "openapi-backend@5.21.3|picomatch@2.3.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|callsites@3.1.0"
+      "ref": "openapi-backend@5.21.3|callsites@3.1.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|queue-microtask@1.2.3"
+      "ref": "openapi-backend@5.21.3|queue-microtask@1.2.3"
     },
     {
-      "ref": "openapi-backend@5.21.2|color-name@1.1.4"
+      "ref": "openapi-backend@5.21.3|color-name@1.1.4"
     },
     {
-      "ref": "openapi-backend@5.21.2|json-buffer@3.0.1"
+      "ref": "openapi-backend@5.21.3|json-buffer@3.0.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|glob@7.1.6",
+      "ref": "openapi-backend@5.21.3|glob@7.1.6",
       "dependsOn": [
-        "openapi-backend@5.21.2|fs.realpath@1.0.0",
-        "openapi-backend@5.21.2|inflight@1.0.6",
-        "openapi-backend@5.21.2|inherits@2.0.3",
-        "openapi-backend@5.21.2|minimatch@3.1.5",
-        "openapi-backend@5.21.2|once@1.4.0",
-        "openapi-backend@5.21.2|path-is-absolute@1.0.1"
+        "openapi-backend@5.21.3|fs.realpath@1.0.0",
+        "openapi-backend@5.21.3|inflight@1.0.6",
+        "openapi-backend@5.21.3|inherits@2.0.3",
+        "openapi-backend@5.21.3|minimatch@3.1.5",
+        "openapi-backend@5.21.3|once@1.4.0",
+        "openapi-backend@5.21.3|path-is-absolute@1.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|p-limit@3.1.0",
+      "ref": "openapi-backend@5.21.3|p-limit@3.1.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|yocto-queue@0.1.0"
+        "openapi-backend@5.21.3|yocto-queue@0.1.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|call-bind-apply-helpers@1.0.2",
+      "ref": "openapi-backend@5.21.3|call-bind-apply-helpers@1.0.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|es-errors@1.3.0",
-        "openapi-backend@5.21.2|function-bind@1.1.2"
+        "openapi-backend@5.21.3|es-errors@1.3.0",
+        "openapi-backend@5.21.3|function-bind@1.1.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|es-object-atoms@1.1.2",
+      "ref": "openapi-backend@5.21.3|es-object-atoms@1.1.2",
       "dependsOn": [
-        "openapi-backend@5.21.2|es-errors@1.3.0"
+        "openapi-backend@5.21.3|es-errors@1.3.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|function-bind@1.1.2"
+      "ref": "openapi-backend@5.21.3|function-bind@1.1.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|get-proto@1.0.1",
+      "ref": "openapi-backend@5.21.3|get-proto@1.0.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|dunder-proto@1.0.1",
-        "openapi-backend@5.21.2|es-object-atoms@1.1.2"
+        "openapi-backend@5.21.3|dunder-proto@1.0.1",
+        "openapi-backend@5.21.3|es-object-atoms@1.1.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|gopd@1.2.0"
+      "ref": "openapi-backend@5.21.3|gopd@1.2.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|has-symbols@1.1.0"
+      "ref": "openapi-backend@5.21.3|has-symbols@1.1.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|hasown@2.0.4",
+      "ref": "openapi-backend@5.21.3|hasown@2.0.4",
       "dependsOn": [
-        "openapi-backend@5.21.2|function-bind@1.1.2"
+        "openapi-backend@5.21.3|function-bind@1.1.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|math-intrinsics@1.1.0"
+      "ref": "openapi-backend@5.21.3|math-intrinsics@1.1.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|braces@3.0.3",
+      "ref": "openapi-backend@5.21.3|braces@3.0.3",
       "dependsOn": [
-        "openapi-backend@5.21.2|braces@3.0.3|fill-range@7.1.1"
+        "openapi-backend@5.21.3|braces@3.0.3|fill-range@7.1.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|braces@3.0.3|fill-range@7.1.1",
+      "ref": "openapi-backend@5.21.3|braces@3.0.3|fill-range@7.1.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|to-regex-range@5.0.1"
+        "openapi-backend@5.21.3|to-regex-range@5.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|picomatch@2.3.2"
+      "ref": "openapi-backend@5.21.3|picomatch@2.3.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|fs.realpath@1.0.0"
+      "ref": "openapi-backend@5.21.3|fs.realpath@1.0.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|inflight@1.0.6",
+      "ref": "openapi-backend@5.21.3|inflight@1.0.6",
       "dependsOn": [
-        "openapi-backend@5.21.2|once@1.4.0",
-        "openapi-backend@5.21.2|wrappy@1.0.2"
+        "openapi-backend@5.21.3|once@1.4.0",
+        "openapi-backend@5.21.3|wrappy@1.0.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|inherits@2.0.3"
+      "ref": "openapi-backend@5.21.3|inherits@2.0.3"
     },
     {
-      "ref": "openapi-backend@5.21.2|once@1.4.0",
+      "ref": "openapi-backend@5.21.3|once@1.4.0",
       "dependsOn": [
-        "openapi-backend@5.21.2|wrappy@1.0.2"
+        "openapi-backend@5.21.3|wrappy@1.0.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|path-is-absolute@1.0.1"
+      "ref": "openapi-backend@5.21.3|path-is-absolute@1.0.1"
     },
     {
-      "ref": "openapi-backend@5.21.2|yocto-queue@0.1.0"
+      "ref": "openapi-backend@5.21.3|yocto-queue@0.1.0"
     },
     {
-      "ref": "openapi-backend@5.21.2|dunder-proto@1.0.1",
+      "ref": "openapi-backend@5.21.3|dunder-proto@1.0.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|call-bind-apply-helpers@1.0.2",
-        "openapi-backend@5.21.2|es-errors@1.3.0",
-        "openapi-backend@5.21.2|gopd@1.2.0"
+        "openapi-backend@5.21.3|call-bind-apply-helpers@1.0.2",
+        "openapi-backend@5.21.3|es-errors@1.3.0",
+        "openapi-backend@5.21.3|gopd@1.2.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|wrappy@1.0.2"
+      "ref": "openapi-backend@5.21.3|wrappy@1.0.2"
     },
     {
-      "ref": "openapi-backend@5.21.2|to-regex-range@5.0.1",
+      "ref": "openapi-backend@5.21.3|to-regex-range@5.0.1",
       "dependsOn": [
-        "openapi-backend@5.21.2|to-regex-range@5.0.1|is-number@7.0.0"
+        "openapi-backend@5.21.3|to-regex-range@5.0.1|is-number@7.0.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.21.2|to-regex-range@5.0.1|is-number@7.0.0"
+      "ref": "openapi-backend@5.21.3|to-regex-range@5.0.1|is-number@7.0.0"
     }
   ]
 }
