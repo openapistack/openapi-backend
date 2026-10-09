@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Regenerates the SBOM, license listings, and THIRD_PARTY_NOTICES.md from the installed dependency tree.
-# Usage: npm run sbom
+# Usage: npm run sbom, or scripts/generate-sbom.sh <project-dir> to run it against another checkout (release.yml).
 set -euo pipefail
 
-cd "$(dirname "$0")/.."
+cd "${1:-$(dirname "$0")/..}"
 mkdir -p sbom
 
 npx --yes @cyclonedx/cyclonedx-npm --omit dev --output-format JSON --output-file sbom/openapi-backend.cdx.json

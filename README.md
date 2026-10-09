@@ -435,6 +435,8 @@ It also includes models that let CodeQL's built-in queries (SQL injection, XSS, 
 
 A [CycloneDX](https://cyclonedx.org) SBOM for the published package is maintained in [`sbom/openapi-backend.cdx.json`](sbom/openapi-backend.cdx.json), alongside a [full-tree variant](sbom/openapi-backend.full.cdx.json) that includes devDependencies and CSV license listings. Third-party licenses and copyright holders are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
+Starting with the first release after 5.21.2, each [GitHub release](https://github.com/openapistack/openapi-backend/releases) has the SBOMs, license listings and notices generated at its tag attached as assets. Release notes are collected in [CHANGELOG.md](CHANGELOG.md).
+
 To browse the SBOM interactively, open [CycloneDX Sunshine](https://cyclonedx.github.io/Sunshine/) and load the JSON file.
 
 Regenerate after dependency changes with:

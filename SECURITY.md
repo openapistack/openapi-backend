@@ -105,6 +105,8 @@ gh attestation verify openapi-backend-5.21.2.tgz --bundle provenance.jsonl --dig
   --source-ref refs/tags/5.21.2
 ```
 
+Each GitHub release after 5.21.2 also carries the CycloneDX SBOM, license listings and third-party notices generated at its tag, and its changes are listed in [CHANGELOG.md](CHANGELOG.md).
+
 Provenance tells you where a release was built, not that its code is good, and it names a workflow and a tag, not a person. Dependency versions come from your lockfile, not from this project. Commit one, and review the diff when you bump.
 
 ## Incident Response Plan
