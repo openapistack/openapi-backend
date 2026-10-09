@@ -46,10 +46,19 @@ export const compareVersions = (a, b) => {
 
 const truncate = (text, max) => (text.length > max ? `${text.slice(0, max)}\n[truncated]` : text);
 
+// Drops HTML comments (PR template boilerplate). Repeats until stable, so `<!<!-- -->--` can't leave one behind.
+const stripComments = (text) => {
+  let previous;
+  do {
+    previous = text;
+    text = text.replace(/<!--[\s\S]*?-->/g, '');
+  } while (text !== previous);
+  return text;
+};
+
 const cleanBody = (text) =>
   truncate(
-    (text || '')
-      .replace(/<!--[\s\S]*?-->/g, '')
+    stripComments(text || '')
       .replace(/\r\n/g, '\n')
       .replace(/\n{3,}/g, '\n\n')
       .trim(),
