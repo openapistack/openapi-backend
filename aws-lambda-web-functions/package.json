@@ -1,0 +1,22 @@
+{
+  "name": "openapi-backend-aws-lambda-web-functions",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Viljami Kuosmanen <viljami@avoinsorsa.fi>",
+  "license": "MIT",
+  "keywords": [],
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "vitest run",
+    "build": "rm -rf build && mkdir build && cp index.js openapi.yml package.json package-lock.json build/ && npm ci --omit=dev --ignore-scripts --prefix build",
+    "deploy": "npm run build && aws lambda-web deploy --name openapi-backend-example --code build"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "openapi-backend": "^5.21.3"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.11"
+  }
+}
