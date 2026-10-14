@@ -69,7 +69,7 @@ jobs:
           path: .release-tools
           sparse-checkout: scripts
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
@@ -108,7 +108,7 @@ jobs:
       COPILOT_VERSION: 1.0.94
       MODEL: ${{ vars.RELEASE_NOTES_MODEL || 'claude-sonnet-5.5' }}
     steps:
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24"
           package-manager-cache: false
