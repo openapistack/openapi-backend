@@ -903,13 +903,13 @@ export class OpenAPIValidator<D extends Document = Document> {
       _.mapKeys(response.headers, (h, headerName: string) => {
         const header = h as PickVersionElement<D, OpenAPIV3.HeaderObject, OpenAPIV3_1.HeaderObject>;
         headerName = headerName.toLowerCase();
-        if (header.schema) {
-          properties[headerName] = header.schema as PickVersionElement<
-            D,
-            OpenAPIV3.SchemaObject,
-            OpenAPIV3_1.SchemaObject
-          >;
+        if (header.required) {
           required.push(headerName);
+        }
+        if (header.schema || header.required) {
+          properties[headerName] = header.schema
+            ? (header.schema as PickVersionElement<D, OpenAPIV3.SchemaObject, OpenAPIV3_1.SchemaObject>)
+            : {};
         }
         return null;
       });
