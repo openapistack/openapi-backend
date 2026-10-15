@@ -27,6 +27,7 @@ jobs:
           - examples/serverless-framework
           - examples/aws-sam
           - examples/aws-cdk
+          - examples/aws-lambda-web-functions
     steps:
       - uses: actions/checkout@v7
         with:
