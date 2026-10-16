@@ -4,6 +4,16 @@ All notable changes to openapi-backend. This project follows [Semantic Versionin
 
 New entries are drafted by an AI model from the merged pull requests and commits when a version tag is pushed, checked by a script, and published here and on [GitHub Releases](https://github.com/openapistack/openapi-backend/releases) by [`release.yml`](.github/workflows/release.yml). Releases before 5.16.0 are listed in the [tags](https://github.com/openapistack/openapi-backend/tags).
 
+## [5.22.0](https://github.com/openapistack/openapi-backend/compare/5.21.3...5.22.0) - 2026-10-16
+
+Response header validation now honors the OpenAPI `required` property, which may change which responses pass validation.
+
+### Changed
+- Response header validation now honors `required`. Optional headers may be absent in `superset` and `exact` matching, but any optional header that is present is still checked against its schema. A header declared `required: true` is checked even without a schema. If your definitions relied on every declared header being treated as required, mark those headers `required: true` ([#1034](https://github.com/openapistack/openapi-backend/pull/1034), thanks [@wangyusheng1985](https://github.com/wangyusheng1985))
+
+### Dependencies
+- Lockfile and development dependency updates.
+
 ## [5.21.3](https://github.com/openapistack/openapi-backend/compare/5.21.2...5.21.3) - 2026-10-09
 
 This release has no changes to the library's runtime behavior. It updates the security policy and threat model documentation, and refreshes development dependencies.
