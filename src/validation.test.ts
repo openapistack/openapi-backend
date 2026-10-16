@@ -1089,22 +1089,47 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                   headers: {
                     'X-Integer': {
                       description: 'A header with an Integer',
+                      required: true,
                       schema: {
                         type: 'integer',
                       },
                     },
                     'X-String': {
                       description: 'The number of remaining requests in the current period',
+                      required: true,
                       schema: {
                         type: 'string',
                       },
                     },
                     'X-Boolean': {
                       description: 'The number of seconds left in the current period',
+                      required: true,
                       schema: {
                         type: 'boolean',
                       },
                     },
+                  },
+                },
+                202: {
+                  description: 'mixed required and optional headers',
+                  headers: {
+                    'X-Required': {
+                      required: true,
+                      schema: { type: 'integer' },
+                    },
+                    'X-Optional': {
+                      required: false,
+                      schema: { type: 'integer' },
+                    },
+                    'X-Omitted': {
+                      schema: { type: 'string', pattern: '^ok$' },
+                    },
+                  },
+                },
+                203: {
+                  description: 'required header without a schema',
+                  headers: {
+                    'X-No-Schema': { required: true },
                   },
                 },
                 '2XX': {
@@ -1112,18 +1137,21 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                   headers: {
                     'X-Other-Integer': {
                       description: 'A header with an Integer',
+                      required: true,
                       schema: {
                         type: 'integer',
                       },
                     },
                     'X-Other-String': {
                       description: 'The number of remaining requests in the current period',
+                      required: true,
                       schema: {
                         type: 'string',
                       },
                     },
                     'X-Other-Boolean': {
                       description: 'The number of seconds left in the current period',
+                      required: false,
                       schema: {
                         type: 'boolean',
                       },
@@ -1140,18 +1168,21 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                   headers: {
                     'X-Integer': {
                       description: 'A header with an Integer',
+                      required: true,
                       schema: {
                         type: 'integer',
                       },
                     },
                     'X-String': {
                       description: 'The number of remaining requests in the current period',
+                      required: true,
                       schema: {
                         type: 'string',
                       },
                     },
                     'X-Boolean': {
                       description: 'The number of seconds left in the current period',
+                      required: true,
                       schema: {
                         type: 'boolean',
                       },
@@ -1163,18 +1194,21 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
                   headers: {
                     'X-Other-Integer': {
                       description: 'A header with an Integer',
+                      required: true,
                       schema: {
                         type: 'integer',
                       },
                     },
                     'X-Other-String': {
                       description: 'The number of remaining requests in the current period',
+                      required: true,
                       schema: {
                         type: 'string',
                       },
                     },
                     'X-Other-Boolean': {
                       description: 'The number of seconds left in the current period',
+                      required: true,
                       schema: {
                         type: 'boolean',
                       },
@@ -1187,6 +1221,96 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
         },
       },
       ...constructorOpts,
+    });
+
+    test.each([SetMatchType.Superset, SetMatchType.Exact])(
+      'requires only required:true headers with %s',
+      (setMatchType) => {
+        expect(
+          validator.validateResponseHeaders({ 'X-REQUIRED': '42' }, 'listPets', {
+            statusCode: 202,
+            setMatchType,
+          }).valid,
+        ).toBe(true);
+        const missing = validator.validateResponseHeaders({ 'x-optional': '42' }, 'listPets', {
+          statusCode: 202,
+          setMatchType,
+        });
+        expect(missing.valid).toBe(false);
+        expect(missing.errors).toEqual(expect.arrayContaining([expect.objectContaining({ keyword: 'required' })]));
+      },
+    );
+
+    test.each(Object.values(SetMatchType))('validates present optional headers with %s', (setMatchType) => {
+      const valid = validator.validateResponseHeaders(
+        { 'x-required': '42', 'X-OPTIONAL': '7', 'X-Omitted': 'ok' },
+        'listPets',
+        { statusCode: 202, setMatchType },
+      );
+      expect(valid.valid).toBe(true);
+
+      for (const optionalHeader of ['X-OPTIONAL', 'X-Omitted']) {
+        const invalid = validator.validateResponseHeaders(
+          { 'x-required': '42', [optionalHeader]: optionalHeader === 'X-Omitted' ? 'wrong' : 'not-an-integer' },
+          'listPets',
+          { statusCode: 202, setMatchType },
+        );
+        expect(invalid.valid).toBe(false);
+      }
+    });
+
+    test.each([SetMatchType.Any, SetMatchType.Subset])('allows missing required headers with %s', (setMatchType) => {
+      expect(validator.validateResponseHeaders({}, 'listPets', { statusCode: 202, setMatchType }).valid).toBe(true);
+    });
+
+    test('allows extras in Superset and Any but rejects them in Exact and Subset', () => {
+      for (const setMatchType of [SetMatchType.Superset, SetMatchType.Any]) {
+        expect(
+          validator.validateResponseHeaders({ 'x-required': '42', 'X-Extra': 'value' }, 'listPets', {
+            statusCode: 202,
+            setMatchType,
+          }).valid,
+        ).toBe(true);
+      }
+      for (const setMatchType of [SetMatchType.Exact, SetMatchType.Subset]) {
+        expect(
+          validator.validateResponseHeaders({ 'x-required': '42', 'X-Extra': 'value' }, 'listPets', {
+            statusCode: 202,
+            setMatchType,
+          }).valid,
+        ).toBe(false);
+      }
+    });
+
+    test('requires declared headers without schemas and accepts them in Exact', () => {
+      expect(
+        validator.validateResponseHeaders({}, 'listPets', { statusCode: 203, setMatchType: SetMatchType.Exact }).valid,
+      ).toBe(false);
+      expect(
+        validator.validateResponseHeaders({ 'x-NO-schema': 'value' }, 'listPets', {
+          statusCode: 203,
+          setMatchType: SetMatchType.Exact,
+        }).valid,
+      ).toBe(true);
+    });
+
+    test('uses the pattern status fallback for required and optional headers', () => {
+      expect(
+        validator.validateResponseHeaders({}, 'listPets', { statusCode: 205, setMatchType: SetMatchType.Exact }).valid,
+      ).toBe(false);
+      expect(
+        validator.validateResponseHeaders({ 'X-OTHER-INTEGER': '42', 'X-Other-String': 'ok' }, 'listPets', {
+          statusCode: 205,
+          setMatchType: SetMatchType.Exact,
+        }).valid,
+      ).toBe(true);
+      expect(
+        validator.validateResponseHeaders(
+          { 'X-OTHER-INTEGER': '42', 'X-Other-String': 'ok', 'X-OTHER-BOOLEAN': 'invalid' },
+          'listPets',
+          { statusCode: 205, setMatchType: SetMatchType.Exact },
+        ).valid,
+      ).toBe(false);
     });
 
     test('passes validation with valid header object and operationId listPets, no options', async () => {
