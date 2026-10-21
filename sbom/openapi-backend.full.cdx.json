@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:c9ab500e-7377-4f3c-86e9-263f7a51f8da",
+  "serialNumber": "urn:uuid:fca762ab-eb44-4310-9129-3cd92b1007c5",
   "metadata": {
-    "timestamp": "2026-10-16T05:07:27.770Z",
+    "timestamp": "2026-10-21T04:01:18.362Z",
     "tools": {
       "components": [
         {
@@ -5874,8 +5874,8 @@
     {
       "type": "library",
       "name": "vite",
-      "version": "8.3.1",
-      "bom-ref": "openapi-backend@5.22.0|vite@8.3.1",
+      "version": "8.3.4",
+      "bom-ref": "openapi-backend@5.22.0|vite@8.3.4",
       "author": "Evan You",
       "description": "Native-ESM powered web dev build tool",
       "licenses": [
@@ -5886,7 +5886,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/vite@8.3.1",
+      "purl": "pkg:npm/vite@8.3.4",
       "externalReferences": [
         {
           "url": "git+https://github.com/vitejs/vite.git#packages/vite",
@@ -5904,12 +5904,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/vite/-/vite-8.3.1.tgz",
+          "url": "https://registry.npmjs.org/vite/-/vite-8.3.4.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "fdbbc7f44f6d9825d11a9dae5d8dd66ce95daa94f01646e16bff0035a110e95931847eb42b2a8bc2066aea51b6cbee2e4f9e71f7ef5e50732943bb869ce08a8c"
+              "content": "21fb4b13ca6126174d44818d115e09082bdf35272865055f71768df1342ba2958626d38772efa2001f691dcb86be611bfe475dc342c17bf8d2f33b5d0bac5d89"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5934,7 +5934,7 @@
           "type": "library",
           "name": "picomatch",
           "version": "4.0.7",
-          "bom-ref": "openapi-backend@5.22.0|vite@8.3.1|picomatch@4.0.7",
+          "bom-ref": "openapi-backend@5.22.0|vite@8.3.4|picomatch@4.0.7",
           "author": "Jon Schlinkert",
           "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
           "licenses": [
@@ -8445,8 +8445,8 @@
     {
       "type": "library",
       "name": "postcss",
-      "version": "8.5.28",
-      "bom-ref": "openapi-backend@5.22.0|postcss@8.5.28",
+      "version": "8.5.31",
+      "bom-ref": "openapi-backend@5.22.0|postcss@8.5.31",
       "author": "Andrey Sitnik",
       "description": "Tool for transforming styles with JS plugins",
       "licenses": [
@@ -8457,7 +8457,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/postcss@8.5.28",
+      "purl": "pkg:npm/postcss@8.5.31",
       "externalReferences": [
         {
           "url": "git+https://github.com/postcss/postcss.git",
@@ -8475,12 +8475,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/postcss/-/postcss-8.5.28.tgz",
+          "url": "https://registry.npmjs.org/postcss/-/postcss-8.5.31.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "451bb3a83b6de58f61deabb3e615a12be4cf9ec995b3a5b0494e8b90931e6381ecb54103b984c6f1425275ac0c4739b302d57e284a06f0ddd0836a8bcb9bccfc"
+              "content": "6146d6602804af09cc01592352761af8a94c0731a91f0888b7f0c4edfd06df702e5f62c7f5471393a2a05b1777cd153ea4ddeefc2f9797712730b3381de6bb4a"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8504,8 +8504,8 @@
     {
       "type": "library",
       "name": "rolldown",
-      "version": "1.2.11",
-      "bom-ref": "openapi-backend@5.22.0|rolldown@1.2.11",
+      "version": "1.2.14",
+      "bom-ref": "openapi-backend@5.22.0|rolldown@1.2.14",
       "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
       "licenses": [
         {
@@ -8515,7 +8515,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/rolldown@1.2.11",
+      "purl": "pkg:npm/rolldown@1.2.14",
       "externalReferences": [
         {
           "url": "git+https://github.com/rolldown/rolldown.git#packages/rolldown",
@@ -8533,12 +8533,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.11.tgz",
+          "url": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.14.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "aa94b0232cf48c742ae6a5c14cdc45984ebaeb8ac9ecefb84ef3c53a239a052af3f0838773592828a4aa4ccd87eaed541b5f93bdeb82eaf6831ca5c53af6f52b"
+              "content": "7930534ea311eae1ca2e0714aa924ff27b730c8e95e0b600f277a000c04423b824815bce76bc7a56cbd2d989bef372a138f74b087589bb4c3b5101496611ca37"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10062,8 +10062,8 @@
     {
       "type": "library",
       "name": "nanoid",
-      "version": "3.3.19",
-      "bom-ref": "openapi-backend@5.22.0|nanoid@3.3.19",
+      "version": "3.3.20",
+      "bom-ref": "openapi-backend@5.22.0|nanoid@3.3.20",
       "author": "Andrey Sitnik",
       "description": "A tiny (116 bytes), secure URL-friendly unique string ID generator",
       "licenses": [
@@ -10074,7 +10074,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/nanoid@3.3.19",
+      "purl": "pkg:npm/nanoid@3.3.20",
       "externalReferences": [
         {
           "url": "git+https://github.com/ai/nanoid.git",
@@ -10092,12 +10092,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.19.tgz",
+          "url": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.20.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "636b54372e28bb0eadab9a0348a7906063b286450184d39c195ff4d8a0beea477d7831aa75977efa68cc8880e296b058be3127098bd5b6cb870ae3fea2449fba"
+              "content": "b8a760d86dc63422909fd6f260ea716c6aab4f67c63b9291b7927ff1bde9a24f2b4faab119617a871332262118b407fe155c98b83f6145a0ea5f9b8f15827865"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10236,8 +10236,8 @@
       "type": "library",
       "name": "types",
       "group": "@oxc-project",
-      "version": "0.151.0",
-      "bom-ref": "openapi-backend@5.22.0|@oxc-project/types@0.151.0",
+      "version": "0.154.0",
+      "bom-ref": "openapi-backend@5.22.0|@oxc-project/types@0.154.0",
       "author": "Boshen and oxc contributors",
       "description": "Types for Oxc AST nodes",
       "licenses": [
@@ -10248,7 +10248,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40oxc-project/types@0.151.0",
+      "purl": "pkg:npm/%40oxc-project/types@0.154.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/oxc-project/oxc.git#npm/oxc-types",
@@ -10266,12 +10266,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@oxc-project/types/-/types-0.151.0.tgz",
+          "url": "https://registry.npmjs.org/@oxc-project/types/-/types-0.154.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "275c97ac894d0d957313769d6b7d74c5e030ee71fcc820322cfb9422c8ca6ad14f99f9f96d2d685be70cf90b063ad5567799e14a96f0656c7faee7beaf967e3c"
+              "content": "2983941901652d647eb3840c57643d928dfc4d99bb11d3bced09bbaef64baa4ff079bb1efdc0e3b72c4a860ff8ee5d1bc826ecfe4e3a2d3f2a7383ca8c08a4cc"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10292,8 +10292,8 @@
       "type": "library",
       "name": "binding-linux-x64-gnu",
       "group": "@rolldown",
-      "version": "1.2.11",
-      "bom-ref": "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.11",
+      "version": "1.2.14",
+      "bom-ref": "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.14",
       "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
       "scope": "optional",
       "licenses": [
@@ -10304,7 +10304,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.11",
+      "purl": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.14",
       "externalReferences": [
         {
           "url": "git+https://github.com/rolldown/rolldown.git#packages/rolldown",
@@ -10322,12 +10322,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.11.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.14.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "98e5414f774fa645a6f170563e65386dff94e9d6032de328ffda235268ace0dd0be6ebb5d2aadae6f3b29e067bfcf49da04e06f4abd1b786e5a11c4d8cb6acec"
+              "content": "5b16a55f382b2d5a4a0bddf17e9689de0097516cde0abf854426c3543da6500cb82fa568de5355cf47a9504529c4f58990b35853033839222292fdfa389f662e"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -12281,7 +12281,7 @@
         "openapi-backend@5.22.0|tinybench@6.1.4",
         "openapi-backend@5.22.0|tinyexec@1.3.0",
         "openapi-backend@5.22.0|tinyglobby@0.2.17",
-        "openapi-backend@5.22.0|vite@8.3.1",
+        "openapi-backend@5.22.0|vite@8.3.4",
         "openapi-backend@5.22.0|why-is-node-running@3.2.2"
       ]
     },
@@ -12623,7 +12623,7 @@
         "openapi-backend@5.22.0|@vitest/spy@5.0.2",
         "openapi-backend@5.22.0|estree-walker@3.0.3",
         "openapi-backend@5.22.0|magic-string@1.4.2",
-        "openapi-backend@5.22.0|vite@8.3.1"
+        "openapi-backend@5.22.0|vite@8.3.4"
       ]
     },
     {
@@ -12670,18 +12670,18 @@
       "ref": "openapi-backend@5.22.0|tinyglobby@0.2.17|picomatch@4.0.7"
     },
     {
-      "ref": "openapi-backend@5.22.0|vite@8.3.1",
+      "ref": "openapi-backend@5.22.0|vite@8.3.4",
       "dependsOn": [
         "openapi-backend@5.22.0|@types/node@22.20.4",
         "openapi-backend@5.22.0|lightningcss@1.33.0",
-        "openapi-backend@5.22.0|vite@8.3.1|picomatch@4.0.7",
-        "openapi-backend@5.22.0|postcss@8.5.28",
-        "openapi-backend@5.22.0|rolldown@1.2.11",
+        "openapi-backend@5.22.0|vite@8.3.4|picomatch@4.0.7",
+        "openapi-backend@5.22.0|postcss@8.5.31",
+        "openapi-backend@5.22.0|rolldown@1.2.14",
         "openapi-backend@5.22.0|tinyglobby@0.2.17"
       ]
     },
     {
-      "ref": "openapi-backend@5.22.0|vite@8.3.1|picomatch@4.0.7"
+      "ref": "openapi-backend@5.22.0|vite@8.3.4|picomatch@4.0.7"
     },
     {
       "ref": "openapi-backend@5.22.0|why-is-node-running@3.2.2"
@@ -12893,18 +12893,18 @@
       ]
     },
     {
-      "ref": "openapi-backend@5.22.0|postcss@8.5.28",
+      "ref": "openapi-backend@5.22.0|postcss@8.5.31",
       "dependsOn": [
-        "openapi-backend@5.22.0|nanoid@3.3.19",
+        "openapi-backend@5.22.0|nanoid@3.3.20",
         "openapi-backend@5.22.0|picocolors@1.1.1",
         "openapi-backend@5.22.0|source-map-js@1.2.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.22.0|rolldown@1.2.11",
+      "ref": "openapi-backend@5.22.0|rolldown@1.2.14",
       "dependsOn": [
-        "openapi-backend@5.22.0|@oxc-project/types@0.151.0",
-        "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.11",
+        "openapi-backend@5.22.0|@oxc-project/types@0.154.0",
+        "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.14",
         "openapi-backend@5.22.0|@rolldown/pluginutils@1.0.1"
       ]
     },
@@ -13031,7 +13031,7 @@
       "ref": "openapi-backend@5.22.0|lightningcss-linux-x64-gnu@1.33.0"
     },
     {
-      "ref": "openapi-backend@5.22.0|nanoid@3.3.19"
+      "ref": "openapi-backend@5.22.0|nanoid@3.3.20"
     },
     {
       "ref": "openapi-backend@5.22.0|picocolors@1.1.1"
@@ -13040,10 +13040,10 @@
       "ref": "openapi-backend@5.22.0|source-map-js@1.2.2"
     },
     {
-      "ref": "openapi-backend@5.22.0|@oxc-project/types@0.151.0"
+      "ref": "openapi-backend@5.22.0|@oxc-project/types@0.154.0"
     },
     {
-      "ref": "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.11"
+      "ref": "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.14"
     },
     {
       "ref": "openapi-backend@5.22.0|@rolldown/pluginutils@1.0.1"
