@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:fca762ab-eb44-4310-9129-3cd92b1007c5",
+  "serialNumber": "urn:uuid:9032ee95-9fcc-4049-aff0-e0f8ffe6b7cc",
   "metadata": {
-    "timestamp": "2026-10-21T04:01:18.362Z",
+    "timestamp": "2026-10-25T05:01:22.485Z",
     "tools": {
       "components": [
         {
@@ -1634,8 +1634,8 @@
     {
       "type": "library",
       "name": "vitest",
-      "version": "5.0.2",
-      "bom-ref": "openapi-backend@5.22.0|vitest@5.0.2",
+      "version": "5.0.5",
+      "bom-ref": "openapi-backend@5.22.0|vitest@5.0.5",
       "author": "Anthony Fu",
       "description": "Next generation testing framework powered by Vite",
       "licenses": [
@@ -1646,7 +1646,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/vitest@5.0.2",
+      "purl": "pkg:npm/vitest@5.0.5",
       "externalReferences": [
         {
           "url": "git+https://github.com/vitest-dev/vitest.git#packages/vitest",
@@ -1664,12 +1664,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/vitest/-/vitest-5.0.2.tgz",
+          "url": "https://registry.npmjs.org/vitest/-/vitest-5.0.5.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "ecc42bc7da43bf9687894728bc86ffef462cded82d9145600ad95e76f29d0a610efbfd4389cab966aa12c4e5b4df89b4de8a82fa81ce2ae8b674ceaab4c2e826"
+              "content": "70f38338c17c627922898b43747a3a9f8c16981ace0416ce2181f6777dcce25dc274d9fbda1faa3263bab977df50de80e406455cd343fddfa4ad2f668245d17e"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -1694,7 +1694,7 @@
           "type": "library",
           "name": "picomatch",
           "version": "4.0.7",
-          "bom-ref": "openapi-backend@5.22.0|vitest@5.0.2|picomatch@4.0.7",
+          "bom-ref": "openapi-backend@5.22.0|vitest@5.0.5|picomatch@4.0.7",
           "author": "Jon Schlinkert",
           "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
           "licenses": [
@@ -5185,8 +5185,8 @@
       "type": "library",
       "name": "mocker",
       "group": "@vitest",
-      "version": "5.0.2",
-      "bom-ref": "openapi-backend@5.22.0|@vitest/mocker@5.0.2",
+      "version": "5.0.5",
+      "bom-ref": "openapi-backend@5.22.0|@vitest/mocker@5.0.5",
       "description": "Vitest module mocker implementation",
       "licenses": [
         {
@@ -5196,7 +5196,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40vitest/mocker@5.0.2",
+      "purl": "pkg:npm/%40vitest/mocker@5.0.5",
       "externalReferences": [
         {
           "url": "git+https://github.com/vitest-dev/vitest.git#packages/mocker",
@@ -5214,12 +5214,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@vitest/mocker/-/mocker-5.0.2.tgz",
+          "url": "https://registry.npmjs.org/@vitest/mocker/-/mocker-5.0.5.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "679152d344354891e4077e71013b26586750e56035ff4315dc20e3ab2bfb19abc7bf539f3a3d78e4c35f1ce94793b40b7acdb574a1431ebf043b6cef2fef5618"
+              "content": "c4b2f79640de809670f8c1a819a082b056b20d9b611a0a40b6bdd5ce2c9f738a7bc47f3d2bb2913dc441061fe41189b402a92de43b539a462906d455fc5ac766"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5239,8 +5239,8 @@
     {
       "type": "library",
       "name": "chai",
-      "version": "6.2.2",
-      "bom-ref": "openapi-backend@5.22.0|chai@6.2.2",
+      "version": "6.3.0",
+      "bom-ref": "openapi-backend@5.22.0|chai@6.3.0",
       "author": "Jake Luer",
       "description": "BDD/TDD assertion library for node.js and the browser. Test framework agnostic.",
       "licenses": [
@@ -5251,7 +5251,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/chai@6.2.2",
+      "purl": "pkg:npm/chai@6.3.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/chaijs/chai.git",
@@ -5269,12 +5269,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/chai/-/chai-6.2.2.tgz",
+          "url": "https://registry.npmjs.org/chai/-/chai-6.3.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "3543d196e39f3a24ca04abd63ed483e0f845bd60aa3a2d01192b4d5ace7b5fd8eced7193a6b4a6168cf9174b56851e163e335e47d8d7a9d0bbfd4a522539e546"
+              "content": "5d602dc09e8e1cefad8f410a0acd18d946a69f23b1b1e65696d538c76536c21f20e008a0763c2fb548ef2cfdadaa403f6afc4712dcf135aa86abf6063707242a"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5410,8 +5410,8 @@
     {
       "type": "library",
       "name": "magic-string",
-      "version": "1.4.2",
-      "bom-ref": "openapi-backend@5.22.0|magic-string@1.4.2",
+      "version": "1.4.3",
+      "bom-ref": "openapi-backend@5.22.0|magic-string@1.4.3",
       "author": "Rich Harris",
       "description": "Modify strings, generate sourcemaps",
       "licenses": [
@@ -5422,7 +5422,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/magic-string@1.4.2",
+      "purl": "pkg:npm/magic-string@1.4.3",
       "externalReferences": [
         {
           "url": "git+https://github.com/Rich-Harris/magic-string.git",
@@ -5440,12 +5440,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/magic-string/-/magic-string-1.4.2.tgz",
+          "url": "https://registry.npmjs.org/magic-string/-/magic-string-1.4.3.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "bc6fab8c5463d4fa9d201a332310063233e53a16957be197a5bb6d63f8922bbac670944c9703493bb75c530994aa4ca6b052c988d188d3ab780fb16bef2442f6"
+              "content": "cf5d8ec6668f184d05e3196919d8ee0147248a92e94254c0b809b21a13680fb383a58533bc37efb7151b8ccfe3c339f23f5efca23bbf2837728b6db4c0d27445"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5465,8 +5465,8 @@
     {
       "type": "library",
       "name": "obug",
-      "version": "2.2.1",
-      "bom-ref": "openapi-backend@5.22.0|obug@2.2.1",
+      "version": "3.0.0",
+      "bom-ref": "openapi-backend@5.22.0|obug@3.0.0",
       "author": "Kevin Deng",
       "description": "A lightweight JavaScript debugging utility, forked from debug, featuring TypeScript and ESM support.",
       "licenses": [
@@ -5477,7 +5477,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/obug@2.2.1",
+      "purl": "pkg:npm/obug@3.0.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/sxzz/obug.git",
@@ -5495,12 +5495,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/obug/-/obug-2.2.1.tgz",
+          "url": "https://registry.npmjs.org/obug/-/obug-3.0.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "5ebb2b853e6cc9bb4a23ac1a92bd923ce9466565986d45d9edad234fcfd039e00f6aefb55ff6d27a035ee5847be6826611941b2a78a7822ae618e10908893ad5"
+              "content": "e6fbc1e7e5bb78fbfea77baac62f91716d570332d6d3f871b77ff85f82dce2a1ee7733a1981881c0e63a0d1a1be169da9c0106bcd70b8c5f8a34eb9fad4a0443"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5524,8 +5524,8 @@
     {
       "type": "library",
       "name": "std-env",
-      "version": "4.2.0",
-      "bom-ref": "openapi-backend@5.22.0|std-env@4.2.0",
+      "version": "4.3.0",
+      "bom-ref": "openapi-backend@5.22.0|std-env@4.3.0",
       "description": "Runtime agnostic JS utils",
       "licenses": [
         {
@@ -5535,7 +5535,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/std-env@4.2.0",
+      "purl": "pkg:npm/std-env@4.3.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/unjs/std-env.git",
@@ -5553,12 +5553,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/std-env/-/std-env-4.2.0.tgz",
+          "url": "https://registry.npmjs.org/std-env/-/std-env-4.3.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "a0250a4aea4a4c75f9dc4ca30edb9943ae298cb27ac980ada66130d20a18c6d8c6f4aa5b45ef0a02c976b4150653d0f231c27447027c1aa2401733177175b547"
+              "content": "3ad53f1204359089b92b0a90a410ba644317ad946e8b5d70f3381f4d6a7c71d3bd07c39a3ec6c0f1b4c73b63fe1cda3556551318c541c0f87276eea9a1e5e26a"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5578,8 +5578,8 @@
     {
       "type": "library",
       "name": "tinybench",
-      "version": "6.1.4",
-      "bom-ref": "openapi-backend@5.22.0|tinybench@6.1.4",
+      "version": "6.2.2",
+      "bom-ref": "openapi-backend@5.22.0|tinybench@6.2.2",
       "description": "🔎 A simple, tiny and lightweight benchmarking library!",
       "licenses": [
         {
@@ -5589,7 +5589,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/tinybench@6.1.4",
+      "purl": "pkg:npm/tinybench@6.2.2",
       "externalReferences": [
         {
           "url": "git+https://github.com/tinylibs/tinybench.git",
@@ -5607,12 +5607,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/tinybench/-/tinybench-6.1.4.tgz",
+          "url": "https://registry.npmjs.org/tinybench/-/tinybench-6.2.2.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "f403ee9871bbaf8c8e9385f85a592613bd5a65cbf582f8a7d5cccedce43553d88970503925aff28326f4bcf3951d3b61168cd462cf022e82d494cf20adbda54d"
+              "content": "9c8676376745a6306c8368608ad2aeee603e16fb0826e1893b0cac4678265514665a047f5323e3c098fc73f7d3fdd866f049079c5e443a88117fed19daaae298"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5636,8 +5636,8 @@
     {
       "type": "library",
       "name": "tinyexec",
-      "version": "1.3.0",
-      "bom-ref": "openapi-backend@5.22.0|tinyexec@1.3.0",
+      "version": "1.3.1",
+      "bom-ref": "openapi-backend@5.22.0|tinyexec@1.3.1",
       "author": "James Garbutt",
       "description": "A minimal library for executing processes in Node",
       "licenses": [
@@ -5648,7 +5648,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/tinyexec@1.3.0",
+      "purl": "pkg:npm/tinyexec@1.3.1",
       "externalReferences": [
         {
           "url": "git+https://github.com/tinylibs/tinyexec.git",
@@ -5666,12 +5666,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/tinyexec/-/tinyexec-1.3.0.tgz",
+          "url": "https://registry.npmjs.org/tinyexec/-/tinyexec-1.3.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "40a025f66f2059618757c8d970f7b29ba8fe5d42e2ead39fd664fcdd6609e0b936cad5bfbb001692b3f4b85b1da1831db9e549d2ab36eb067edb7c5e07889b35"
+              "content": "182bc1ddaa32b3de88b8314131c4c1e3a24e47a99d32d013a2ac225bc2655a1b288759a11e2ff19fdb2cfc383b379e791a227212ddaace81bf3470b033a87510"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5874,8 +5874,8 @@
     {
       "type": "library",
       "name": "vite",
-      "version": "8.3.4",
-      "bom-ref": "openapi-backend@5.22.0|vite@8.3.4",
+      "version": "8.3.5",
+      "bom-ref": "openapi-backend@5.22.0|vite@8.3.5",
       "author": "Evan You",
       "description": "Native-ESM powered web dev build tool",
       "licenses": [
@@ -5886,7 +5886,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/vite@8.3.4",
+      "purl": "pkg:npm/vite@8.3.5",
       "externalReferences": [
         {
           "url": "git+https://github.com/vitejs/vite.git#packages/vite",
@@ -5904,12 +5904,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/vite/-/vite-8.3.4.tgz",
+          "url": "https://registry.npmjs.org/vite/-/vite-8.3.5.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "21fb4b13ca6126174d44818d115e09082bdf35272865055f71768df1342ba2958626d38772efa2001f691dcb86be611bfe475dc342c17bf8d2f33b5d0bac5d89"
+              "content": "cf56298e2789f60d1e6d3990a4b06ffe8abd13717d10894e7beecb6a15bc4ab1372d3886dee7414545d03a56173fd6fe202daada9847795c63f711a5c37e0e11"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -5934,7 +5934,7 @@
           "type": "library",
           "name": "picomatch",
           "version": "4.0.7",
-          "bom-ref": "openapi-backend@5.22.0|vite@8.3.4|picomatch@4.0.7",
+          "bom-ref": "openapi-backend@5.22.0|vite@8.3.5|picomatch@4.0.7",
           "author": "Jon Schlinkert",
           "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
           "licenses": [
@@ -5994,8 +5994,8 @@
     {
       "type": "library",
       "name": "why-is-node-running",
-      "version": "3.2.2",
-      "bom-ref": "openapi-backend@5.22.0|why-is-node-running@3.2.2",
+      "version": "3.2.1",
+      "bom-ref": "openapi-backend@5.22.0|why-is-node-running@3.2.1",
       "author": "Mathias Buus",
       "description": "Node is running but you don't know why? why-is-node-running is here to help you.",
       "licenses": [
@@ -6006,7 +6006,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/why-is-node-running@3.2.2",
+      "purl": "pkg:npm/why-is-node-running@3.2.1",
       "externalReferences": [
         {
           "url": "git+https://github.com/mafintosh/why-is-node-running.git",
@@ -6024,12 +6024,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/why-is-node-running/-/why-is-node-running-3.2.2.tgz",
+          "url": "https://registry.npmjs.org/why-is-node-running/-/why-is-node-running-3.2.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "34a53301e95ca025e15cbe1d273288c17791f22115aac0342eae959ddd145ef81a29bcd5a386531d1385d8989daeff92831390d377cc8a79cd8736404f1383dc"
+              "content": "4dbd85521078bd4b064257d2aae40b62402992e3c01505c6173c562871ee995cf674af97d51526fc79c80f8f937c819827591373039a0a4fdbb9808426be988d"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8222,8 +8222,8 @@
       "type": "library",
       "name": "spy",
       "group": "@vitest",
-      "version": "5.0.2",
-      "bom-ref": "openapi-backend@5.22.0|@vitest/spy@5.0.2",
+      "version": "5.0.5",
+      "bom-ref": "openapi-backend@5.22.0|@vitest/spy@5.0.5",
       "description": "Lightweight Jest compatible spy implementation",
       "licenses": [
         {
@@ -8233,7 +8233,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40vitest/spy@5.0.2",
+      "purl": "pkg:npm/%40vitest/spy@5.0.5",
       "externalReferences": [
         {
           "url": "git+https://github.com/vitest-dev/vitest.git#packages/spy",
@@ -8251,12 +8251,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@vitest/spy/-/spy-5.0.2.tgz",
+          "url": "https://registry.npmjs.org/@vitest/spy/-/spy-5.0.5.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "22373b4f59d3f5e7cd6f92f1be3681ac4ab0ddffd0c14bf9104d272aa67182ab1a57f17100067c6da1b2940f17fd9da84b82e9f8aef826be9d4c9b032b12437a"
+              "content": "970251131b87e35ef6e7b439c2ff5062e80df48309928c5cacaad8c463d0901ce5ef094da535310ffe72357e0448a55421284a3e090672160f14c58e3a4d30cf"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8504,8 +8504,8 @@
     {
       "type": "library",
       "name": "rolldown",
-      "version": "1.2.14",
-      "bom-ref": "openapi-backend@5.22.0|rolldown@1.2.14",
+      "version": "1.2.15",
+      "bom-ref": "openapi-backend@5.22.0|rolldown@1.2.15",
       "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
       "licenses": [
         {
@@ -8515,7 +8515,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/rolldown@1.2.14",
+      "purl": "pkg:npm/rolldown@1.2.15",
       "externalReferences": [
         {
           "url": "git+https://github.com/rolldown/rolldown.git#packages/rolldown",
@@ -8533,12 +8533,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.14.tgz",
+          "url": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.15.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "7930534ea311eae1ca2e0714aa924ff27b730c8e95e0b600f277a000c04423b824815bce76bc7a56cbd2d989bef372a138f74b087589bb4c3b5101496611ca37"
+              "content": "ea874d0fe7de979cd5c3723861cd9eebd82f82e0e75f408000688d0d94aae2293959471a2eb903d862eea20d1770e0dba2bdf5859e5ac843205439e8f8a3d5e6"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10236,8 +10236,8 @@
       "type": "library",
       "name": "types",
       "group": "@oxc-project",
-      "version": "0.154.0",
-      "bom-ref": "openapi-backend@5.22.0|@oxc-project/types@0.154.0",
+      "version": "0.155.0",
+      "bom-ref": "openapi-backend@5.22.0|@oxc-project/types@0.155.0",
       "author": "Boshen and oxc contributors",
       "description": "Types for Oxc AST nodes",
       "licenses": [
@@ -10248,7 +10248,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40oxc-project/types@0.154.0",
+      "purl": "pkg:npm/%40oxc-project/types@0.155.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/oxc-project/oxc.git#npm/oxc-types",
@@ -10266,12 +10266,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@oxc-project/types/-/types-0.154.0.tgz",
+          "url": "https://registry.npmjs.org/@oxc-project/types/-/types-0.155.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "2983941901652d647eb3840c57643d928dfc4d99bb11d3bced09bbaef64baa4ff079bb1efdc0e3b72c4a860ff8ee5d1bc826ecfe4e3a2d3f2a7383ca8c08a4cc"
+              "content": "49e13c24fc16d71b35b4778dc9c8d4b5405d868ad16bca388e5be3c24e3d47bfd9dbdd62fb80d06bb2492203a6fd3698419c7e42b3d06d527ff5cf1d30864df1"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -10292,8 +10292,8 @@
       "type": "library",
       "name": "binding-linux-x64-gnu",
       "group": "@rolldown",
-      "version": "1.2.14",
-      "bom-ref": "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.14",
+      "version": "1.2.15",
+      "bom-ref": "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.15",
       "description": "Fast JavaScript/TypeScript bundler in Rust with Rollup-compatible API.",
       "scope": "optional",
       "licenses": [
@@ -10304,7 +10304,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.14",
+      "purl": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.15",
       "externalReferences": [
         {
           "url": "git+https://github.com/rolldown/rolldown.git#packages/rolldown",
@@ -10322,12 +10322,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.14.tgz",
+          "url": "https://registry.npmjs.org/@rolldown/binding-linux-x64-gnu/-/binding-linux-x64-gnu-1.2.15.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "5b16a55f382b2d5a4a0bddf17e9689de0097516cde0abf854426c3543da6500cb82fa568de5355cf47a9504529c4f58990b35853033839222292fdfa389f662e"
+              "content": "14783ad2b4ba0c178f01867d5fd17aef1f8939b15d9a09fab6ea40d42fdadc1f82b9f1664c3e265fe7bc33be6d0a200eddfa11ffac70541234290888eec9ffaf"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -12070,7 +12070,7 @@
         "openapi-backend@5.22.0|qs@6.16.0",
         "openapi-backend@5.22.0|source-map-support@0.5.21",
         "openapi-backend@5.22.0|typescript@5.2.2",
-        "openapi-backend@5.22.0|vitest@5.0.2"
+        "openapi-backend@5.22.0|vitest@5.0.5"
       ]
     },
     {
@@ -12266,27 +12266,27 @@
       "ref": "openapi-backend@5.22.0|typescript@5.2.2"
     },
     {
-      "ref": "openapi-backend@5.22.0|vitest@5.0.2",
+      "ref": "openapi-backend@5.22.0|vitest@5.0.5",
       "dependsOn": [
         "openapi-backend@5.22.0|@types/chai@5.2.3",
         "openapi-backend@5.22.0|@types/node@22.20.4",
-        "openapi-backend@5.22.0|@vitest/mocker@5.0.2",
-        "openapi-backend@5.22.0|chai@6.2.2",
+        "openapi-backend@5.22.0|@vitest/mocker@5.0.5",
+        "openapi-backend@5.22.0|chai@6.3.0",
         "openapi-backend@5.22.0|es-module-lexer@2.3.2",
         "openapi-backend@5.22.0|expect-type@1.4.0",
-        "openapi-backend@5.22.0|magic-string@1.4.2",
-        "openapi-backend@5.22.0|obug@2.2.1",
-        "openapi-backend@5.22.0|vitest@5.0.2|picomatch@4.0.7",
-        "openapi-backend@5.22.0|std-env@4.2.0",
-        "openapi-backend@5.22.0|tinybench@6.1.4",
-        "openapi-backend@5.22.0|tinyexec@1.3.0",
+        "openapi-backend@5.22.0|magic-string@1.4.3",
+        "openapi-backend@5.22.0|obug@3.0.0",
+        "openapi-backend@5.22.0|vitest@5.0.5|picomatch@4.0.7",
+        "openapi-backend@5.22.0|std-env@4.3.0",
+        "openapi-backend@5.22.0|tinybench@6.2.2",
+        "openapi-backend@5.22.0|tinyexec@1.3.1",
         "openapi-backend@5.22.0|tinyglobby@0.2.17",
-        "openapi-backend@5.22.0|vite@8.3.4",
-        "openapi-backend@5.22.0|why-is-node-running@3.2.2"
+        "openapi-backend@5.22.0|vite@8.3.5",
+        "openapi-backend@5.22.0|why-is-node-running@3.2.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.22.0|vitest@5.0.2|picomatch@4.0.7"
+      "ref": "openapi-backend@5.22.0|vitest@5.0.5|picomatch@4.0.7"
     },
     {
       "ref": "openapi-backend@5.22.0|js-yaml@5.4.2",
@@ -12617,17 +12617,17 @@
       ]
     },
     {
-      "ref": "openapi-backend@5.22.0|@vitest/mocker@5.0.2",
+      "ref": "openapi-backend@5.22.0|@vitest/mocker@5.0.5",
       "dependsOn": [
         "openapi-backend@5.22.0|@jridgewell/trace-mapping@0.3.31",
-        "openapi-backend@5.22.0|@vitest/spy@5.0.2",
+        "openapi-backend@5.22.0|@vitest/spy@5.0.5",
         "openapi-backend@5.22.0|estree-walker@3.0.3",
-        "openapi-backend@5.22.0|magic-string@1.4.2",
-        "openapi-backend@5.22.0|vite@8.3.4"
+        "openapi-backend@5.22.0|magic-string@1.4.3",
+        "openapi-backend@5.22.0|vite@8.3.5"
       ]
     },
     {
-      "ref": "openapi-backend@5.22.0|chai@6.2.2"
+      "ref": "openapi-backend@5.22.0|chai@6.3.0"
     },
     {
       "ref": "openapi-backend@5.22.0|es-module-lexer@2.3.2"
@@ -12636,22 +12636,22 @@
       "ref": "openapi-backend@5.22.0|expect-type@1.4.0"
     },
     {
-      "ref": "openapi-backend@5.22.0|magic-string@1.4.2",
+      "ref": "openapi-backend@5.22.0|magic-string@1.4.3",
       "dependsOn": [
         "openapi-backend@5.22.0|@jridgewell/sourcemap-codec@1.6.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.22.0|obug@2.2.1"
+      "ref": "openapi-backend@5.22.0|obug@3.0.0"
     },
     {
-      "ref": "openapi-backend@5.22.0|std-env@4.2.0"
+      "ref": "openapi-backend@5.22.0|std-env@4.3.0"
     },
     {
-      "ref": "openapi-backend@5.22.0|tinybench@6.1.4"
+      "ref": "openapi-backend@5.22.0|tinybench@6.2.2"
     },
     {
-      "ref": "openapi-backend@5.22.0|tinyexec@1.3.0"
+      "ref": "openapi-backend@5.22.0|tinyexec@1.3.1"
     },
     {
       "ref": "openapi-backend@5.22.0|tinyglobby@0.2.17",
@@ -12670,21 +12670,21 @@
       "ref": "openapi-backend@5.22.0|tinyglobby@0.2.17|picomatch@4.0.7"
     },
     {
-      "ref": "openapi-backend@5.22.0|vite@8.3.4",
+      "ref": "openapi-backend@5.22.0|vite@8.3.5",
       "dependsOn": [
         "openapi-backend@5.22.0|@types/node@22.20.4",
         "openapi-backend@5.22.0|lightningcss@1.33.0",
-        "openapi-backend@5.22.0|vite@8.3.4|picomatch@4.0.7",
+        "openapi-backend@5.22.0|vite@8.3.5|picomatch@4.0.7",
         "openapi-backend@5.22.0|postcss@8.5.31",
-        "openapi-backend@5.22.0|rolldown@1.2.14",
+        "openapi-backend@5.22.0|rolldown@1.2.15",
         "openapi-backend@5.22.0|tinyglobby@0.2.17"
       ]
     },
     {
-      "ref": "openapi-backend@5.22.0|vite@8.3.4|picomatch@4.0.7"
+      "ref": "openapi-backend@5.22.0|vite@8.3.5|picomatch@4.0.7"
     },
     {
-      "ref": "openapi-backend@5.22.0|why-is-node-running@3.2.2"
+      "ref": "openapi-backend@5.22.0|why-is-node-running@3.2.1"
     },
     {
       "ref": "openapi-backend@5.22.0|argparse@2.0.1"
@@ -12874,7 +12874,7 @@
       ]
     },
     {
-      "ref": "openapi-backend@5.22.0|@vitest/spy@5.0.2"
+      "ref": "openapi-backend@5.22.0|@vitest/spy@5.0.5"
     },
     {
       "ref": "openapi-backend@5.22.0|estree-walker@3.0.3",
@@ -12901,10 +12901,10 @@
       ]
     },
     {
-      "ref": "openapi-backend@5.22.0|rolldown@1.2.14",
+      "ref": "openapi-backend@5.22.0|rolldown@1.2.15",
       "dependsOn": [
-        "openapi-backend@5.22.0|@oxc-project/types@0.154.0",
-        "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.14",
+        "openapi-backend@5.22.0|@oxc-project/types@0.155.0",
+        "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.15",
         "openapi-backend@5.22.0|@rolldown/pluginutils@1.0.1"
       ]
     },
@@ -13040,10 +13040,10 @@
       "ref": "openapi-backend@5.22.0|source-map-js@1.2.2"
     },
     {
-      "ref": "openapi-backend@5.22.0|@oxc-project/types@0.154.0"
+      "ref": "openapi-backend@5.22.0|@oxc-project/types@0.155.0"
     },
     {
-      "ref": "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.14"
+      "ref": "openapi-backend@5.22.0|@rolldown/binding-linux-x64-gnu@1.2.15"
     },
     {
       "ref": "openapi-backend@5.22.0|@rolldown/pluginutils@1.0.1"
