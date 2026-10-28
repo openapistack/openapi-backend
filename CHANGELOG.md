@@ -4,6 +4,26 @@ All notable changes to openapi-backend. This project follows [Semantic Versionin
 
 New entries are drafted by an AI model from the merged pull requests and commits when a version tag is pushed, checked by a script, and published here and on [GitHub Releases](https://github.com/openapistack/openapi-backend/releases) by [`release.yml`](.github/workflows/release.yml). Releases before 5.16.0 are listed in the [tags](https://github.com/openapistack/openapi-backend/tags).
 
+## [5.23.0](https://github.com/openapistack/openapi-backend/compare/5.22.0...5.23.0) - 2026-10-28
+
+This release adds a native ESM entrypoint and fixes a load-time crash on runtimes where `require()` of ES modules is disabled.
+
+### Breaking changes
+
+- Package `exports` map now restricts deep imports to paths it covers. Top-level `.js` files (with or without the extension), such as `openapi-backend/router`, and `openapi-backend/package.json` still resolve, but uncommon paths such as `*.map` files no longer do. If you import such a path, switch to a supported entry point ([#1044](https://github.com/openapistack/openapi-backend/pull/1044), [f937c4e](https://github.com/openapistack/openapi-backend/commit/f937c4e)).
+
+### Added
+
+- Native ESM support: `import OpenAPIBackend from 'openapi-backend'` now returns the class, with matching TypeScript types for `node16`/`nodenext` consumers. ESM and CommonJS share the same class, so `instanceof` keeps working ([#1044](https://github.com/openapistack/openapi-backend/pull/1044), [f937c4e](https://github.com/openapistack/openapi-backend/commit/f937c4e)).
+
+### Fixed
+
+- Fixed `ERR_REQUIRE_ESM` at startup on runtimes where `require(esm)` is disabled, such as AWS Lambda `nodejs20.x` to `nodejs24.x`. The ESM-only `@apidevtools/json-schema-ref-parser` is now loaded lazily with dynamic `import()` ([#1043](https://github.com/openapistack/openapi-backend/pull/1043), [83d3f39](https://github.com/openapistack/openapi-backend/commit/83d3f39), fixes [#1042](https://github.com/openapistack/openapi-backend/issues/1042)).
+
+### Dependencies
+
+- Lockfile and development dependency updates.
+
 ## [5.22.0](https://github.com/openapistack/openapi-backend/compare/5.21.3...5.22.0) - 2026-10-16
 
 Response header validation now honors the OpenAPI `required` property, which may change which responses pass validation.
