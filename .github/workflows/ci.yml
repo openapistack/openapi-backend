@@ -28,6 +28,13 @@ jobs:
           - examples/serverless-framework
           - examples/aws-sam
           - examples/aws-cdk
+        node_version: ["20"]
+        # also test the library itself on newer node versions
+        include:
+          - project_dir: .
+            node_version: "22"
+          - project_dir: .
+            node_version: "24"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -39,7 +46,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "20"
+          node-version: ${{ matrix.node_version }}
           package-manager-cache: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
