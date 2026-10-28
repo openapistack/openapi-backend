@@ -16,7 +16,6 @@ jobs:
     strategy:
       matrix:
         project_dir:
-          - .
           - examples/express
           - examples/express-apikey-auth
           - examples/express-jwt-auth
@@ -28,9 +27,11 @@ jobs:
           - examples/serverless-framework
           - examples/aws-sam
           - examples/aws-cdk
-        node_version: ["20"]
-        # also test the library itself on newer node versions
+        # examples run on the latest LTS, the library itself on every supported node version
+        node_version: ["lts/*"]
         include:
+          - project_dir: .
+            node_version: "20"
           - project_dir: .
             node_version: "22"
           - project_dir: .
