@@ -1,7 +1,10 @@
 # build
 *.js
 *.js.map
+*.mjs
+*.mjs.map
 *.d.ts
+*.d.mts
 
 # include js scripts
 !scripts/*.js
