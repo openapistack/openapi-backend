@@ -2,8 +2,8 @@
   "compilerOptions": {
     "strict": false,
     "target": "es2019",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "node16",
+    "moduleResolution": "node16",
     "lib": ["es2019"],
     "esModuleInterop": true,
     "experimentalDecorators": true,
