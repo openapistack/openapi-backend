@@ -47,7 +47,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
       - run: cp .github/prompts/release-notes.md "$RUNNER_TEMP/context/prompt.md"
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release-context
           path: ${{ runner.temp }}/context/
@@ -85,7 +85,7 @@ jobs:
           cp sbom/licenses-production.csv "$out/openapi-backend-$TAG-licenses-production.csv"
           cp sbom/licenses-all.csv "$out/openapi-backend-$TAG-licenses-all.csv"
           cp THIRD_PARTY_NOTICES.md "$out/openapi-backend-$TAG-THIRD_PARTY_NOTICES.md"
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release-sbom
           path: ${{ runner.temp }}/assets/
@@ -148,7 +148,7 @@ jobs:
             "$RUNNER_TEMP/events.jsonl" > "$RUNNER_TEMP/draft/ai-notes.md"
           test -s "$RUNNER_TEMP/draft/ai-notes.md"
           cat "$RUNNER_TEMP/draft/ai-notes.md"
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release-draft
           path: ${{ runner.temp }}/draft/
