@@ -4,6 +4,19 @@ All notable changes to openapi-backend. This project follows [Semantic Versionin
 
 New entries are drafted by an AI model from the merged pull requests and commits when a version tag is pushed, checked by a script, and published here and on [GitHub Releases](https://github.com/openapistack/openapi-backend/releases) by [`release.yml`](.github/workflows/release.yml). Releases before 5.16.0 are listed in the [tags](https://github.com/openapistack/openapi-backend/tags).
 
+## [5.24.0](https://github.com/openapistack/openapi-backend/compare/5.23.0...5.24.0) - 2026-11-09
+
+This release adds a test client for APIs built with openapi-backend, available from `openapi-backend/testing`.
+
+### Added
+
+- `createTestClient()` in `openapi-backend/testing` builds requests from your API definition, with one method per `operationId`, plus `client.call()` and `client.with()` for raw requests and request defaults. It can build requests from examples in the definition, with overrides merged in. It can send requests to Express, Koa or Node listeners, Fastify or Hapi `inject()`, fetch apps, AWS Lambda handlers, running servers or custom adapters. Responses are checked against the definition and throw `ResponseValidationError` on a mismatch. Operation methods throw `RoutingError` if the request they build is routed to a different operation. `res.context` exposes the context openapi-backend built, and security stubs can replace security handler results per request ([#1048](https://github.com/openapistack/openapi-backend/pull/1048))
+- `OpenAPIValidator.compileSchema()` is now public ([#1048](https://github.com/openapistack/openapi-backend/pull/1048))
+
+### Dependencies
+
+- Lockfile and development dependency updates ([#1041](https://github.com/openapistack/openapi-backend/pull/1041), [#1045](https://github.com/openapistack/openapi-backend/pull/1045), [#1031](https://github.com/openapistack/openapi-backend/pull/1031), [#1032](https://github.com/openapistack/openapi-backend/pull/1032), [#1035](https://github.com/openapistack/openapi-backend/pull/1035), [#1036](https://github.com/openapistack/openapi-backend/pull/1036))
+
 ## [5.23.0](https://github.com/openapistack/openapi-backend/compare/5.22.0...5.23.0) - 2026-10-28
 
 This release adds a native ESM entrypoint and fixes a load-time crash on runtimes where `require()` of ES modules is disabled.
