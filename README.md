@@ -18,6 +18,7 @@ These live on the `examples` branch, separate from the library source on `main`,
 - [aws-sam](./aws-sam)
 - [aws-cdk](./aws-cdk)
 - [aws-sst](./aws-sst)
+- [aws-lambda-web-functions](./aws-lambda-web-functions) - AWS Lambda Web Functions
 - [serverless-framework](./serverless-framework)
 - [azure-function](./azure-function)
 
