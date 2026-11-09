@@ -510,7 +510,7 @@ export class OpenAPIValidator<D extends Document = Document> {
    * @param ajv The Ajv instance
    * @param schema The schema to compile
    */
-  private static compileSchema(ajv: Ajv, schema: any): ValidateFunction {
+  public static compileSchema(ajv: Ajv, schema: any): ValidateFunction {
     const decycledSchema = this.decycle(schema);
     return ajv.compile(decycledSchema);
   }

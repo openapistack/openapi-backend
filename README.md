@@ -422,6 +422,28 @@ api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, 
 
 [See full Mock API example on Express](https://github.com/openapistack/openapi-backend/tree/examples/express-ts-mock)
 
+## Testing
+
+`createTestClient()` from `openapi-backend/testing` gives you a test client with a method for every operation in your
+API definition. Requests go into your app in the same process as your tests, and every response is checked against
+the definition.
+
+```typescript
+import { createTestClient } from 'openapi-backend/testing';
+import { api, app } from '../src/app';
+
+const client = createTestClient(api, { app });
+
+test('getPetById returns the pet', async () => {
+  const res = await client.getPetById({ params: { id: 1 } });
+
+  expect(res.status).toBe(200);
+  expect(res.body).toEqual({ id: 1, name: 'Garfield', type: 'cat' });
+});
+```
+
+See [Testing](https://openapistack.co/docs/openapi-backend/testing) in the documentation.
+
 ## Static analysis with CodeQL
 
 [openapi-backend-codeql](https://github.com/openapistack/openapi-backend-codeql) provides CodeQL queries that find

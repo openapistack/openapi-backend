@@ -22,6 +22,15 @@ export type PickVersionElement<D extends Document, V30, V31> = D extends OpenAPI
 export type SecurityRequirement = OpenAPIV3_1.SecurityRequirementObject | OpenAPIV3.SecurityRequirementObject;
 
 /**
+ * Internal hooks installed by test clients created with createTestClient() from openapi-backend/testing.
+ * Registered with a global symbol, so they also work if the app and the tests load different copies of this module.
+ */
+const testHooksKey = Symbol.for('openapi-backend.testHooks');
+interface TestHooks {
+  onRequest(req: Request, context: Partial<Context>): { security?: { [name: string]: unknown } } | undefined;
+}
+
+/**
  * Security / Authorization context for requests
  */
 interface SecurityHandlerResults {
@@ -337,6 +346,10 @@ export class OpenAPIBackend<D extends Document = Document> {
     // initialize context object with a reference to this OpenAPIBackend instance
     const context: Partial<Context<any, any, any, any, any, D>> = { api: this };
 
+    // link the request to a test client request, if it comes from one (see openapi-backend/testing)
+    const testHooks: TestHooks | undefined = (this as any)[testHooksKey];
+    const testRequest = testHooks?.onRequest(req, context);
+
     // handle request with correct handler
     const response: any = await (async () => {
       // parse request
@@ -390,7 +403,10 @@ export class OpenAPIBackend<D extends Document = Document> {
       await Promise.all(
         securitySchemes.map(async (name) => {
           securityHandlerResults[name] = undefined;
-          if (this.securityHandlers[name]) {
+          if (testRequest?.security && Object.prototype.hasOwnProperty.call(testRequest.security, name)) {
+            // a test client provided the result for this security handler
+            securityHandlerResults[name] = testRequest.security[name];
+          } else if (this.securityHandlers[name]) {
             const securityHandler = this.securityHandlers[name];
             // return a promise that will set the security handler result
             return await Promise.resolve()
