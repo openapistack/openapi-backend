@@ -14,6 +14,8 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     strategy:
+      # one failing example shouldn't cancel the library tests and the other examples
+      fail-fast: false
       matrix:
         project_dir:
           - examples/express
