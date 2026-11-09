@@ -1,23 +1,23 @@
 {
-  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
   "bomFormat": "CycloneDX",
-  "specVersion": "1.6",
+  "specVersion": "1.7",
   "version": 1,
-  "serialNumber": "urn:uuid:9a1f621b-e199-498d-8871-c87d3a8454e5",
+  "serialNumber": "urn:uuid:dbd16ae3-20f7-4c0f-a0ea-97c0c45d1858",
   "metadata": {
-    "timestamp": "2026-10-28T10:28:21.844Z",
+    "timestamp": "2026-11-09T16:18:28.875Z",
     "tools": {
       "components": [
         {
           "type": "application",
           "name": "npm",
-          "version": "11.19.0"
+          "version": "11.19.1"
         },
         {
           "type": "application",
           "name": "cyclonedx-npm",
           "group": "@cyclonedx",
-          "version": "6.0.1",
+          "version": "7.0.0",
           "author": "Jan Kowalleck",
           "description": "Create CycloneDX Software Bill of Materials (SBOM) from NPM projects.",
           "licenses": [
@@ -59,7 +59,7 @@
           "type": "library",
           "name": "cyclonedx-library",
           "group": "@cyclonedx",
-          "version": "10.3.0",
+          "version": "10.5.0",
           "author": "Jan Kowalleck",
           "description": "Core functionality of CycloneDX for JavaScript (Node.js or WebBrowser).",
           "licenses": [
@@ -612,8 +612,8 @@
     {
       "type": "library",
       "name": "qs",
-      "version": "6.16.0",
-      "bom-ref": "openapi-backend@5.23.0|qs@6.16.0",
+      "version": "6.16.1",
+      "bom-ref": "openapi-backend@5.23.0|qs@6.16.1",
       "description": "A querystring parser that supports nesting and arrays, with a depth limit",
       "licenses": [
         {
@@ -623,7 +623,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/qs@6.16.0",
+      "purl": "pkg:npm/qs@6.16.1",
       "externalReferences": [
         {
           "url": "git+https://github.com/ljharb/qs.git",
@@ -641,12 +641,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/qs/-/qs-6.16.0.tgz",
+          "url": "https://registry.npmjs.org/qs/-/qs-6.16.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "87a7e1388691ac80f609b118d9faacfbbb7e517668f8c2c09d4e60448abce6e16d76250f09db00a4c947857a202953381ccd8355b22318d4d3607d8e7263f5bc"
+              "content": "e4fc7a27badf1c1006521350ddeb3863370e741070d120dc56d4e126697845d9cac38b4ab367a903490f67e2bc5fe5a21e4b53f7744755c43fdf29b96930a0b6"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -768,8 +768,8 @@
     {
       "type": "library",
       "name": "undici",
-      "version": "8.10.2",
-      "bom-ref": "openapi-backend@5.23.0|undici@8.10.2",
+      "version": "8.12.3",
+      "bom-ref": "openapi-backend@5.23.0|undici@8.12.3",
       "description": "An HTTP/1.1 client, written from scratch for Node.js",
       "licenses": [
         {
@@ -779,7 +779,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/undici@8.10.2",
+      "purl": "pkg:npm/undici@8.12.3",
       "externalReferences": [
         {
           "url": "git+https://github.com/nodejs/undici.git",
@@ -797,12 +797,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/undici/-/undici-8.10.2.tgz",
+          "url": "https://registry.npmjs.org/undici/-/undici-8.12.3.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "ff2e3f6c7f58354e618bd348ae93aebc65c5731ae3dc232b57efc0629a300184e91e7f205ff5cf163372efae853e8618d2689085d5bdefb24558a18d841770c9"
+              "content": "f9f7677544f004ff3a7158e2853a76d61647a3b77aa23d5cff8ed73c0de52fc98cd171ecf82e0491c8e6811b059c59367ff50e3460f2f48b4122d997b0b3901f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2179,7 +2179,7 @@
         "openapi-backend@5.23.0|mock-json-schema@1.1.3",
         "openapi-backend@5.23.0|openapi-schema-validator@12.1.3",
         "openapi-backend@5.23.0|openapi-types@12.1.3",
-        "openapi-backend@5.23.0|qs@6.16.0"
+        "openapi-backend@5.23.0|qs@6.16.1"
       ]
     },
     {
@@ -2187,7 +2187,7 @@
       "dependsOn": [
         "openapi-backend@5.23.0|@types/json-schema@7.0.15",
         "openapi-backend@5.23.0|js-yaml@5.4.2",
-        "openapi-backend@5.23.0|undici@8.10.2"
+        "openapi-backend@5.23.0|undici@8.12.3"
       ]
     },
     {
@@ -2230,7 +2230,7 @@
       "ref": "openapi-backend@5.23.0|openapi-types@12.1.3"
     },
     {
-      "ref": "openapi-backend@5.23.0|qs@6.16.0",
+      "ref": "openapi-backend@5.23.0|qs@6.16.1",
       "dependsOn": [
         "openapi-backend@5.23.0|es-define-property@1.0.1",
         "openapi-backend@5.23.0|side-channel@1.1.1"
@@ -2246,7 +2246,7 @@
       ]
     },
     {
-      "ref": "openapi-backend@5.23.0|undici@8.10.2"
+      "ref": "openapi-backend@5.23.0|undici@8.12.3"
     },
     {
       "ref": "openapi-backend@5.23.0|fast-deep-equal@3.1.3"

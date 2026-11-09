@@ -1,7 +1,7 @@
 # Third-party notices for openapi-backend
 
 Runtime (production) dependencies distributed alongside openapi-backend, with their licenses and copyright holders. The full license text for each package is included below.
-Generated from package-lock.json on 2026-10-28.
+Generated from package-lock.json on 2026-11-09.
 
 ## @apidevtools/json-schema-ref-parser@16.0.3
 - License: MIT
@@ -1195,7 +1195,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ````
 
-## qs@6.16.0
+## qs@6.16.1
 - License: BSD-3-Clause
 - Repository: https://github.com/ljharb/qs
 - Copyright (c) 2014, Nathan LaFreniere and other [contributors](https://github.com/ljharb/qs/graphs/contributors)
@@ -1376,7 +1376,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ````
 
-## undici@8.10.2
+## undici@8.12.3
 - License: MIT
 - Repository: https://github.com/nodejs/undici
 
