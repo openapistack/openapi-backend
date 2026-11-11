@@ -250,6 +250,44 @@ describe('OpenAPIRouter', () => {
       expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
     });
 
+    test.each<['integer' | 'string', string, { limit: string }]>([
+      ['integer', '/pets?limit=10', { limit: '10' }],
+      ['string', '/pets?limit=Rex', { limit: 'Rex' }],
+      ['string', '/pets?limit=Rex%2C%20Jr.', { limit: 'Rex, Jr.' }],
+    ])('does not split %s query parameters when style=form, explode=false', (type, path, expected) => {
+      const request = { path, method: 'get', headers };
+      const operation = api.getOperation('createPet')!;
+      operation.parameters = [
+        {
+          in: 'query',
+          name: 'limit',
+          style: 'form',
+          explode: false,
+          schema: { type },
+        },
+      ];
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.query).toEqual(expected);
+    });
+
+    test('splits query parameters with an array schema when style=form, explode=false', () => {
+      const request = { path: '/pets?limit=10,20', method: 'get', headers };
+      const operation = api.getOperation('createPet')!;
+      operation.parameters = [
+        {
+          in: 'query',
+          name: 'limit',
+          style: 'form',
+          explode: false,
+          schema: { type: 'array', items: { type: 'integer' } },
+        },
+      ];
+
+      const parsedRequest = api.parseRequest(request, operation);
+      expect(parsedRequest.query).toEqual({ limit: ['10', '20'] });
+    });
+
     test('parses query string arrays with encoded commas when style=form, explode=false', () => {
       const request = { path: '/pets?limit=10%2C20', method: 'get', headers };
       const operation = api.getOperation('createPet')!;
