@@ -377,6 +377,11 @@ export class OpenAPIRouter<D extends Document = Document> {
               }
             } else if (parameter.explode === false) {
               // Handle parameter parsing for non-exploded arrays
+              // primitive values serialize the same with or without explode, so leave them as they are
+              const schemaType = (parameter.schema as { type?: string | string[] } | undefined)?.type;
+              if (schemaType && ![schemaType].flat().includes('array')) {
+                continue;
+              }
               const rawValue = query[queryParam];
               if (Array.isArray(rawValue) && rawValue.length > 1) {
                 // param has already been decoded (type coercion flow)
