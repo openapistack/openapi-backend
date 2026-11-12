@@ -82,6 +82,15 @@ function pathTemplateToPattern(path: string) {
   return `^${pattern}$`;
 }
 
+// bath-es5 turns each {param} into a capture group but uses the rest of the template
+// as raw regex source, so escape the literal parts (e.g. the '.' in /files/{name}.{ext})
+function escapeTemplateLiterals(path: string) {
+  return path
+    .split(/(\{[^}]+\})/)
+    .map((part, i) => (i % 2 === 1 ? part : escapeRegExp(part)))
+    .join('');
+}
+
 /**
  * Class that handles routing
  *
@@ -355,7 +364,7 @@ export class OpenAPIRouter<D extends Document = Document> {
       const normalizedPath = this.normalizePath(req.path);
 
       // parse path params if path is given
-      const pathParams = bath(operation.path);
+      const pathParams = bath(escapeTemplateLiterals(operation.path));
       params = pathParams.params(normalizedPath) || {};
       // parse query parameters with specified style for parameter
       for (const queryParam in query) {
