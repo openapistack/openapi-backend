@@ -333,6 +333,47 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
       });
     });
 
+    describe('scalar query params with style=form, explode=false', () => {
+      const validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPets',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  { name: 'limit', in: 'query', style: 'form', explode: false, schema: { type: 'integer' } },
+                  { name: 'name', in: 'query', style: 'form', explode: false, schema: { type: 'string' } },
+                  {
+                    name: 'ids',
+                    in: 'query',
+                    style: 'form',
+                    explode: false,
+                    schema: { type: 'array', items: { type: 'integer' } },
+                  },
+                ],
+              },
+            },
+          },
+        },
+        ...constructorOpts,
+      });
+
+      test.each(['/pets?limit=10', '/pets?name=Rex', '/pets?name=Rex%2C%20Jr.', '/pets?ids=1,2,3'])(
+        'passes validation for GET %s',
+        async (path) => {
+          const valid = validator.validateRequest({ path, method: 'get', headers });
+          expect(valid.errors).toBeFalsy();
+        },
+      );
+
+      test('still fails validation for a non-integer limit', async () => {
+        const valid = validator.validateRequest({ path: '/pets?limit=abc', method: 'get', headers });
+        expect(valid.valid).toBe(false);
+      });
+    });
+
     describe('query params in operation object', () => {
       const validator = new OpenAPIValidator({
         definition: {
