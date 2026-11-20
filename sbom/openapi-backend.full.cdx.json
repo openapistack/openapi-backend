@@ -3,9 +3,9 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
   "version": 1,
-  "serialNumber": "urn:uuid:a41c78fe-af06-4656-940f-ed242a39fc51",
+  "serialNumber": "urn:uuid:1bae8a2d-202c-46f1-b5ec-fd727bb67bf3",
   "metadata": {
-    "timestamp": "2026-11-20T05:58:27.455Z",
+    "timestamp": "2026-11-20T13:26:33.509Z",
     "tools": {
       "components": [
         {
@@ -417,8 +417,8 @@
       "type": "library",
       "name": "eslint-plugin",
       "group": "@typescript-eslint",
-      "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/eslint-plugin@7.18.0",
+      "version": "8.73.0",
+      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/eslint-plugin@8.73.0",
       "description": "TypeScript plugin for ESLint",
       "licenses": [
         {
@@ -428,7 +428,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40typescript-eslint/eslint-plugin@7.18.0",
+      "purl": "pkg:npm/%40typescript-eslint/eslint-plugin@8.73.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/typescript-eslint/typescript-eslint.git#packages/eslint-plugin",
@@ -446,12 +446,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-7.18.0.tgz",
+          "url": "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.73.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "f781104d6678d26cc1738d804cd2018a60440e5b5227d4501c20bcbdcfcf0dbc62e24f1d570500bf8a3df1d939d0cd7307e246171a78dc53fb7fcf853fc47a4b"
+              "content": "524ca03057abe776339f6f4c0981531dfdf88465dfe4a26188359f226d6d5ed5d1af29b5092ea5e47f58df20ad3d60a1a42d3f7fddc7f3c81d8fcb4dd1d77893"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -460,7 +460,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": "^18.18.0 || >=20.0.0"
+          "value": "^18.18.0 || ^20.9.0 || >=21.1.0"
         },
         {
           "name": "cdx:npm:package:development",
@@ -470,24 +470,85 @@
           "name": "cdx:npm:package:path",
           "value": "node_modules/@typescript-eslint/eslint-plugin"
         }
+      ],
+      "components": [
+        {
+          "type": "library",
+          "name": "ignore",
+          "version": "7.0.16",
+          "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/eslint-plugin@8.73.0|ignore@7.0.16",
+          "author": "kael",
+          "description": "Ignore is a manager and filter for .gitignore rules, the one used by eslint, gitbook and many others.",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/ignore@7.0.16",
+          "externalReferences": [
+            {
+              "url": "git+https://github.com/kaelzhang/node-ignore.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/kaelzhang/node-ignore#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/kaelzhang/node-ignore/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            },
+            {
+              "url": "https://registry.npmjs.org/ignore/-/ignore-7.0.16.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "e7637e6381d130e2666cb9abf83a8ee22491cb207b379da09bb3d6093ea1d29f7bf3ea0a6ea1c207b808248c19bc152c8e549d59bac116a51298814d64ca67d0"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": ">= 4"
+            },
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/@typescript-eslint/eslint-plugin/node_modules/ignore"
+            }
+          ]
+        }
       ]
     },
     {
       "type": "library",
       "name": "parser",
       "group": "@typescript-eslint",
-      "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/parser@7.18.0",
+      "version": "8.73.0",
+      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/parser@8.73.0",
       "description": "An ESLint custom parser which leverages TypeScript ESTree",
       "licenses": [
         {
           "license": {
-            "id": "BSD-2-Clause",
+            "id": "MIT",
             "acknowledgement": "declared"
           }
         }
       ],
-      "purl": "pkg:npm/%40typescript-eslint/parser@7.18.0",
+      "purl": "pkg:npm/%40typescript-eslint/parser@8.73.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/typescript-eslint/typescript-eslint.git#packages/parser",
@@ -505,12 +566,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@typescript-eslint/parser/-/parser-7.18.0.tgz",
+          "url": "https://registry.npmjs.org/@typescript-eslint/parser/-/parser-8.73.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "e19f8bf08d8eaa1655f2a035df6338c0d2f7d32a591983905417cc8310c7fcae545f43cda93bb573acdaf524f9afdfad6afbc78935a60672b3a4227f1a5545b6"
+              "content": "02e2f8e5b55c9acb077d9dc38b772cf50d25e20066e19155ac9390104ed5a6a5be3d5810684c12c1acf3e1354888569b5e493a539d44a6b603c2ac3e1d1f1e3f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -519,7 +580,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": "^18.18.0 || >=20.0.0"
+          "value": "^18.18.0 || ^20.9.0 || >=21.1.0"
         },
         {
           "name": "cdx:npm:package:development",
@@ -2149,8 +2210,8 @@
       "type": "library",
       "name": "scope-manager",
       "group": "@typescript-eslint",
-      "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/scope-manager@7.18.0",
+      "version": "8.73.0",
+      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/scope-manager@8.73.0",
       "description": "TypeScript scope analyser for ESLint",
       "licenses": [
         {
@@ -2160,7 +2221,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40typescript-eslint/scope-manager@7.18.0",
+      "purl": "pkg:npm/%40typescript-eslint/scope-manager@8.73.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/typescript-eslint/typescript-eslint.git#packages/scope-manager",
@@ -2178,12 +2239,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@typescript-eslint/scope-manager/-/scope-manager-7.18.0.tgz",
+          "url": "https://registry.npmjs.org/@typescript-eslint/scope-manager/-/scope-manager-8.73.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "8e385d204fc53c5d81ed9d6ecdcea2de858a6c67076fced0c3b0168fa8e612a34e7c315b256b63b7f5dfc02a6f364a465a57096a8839bd347e555f3ec3d25f94"
+              "content": "fd38c3ef7f08ab6af38f9cf48b154e8be4ecbe08c0cd93cb3da1f5c96743072b51fc74d1e60329c985997827b95934192f0937868f0057b5379aea10091b5705"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2192,7 +2253,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": "^18.18.0 || >=20.0.0"
+          "value": "^18.18.0 || ^20.9.0 || >=21.1.0"
         },
         {
           "name": "cdx:npm:package:development",
@@ -2208,8 +2269,8 @@
       "type": "library",
       "name": "type-utils",
       "group": "@typescript-eslint",
-      "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/type-utils@7.18.0",
+      "version": "8.73.0",
+      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/type-utils@8.73.0",
       "description": "Type utilities for working with TypeScript + ESLint together",
       "licenses": [
         {
@@ -2219,7 +2280,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40typescript-eslint/type-utils@7.18.0",
+      "purl": "pkg:npm/%40typescript-eslint/type-utils@8.73.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/typescript-eslint/typescript-eslint.git#packages/type-utils",
@@ -2237,12 +2298,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@typescript-eslint/type-utils/-/type-utils-7.18.0.tgz",
+          "url": "https://registry.npmjs.org/@typescript-eslint/type-utils/-/type-utils-8.73.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "5cbd05257b822da0ee5f6b18a9951448e276b06e7f8b5000cdef9ac6a98b9d290d11531560b17e71bc25076c3c0f5b629c5b928a41e616d6be3fe1cea1facb78"
+              "content": "30e0bd8b8c72d45eca70375eec8a7c8dfd52ad18802dbd8a9b8516c46363504d989618c8128d5ac84dbb187230210c9f5ae1d3984a27413d78bb2bab9720ba68"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2251,7 +2312,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": "^18.18.0 || >=20.0.0"
+          "value": "^18.18.0 || ^20.9.0 || >=21.1.0"
         },
         {
           "name": "cdx:npm:package:development",
@@ -2267,8 +2328,8 @@
       "type": "library",
       "name": "utils",
       "group": "@typescript-eslint",
-      "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/utils@7.18.0",
+      "version": "8.73.0",
+      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/utils@8.73.0",
       "description": "Utilities for working with TypeScript + ESLint together",
       "licenses": [
         {
@@ -2278,7 +2339,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40typescript-eslint/utils@7.18.0",
+      "purl": "pkg:npm/%40typescript-eslint/utils@8.73.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/typescript-eslint/typescript-eslint.git#packages/utils",
@@ -2296,12 +2357,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@typescript-eslint/utils/-/utils-7.18.0.tgz",
+          "url": "https://registry.npmjs.org/@typescript-eslint/utils/-/utils-8.73.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "90ad3facd6b68fbe17b8755ca0267174504c17e6aafef1fcdc25c038789e0bed868ace2617c8c95d3e5e01fc83dcad2c031b4fbb0c5a20e20ebe1c33543b7f93"
+              "content": "8f6495249bd59177542f459c133a38bc41f598ed6f222f0a955ba4718036320319bd83762e5651e0f9ac5be1934b1496db88fa43f10fefe30e89f2ed839866b0"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2310,7 +2371,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": "^18.18.0 || >=20.0.0"
+          "value": "^18.18.0 || ^20.9.0 || >=21.1.0"
         },
         {
           "name": "cdx:npm:package:development",
@@ -2326,8 +2387,8 @@
       "type": "library",
       "name": "visitor-keys",
       "group": "@typescript-eslint",
-      "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@7.18.0",
+      "version": "8.73.0",
+      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@8.73.0",
       "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
       "licenses": [
         {
@@ -2337,7 +2398,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40typescript-eslint/visitor-keys@7.18.0",
+      "purl": "pkg:npm/%40typescript-eslint/visitor-keys@8.73.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/typescript-eslint/typescript-eslint.git#packages/visitor-keys",
@@ -2355,12 +2416,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@typescript-eslint/visitor-keys/-/visitor-keys-7.18.0.tgz",
+          "url": "https://registry.npmjs.org/@typescript-eslint/visitor-keys/-/visitor-keys-8.73.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "703174fc67fcd50a58df163224a0d5d7867076689de7ebae10d8631f612a15a1749e2fb2032abf2f331a2097613495d923bb8bcf022503e57ba16a329fa0aeae"
+              "content": "93896c155a5164809b96d9081041f8859464c1792a0c5d461c1a4294a40e1d063e464a19000bb2735722dc8ea9f8207abf75388da1c852c85ce11cf34176562e"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2369,7 +2430,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": "^18.18.0 || >=20.0.0"
+          "value": "^18.18.0 || ^20.9.0 || >=21.1.0"
         },
         {
           "name": "cdx:npm:package:development",
@@ -2379,119 +2440,66 @@
           "name": "cdx:npm:package:path",
           "value": "node_modules/@typescript-eslint/visitor-keys"
         }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "graphemer",
-      "version": "1.4.0",
-      "bom-ref": "openapi-backend@5.25.0|graphemer@1.4.0",
-      "author": "Matt Davies",
-      "description": "A JavaScript library that breaks strings into their individual user-perceived characters (including emojis!)",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
       ],
-      "purl": "pkg:npm/graphemer@1.4.0",
-      "externalReferences": [
+      "components": [
         {
-          "url": "git+https://github.com/flmnt/graphemer.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/flmnt/graphemer",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/flmnt/graphemer/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/graphemer/-/graphemer-1.4.0.tgz",
-          "type": "distribution",
-          "hashes": [
+          "type": "library",
+          "name": "eslint-visitor-keys",
+          "version": "5.0.1",
+          "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@8.73.0|eslint-visitor-keys@5.0.1",
+          "author": "Toru Nagashima",
+          "description": "Constants and utilities about visitor keys to traverse AST.",
+          "licenses": [
             {
-              "alg": "SHA-512",
-              "content": "12d2b0a0eea4c422fd58ee718a98874d9952cc19bb58b4fadbb4ea0bfb9545dd072a6abc357c9e6e7358c43a018bbc2df1e4d6ad4aca5c2395685abdc759206a"
+              "license": {
+                "id": "Apache-2.0",
+                "acknowledgement": "declared"
+              }
             }
           ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/graphemer"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "ignore",
-      "version": "5.3.2",
-      "bom-ref": "openapi-backend@5.25.0|ignore@5.3.2",
-      "author": "kael",
-      "description": "Ignore is a manager and filter for .gitignore rules, the one used by eslint, gitbook and many others.",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/ignore@5.3.2",
-      "externalReferences": [
-        {
-          "url": "git+ssh://git@github.com/kaelzhang/node-ignore.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/kaelzhang/node-ignore#readme",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/kaelzhang/node-ignore/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/ignore/-/ignore-5.3.2.tgz",
-          "type": "distribution",
-          "hashes": [
+          "purl": "pkg:npm/eslint-visitor-keys@5.0.1",
+          "externalReferences": [
             {
-              "alg": "SHA-512",
-              "content": "86c053354a904c3c245ad71d608da2d3a63f9d4044b0d10324a8d676280bbde832f240ee2404bcb91969924710a721172f467fa630f2e4706632344227682afa"
+              "url": "git+https://github.com/eslint/js.git#packages/eslint-visitor-keys",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+            },
+            {
+              "url": "https://github.com/eslint/js/blob/main/packages/eslint-visitor-keys/README.md",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/eslint/js/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            },
+            {
+              "url": "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-5.0.1.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "b43e34787c40df98743c421935e223907a034786238c9a77e1b88cd260efa6505efff981f881c2a870c657ba7117eecc9254ef8a085c08f3d90bbca75b28dd4c"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
             }
           ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">= 4"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/ignore"
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": "^20.19.0 || ^22.13.0 || >=24"
+            },
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/@typescript-eslint/visitor-keys/node_modules/eslint-visitor-keys"
+            }
+          ]
         }
       ]
     },
@@ -2553,8 +2561,8 @@
     {
       "type": "library",
       "name": "ts-api-utils",
-      "version": "1.4.3",
-      "bom-ref": "openapi-backend@5.25.0|ts-api-utils@1.4.3",
+      "version": "2.5.0",
+      "bom-ref": "openapi-backend@5.25.0|ts-api-utils@2.5.0",
       "author": "JoshuaKGoldberg",
       "description": "Utility functions for working with TypeScript's API. Successor to the wonderful tsutils. 🛠️️",
       "licenses": [
@@ -2565,7 +2573,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/ts-api-utils@1.4.3",
+      "purl": "pkg:npm/ts-api-utils@2.5.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/JoshuaKGoldberg/ts-api-utils.git",
@@ -2583,12 +2591,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/ts-api-utils/-/ts-api-utils-1.4.3.tgz",
+          "url": "https://registry.npmjs.org/ts-api-utils/-/ts-api-utils-2.5.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "8b778c1bbed44cc0f4859860452e7ada9bfcdd10baba44800b618c35673ef5d89e87ffa30cce6ee581be3475fa54d0d11d0707c26b131dcb4ff4b85b0b75b157"
+              "content": "389fe26f184f96aacc33452234727fd02290928285db8dff0049a996ddeaa518245bc546ec87ce4b8d61ed5f138c84ea741c87ceb8dc4bfdac8becb894887c34"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2597,7 +2605,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=16"
+          "value": ">=18.12"
         },
         {
           "name": "cdx:npm:package:development",
@@ -2613,8 +2621,8 @@
       "type": "library",
       "name": "types",
       "group": "@typescript-eslint",
-      "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/types@7.18.0",
+      "version": "8.73.0",
+      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/types@8.73.0",
       "description": "Types for the TypeScript-ESTree AST spec",
       "licenses": [
         {
@@ -2624,7 +2632,7 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40typescript-eslint/types@7.18.0",
+      "purl": "pkg:npm/%40typescript-eslint/types@8.73.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/typescript-eslint/typescript-eslint.git#packages/types",
@@ -2642,12 +2650,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@typescript-eslint/types/-/types-7.18.0.tgz",
+          "url": "https://registry.npmjs.org/@typescript-eslint/types/-/types-8.73.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "899aa2f83b35cb8103614b6538e0be6949b19c4f714bfc828a092303b5e94ca57a9c205ddc7a7f3d118699dc277e45764e133262574fd704699bf89df7db294d"
+              "content": "3bfd72b58cdf945d7a403297c78fea39783522e669fa7ee1afdb7e4b49efecdff64e5f2b262342b21ced57581c494bc76cfb685f7fb398d6ed480c956f3c557f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2656,7 +2664,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": "^18.18.0 || >=20.0.0"
+          "value": "^18.18.0 || ^20.9.0 || >=21.1.0"
         },
         {
           "name": "cdx:npm:package:development",
@@ -2672,18 +2680,18 @@
       "type": "library",
       "name": "typescript-estree",
       "group": "@typescript-eslint",
-      "version": "7.18.0",
-      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0",
+      "version": "8.73.0",
+      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0",
       "description": "A parser that converts TypeScript source code into an ESTree compatible form",
       "licenses": [
         {
           "license": {
-            "id": "BSD-2-Clause",
+            "id": "MIT",
             "acknowledgement": "declared"
           }
         }
       ],
-      "purl": "pkg:npm/%40typescript-eslint/typescript-estree@7.18.0",
+      "purl": "pkg:npm/%40typescript-eslint/typescript-estree@8.73.0",
       "externalReferences": [
         {
           "url": "git+https://github.com/typescript-eslint/typescript-eslint.git#packages/typescript-estree",
@@ -2701,12 +2709,12 @@
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/@typescript-eslint/typescript-estree/-/typescript-estree-7.18.0.tgz",
+          "url": "https://registry.npmjs.org/@typescript-eslint/typescript-estree/-/typescript-estree-8.73.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "68fd6ffc148f9e7ca1307b6cf1c7f5a90e90d48170c11bc040646f045916968dff947dbd3970373edb3e735d27c51c4806b0e7a0cab386077055ee5fd83e8ecc"
+              "content": "2278e506449d59c788c080564b04b710d529fa2d0ed363c65f766fdb09e2856242d560d51af1bb9931ee7fc6f9eee01a2138fde1dead44f0c7fac504b5775141"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2715,7 +2723,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": "^18.18.0 || >=20.0.0"
+          "value": "^18.18.0 || ^20.9.0 || >=21.1.0"
         },
         {
           "name": "cdx:npm:package:development",
@@ -2730,22 +2738,22 @@
         {
           "type": "library",
           "name": "minimatch",
-          "version": "9.0.9",
-          "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0|minimatch@9.0.9",
+          "version": "11.0.9",
+          "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0|minimatch@11.0.9",
           "author": "Isaac Z. Schlueter",
           "description": "a glob matcher in javascript",
           "licenses": [
             {
               "license": {
-                "id": "ISC",
+                "id": "BlueOak-1.0.0",
                 "acknowledgement": "declared"
               }
             }
           ],
-          "purl": "pkg:npm/minimatch@9.0.9",
+          "purl": "pkg:npm/minimatch@11.0.9",
           "externalReferences": [
             {
-              "url": "git://github.com/isaacs/minimatch.git",
+              "url": "git+ssh://git@github.com/isaacs/minimatch.git",
               "type": "vcs",
               "comment": "as detected from PackageJson property \"repository.url\""
             },
@@ -2760,12 +2768,12 @@
               "comment": "as detected from PackageJson property \"bugs.url\""
             },
             {
-              "url": "https://registry.npmjs.org/minimatch/-/minimatch-9.0.9.tgz",
+              "url": "https://registry.npmjs.org/minimatch/-/minimatch-11.0.9.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "381c0137d00be1daa61139694b6cdab31faf4de59c956ce46e57d993b2930398f78de38e373fed4429d9a26532bcd83cdf02f966ff52b3a1cc2570202fc47662"
+                  "content": "2821647f28ea7ab3654acb6396120635720a64603fe8ee15e1196167e0ecafadb548f3f0d26ce5ca913d0fd64ea0f89579f1c80fe8fbfd7b8c325a9f0ff17ad1"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2774,7 +2782,7 @@
           "properties": [
             {
               "name": "cdx:npm:package:constraint:engine:node",
-              "value": ">=16 || 14 >=14.17"
+              "value": "20 || >=22"
             },
             {
               "name": "cdx:npm:package:development",
@@ -2789,9 +2797,8 @@
         {
           "type": "library",
           "name": "brace-expansion",
-          "version": "2.1.7",
-          "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0|brace-expansion@2.1.7",
-          "author": "Julian Gruber",
+          "version": "5.0.13",
+          "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0|brace-expansion@5.0.13",
           "description": "Brace expansion as known from sh/bash",
           "licenses": [
             {
@@ -2801,15 +2808,15 @@
               }
             }
           ],
-          "purl": "pkg:npm/brace-expansion@2.1.7",
+          "purl": "pkg:npm/brace-expansion@5.0.13",
           "externalReferences": [
             {
-              "url": "git://github.com/juliangruber/brace-expansion.git",
+              "url": "git+https://github.com/juliangruber/brace-expansion.git",
               "type": "vcs",
               "comment": "as detected from PackageJson property \"repository.url\""
             },
             {
-              "url": "https://github.com/juliangruber/brace-expansion",
+              "url": "https://github.com/juliangruber/brace-expansion#readme",
               "type": "website",
               "comment": "as detected from PackageJson property \"homepage\""
             },
@@ -2819,12 +2826,12 @@
               "comment": "as detected from PackageJson property \"bugs.url\""
             },
             {
-              "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-2.1.7.tgz",
+              "url": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.13.tgz",
               "type": "distribution",
               "hashes": [
                 {
                   "alg": "SHA-512",
-                  "content": "b996dec3536a7663c34cc27c6a1d72f9bfbd40426b7e45c593745c4d0c375f48d6ff1454bc52ac83509f41d49819d4db5d9584c6d53727771cc6d9dfc35162d2"
+                  "content": "561ddd9856dce3065ea31eccf48ff42fd19f15df374aee3ec82724fce17d1a2fcffdd0079f4453ed7e0af51ee030d3210dc9370ef851e905ec9d07638e0c0dbd"
                 }
               ],
               "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -2832,12 +2839,74 @@
           ],
           "properties": [
             {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": "20 || >=22"
+            },
+            {
               "name": "cdx:npm:package:development",
               "value": "true"
             },
             {
               "name": "cdx:npm:package:path",
               "value": "node_modules/@typescript-eslint/typescript-estree/node_modules/brace-expansion"
+            }
+          ]
+        },
+        {
+          "type": "library",
+          "name": "balanced-match",
+          "version": "4.0.4",
+          "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0|balanced-match@4.0.4",
+          "description": "Match balanced character pairs, like \"{\" and \"}\"",
+          "licenses": [
+            {
+              "license": {
+                "id": "MIT",
+                "acknowledgement": "declared"
+              }
+            }
+          ],
+          "purl": "pkg:npm/balanced-match@4.0.4",
+          "externalReferences": [
+            {
+              "url": "git://github.com/juliangruber/balanced-match.git",
+              "type": "vcs",
+              "comment": "as detected from PackageJson property \"repository.url\""
+            },
+            {
+              "url": "https://github.com/juliangruber/balanced-match#readme",
+              "type": "website",
+              "comment": "as detected from PackageJson property \"homepage\""
+            },
+            {
+              "url": "https://github.com/juliangruber/balanced-match/issues",
+              "type": "issue-tracker",
+              "comment": "as detected from PackageJson property \"bugs.url\""
+            },
+            {
+              "url": "https://registry.npmjs.org/balanced-match/-/balanced-match-4.0.4.tgz",
+              "type": "distribution",
+              "hashes": [
+                {
+                  "alg": "SHA-512",
+                  "content": "04bae011c453c17da8ea01b118e08dc8cbc64a9df96287ee633c3d87520c4d198aaadb40659554ebb6dd6fd3ebdaf50703cfa3de2dad25f8cee82ebee26c864c"
+                }
+              ],
+              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+            }
+          ],
+          "properties": [
+            {
+              "name": "cdx:npm:package:constraint:engine:node",
+              "value": "18 || 20 || >=22"
+            },
+            {
+              "name": "cdx:npm:package:development",
+              "value": "true"
+            },
+            {
+              "name": "cdx:npm:package:path",
+              "value": "node_modules/@typescript-eslint/typescript-estree/node_modules/balanced-match"
             }
           ]
         }
@@ -4392,6 +4461,120 @@
               "value": "node_modules/globals/node_modules/type-fest"
             }
           ]
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "graphemer",
+      "version": "1.4.0",
+      "bom-ref": "openapi-backend@5.25.0|graphemer@1.4.0",
+      "author": "Matt Davies",
+      "description": "A JavaScript library that breaks strings into their individual user-perceived characters (including emojis!)",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/graphemer@1.4.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/flmnt/graphemer.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/flmnt/graphemer",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/flmnt/graphemer/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/graphemer/-/graphemer-1.4.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "12d2b0a0eea4c422fd58ee718a98874d9952cc19bb58b4fadbb4ea0bfb9545dd072a6abc357c9e6e7358c43a018bbc2df1e4d6ad4aca5c2395685abdc759206a"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/graphemer"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "ignore",
+      "version": "5.3.2",
+      "bom-ref": "openapi-backend@5.25.0|ignore@5.3.2",
+      "author": "kael",
+      "description": "Ignore is a manager and filter for .gitignore rules, the one used by eslint, gitbook and many others.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/ignore@5.3.2",
+      "externalReferences": [
+        {
+          "url": "git+ssh://git@github.com/kaelzhang/node-ignore.git",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\""
+        },
+        {
+          "url": "https://github.com/kaelzhang/node-ignore#readme",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/kaelzhang/node-ignore/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/ignore/-/ignore-5.3.2.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "86c053354a904c3c245ad71d608da2d3a63f9d4044b0d10324a8d676280bbde832f240ee2404bcb91969924710a721172f467fa630f2e4706632344227682afa"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": ">= 4"
+        },
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/ignore"
         }
       ]
     },
@@ -8861,11 +9044,11 @@
     },
     {
       "type": "library",
-      "name": "globby",
-      "version": "11.1.0",
-      "bom-ref": "openapi-backend@5.25.0|globby@11.1.0",
-      "author": "Sindre Sorhus",
-      "description": "User-friendly glob matching",
+      "name": "project-service",
+      "group": "@typescript-eslint",
+      "version": "8.73.0",
+      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/project-service@8.73.0",
+      "description": "Standalone TypeScript project service wrapper for linting.",
       "licenses": [
         {
           "license": {
@@ -8874,30 +9057,30 @@
           }
         }
       ],
-      "purl": "pkg:npm/globby@11.1.0",
+      "purl": "pkg:npm/%40typescript-eslint/project-service@8.73.0",
       "externalReferences": [
         {
-          "url": "git+https://github.com/sindresorhus/globby.git",
+          "url": "git+https://github.com/typescript-eslint/typescript-eslint.git#packages/project-service",
           "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
         },
         {
-          "url": "https://github.com/sindresorhus/globby#readme",
+          "url": "https://typescript-eslint.io",
           "type": "website",
           "comment": "as detected from PackageJson property \"homepage\""
         },
         {
-          "url": "https://github.com/sindresorhus/globby/issues",
+          "url": "https://github.com/typescript-eslint/typescript-eslint/issues",
           "type": "issue-tracker",
           "comment": "as detected from PackageJson property \"bugs.url\""
         },
         {
-          "url": "https://registry.npmjs.org/globby/-/globby-11.1.0.tgz",
+          "url": "https://registry.npmjs.org/@typescript-eslint/project-service/-/project-service-8.73.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "8e121768ecf2d6c6fc232a1c6abb964a7d538e69c156cf00ca1732f37ae6c4d27cab6b96282023dc29c963e2a91925c2b9e00f7348b4e6456f54ab4fd6df52de"
+              "content": "fe911ff1173832393ea899d8d2e3b5f8669d79a97cbafe74c69ba273eb2b1b6bc855ab40d17c6f58c51e32d16fb3a3821ea7ed890efffaa1f869e846e6cb7320"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -8906,7 +9089,7 @@
       "properties": [
         {
           "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=10"
+          "value": "^18.18.0 || ^20.9.0 || >=21.1.0"
         },
         {
           "name": "cdx:npm:package:development",
@@ -8914,7 +9097,66 @@
         },
         {
           "name": "cdx:npm:package:path",
-          "value": "node_modules/globby"
+          "value": "node_modules/@typescript-eslint/project-service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "tsconfig-utils",
+      "group": "@typescript-eslint",
+      "version": "8.73.0",
+      "bom-ref": "openapi-backend@5.25.0|@typescript-eslint/tsconfig-utils@8.73.0",
+      "description": "Utilities for collecting TSConfigs for linting scenarios.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT",
+            "acknowledgement": "declared"
+          }
+        }
+      ],
+      "purl": "pkg:npm/%40typescript-eslint/tsconfig-utils@8.73.0",
+      "externalReferences": [
+        {
+          "url": "git+https://github.com/typescript-eslint/typescript-eslint.git#packages/tsconfig-utils",
+          "type": "vcs",
+          "comment": "as detected from PackageJson property \"repository.url\" and \"repository.directory\""
+        },
+        {
+          "url": "https://typescript-eslint.io",
+          "type": "website",
+          "comment": "as detected from PackageJson property \"homepage\""
+        },
+        {
+          "url": "https://github.com/typescript-eslint/typescript-eslint/issues",
+          "type": "issue-tracker",
+          "comment": "as detected from PackageJson property \"bugs.url\""
+        },
+        {
+          "url": "https://registry.npmjs.org/@typescript-eslint/tsconfig-utils/-/tsconfig-utils-8.73.0.tgz",
+          "type": "distribution",
+          "hashes": [
+            {
+              "alg": "SHA-512",
+              "content": "966b4214e7d86897e9a99cb01ae5e2e05a4db44f8d43e60b7b74f42bdaed103716f19b865af7c8fbea63f2bd39b18308f2f593d8260ae2b5b279d983e91a78a2"
+            }
+          ],
+          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "cdx:npm:package:constraint:engine:node",
+          "value": "^18.18.0 || ^20.9.0 || >=21.1.0"
+        },
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        },
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@typescript-eslint/tsconfig-utils"
         }
       ]
     },
@@ -13131,43 +13373,28 @@
     },
     {
       "type": "library",
-      "name": "array-union",
-      "version": "2.1.0",
-      "bom-ref": "openapi-backend@5.25.0|array-union@2.1.0",
-      "author": "Sindre Sorhus",
-      "description": "Create an array of unique values, in order, from the input arrays",
+      "name": "nonrecursive-glob-match",
+      "group": "@isaacs",
+      "version": "1.1.0",
+      "bom-ref": "openapi-backend@5.25.0|@isaacs/nonrecursive-glob-match@1.1.0",
+      "description": "a single-path-portion glob matcher not subject to recursive backtracking ReDoS",
       "licenses": [
         {
           "license": {
-            "id": "MIT",
+            "id": "BlueOak-1.0.0",
             "acknowledgement": "declared"
           }
         }
       ],
-      "purl": "pkg:npm/array-union@2.1.0",
+      "purl": "pkg:npm/%40isaacs/nonrecursive-glob-match@1.1.0",
       "externalReferences": [
         {
-          "url": "git+https://github.com/sindresorhus/array-union.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/sindresorhus/array-union#readme",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/sindresorhus/array-union/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/array-union/-/array-union-2.1.0.tgz",
+          "url": "https://registry.npmjs.org/@isaacs/nonrecursive-glob-match/-/nonrecursive-glob-match-1.1.0.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "1c6cb1a0e4d853208ceacb547ba1098277781287b0008ef331d7ea3be9068e79599810f3fdc479a5ff2bfdc4785aaeb4b0bfe9d0891c8d41043f04b7185ac8cb"
+              "content": "18f9bf0dbbe4e512e68519f15c86bb9d3a4ad31b65e04d308f432c96cb8d889d45211394fb6fbd960502fdd805ec4cb84025a17c4b20c6294c44c09d1cf7c37f"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
@@ -13175,312 +13402,12 @@
       ],
       "properties": [
         {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=8"
-        },
-        {
           "name": "cdx:npm:package:development",
           "value": "true"
         },
         {
           "name": "cdx:npm:package:path",
-          "value": "node_modules/array-union"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "dir-glob",
-      "version": "3.0.1",
-      "bom-ref": "openapi-backend@5.25.0|dir-glob@3.0.1",
-      "author": "Kevin Mårtensson",
-      "description": "Convert directories to glob compatible strings",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/dir-glob@3.0.1",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/kevva/dir-glob.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/kevva/dir-glob#readme",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/kevva/dir-glob/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/dir-glob/-/dir-glob-3.0.1.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "5a4ad6a7d191e0a5df28663338b993b86562d545857f0b37efb9fd71ce79fed6fa0eeab217aa5c43901b88712c85a0e963dbfaa1a4abd9708389d1a633077320"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=8"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/dir-glob"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "fast-glob",
-      "version": "3.3.3",
-      "bom-ref": "openapi-backend@5.25.0|fast-glob@3.3.3",
-      "author": "Denis Malinochkin",
-      "description": "It's a very fast and efficient glob library for Node.js",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/fast-glob@3.3.3",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/mrmlnc/fast-glob.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/mrmlnc/fast-glob#readme",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/mrmlnc/fast-glob/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/fast-glob/-/fast-glob-3.3.3.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "ecca6d2fc53472a705773233c0e4c7a22957f71e41acdab27bb67f2ee0bb9023118a8d44312caa44adc1100503eec5d1ab8893e00cd356e65d8604364c2bd82e"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=8.6.0"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/fast-glob"
-        }
-      ],
-      "components": [
-        {
-          "type": "library",
-          "name": "glob-parent",
-          "version": "5.1.2",
-          "bom-ref": "openapi-backend@5.25.0|fast-glob@3.3.3|glob-parent@5.1.2",
-          "author": "Gulp Team",
-          "description": "Extract the non-magic parent path from a glob string.",
-          "licenses": [
-            {
-              "license": {
-                "id": "ISC",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/glob-parent@5.1.2",
-          "externalReferences": [
-            {
-              "url": "git+https://github.com/gulpjs/glob-parent.git",
-              "type": "vcs",
-              "comment": "as detected from PackageJson property \"repository.url\""
-            },
-            {
-              "url": "https://github.com/gulpjs/glob-parent#readme",
-              "type": "website",
-              "comment": "as detected from PackageJson property \"homepage\""
-            },
-            {
-              "url": "https://github.com/gulpjs/glob-parent/issues",
-              "type": "issue-tracker",
-              "comment": "as detected from PackageJson property \"bugs.url\""
-            },
-            {
-              "url": "https://registry.npmjs.org/glob-parent/-/glob-parent-5.1.2.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "00e22049009ea62258c0fdc04671b1fb95674eed870587736c63f8e5e2f0d6faf7cc1def64b7b279dd6c0bd8676dc39cf7f4ab33233944f42b906cf8692f59a3"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:constraint:engine:node",
-              "value": ">= 6"
-            },
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/fast-glob/node_modules/glob-parent"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "merge2",
-      "version": "1.4.1",
-      "bom-ref": "openapi-backend@5.25.0|merge2@1.4.1",
-      "description": "Merge multiple streams into one stream in sequence or parallel.",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/merge2@1.4.1",
-      "externalReferences": [
-        {
-          "url": "git+ssh://git@github.com/teambition/merge2.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/teambition/merge2",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/teambition/merge2/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "f2aed51203095b827cb5c7d53f2f20d3d35c43065d6f0144aa17bf5999282338e7ff74c60f0b4e098b571b10373bcb4fce97330820e0bfe3f63f9cb4d1924e3a"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">= 8"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/merge2"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "slash",
-      "version": "3.0.0",
-      "bom-ref": "openapi-backend@5.25.0|slash@3.0.0",
-      "author": "Sindre Sorhus",
-      "description": "Convert Windows backslash paths to slash paths",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/slash@3.0.0",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/sindresorhus/slash.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/sindresorhus/slash#readme",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/sindresorhus/slash/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/slash/-/slash-3.0.0.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "83d43585a79bcb7e8e492b706f89ed08618668ab1a5528d0ebc7c1c6841cbad9797d2d6fb98d7c1f7c12b778c5c85b6b931f8acf45751bce40e0cc80743322d9"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=8"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/slash"
+          "value": "node_modules/@isaacs/nonrecursive-glob-match"
         }
       ]
     },
@@ -15440,124 +15367,6 @@
     },
     {
       "type": "library",
-      "name": "path-type",
-      "version": "4.0.0",
-      "bom-ref": "openapi-backend@5.25.0|path-type@4.0.0",
-      "author": "Sindre Sorhus",
-      "description": "Check if a path is a file, directory, or symlink",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/path-type@4.0.0",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/sindresorhus/path-type.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/sindresorhus/path-type#readme",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/sindresorhus/path-type/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "80329bf1a64c0de0ffb595acf4febeab427d33091d97ac4c57c4e39c63f7a89549d3a6dd32091b0652d4f0875f3ac22c173d815b5acd553dd7b8d125f333c0bf"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=8"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/path-type"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "micromatch",
-      "version": "4.0.8",
-      "bom-ref": "openapi-backend@5.25.0|micromatch@4.0.8",
-      "author": "Jon Schlinkert",
-      "description": "Glob matching for javascript/node.js. A replacement and faster alternative to minimatch and multimatch.",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/micromatch@4.0.8",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/micromatch/micromatch.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/micromatch/micromatch",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/micromatch/micromatch/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/micromatch/-/micromatch-4.0.8.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "3d7c1f06162ed210423f0f039f413e58361beda7f77522d558a8b71c6bfce08745e13c85a02d32b3115dd06a31c3b9d2bf84ff3f3109431b18b0488508aa3604"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=8.6"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/micromatch"
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "callsites",
       "version": "3.1.0",
       "bom-ref": "openapi-backend@5.25.0|callsites@3.1.0",
@@ -16336,185 +16145,6 @@
     },
     {
       "type": "library",
-      "name": "braces",
-      "version": "3.0.3",
-      "bom-ref": "openapi-backend@5.25.0|braces@3.0.3",
-      "author": "Jon Schlinkert",
-      "description": "Bash-like brace expansion, implemented in JavaScript. Safer than other brace expansion libs, with complete support for the Bash 4.3 braces specification, without sacrificing speed.",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/braces@3.0.3",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/micromatch/braces.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/micromatch/braces",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/micromatch/braces/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/braces/-/braces-3.0.3.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "c906d780efce499543d88b222e5ae8fbb1dfe90d7c109aca484b1da0ccca78f29772dde0bc3f282dc390748cc6ba9af9163f840def203bf9717350737cca71bc"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=8"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/braces"
-        }
-      ],
-      "components": [
-        {
-          "type": "library",
-          "name": "fill-range",
-          "version": "7.1.1",
-          "bom-ref": "openapi-backend@5.25.0|braces@3.0.3|fill-range@7.1.1",
-          "author": "Jon Schlinkert",
-          "description": "Fill in a range of numbers or letters, optionally passing an increment or `step` to use, or create a regex-compatible range with `options.toRegex`",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/fill-range@7.1.1",
-          "externalReferences": [
-            {
-              "url": "git+https://github.com/jonschlinkert/fill-range.git",
-              "type": "vcs",
-              "comment": "as detected from PackageJson property \"repository.url\""
-            },
-            {
-              "url": "https://github.com/jonschlinkert/fill-range",
-              "type": "website",
-              "comment": "as detected from PackageJson property \"homepage\""
-            },
-            {
-              "url": "https://github.com/jonschlinkert/fill-range/issues",
-              "type": "issue-tracker",
-              "comment": "as detected from PackageJson property \"bugs.url\""
-            },
-            {
-              "url": "https://registry.npmjs.org/fill-range/-/fill-range-7.1.1.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "62c1a97b75872caf19622e2d583836272dde6d1cf6ad7a300f19e57786e4401d3471cff5670f405a70b48bdced0c98ad8afb50bda23d29a2f22ab73e8415b4ca"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:constraint:engine:node",
-              "value": ">=8"
-            },
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/braces/node_modules/fill-range"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "name": "picomatch",
-      "version": "2.3.2",
-      "bom-ref": "openapi-backend@5.25.0|picomatch@2.3.2",
-      "author": "Jon Schlinkert",
-      "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions.",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/picomatch@2.3.2",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/micromatch/picomatch.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/micromatch/picomatch",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/micromatch/picomatch/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/picomatch/-/picomatch-2.3.2.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "57bfaf404274e99f9ce6d4b27bc4be9c751f239d71a172178c743df5c42d294910aaa3b590efca08951f657b81e3b87f60194385a8761f785d5065e7f227b4a0"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=8.6"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/picomatch"
-        }
-      ]
-    },
-    {
-      "type": "library",
       "name": "fs.realpath",
       "version": "1.0.0",
       "bom-ref": "openapi-backend@5.25.0|fs.realpath@1.0.0",
@@ -16795,126 +16425,6 @@
           "value": "node_modules/dunder-proto"
         }
       ]
-    },
-    {
-      "type": "library",
-      "name": "to-regex-range",
-      "version": "5.0.1",
-      "bom-ref": "openapi-backend@5.25.0|to-regex-range@5.0.1",
-      "author": "Jon Schlinkert",
-      "description": "Pass two numbers, get a regex-compatible source string for matching ranges. Validated against more than 2.78 million test assertions.",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT",
-            "acknowledgement": "declared"
-          }
-        }
-      ],
-      "purl": "pkg:npm/to-regex-range@5.0.1",
-      "externalReferences": [
-        {
-          "url": "git+https://github.com/micromatch/to-regex-range.git",
-          "type": "vcs",
-          "comment": "as detected from PackageJson property \"repository.url\""
-        },
-        {
-          "url": "https://github.com/micromatch/to-regex-range",
-          "type": "website",
-          "comment": "as detected from PackageJson property \"homepage\""
-        },
-        {
-          "url": "https://github.com/micromatch/to-regex-range/issues",
-          "type": "issue-tracker",
-          "comment": "as detected from PackageJson property \"bugs.url\""
-        },
-        {
-          "url": "https://registry.npmjs.org/to-regex-range/-/to-regex-range-5.0.1.tgz",
-          "type": "distribution",
-          "hashes": [
-            {
-              "alg": "SHA-512",
-              "content": "eb93fb8b3e97e7212bd5cc1c82f4316db230ed493780ecb974876d678ac3bde2ea86b7493fe2e2fc7c7ab722b43446fed860b29de08c2621aaac00c248d93cb1"
-            }
-          ],
-          "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-        }
-      ],
-      "properties": [
-        {
-          "name": "cdx:npm:package:constraint:engine:node",
-          "value": ">=8.0"
-        },
-        {
-          "name": "cdx:npm:package:development",
-          "value": "true"
-        },
-        {
-          "name": "cdx:npm:package:path",
-          "value": "node_modules/to-regex-range"
-        }
-      ],
-      "components": [
-        {
-          "type": "library",
-          "name": "is-number",
-          "version": "7.0.0",
-          "bom-ref": "openapi-backend@5.25.0|to-regex-range@5.0.1|is-number@7.0.0",
-          "author": "Jon Schlinkert",
-          "description": "Returns true if a number or string value is a finite number. Useful for regex matches, parsing, user input, etc.",
-          "licenses": [
-            {
-              "license": {
-                "id": "MIT",
-                "acknowledgement": "declared"
-              }
-            }
-          ],
-          "purl": "pkg:npm/is-number@7.0.0",
-          "externalReferences": [
-            {
-              "url": "git+https://github.com/jonschlinkert/is-number.git",
-              "type": "vcs",
-              "comment": "as detected from PackageJson property \"repository.url\""
-            },
-            {
-              "url": "https://github.com/jonschlinkert/is-number",
-              "type": "website",
-              "comment": "as detected from PackageJson property \"homepage\""
-            },
-            {
-              "url": "https://github.com/jonschlinkert/is-number/issues",
-              "type": "issue-tracker",
-              "comment": "as detected from PackageJson property \"bugs.url\""
-            },
-            {
-              "url": "https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz",
-              "type": "distribution",
-              "hashes": [
-                {
-                  "alg": "SHA-512",
-                  "content": "e350a27e483a7bc4f2952a5db53a5e2d532abd20445734edb47bc4443ef8d7ea6767c00dbf4d34e0c44be3740a3c394af5c1af369e8d6566540656c65d8c719e"
-                }
-              ],
-              "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""
-            }
-          ],
-          "properties": [
-            {
-              "name": "cdx:npm:package:constraint:engine:node",
-              "value": ">=0.12.0"
-            },
-            {
-              "name": "cdx:npm:package:development",
-              "value": "true"
-            },
-            {
-              "name": "cdx:npm:package:path",
-              "value": "node_modules/to-regex-range/node_modules/is-number"
-            }
-          ]
-        }
-      ]
     }
   ],
   "dependencies": [
@@ -16926,8 +16436,8 @@
         "openapi-backend@5.25.0|@types/lodash@4.14.199",
         "openapi-backend@5.25.0|@types/node@22.20.4",
         "openapi-backend@5.25.0|@types/qs@6.15.1",
-        "openapi-backend@5.25.0|@typescript-eslint/eslint-plugin@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/parser@7.18.0",
+        "openapi-backend@5.25.0|@typescript-eslint/eslint-plugin@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/parser@8.73.0",
         "openapi-backend@5.25.0|ajv@8.20.0",
         "openapi-backend@5.25.0|bath-es5@3.0.3",
         "openapi-backend@5.25.0|cookie@1.1.1",
@@ -16970,30 +16480,34 @@
       "ref": "openapi-backend@5.25.0|@types/qs@6.15.1"
     },
     {
-      "ref": "openapi-backend@5.25.0|@typescript-eslint/eslint-plugin@7.18.0",
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/eslint-plugin@8.73.0",
       "dependsOn": [
         "openapi-backend@5.25.0|@eslint-community/regexpp@4.12.2",
-        "openapi-backend@5.25.0|@typescript-eslint/parser@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/scope-manager@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/type-utils@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/utils@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@7.18.0",
+        "openapi-backend@5.25.0|@typescript-eslint/parser@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/scope-manager@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/type-utils@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/utils@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@8.73.0",
         "openapi-backend@5.25.0|eslint@8.57.1",
-        "openapi-backend@5.25.0|graphemer@1.4.0",
-        "openapi-backend@5.25.0|ignore@5.3.2",
+        "openapi-backend@5.25.0|@typescript-eslint/eslint-plugin@8.73.0|ignore@7.0.16",
         "openapi-backend@5.25.0|natural-compare@1.4.0",
-        "openapi-backend@5.25.0|ts-api-utils@1.4.3"
+        "openapi-backend@5.25.0|ts-api-utils@2.5.0",
+        "openapi-backend@5.25.0|typescript@5.2.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.25.0|@typescript-eslint/parser@7.18.0",
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/eslint-plugin@8.73.0|ignore@7.0.16"
+    },
+    {
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/parser@8.73.0",
       "dependsOn": [
-        "openapi-backend@5.25.0|@typescript-eslint/scope-manager@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/types@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@7.18.0",
+        "openapi-backend@5.25.0|@typescript-eslint/scope-manager@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/types@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@8.73.0",
         "openapi-backend@5.25.0|debug@4.4.3",
-        "openapi-backend@5.25.0|eslint@8.57.1"
+        "openapi-backend@5.25.0|eslint@8.57.1",
+        "openapi-backend@5.25.0|typescript@5.2.2"
       ]
     },
     {
@@ -17233,81 +16747,87 @@
       "ref": "openapi-backend@5.25.0|@eslint-community/regexpp@4.12.2"
     },
     {
-      "ref": "openapi-backend@5.25.0|@typescript-eslint/scope-manager@7.18.0",
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/scope-manager@8.73.0",
       "dependsOn": [
-        "openapi-backend@5.25.0|@typescript-eslint/types@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@7.18.0"
+        "openapi-backend@5.25.0|@typescript-eslint/types@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@8.73.0"
       ]
     },
     {
-      "ref": "openapi-backend@5.25.0|@typescript-eslint/type-utils@7.18.0",
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/type-utils@8.73.0",
       "dependsOn": [
-        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/utils@7.18.0",
+        "openapi-backend@5.25.0|@typescript-eslint/types@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/utils@8.73.0",
         "openapi-backend@5.25.0|debug@4.4.3",
         "openapi-backend@5.25.0|eslint@8.57.1",
-        "openapi-backend@5.25.0|ts-api-utils@1.4.3"
+        "openapi-backend@5.25.0|ts-api-utils@2.5.0",
+        "openapi-backend@5.25.0|typescript@5.2.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.25.0|@typescript-eslint/utils@7.18.0",
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/utils@8.73.0",
       "dependsOn": [
         "openapi-backend@5.25.0|@eslint-community/eslint-utils@4.10.1",
-        "openapi-backend@5.25.0|@typescript-eslint/scope-manager@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/types@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0",
-        "openapi-backend@5.25.0|eslint@8.57.1"
+        "openapi-backend@5.25.0|@typescript-eslint/scope-manager@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/types@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0",
+        "openapi-backend@5.25.0|eslint@8.57.1",
+        "openapi-backend@5.25.0|typescript@5.2.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@7.18.0",
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@8.73.0",
       "dependsOn": [
-        "openapi-backend@5.25.0|@typescript-eslint/types@7.18.0",
-        "openapi-backend@5.25.0|eslint-visitor-keys@3.4.3"
+        "openapi-backend@5.25.0|@typescript-eslint/types@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@8.73.0|eslint-visitor-keys@5.0.1"
       ]
     },
     {
-      "ref": "openapi-backend@5.25.0|graphemer@1.4.0"
-    },
-    {
-      "ref": "openapi-backend@5.25.0|ignore@5.3.2"
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@8.73.0|eslint-visitor-keys@5.0.1"
     },
     {
       "ref": "openapi-backend@5.25.0|natural-compare@1.4.0"
     },
     {
-      "ref": "openapi-backend@5.25.0|ts-api-utils@1.4.3",
+      "ref": "openapi-backend@5.25.0|ts-api-utils@2.5.0",
       "dependsOn": [
         "openapi-backend@5.25.0|typescript@5.2.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.25.0|@typescript-eslint/types@7.18.0"
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/types@8.73.0"
     },
     {
-      "ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0",
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0",
       "dependsOn": [
-        "openapi-backend@5.25.0|@typescript-eslint/types@7.18.0",
-        "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@7.18.0",
+        "openapi-backend@5.25.0|@typescript-eslint/project-service@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/tsconfig-utils@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/types@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/visitor-keys@8.73.0",
         "openapi-backend@5.25.0|debug@4.4.3",
-        "openapi-backend@5.25.0|globby@11.1.0",
-        "openapi-backend@5.25.0|is-glob@4.0.3",
-        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0|minimatch@9.0.9",
+        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0|minimatch@11.0.9",
         "openapi-backend@5.25.0|semver@7.8.6",
-        "openapi-backend@5.25.0|ts-api-utils@1.4.3"
+        "openapi-backend@5.25.0|tinyglobby@0.2.17",
+        "openapi-backend@5.25.0|ts-api-utils@2.5.0",
+        "openapi-backend@5.25.0|typescript@5.2.2"
       ]
     },
     {
-      "ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0|minimatch@9.0.9",
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0|minimatch@11.0.9",
       "dependsOn": [
-        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0|brace-expansion@2.1.7"
+        "openapi-backend@5.25.0|@isaacs/nonrecursive-glob-match@1.1.0",
+        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0|brace-expansion@5.0.13"
       ]
     },
     {
-      "ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@7.18.0|brace-expansion@2.1.7",
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0|brace-expansion@5.0.13",
       "dependsOn": [
-        "openapi-backend@5.25.0|balanced-match@1.0.0"
+        "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0|balanced-match@4.0.4"
       ]
+    },
+    {
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/typescript-estree@8.73.0|balanced-match@4.0.4"
     },
     {
       "ref": "openapi-backend@5.25.0|debug@4.4.3",
@@ -17458,6 +16978,12 @@
     },
     {
       "ref": "openapi-backend@5.25.0|globals@13.24.0|type-fest@0.20.2"
+    },
+    {
+      "ref": "openapi-backend@5.25.0|graphemer@1.4.0"
+    },
+    {
+      "ref": "openapi-backend@5.25.0|ignore@5.3.2"
     },
     {
       "ref": "openapi-backend@5.25.0|imurmurhash@0.1.4"
@@ -17882,14 +17408,18 @@
       "ref": "openapi-backend@5.25.0|argparse@2.0.1"
     },
     {
-      "ref": "openapi-backend@5.25.0|globby@11.1.0",
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/project-service@8.73.0",
       "dependsOn": [
-        "openapi-backend@5.25.0|array-union@2.1.0",
-        "openapi-backend@5.25.0|dir-glob@3.0.1",
-        "openapi-backend@5.25.0|fast-glob@3.3.3",
-        "openapi-backend@5.25.0|ignore@5.3.2",
-        "openapi-backend@5.25.0|merge2@1.4.1",
-        "openapi-backend@5.25.0|slash@3.0.0"
+        "openapi-backend@5.25.0|@typescript-eslint/tsconfig-utils@8.73.0",
+        "openapi-backend@5.25.0|@typescript-eslint/types@8.73.0",
+        "openapi-backend@5.25.0|debug@4.4.3",
+        "openapi-backend@5.25.0|typescript@5.2.2"
+      ]
+    },
+    {
+      "ref": "openapi-backend@5.25.0|@typescript-eslint/tsconfig-utils@8.73.0",
+      "dependsOn": [
+        "openapi-backend@5.25.0|typescript@5.2.2"
       ]
     },
     {
@@ -18232,35 +17762,7 @@
       ]
     },
     {
-      "ref": "openapi-backend@5.25.0|array-union@2.1.0"
-    },
-    {
-      "ref": "openapi-backend@5.25.0|dir-glob@3.0.1",
-      "dependsOn": [
-        "openapi-backend@5.25.0|path-type@4.0.0"
-      ]
-    },
-    {
-      "ref": "openapi-backend@5.25.0|fast-glob@3.3.3",
-      "dependsOn": [
-        "openapi-backend@5.25.0|@nodelib/fs.stat@2.0.5",
-        "openapi-backend@5.25.0|@nodelib/fs.walk@1.2.8",
-        "openapi-backend@5.25.0|fast-glob@3.3.3|glob-parent@5.1.2",
-        "openapi-backend@5.25.0|merge2@1.4.1",
-        "openapi-backend@5.25.0|micromatch@4.0.8"
-      ]
-    },
-    {
-      "ref": "openapi-backend@5.25.0|fast-glob@3.3.3|glob-parent@5.1.2",
-      "dependsOn": [
-        "openapi-backend@5.25.0|is-glob@4.0.3"
-      ]
-    },
-    {
-      "ref": "openapi-backend@5.25.0|merge2@1.4.1"
-    },
-    {
-      "ref": "openapi-backend@5.25.0|slash@3.0.0"
+      "ref": "openapi-backend@5.25.0|@isaacs/nonrecursive-glob-match@1.1.0"
     },
     {
       "ref": "openapi-backend@5.25.0|parent-module@1.0.1",
@@ -18396,16 +17898,6 @@
       "ref": "openapi-backend@5.25.0|@rolldown/pluginutils@1.0.1"
     },
     {
-      "ref": "openapi-backend@5.25.0|path-type@4.0.0"
-    },
-    {
-      "ref": "openapi-backend@5.25.0|micromatch@4.0.8",
-      "dependsOn": [
-        "openapi-backend@5.25.0|braces@3.0.3",
-        "openapi-backend@5.25.0|picomatch@2.3.2"
-      ]
-    },
-    {
       "ref": "openapi-backend@5.25.0|callsites@3.1.0"
     },
     {
@@ -18473,21 +17965,6 @@
       "ref": "openapi-backend@5.25.0|math-intrinsics@1.1.0"
     },
     {
-      "ref": "openapi-backend@5.25.0|braces@3.0.3",
-      "dependsOn": [
-        "openapi-backend@5.25.0|braces@3.0.3|fill-range@7.1.1"
-      ]
-    },
-    {
-      "ref": "openapi-backend@5.25.0|braces@3.0.3|fill-range@7.1.1",
-      "dependsOn": [
-        "openapi-backend@5.25.0|to-regex-range@5.0.1"
-      ]
-    },
-    {
-      "ref": "openapi-backend@5.25.0|picomatch@2.3.2"
-    },
-    {
       "ref": "openapi-backend@5.25.0|fs.realpath@1.0.0"
     },
     {
@@ -18510,15 +17987,6 @@
         "openapi-backend@5.25.0|es-errors@1.3.0",
         "openapi-backend@5.25.0|gopd@1.2.0"
       ]
-    },
-    {
-      "ref": "openapi-backend@5.25.0|to-regex-range@5.0.1",
-      "dependsOn": [
-        "openapi-backend@5.25.0|to-regex-range@5.0.1|is-number@7.0.0"
-      ]
-    },
-    {
-      "ref": "openapi-backend@5.25.0|to-regex-range@5.0.1|is-number@7.0.0"
     }
   ]
 }
