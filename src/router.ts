@@ -3,7 +3,6 @@ import type { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import bath from 'bath-es5';
 import * as cookie from 'cookie';
 import { parse as parseQuery } from 'qs';
-import { Parameters } from 'bath-es5/_/types';
 import { PickVersionElement } from './backend';
 
 // alias Document to OpenAPIV3_1.Document
@@ -89,6 +88,14 @@ function escapeTemplateLiterals(path: string) {
     .split(/(\{[^}]+\})/)
     .map((part, i) => (i % 2 === 1 ? part : escapeRegExp(part)))
     .join('');
+}
+
+function isArraySchema(schema: unknown) {
+  if (!schema || typeof schema !== 'object' || '$ref' in schema) {
+    return false;
+  }
+  const type = (schema as { type?: unknown }).type;
+  return type === 'array' || (Array.isArray(type) && type.includes('array'));
 }
 
 /**
@@ -358,7 +365,7 @@ export class OpenAPIRouter<D extends Document = Document> {
     // normalize
     req = this.normalizeRequest(req);
 
-    let params: Parameters = {};
+    let params: { [key: string]: string | string[] } = {};
     if (operation) {
       // get relative path
       const normalizedPath = this.normalizePath(req.path);
@@ -404,6 +411,28 @@ export class OpenAPIRouter<D extends Document = Document> {
               }
               query[queryParam] = decoded.split(',');
             }
+          }
+        }
+      }
+
+      // parse path and header parameters with an array schema (style: simple, values separated by commas)
+      for (const parameter of operation.parameters || []) {
+        if ('$ref' in parameter || (parameter.in !== 'path' && parameter.in !== 'header')) {
+          continue;
+        }
+        if ((parameter.style && parameter.style !== 'simple') || !isArraySchema(parameter.schema)) {
+          continue;
+        }
+        if (parameter.in === 'path') {
+          const value = params[parameter.name];
+          if (typeof value === 'string') {
+            params[parameter.name] = value.split(',');
+          }
+        } else {
+          const name = parameter.name.toLowerCase();
+          const value = headers[name];
+          if (typeof value === 'string') {
+            headers[name] = value.split(',').map((item) => item.trim());
           }
         }
       }
