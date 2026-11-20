@@ -168,6 +168,46 @@ describe('OpenAPIRouter', () => {
       expect(parsedRequest.params).toEqual({ id: '123' });
     });
 
+    test('parses path parameters next to regex metacharacters in the template', () => {
+      const str: OpenAPIV3_1.ParameterObject['schema'] = { type: 'string' };
+      const pathParam = (name: string): OpenAPIV3_1.ParameterObject => ({
+        name,
+        in: 'path',
+        required: true,
+        schema: str,
+      });
+      const router = new OpenAPIRouter({
+        definition: {
+          openapi: '3.1.0',
+          info: { title: 'api', version: '1.0.0' },
+          paths: {
+            '/files/{name}.{ext}': {
+              get: { operationId: 'getFile', responses, parameters: [pathParam('name'), pathParam('ext')] },
+            },
+            '/reports/{id}.json': {
+              get: { operationId: 'getReport', responses, parameters: [pathParam('id')] },
+            },
+            '/sum/{a}+{b}': {
+              get: { operationId: 'getSum', responses, parameters: [pathParam('a'), pathParam('b')] },
+            },
+            '/query/({q})': {
+              get: { operationId: 'getQuery', responses, parameters: [pathParam('q')] },
+            },
+          },
+        },
+      });
+      const parse = (path: string) => {
+        const request = { path, method: 'get', headers };
+        return router.parseRequest(request, router.matchOperation(request)!).params;
+      };
+
+      expect(parse('/files/report.pdf')).toEqual({ name: 'report', ext: 'pdf' });
+      expect(parse('/files/archive.tar.gz')).toEqual({ name: 'archive.tar', ext: 'gz' });
+      expect(parse('/reports/42.json')).toEqual({ id: '42' });
+      expect(parse('/sum/1+2')).toEqual({ a: '1', b: '2' });
+      expect(parse('/query/(abc)')).toEqual({ q: 'abc' });
+    });
+
     test('parses query string from path prop', () => {
       const request = { path: '/pets?limit=10', method: 'get', headers };
 
