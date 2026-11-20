@@ -4,6 +4,16 @@ All notable changes to openapi-backend. This project follows [Semantic Versionin
 
 New entries are drafted by an AI model from the merged pull requests and commits when a version tag is pushed, checked by a script, and published here and on [GitHub Releases](https://github.com/openapistack/openapi-backend/releases) by [`release.yml`](.github/workflows/release.yml). Releases before 5.16.0 are listed in the [tags](https://github.com/openapistack/openapi-backend/tags).
 
+## [5.25.0](https://github.com/openapistack/openapi-backend/compare/5.24.0...5.25.0) - 2026-11-20
+
+Path parameter parsing is fixed for templates with literal characters between parameters, such as `/files/{name}.{ext}`.
+
+### Fixed
+- `parseRequest` now parses path parameters correctly when a template has literal characters such as `.`, `+` or `(` next to or between parameters. Previously `/files/report.pdf` matched against `/files/{name}.{ext}` gave `name: 'report.pd'` and `ext: ''`. It now gives `name: 'report'` and `ext: 'pdf'` ([#1055](https://github.com/openapistack/openapi-backend/pull/1055), thanks [@bardrop](https://github.com/bardrop))
+
+### Dependencies
+- Lockfile and development dependency updates.
+
 ## [5.24.0](https://github.com/openapistack/openapi-backend/compare/5.23.0...5.24.0) - 2026-11-09
 
 This release adds a test client for APIs built with openapi-backend, available from `openapi-backend/testing`.
