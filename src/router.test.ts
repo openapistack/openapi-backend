@@ -417,6 +417,37 @@ describe('OpenAPIRouter', () => {
       const parsedRequest = api.parseRequest(request as any, operation);
       expect(parsedRequest.query).toEqual({ limit: [10] });
     });
+
+    test('parses path parameter arrays when style=simple', () => {
+      const request = { path: '/pets/1,2,3', method: 'get', headers };
+      const operation = {
+        ...api.getOperation('getPetById')!,
+        parameters: [{ in: 'path', name: 'id', required: true, schema: { type: 'array', items: { type: 'integer' } } }],
+      } as any;
+
+      expect(api.parseRequest(request, operation).params).toEqual({ id: ['1', '2', '3'] });
+      expect(api.parseRequest({ ...request, path: '/pets/1' }, operation).params).toEqual({ id: ['1'] });
+    });
+
+    test('does not split path parameters without an array schema', () => {
+      const request = { path: '/pets/1,2,3', method: 'get', headers };
+      const operation = {
+        ...api.getOperation('getPetById')!,
+        parameters: [{ in: 'path', name: 'id', required: true, schema: { type: 'string' } }],
+      } as any;
+
+      expect(api.parseRequest(request, operation).params).toEqual({ id: '1,2,3' });
+    });
+
+    test('parses header parameter arrays when style=simple', () => {
+      const request = { path: '/pets', method: 'get', headers: { ...headers, 'X-Ids': '1, 2,3' } };
+      const operation = {
+        ...api.getOperation('getPets')!,
+        parameters: [{ in: 'header', name: 'X-Ids', schema: { type: 'array', items: { type: 'integer' } } }],
+      } as any;
+
+      expect(api.parseRequest(request, operation).headers).toEqual({ ...headers, 'x-ids': ['1', '2', '3'] });
+    });
   });
 
   describe('.matchOperation', () => {

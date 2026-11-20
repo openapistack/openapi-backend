@@ -517,6 +517,69 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
       });
     });
 
+    describe('array path and header params', () => {
+      const validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets/{ids}': {
+              get: {
+                operationId: 'getPetsByIds',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  {
+                    name: 'ids',
+                    in: 'path',
+                    required: true,
+                    schema: { type: 'array', items: { type: 'integer' } },
+                  },
+                  {
+                    name: 'X-Tags',
+                    in: 'header',
+                    schema: { type: 'array', items: { type: 'string', enum: ['a', 'b'] } },
+                  },
+                ],
+              },
+            },
+          },
+        },
+        ...constructorOpts,
+      });
+
+      test('passes validation for GET /pets/1,2,3', async () => {
+        const valid = validator.validateRequest({ path: '/pets/1,2,3', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for GET /pets/1', async () => {
+        const valid = validator.validateRequest({ path: '/pets/1', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation for GET /pets/1,x', async () => {
+        const valid = validator.validateRequest({ path: '/pets/1,x', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+
+      test('passes validation for GET /pets/1, x-tags:a,b', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets/1',
+          method: 'get',
+          headers: { ...headers, 'x-tags': 'a, b' },
+        });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation for GET /pets/1, x-tags:a,c', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets/1',
+          method: 'get',
+          headers: { ...headers, 'x-tags': 'a,c' },
+        });
+        expect(valid.errors).toHaveLength(1);
+      });
+    });
+
     describe('request payloads', () => {
       let validator: OpenAPIValidator;
       const petSchema: OpenAPIV3_1.SchemaObject = {
