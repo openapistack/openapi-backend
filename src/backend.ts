@@ -672,14 +672,47 @@ export class OpenAPIBackend<D extends Document = Document> {
   }
 
   /**
+   * Mocks response headers based on the header definitions of a response object
+   *
+   * Uses the example of the header, the first of its examples, or a value generated from its schema.
+   * Headers that have none of these are omitted. Content-Type is skipped, as the spec says it must be ignored.
+   *
+   * @param {object} headerDefinitions - the headers object of a response
+   * @returns {{ [name: string]: any }} mocked headers by name
+   * @memberof OpenAPIBackend
+   */
+  private mockResponseHeaders(headerDefinitions?: { [name: string]: any }): { [name: string]: any } {
+    const headers: { [name: string]: any } = {};
+    for (const [name, header] of Object.entries(headerDefinitions ?? {})) {
+      if (!header || name.toLowerCase() === 'content-type') {
+        continue;
+      }
+      if (header.example !== undefined) {
+        headers[name] = header.example;
+      } else if (header.examples && Object.keys(header.examples).length) {
+        const value = header.examples[Object.keys(header.examples)[0]]?.value;
+        if (value !== undefined) {
+          headers[name] = value;
+        }
+      } else if (header.schema) {
+        headers[name] = mock(header.schema as SchemaLike);
+      }
+    }
+    return headers;
+  }
+
+  /**
    * Mocks a response for an operation based on example or response schema
+   *
+   * Mocked response headers are generated from the header definitions of the response, using the example
+   * or the schema of each header.
    *
    * @param {string} operationId - operationId of the operation for which to mock the response
    * @param {object} opts - (optional) options
    * @param {number} opts.responseStatus - (optional) the response code of the response to mock (default: 200)
    * @param {string} opts.mediaType - (optional) the media type of the response to mock (default: application/json)
    * @param {string} opts.example - (optional) the specific example to use (if operation has multiple examples)
-   * @returns {{ status: number; mock: any }}
+   * @returns {{ status: number; mock: any; headers: { [name: string]: any } }}
    * @memberof OpenAPIBackend
    */
   public mockResponseForOperation(
@@ -689,13 +722,13 @@ export class OpenAPIBackend<D extends Document = Document> {
       mediaType?: string;
       example?: string;
     } = {},
-  ): { status: number; mock: any } {
+  ): { status: number; mock: any; headers: { [name: string]: any } } {
     let status = 200;
     const defaultMock = {};
 
     const operation = this.router.getOperation(operationId);
     if (!operation || !operation.responses) {
-      return { status, mock: defaultMock };
+      return { status, mock: defaultMock, headers: {} };
     }
 
     // resolve status code
@@ -713,8 +746,15 @@ export class OpenAPIBackend<D extends Document = Document> {
       response = res.res;
     }
 
-    if (!response || !response.content) {
-      return { status, mock: defaultMock };
+    if (!response) {
+      return { status, mock: defaultMock, headers: {} };
+    }
+
+    // mock response headers
+    const headers = this.mockResponseHeaders(response.headers);
+
+    if (!response.content) {
+      return { status, mock: defaultMock, headers };
     }
     const { content } = response;
 
@@ -724,7 +764,7 @@ export class OpenAPIBackend<D extends Document = Document> {
     const mediaType = opts.mediaType || 'application/json';
     const mediaResponse = content[mediaType] || content[Object.keys(content)[0]];
     if (!mediaResponse) {
-      return { status, mock: defaultMock };
+      return { status, mock: defaultMock, headers };
     }
     const { examples, schema } = mediaResponse;
 
@@ -736,13 +776,13 @@ export class OpenAPIBackend<D extends Document = Document> {
         OpenAPIV3_1.ExampleObject
       >;
       if (exampleObject && exampleObject.value) {
-        return { status, mock: exampleObject.value };
+        return { status, mock: exampleObject.value, headers };
       }
     }
 
     // if operation has an example, return its value
     if (mediaResponse.example) {
-      return { status, mock: mediaResponse.example };
+      return { status, mock: mediaResponse.example, headers };
     }
 
     // pick the first example from examples
@@ -752,16 +792,16 @@ export class OpenAPIBackend<D extends Document = Document> {
         OpenAPIV3.ExampleObject,
         OpenAPIV3_1.ExampleObject
       >;
-      return { status, mock: exampleObject.value };
+      return { status, mock: exampleObject.value, headers };
     }
 
     // mock using json schema
     if (schema) {
-      return { status, mock: mock(schema as SchemaLike) };
+      return { status, mock: mock(schema as SchemaLike), headers };
     }
 
     // we should never get here, schema or an example must be provided
-    return { status, mock: defaultMock };
+    return { status, mock: defaultMock, headers };
   }
 
   /**

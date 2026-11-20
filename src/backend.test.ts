@@ -1315,6 +1315,79 @@ describe('OpenAPIBackend', () => {
       expect(status).toBe(201);
       expect(mock).toMatchObject(exampleGarfield);
     });
+
+    describe('response headers', () => {
+      const headersDefinition = {
+        openapi: '3.1.0',
+        info: { title: 'api', version: '1.0.0' },
+        paths: {
+          '/pets': {
+            get: {
+              operationId: 'getPets',
+              responses: {
+                200: {
+                  description: 'ok',
+                  headers: {
+                    'X-Rate-Limit': { schema: { type: 'integer', example: 100 } },
+                    'X-Request-Id': { schema: { type: 'string' }, example: 'abc-123' },
+                    'X-Trace-Id': {
+                      schema: { type: 'string' },
+                      examples: { first: { value: 'trace-1' }, second: { value: 'trace-2' } },
+                    },
+                    'X-Zero': { schema: { type: 'integer' }, example: 0 },
+                    'X-No-Value': { description: 'no schema or example' },
+                    'Content-Type': { schema: { type: 'string' }, example: 'text/plain' },
+                  },
+                  content: { 'application/json': { example: [{ id: 1 }] } },
+                },
+                204: {
+                  description: 'no content',
+                  headers: { 'X-Total-Count': { schema: { type: 'integer', enum: [42] } } },
+                },
+                400: { $ref: '#/components/responses/Bad' },
+                404: { description: 'not found' },
+              },
+            },
+          },
+        },
+        components: {
+          responses: {
+            Bad: { description: 'bad', headers: { 'X-Error-Code': { schema: { type: 'string' }, example: 'E1' } } },
+          },
+        },
+      };
+      const api = new OpenAPIBackend({ definition: headersDefinition as OpenAPIV3_1.Document });
+
+      beforeAll(() => api.init());
+
+      test('mocks headers from examples and schemas', () => {
+        const { status, mock, headers } = api.mockResponseForOperation('getPets');
+        expect(status).toBe(200);
+        expect(mock).toEqual([{ id: 1 }]);
+        expect(headers).toEqual({
+          'X-Rate-Limit': 100,
+          'X-Request-Id': 'abc-123',
+          'X-Trace-Id': 'trace-1',
+          'X-Zero': 0,
+        });
+      });
+
+      test('mocks headers of a response without content', () => {
+        const { status, headers } = api.mockResponseForOperation('getPets', { code: 204 });
+        expect(status).toBe(204);
+        expect(headers).toEqual({ 'X-Total-Count': 42 });
+      });
+
+      test('mocks headers of a referenced response', () => {
+        const { headers } = api.mockResponseForOperation('getPets', { code: 400 });
+        expect(headers).toEqual({ 'X-Error-Code': 'E1' });
+      });
+
+      test('returns empty headers when the response defines none', () => {
+        expect(api.mockResponseForOperation('getPets', { code: 404 }).headers).toEqual({});
+        expect(api.mockResponseForOperation('unknownOperation').headers).toEqual({});
+      });
+    });
   });
 
   describe('lifecycle handlers', () => {
