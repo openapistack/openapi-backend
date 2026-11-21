@@ -366,8 +366,8 @@ to generate mock responses for operations with no custom handlers specified yet:
 
 ```javascript
 api.register('notImplemented', (c, req, res) => {
-  const { status, mock } = c.api.mockResponseForOperation(c.operation.operationId);
-  return res.status(status).json(mock);
+  const { status, mock, headers } = c.api.mockResponseForOperation(c.operation.operationId);
+  return res.status(status).set(headers).json(mock);
 });
 ```
 
@@ -416,8 +416,24 @@ components:
 
 The example above will yield:
 ```javascript
-api.mockResponseForOperation('getPets'); // => { status: 200, mock: [{ id: 1, name: 'Garfield' }, { id: 2, name: 'Odie' }]}
-api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, name: 'Garfield' }}
+api.mockResponseForOperation('getPets'); // => { status: 200, mock: [{ id: 1, name: 'Garfield' }, { id: 2, name: 'Odie' }], headers: {} }
+api.mockResponseForOperation('getPetById'); // => { status: 200, mock: { id: 1, name: 'Garfield' }, headers: {} }
+```
+
+Response headers are mocked too. Each header defined on the response is mocked from its `example`, the first of its
+`examples`, or its `schema`. Headers with none of these are left out, and `Content-Type` is skipped:
+```yaml
+responses:
+  200:
+    description: A pet
+    headers:
+      X-Rate-Limit:
+        schema:
+          type: integer
+          example: 100
+```
+```javascript
+api.mockResponseForOperation('getPetById'); // => { status: 200, mock: {...}, headers: { 'X-Rate-Limit': 100 } }
 ```
 
 [See full Mock API example on Express](https://github.com/openapistack/openapi-backend/tree/examples/express-ts-mock)
