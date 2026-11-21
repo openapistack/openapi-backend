@@ -1335,6 +1335,10 @@ describe('OpenAPIBackend', () => {
                       examples: { first: { value: 'trace-1' }, second: { value: 'trace-2' } },
                     },
                     'X-Zero': { schema: { type: 'integer' }, example: 0 },
+                    'X-External': {
+                      schema: { type: 'string', enum: ['from-schema'] },
+                      examples: { ext: { externalValue: 'https://example.com/header.txt' } },
+                    },
                     'X-No-Value': { description: 'no schema or example' },
                     'Content-Type': { schema: { type: 'string' }, example: 'text/plain' },
                   },
@@ -1369,6 +1373,7 @@ describe('OpenAPIBackend', () => {
           'X-Request-Id': 'abc-123',
           'X-Trace-Id': 'trace-1',
           'X-Zero': 0,
+          'X-External': 'from-schema',
         });
       });
 

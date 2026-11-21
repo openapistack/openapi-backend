@@ -687,15 +687,17 @@ export class OpenAPIBackend<D extends Document = Document> {
       if (!header || name.toLowerCase() === 'content-type') {
         continue;
       }
+      let value: any;
       if (header.example !== undefined) {
-        headers[name] = header.example;
+        value = header.example;
       } else if (header.examples && Object.keys(header.examples).length) {
-        const value = header.examples[Object.keys(header.examples)[0]]?.value;
-        if (value !== undefined) {
-          headers[name] = value;
-        }
-      } else if (header.schema) {
-        headers[name] = mock(header.schema as SchemaLike);
+        value = header.examples[Object.keys(header.examples)[0]]?.value;
+      }
+      if (value === undefined && header.schema) {
+        value = mock(header.schema as SchemaLike);
+      }
+      if (value !== undefined) {
+        headers[name] = value;
       }
     }
     return headers;
