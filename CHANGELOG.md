@@ -4,6 +4,18 @@ All notable changes to openapi-backend. This project follows [Semantic Versionin
 
 New entries are drafted by an AI model from the merged pull requests and commits when a version tag is pushed, checked by a script, and published here and on [GitHub Releases](https://github.com/openapistack/openapi-backend/releases) by [`release.yml`](.github/workflows/release.yml). Releases before 5.16.0 are listed in the [tags](https://github.com/openapistack/openapi-backend/tags).
 
+## [5.26.0](https://github.com/openapistack/openapi-backend/compare/5.25.0...5.26.0) - 2026-11-22
+
+This release fixes validation of array-typed path and header parameters.
+
+### Fixed
+
+- Array path and header parameters using the default `simple` style (for example `/pets/1,2,3` or `X-Tags: a, b`) are now split into arrays, so they no longer fail validation with "must be array". Parameters without an array schema are left as single strings. ([#1057](https://github.com/openapistack/openapi-backend/pull/1057), thanks [@bardrop](https://github.com/bardrop))
+
+### Dependencies
+
+- Lockfile and development dependency updates. ([#1056](https://github.com/openapistack/openapi-backend/pull/1056))
+
 ## [5.25.0](https://github.com/openapistack/openapi-backend/compare/5.24.0...5.25.0) - 2026-11-20
 
 Path parameter parsing is fixed for templates with literal characters between parameters, such as `/files/{name}.{ext}`.
