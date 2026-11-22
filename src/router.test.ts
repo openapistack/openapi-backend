@@ -448,6 +448,46 @@ describe('OpenAPIRouter', () => {
 
       expect(api.parseRequest(request, operation).headers).toEqual({ ...headers, 'x-ids': ['1', '2', '3'] });
     });
+
+    test('parses array-valued header parameter arrays when style=simple', () => {
+      const request = { path: '/pets', method: 'get', headers: { ...headers, 'X-Ids': ['1, 2', '3'] } };
+      const operation = {
+        ...api.getOperation('getPets')!,
+        parameters: [{ in: 'header', name: 'X-Ids', schema: { type: 'array', items: { type: 'integer' } } }],
+      } as any;
+
+      expect(api.parseRequest(request, operation).headers).toEqual({ ...headers, 'x-ids': ['1', '2', '3'] });
+    });
+
+    test('operation-level parameters override path-level parameters when splitting arrays', () => {
+      const overrideApi = new OpenAPIRouter({
+        definition: {
+          openapi: '3.0.0',
+          info: { title: 'api', version: '1.0.0' },
+          paths: {
+            '/pets/{ids}': {
+              parameters: [
+                { in: 'path', name: 'ids', required: true, schema: { type: 'array', items: { type: 'string' } } },
+                { in: 'header', name: 'X-Tags', schema: { type: 'array', items: { type: 'string' } } },
+              ],
+              get: {
+                operationId: 'getPetsByIds',
+                responses,
+                parameters: [
+                  { in: 'path', name: 'ids', required: true, schema: { type: 'string' } },
+                  { in: 'header', name: 'X-Tags', schema: { type: 'string' } },
+                ],
+              },
+            },
+          },
+        },
+      });
+      const request = { path: '/pets/a,b', method: 'get', headers: { ...headers, 'x-tags': 'a,b' } };
+      const parsed = overrideApi.parseRequest(request, overrideApi.getOperation('getPetsByIds'));
+
+      expect(parsed.params).toEqual({ ids: 'a,b' });
+      expect(parsed.headers).toEqual({ ...headers, 'x-tags': 'a,b' });
+    });
   });
 
   describe('.matchOperation', () => {

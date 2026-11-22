@@ -416,23 +416,33 @@ export class OpenAPIRouter<D extends Document = Document> {
       }
 
       // parse path and header parameters with an array schema (style: simple, values separated by commas)
+      // operation parameters come before path item parameters, so the first definition of a parameter wins
+      const seen = new Set<string>();
       for (const parameter of operation.parameters || []) {
         if ('$ref' in parameter || (parameter.in !== 'path' && parameter.in !== 'header')) {
           continue;
         }
+        const name = parameter.in === 'header' ? parameter.name.toLowerCase() : parameter.name;
+        const key = `${parameter.in}:${name}`;
+        if (seen.has(key)) {
+          continue;
+        }
+        seen.add(key);
         if ((parameter.style && parameter.style !== 'simple') || !isArraySchema(parameter.schema)) {
           continue;
         }
         if (parameter.in === 'path') {
-          const value = params[parameter.name];
+          const value = params[name];
           if (typeof value === 'string') {
-            params[parameter.name] = value.split(',');
+            params[name] = value.split(',');
           }
         } else {
-          const name = parameter.name.toLowerCase();
           const value = headers[name];
-          if (typeof value === 'string') {
-            headers[name] = value.split(',').map((item) => item.trim());
+          if (typeof value === 'string' || Array.isArray(value)) {
+            headers[name] = _.flatten([value])
+              .join(',')
+              .split(',')
+              .map((item) => item.trim());
           }
         }
       }
