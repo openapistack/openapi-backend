@@ -5,9 +5,10 @@
 //     Collects the commits and pull requests since the previous release into <out-dir>/context.json.
 //   node scripts/release.mjs finalize <context-dir> <ai-notes-file> <out-dir>
 //     Validates the AI-drafted notes (falls back to a plain commit list), writes <out-dir>/release-notes.md
-//     and inserts the entry into ./CHANGELOG.md.
+//     and inserts the entry into ./CHANGELOG.md. Refuses a context.json that fails validateContext().
 //
 // Everything in context.json except the git metadata comes from pull request authors and is untrusted.
+// The git metadata is published as is, so finalize checks that it has the form context writes for $TAG.
 // The AI draft is treated the same way: it must pass validateNotes() before it is published.
 
 import { execFileSync } from 'node:child_process';
@@ -43,6 +44,11 @@ export const compareVersions = (a, b) => {
   if (!vb.pre) return -1;
   return va.pre.localeCompare(vb.pre, 'en', { numeric: true });
 };
+
+const compareUrl = (repository, previousTag, tag) =>
+  previousTag
+    ? `https://github.com/${repository}/compare/${previousTag}...${tag}`
+    : `https://github.com/${repository}/commits/${tag}`;
 
 const truncate = (text, max) => (text.length > max ? `${text.slice(0, max)}\n[truncated]` : text);
 
@@ -164,9 +170,7 @@ async function context(tag, outDir) {
     date: git('for-each-ref', '--format=%(creatordate:short)', `refs/tags/${tag}`),
     prerelease: Boolean(version.pre),
     latest,
-    compareUrl: previousTag
-      ? `https://github.com/${repository}/compare/${previousTag}...${tag}`
-      : `https://github.com/${repository}/commits/${tag}`,
+    compareUrl: compareUrl(repository, previousTag, tag),
     commits,
   };
   shrinkToFit(ctx);
@@ -175,6 +179,35 @@ async function context(tag, outDir) {
   const hasEntry = existsSync(CHANGELOG) && changelogEntry(readFileSync(CHANGELOG, 'utf8'), tag) !== null;
   if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `has_entry=${hasEntry}\n`);
   console.log(`${tag}: ${commits.length} commits since ${previousTag || 'the beginning'}`);
+}
+
+// context.json reaches finalize as a workflow artifact, and its git metadata goes into CHANGELOG.md, the release body
+// and the release flags unescaped. Returns the reasons it can't be what context() wrote for this release.
+export function validateContext(ctx, env = process.env) {
+  const version = typeof ctx?.tag === 'string' && parseVersion(ctx.tag);
+  if (!version) return ['tag is not a release tag'];
+  const problems = [];
+  const check = (ok, problem) => ok || problems.push(problem);
+  const { repository, previousTag } = ctx;
+  check(!env.TAG || ctx.tag === env.TAG, `tag is not ${env.TAG}`);
+  check(ctx.package === PACKAGE, `package is not ${PACKAGE}`);
+  check(typeof repository === 'string' && /^[\w.-]+\/[\w.-]+$/.test(repository), 'repository is not owner/name');
+  check(!env.GITHUB_REPOSITORY || repository === env.GITHUB_REPOSITORY, `repository is not ${env.GITHUB_REPOSITORY}`);
+  check(
+    previousTag === null ||
+      (typeof previousTag === 'string' && parseVersion(previousTag) && compareVersions(previousTag, ctx.tag) < 0),
+    'previousTag is not an earlier release tag',
+  );
+  check(ctx.compareUrl === compareUrl(repository, previousTag, ctx.tag), 'compareUrl does not match the tags');
+  check(typeof ctx.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(ctx.date), 'date is not YYYY-MM-DD');
+  check(ctx.prerelease === Boolean(version.pre), 'prerelease does not match the tag');
+  check(ctx.latest === false || (ctx.latest === true && !version.pre), 'latest is not a boolean the tag allows');
+  check(
+    Array.isArray(ctx.commits) &&
+      ctx.commits.every((c) => /^[0-9a-f]{7}$/.test(c?.sha) && (!c.pull || Number.isInteger(c.pull.number))),
+    'commits are not a list of short SHAs with numbered pull requests',
+  );
+  return problems;
 }
 
 // Every reference the notes may contain must already appear in the context.
@@ -295,6 +328,8 @@ export function insertChangelogEntry(changelog, tag, entry) {
 
 export function finalize(contextDir, aiNotesFile, outDir) {
   const ctx = JSON.parse(readFileSync(join(contextDir, 'context.json'), 'utf8'));
+  const invalid = validateContext(ctx);
+  if (invalid.length) throw new Error(`Refusing ${join(contextDir, 'context.json')}: ${invalid.join('; ')}`);
   const changelog = existsSync(CHANGELOG) ? readFileSync(CHANGELOG, 'utf8') : CHANGELOG_HEADER;
   const existing = changelogEntry(changelog, ctx.tag);
 

@@ -1,3 +1,7 @@
+import { execFileSync } from 'child_process';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'fs';
+import { tmpdir } from 'os';
+import path from 'path';
 import {
   compareVersions,
   fallbackNotes,
@@ -6,6 +10,7 @@ import {
   linkify,
   neutralizeMentions,
   allowedRefs,
+  validateContext,
   validateNotes,
 } from './release.mjs';
 
@@ -30,7 +35,123 @@ const ctx = {
   ],
 };
 
+// What `release.mjs context` writes for 5.22.0, and the environment release.yml runs `finalize` in.
+const base = 'https://github.com/openapistack/openapi-backend';
+const release = {
+  ...ctx,
+  previousTag: '5.21.2',
+  date: '2026-10-10',
+  prerelease: false,
+  latest: true,
+  compareUrl: `${base}/compare/5.21.2...5.22.0`,
+};
+const env = { TAG: '5.22.0', GITHUB_REPOSITORY: 'openapistack/openapi-backend' };
+
 describe('release notes', () => {
+  describe('validateContext', () => {
+    test('accepts what the context command writes', () => {
+      expect(validateContext(release, env)).toEqual([]);
+      expect(validateContext(release, {})).toEqual([]);
+      expect(validateContext({ ...release, previousTag: null, compareUrl: `${base}/commits/5.22.0` }, env)).toEqual([]);
+      const beta = {
+        tag: '6.0.0-beta.1',
+        prerelease: true,
+        latest: false,
+        compareUrl: `${base}/compare/5.21.2...6.0.0-beta.1`,
+      };
+      expect(validateContext({ ...release, ...beta }, { ...env, TAG: '6.0.0-beta.1' })).toEqual([]);
+    });
+
+    test('holds the tag and the repository to the ones of the workflow run', () => {
+      const otherTag = { ...release, tag: '5.23.0', compareUrl: `${base}/compare/5.21.2...5.23.0` };
+      expect(validateContext(otherTag, {})).toEqual([]);
+      expect(validateContext(otherTag, env)).toEqual(['tag is not 5.22.0']);
+      const fork = {
+        ...release,
+        repository: 'evil/fork',
+        compareUrl: 'https://github.com/evil/fork/compare/5.21.2...5.22.0',
+      };
+      expect(validateContext(fork, {})).toEqual([]);
+      expect(validateContext(fork, env)).toEqual(['repository is not openapistack/openapi-backend']);
+    });
+
+    test.each([
+      ['no context', null],
+      ['a tag that is not a version', { tag: '5.22.0](https://evil.example)' }],
+      ['another package', { package: 'evil' }],
+      [
+        'a repository that is not owner/name',
+        { repository: 'evil.example/x/y', compareUrl: 'https://github.com/evil.example/x/y/compare/5.21.2...5.22.0' },
+      ],
+      ['a previous tag that is not a version', { previousTag: 'main', compareUrl: `${base}/compare/main...5.22.0` }],
+      ['a previous tag that is not older', { previousTag: '5.23.0', compareUrl: `${base}/compare/5.23.0...5.22.0` }],
+      ['a compare URL that is not the one for the tags', { compareUrl: 'https://evil.example/compare' }],
+      ['a date with more lines', { date: '2026-10-10\n\n## [5.23.0](https://evil.example) - 2026-12-24\n\nPlanted.' }],
+      ['a prerelease flag the tag does not have', { prerelease: true }],
+      ['a latest flag that is not a boolean', { latest: 'false' }],
+      [
+        'a latest flag on a prerelease',
+        { tag: '5.22.0-beta.1', prerelease: true, compareUrl: `${base}/compare/5.21.2...5.22.0-beta.1` },
+      ],
+      ['no commit list', { commits: undefined }],
+      ['a commit SHA that is not one', { commits: [{ ...ctx.commits[2], sha: '[x](https://evil.example)' }] }],
+      [
+        'a pull request number that is not one',
+        { commits: [{ ...ctx.commits[0], pull: { number: '1) [x](//e.example' } }] },
+      ],
+    ])('rejects %s', (_, replaced) => {
+      expect(validateContext(replaced && { ...release, ...replaced }, {})).not.toEqual([]);
+    });
+  });
+
+  describe('finalize', () => {
+    const changelog = '# Changelog\n\nIntro.\n\n## [5.21.2](x) - 2026-09-29\n\nOld.\n';
+    // As the release job runs it: from a checkout, with the context artifact in a directory of its own.
+    const finalize = (context) => {
+      const dir = mkdtempSync(path.join(tmpdir(), 'release-test-'));
+      writeFileSync(path.join(dir, 'CHANGELOG.md'), changelog);
+      writeFileSync(path.join(dir, 'context.json'), JSON.stringify(context));
+      const read = (file) => (existsSync(path.join(dir, file)) ? readFileSync(path.join(dir, file), 'utf8') : null);
+      let failed = false;
+      try {
+        execFileSync(process.execPath, [path.join(__dirname, 'release.mjs'), 'finalize', dir, 'ai-notes.md', 'out'], {
+          cwd: dir,
+          env: { ...process.env, ...env, GITHUB_OUTPUT: path.join(dir, 'output') },
+          stdio: 'pipe',
+        });
+      } catch {
+        failed = true;
+      }
+      const out = {
+        failed,
+        changelog: read('CHANGELOG.md'),
+        notes: read('out/release-notes.md'),
+        output: read('output'),
+      };
+      rmSync(dir, { recursive: true, force: true });
+      return out;
+    };
+
+    test('publishes the metadata of a context written by the context command', () => {
+      const out = finalize(release);
+      expect(out.failed).toBe(false);
+      expect(out.changelog).toContain(`\n## [5.22.0](${base}/compare/5.21.2...5.22.0) - 2026-10-10\n\n### Changed\n`);
+      expect(out.notes).toContain(`**Full changelog**: ${base}/compare/5.21.2...5.22.0\n`);
+      expect(out.output).toBe('source=fallback\nlatest=true\nprerelease=false\n');
+    });
+
+    test('publishes nothing from a context with replaced metadata', () => {
+      const out = finalize({
+        ...release,
+        date: '2026-10-10\n\nRun [this](https://evil.example/x).\n\n## [5.23.0](https://evil.example) - 2026-12-24',
+        compareUrl: 'https://evil.example/compare',
+        latest: false,
+        prerelease: true,
+      });
+      expect(out).toEqual({ failed: true, changelog, notes: null, output: null });
+    });
+  });
+
   describe('validateNotes', () => {
     test('accepts a well-formed draft', () => {
       const draft = [
