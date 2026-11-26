@@ -41,9 +41,30 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # The artifact comes from a job that ran third-party code, so it is never extracted over the checkout: a file
+      # landing in .git/ (config, hooks) would run in this job, which holds the write token.
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: sbom
+          path: ${{ runner.temp }}/sbom-artifact
+      - name: Copy the generated files into the checkout
+        run: |
+          src="$(realpath -e "$RUNNER_TEMP/sbom-artifact")"
+          for file in \
+            sbom/openapi-backend.cdx.json \
+            sbom/openapi-backend.full.cdx.json \
+            sbom/licenses-production.csv \
+            sbom/licenses-all.csv \
+            THIRD_PARTY_NOTICES.md
+          do
+            # Only these five files, by name, and only regular files that really are inside the artifact
+            # (no symlinks, in the file or in its directory).
+            if [ ! -f "$src/$file" ] || [ "$(realpath -e "$src/$file")" != "$src/$file" ]; then
+              echo "::error::$file is missing from the SBOM artifact or is not a regular file"
+              exit 1
+            fi
+            cp -- "$src/$file" "$file"
+          done
       - name: Commit changes
         run: |
           git add sbom THIRD_PARTY_NOTICES.md
