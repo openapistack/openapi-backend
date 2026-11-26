@@ -490,6 +490,37 @@ describe('OpenAPIRouter', () => {
     });
   });
 
+  describe('.getOperations', () => {
+    test('leaves out path item parameters the operation overrides', () => {
+      const limit = { name: 'limit', in: 'query', schema: { type: 'integer', maximum: 10 } } as const;
+      const version = { name: 'X-Version', in: 'header', schema: { type: 'string' } } as const;
+      const api = new OpenAPIRouter({
+        definition: {
+          ...definition,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPets',
+                responses,
+                parameters: [
+                  { ...limit, schema: { type: 'integer', maximum: 100 } },
+                  { ...version, name: 'x-version' },
+                ],
+              },
+              parameters: [limit, version, queryFilter],
+            },
+          },
+        },
+      });
+
+      expect(api.getOperation('getPets')?.parameters).toEqual([
+        { ...limit, schema: { type: 'integer', maximum: 100 } },
+        { ...version, name: 'x-version' },
+        queryFilter,
+      ]);
+    });
+  });
+
   describe('.matchOperation', () => {
     const api = new OpenAPIRouter({ definition });
 
