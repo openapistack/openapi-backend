@@ -273,6 +273,55 @@ describe.each([{}, { lazyCompileValidators: true }])('OpenAPIValidator with opts
       });
     });
 
+    describe('path base object params overridden by the operation', () => {
+      const validator = new OpenAPIValidator({
+        definition: {
+          ...meta,
+          paths: {
+            '/pets': {
+              get: {
+                operationId: 'getPets',
+                responses: { 200: { description: 'ok' } },
+                parameters: [
+                  { name: 'limit', in: 'query', required: false, schema: { type: 'integer', maximum: 100 } },
+                  { name: 'x-version', in: 'header', schema: { type: 'string', enum: ['2'] } },
+                ],
+              },
+              parameters: [
+                { name: 'limit', in: 'query', required: true, schema: { type: 'integer', maximum: 10 } },
+                { name: 'X-Version', in: 'header', required: true, schema: { type: 'string', enum: ['1'] } },
+              ],
+            },
+          },
+        },
+        ...constructorOpts,
+      });
+
+      test('passes validation for GET /pets without the overridden required params', async () => {
+        const valid = validator.validateRequest({ path: '/pets', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for GET /pets?limit=50 with the operation schema', async () => {
+        const valid = validator.validateRequest({ path: '/pets?limit=50', method: 'get', headers });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('passes validation for the header with the operation schema', async () => {
+        const valid = validator.validateRequest({
+          path: '/pets',
+          method: 'get',
+          headers: { ...headers, 'x-version': '2' },
+        });
+        expect(valid.errors).toBeFalsy();
+      });
+
+      test('fails validation for GET /pets?limit=101', async () => {
+        const valid = validator.validateRequest({ path: '/pets?limit=101', method: 'get', headers });
+        expect(valid.errors).toHaveLength(1);
+      });
+    });
+
     describe('query params with content application/json', () => {
       const validator = new OpenAPIValidator({
         definition: {

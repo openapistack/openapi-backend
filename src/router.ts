@@ -99,6 +99,32 @@ function isArraySchema(schema: unknown) {
 }
 
 /**
+ * A parameter is identified by its location and name. Header names are case-insensitive
+ */
+function parameterKey(parameter: unknown) {
+  if (!parameter || typeof parameter !== 'object' || '$ref' in parameter) {
+    return undefined;
+  }
+  const { in: location, name } = parameter as { in: string; name: string };
+  return `${location}:${location === 'header' ? String(name).toLowerCase() : name}`;
+}
+
+/**
+ * Merges path item parameters into operation parameters. The operation can override a path item parameter with
+ * the same location and name, so those path item parameters are left out
+ */
+function mergeParameters<P>(operationParameters: P[] = [], pathParameters: P[] = []): P[] {
+  const overridden = new Set(operationParameters.map(parameterKey).filter(Boolean));
+  return [
+    ...operationParameters,
+    ...pathParameters.filter((parameter) => {
+      const key = parameterKey(parameter);
+      return !key || !overridden.has(key);
+    }),
+  ];
+}
+
+/**
  * Class that handles routing
  *
  * @export
@@ -213,16 +239,15 @@ export class OpenAPIRouter<D extends Document = Document> {
             ...op,
             path,
             method,
-            // append the path base object's parameters to the operation's parameters
-            parameters: [
-              ...((op.parameters as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>[]) ||
-                []),
-              ...((pathBaseObject?.parameters as PickVersionElement<
+            // append the path base object's parameters the operation doesn't override
+            parameters: mergeParameters(
+              op.parameters as PickVersionElement<D, OpenAPIV3.ParameterObject, OpenAPIV3_1.ParameterObject>[],
+              pathBaseObject?.parameters as PickVersionElement<
                 D,
                 OpenAPIV3.ParameterObject,
                 OpenAPIV3_1.ParameterObject
-              >[]) || []), // path base object parameters
-            ],
+              >[],
+            ),
             // operation-specific security requirement override global requirements
             security: op.security || this.definition.security || [],
           };
